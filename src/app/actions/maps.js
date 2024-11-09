@@ -1,6 +1,9 @@
 "use server";
 import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import { GetItemCommand } from "@aws-sdk/client-dynamodb";
+import { DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 /*
 import { sql } from '@vercel/postgres';
 
@@ -30,7 +33,8 @@ const addMap = async function(mapName) {
         id: Math.floor(Math.random() * 10000),
         created_at : createddate,
         modified_at: createddate,
-        name: mapName 
+        name: mapName ,
+        layerData: []
       }
     }
     try {
@@ -52,4 +56,23 @@ const getAllMaps = async function() {
       console.log("Error", err);
     }
 }
-export{getAllMaps,addMap}  
+const getMap = async function(id) {
+
+  const input = {
+    TableName : "MapApp",
+    Key: {
+      id: id
+    }
+ 
+  }
+  try {
+     const data = await ddbDocClient.send(new GetCommand(input));  
+   
+     return data.Item
+      
+      
+    } catch (err) {
+      console.log("Error", err);
+    }
+}
+export{getMap,getAllMaps,addMap}  

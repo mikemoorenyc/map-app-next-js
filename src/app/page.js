@@ -28,7 +28,7 @@ export default function() {
   
   </form>
   <ul>
-  {mapList.map(m=><li key={m.id}><Link href={`maps/edit?id=${m.id}`}>{m.name}</Link></li>)}
+  {mapList.map(m=><li key={m.id}><Link href={`maps/${m.id}`}>{m.name}</Link></li>)}
   </ul>
   
   </div>

@@ -1,0 +1,22 @@
+:root {
+    --btn-bg: #000000d9;
+    --screen-text: black;
+    --screen-text-em : #222;
+    --screen-text-sub : #777 ;
+    --screen-bg: #fff;
+    --blue-accent:#0b24a0;
+    --gutter: 16px;
+    --half-gutter : calc(var(--gutter) / 2);
+    --animation-speed: .2s;
+    --error-color: #F2B8B5;
+    --bg-super-dark: rgba(0,0,0,.97);
+    --border-radius: 6px;
+    --font-sans: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+  --font-serif: Iowan Old Style, Apple Garamond, Baskerville, Georgia, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    --font-base : 13px;
+    --font-bigger : calc(var(--font-base) * 1.15);
+    
+  
+    --edit-description-height : 4em; 
+}
+  

@@ -1,0 +1,39 @@
+html {
+    width: 100%;
+    overflow-x:hidden;
+}
+body {
+    color: var(--screen-text);
+    background: var(--screen-bg);
+    font-family: var(--font-sans);
+   font-size: 16px;
+
+    position: relative;
+}
+a,.a {
+    color: var(--blue-accent);
+    text-decoration: none;
+   &:hover {
+    text-decoration: underline;
+   }
+}
+*,*:before,*:after {
+    box-sizing:border-box;
+}
+img, svg {
+	display: block;
+    &:not(.panner) {
+        max-width: 100%;
+    }
+}
+sup,sub {
+    font-size: 80%;
+    line-height: 1;
+    vertical-align: super;
+}
+sub {
+    vertical-align: sub;
+}
+button {
+    cursor: pointer;
+}

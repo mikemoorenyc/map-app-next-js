@@ -8,7 +8,7 @@ const marshallOptions = {
   // Whether to remove undefined values while marshalling.
   removeUndefinedValues: true, // false, by default.
   // Whether to convert typeof object to map attribute.
-  convertClassInstanceToMap: false, // false, by default.
+  convertClassInstanceToMap: true, // false, by default.
 };
 
 const unmarshallOptions = {
@@ -17,6 +17,9 @@ const unmarshallOptions = {
 };
 
 // Create the DynamoDB document client.
-const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
+const ddbDocClient = DynamoDBDocumentClient.from(ddbClient,{
+  marshallOptions,
+  unmarshallOptions,
+});
 
 export { ddbDocClient };
