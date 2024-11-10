@@ -1,0 +1,16 @@
+
+.header {
+  padding: calc(var(--gutter)* 0.75) var(--gutter);
+  padding-bottom: 8px; 
+  border-bottom: 1px solid var(--screen-text);
+}
+.title {
+  line-height: 40px;
+  font-weight: 800;
+  font-size: 1.25em;
+  cursor: pointer;
+}
+.sub {
+  display: flex;
+  align-items: center;
+}

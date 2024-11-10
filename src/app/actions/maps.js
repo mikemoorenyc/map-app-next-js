@@ -1,9 +1,8 @@
 "use server";
 import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
-import { GetCommand } from "@aws-sdk/lib-dynamodb";
-import { GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { DescribeTableCommand } from "@aws-sdk/client-dynamodb";
+import { GetCommand,UpdateCommand } from "@aws-sdk/lib-dynamodb";
+
 /*
 import { sql } from '@vercel/postgres';
 
@@ -30,11 +29,10 @@ const addMap = async function(mapName) {
     const payload = {
       TableName: "MapApp",
       Item: {
-        id: Math.floor(Math.random() * 10000),
+        id: Date.now(),
         created_at : createddate,
         modified_at: createddate,
-        name: mapName ,
-        layerData: []
+        title: mapName ,
       }
     }
     try {
@@ -75,4 +73,23 @@ const getMap = async function(id) {
       console.log("Error", err);
     }
 }
-export{getMap,getAllMaps,addMap}  
+const updateMap = async function(id,pageTitle,layerData) {
+  const command = {
+    TableName:"MapApp",
+    Key : {
+      id: id
+    },
+    UpdateExpression: `set title = :title, modified_at = :modified_at ${layerData ? ", layerData = :layerData" : ""}`,
+    ExpressionAttributeValues: {
+      ":title" : pageTitle,
+      ":modified_at" : new Date().toLocaleString(),
+      ":layerData" : layerData || null
+    },
+    ReturnValues: "ALL_NEW"
+  }
+  const update = await ddbDocClient.send(new UpdateCommand(command));
+  const mapData = await getMap(id)
+  return mapData; 
+
+}
+export{getMap,getAllMaps,addMap,updateMap}  

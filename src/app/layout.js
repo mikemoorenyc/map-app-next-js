@@ -2,6 +2,7 @@
 import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.scss"
+import "./globalCSS/utilities.css"
 
 
 export const metadata = {

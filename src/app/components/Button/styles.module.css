@@ -1,0 +1,39 @@
+.button {
+color:var(--screen-bg);
+background: var(--screen-text);
+border: 1px solid currentColor;
+border-radius: 3px;
+padding: 5px 6px 6px 6px;
+line-height: 1em;
+box-shadow: 1px 1px 0px var(--screen-text);
+justify-content: center;
+}
+.secondary {
+  background:none;
+box-shadow:none;
+color: inherit;
+}
+.sm {
+  font-size: 11px;
+text-transform:uppercase;
+padding: 3px 4px 4px 4px;
+font-weight: 600;
+}
+.ghost {
+  background:none;
+  color: var(--screen-text);
+  padding-left: 0;
+  padding-right: 0;
+  border: 0;
+  box-shadow:none;
+  color:inherit;
+}
+
+
+.icon {
+  margin-right: 3px; 
+}
+.icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
