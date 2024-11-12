@@ -1,0 +1,40 @@
+.layerEditSection:not(:last-child) {
+  margin-bottom:12px; 
+}
+.sectionLabel {
+  width:100px; 
+  font-weight:700;
+  font-size: 13px;
+}
+.colorPickerContainer {
+  position:relative
+}
+.colorPickerInput {
+  width: 32px;
+  height: 32px;
+  opacity: 0
+}
+.colorPickerMask {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border:1px solid var(--screen-text);
+  box-shadow: inset 0 0 0px 1px white;
+}
+.deleteQuestion {
+  font-size: 18px;
+    line-height: 1.4;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+.deleteButtons {
+   margin-bottom: 16px;
+}
+.deleteButtons > * {
+  margin-right: 6px;
+}

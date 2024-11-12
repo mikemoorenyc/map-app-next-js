@@ -57,7 +57,7 @@ const MapTitle = ()=> {
   
   const activeInput = useRef(null)
   return <>
-  {!editing ? <div onClick={(e)=>{e.preventDefault(); updateEditing(true)}} className={`${styles.title} ove3rflow-ellipsis`}>
+  {!editing ? <div onClick={(e)=>{e.preventDefault(); updateEditing(true)}} className={`${styles.title} overflow-ellipsis`}>
         {pageTitle}
     </div> : <TitleEditForm currentTitle={pageTitle} updateEditing={updateEditing} /> }
   </>

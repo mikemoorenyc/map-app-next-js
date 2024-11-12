@@ -11,11 +11,13 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.687.0",
     "@aws-sdk/lib-dynamodb": "^3.687.0",
+    "@hello-pangea/dnd": "^17.0.0",
     "@vercel/postgres": "^0.10.0",
     "array-move": "^4.0.0",
     "firebase": "^11.0.1",
     "iconoir": "^7.9.0",
-    "next": "15.0.2",
+    "iconoir-react": "^7.9.0",
+    "next": "^15.0.3",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "sass": "^1.80.6"

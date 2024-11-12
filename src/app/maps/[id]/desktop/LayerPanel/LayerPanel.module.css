@@ -10,3 +10,10 @@
   display: flex;
   flex-direction: column;
 }
+.layerContainer {
+  flex: 1;
+overflow-y:hidden;
+overflow-x:visible; 
+
+width: 100%;
+}

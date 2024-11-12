@@ -1,0 +1,56 @@
+.layerSection {
+  border: 1px solid var(--screen-text);
+  border-radius: var(--border-radius);
+  margin: 0 12px 12px 12px;
+  background:white;
+  
+  
+}
+.layerSection.isActive {
+  box-shadow: inset 1px 1px 0 var(--screen-text), inset -1px -1px 0 var(--screen-text); 
+  overflow: hidden;
+}
+.layerSection .gear {
+  visibility: hidden;
+}
+.layerSection:hover .gear {
+  visibility: visible;
+}
+.layerSection.isDragging {
+  opacity: .75;
+  border-style: dashed;
+}
+.header {
+  padding: 6px;
+  font-weight:600;
+  border-bottom: 1px solid var(--screen-text);
+  display:flex;
+  align-items: center;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 10px;
+  &.active {
+    background: var(--screen-text);
+  }
+}
+.collapseButton {
+  width: 20px;
+  position:relative;
+  height: 20px;
+  margin-right: 4px;
+  border: 1px solid; 
+  border-radius: 50%;
+}
+.collapseButton .svg {
+  position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 16px;
+    height: 16px;
+}
+.pinContainer {
+  padding: 8px 10px 12px 10px;
+
+
+}

@@ -9,7 +9,7 @@ export default (layers, action) => {
         }
       case 'ADDED_LAYER': {
         const newA = [...layers, {
-          name: "Untitled Layer",
+          title: "Untitled Layer",
           color: "#f0f0f0",
           id: Date.now(),
           lightOrDark: "light",

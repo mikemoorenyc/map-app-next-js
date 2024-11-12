@@ -1,0 +1,42 @@
+.pinIcon {
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 600;
+  color: white;
+  position: relative;
+  border: 1px solid white; 
+  box-sizing: content-box;
+  line-height: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 1px 0 black;
+  &.light {
+    color:black;
+    border-color: black;
+  }
+  &.highlighted {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+  }
+
+}
+.favoriteStar {
+  position:absolute;
+  right: -.15em;
+  top: -.55em;
+  width: .95em;
+  height: .95m;
+  fill:var(--screen-text);
+  color:var(--screen-bg);
+  animation: starRotate 4s linear infinite;;
+}
+@keyframes starRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
