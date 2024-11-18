@@ -1,4 +1,6 @@
 import { getMap } from "@/app/actions/maps";
+import { auth } from "@/app/auth";
+
 
 
 export async function generateMetadata({params}) {
@@ -8,8 +10,10 @@ export async function generateMetadata({params}) {
     title: `${mapData.title} - Map App`
   }
 }
-export default function({children}) {
+export default async function({children}) {
+  
   return <>
+ 
   {children}
   </>
 }

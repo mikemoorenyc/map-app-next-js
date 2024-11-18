@@ -1,8 +1,10 @@
-
-"use client";
+'use client'
 import { addMap, getAllMaps } from "./actions/maps";
 import { useEffect,useState } from "react";
 import Link from "next/link"
+import Tester from "./Tester";
+
+
 
 export default function() {
   const [mapList,updateMapList] = useState([]);
@@ -31,5 +33,7 @@ export default function() {
   {mapList.map(m=><li key={m.id}><Link href={`maps/${m.id}`}>{m.title}</Link></li>)}
   </ul>
   
+
+
   </div>
 } 
