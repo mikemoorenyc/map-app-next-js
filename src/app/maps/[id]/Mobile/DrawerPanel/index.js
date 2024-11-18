@@ -1,0 +1,97 @@
+'use client'
+import { useContext } from "react";
+import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import DataContext from "@/app/contexts/DataContext";
+import Button from "@/app/components/Button";
+import { List } from "iconoir-react";
+import ContentPanel from "./ContentPanel";
+import DrawerPanelHeader from "./DrawerPanelHeader";
+import { useSwipeable } from "react-swipeable";
+import styles from "./styles.module.css";
+
+const DrawerPanel = () => {
+  const {pageTitle} = useContext(DataContext)
+   const {activeData,activeDispatch} = useContext(MobileActiveContext);
+  const {activePin,legendOpen,drawerState} = activeData; 
+  let transform  = 100;
+
+  
+  if(drawerState == "open") {
+    transform = 340;
+  }
+  if(drawerState == "maximized") {
+    transform = window.innerHeight - 40;
+  }
+
+  if(legendOpen) {
+    transform = 0;
+  }
+  
+  const handlers = useSwipeable({
+    onSwipedDown: (e) => {
+      if(drawerState == "minimized") return ; 
+     
+      if(drawerState == "maximized") {
+        activeDispatch({type: "DRAWER_STATE", state: "open"});
+        return
+      }
+      if(drawerState == "open") {
+        activeDispatch({type: "DRAWER_STATE", state: "minimized"})
+      }
+      ;
+
+    },
+    onSwipedUp : (e) => {
+      if(!activePin) return ; 
+      if(drawerState == "maximized") return ;
+    
+      if(drawerState == "open") activeDispatch({type: "DRAWER_STATE", state: "maximized"});
+      if(drawerState == "minimized") activeDispatch({type: "DRAWER_STATE", state: "open"});
+  
+    },
+     preventScrollOnSwipe: true,
+     delta: 10,
+     swipeDuration: 150
+  })
+
+  const transformPosition = {
+    transform: `translateY(calc(100% - ${transform}px))`
+  }
+  
+  return <div className={`${styles.drawerPanel} ${activePin ? styles.swipeable : ""}`} {...handlers}   style={transformPosition}>
+    {!activePin && <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}>Open legend</Button>} />}
+    {activePin && <ContentPanel $transform={transform} pinId={activePin}/>}
+  </div>
+}
+
+export default DrawerPanel
+
+/*
+const DrawerPanel = styled.div`
+position:fixed;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+transform: translateY(100%);
+transition: transform .125s;
+background:black;
+border-top: 1px solid;
+border-radius: var(--border-radius);
+box-shadow: 0px -3px 0 black;
+${({$swipeable}) => $swipeable ? `
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    border: 1px solid;
+    width: 80px;
+    height: 6px;
+    border-radius: 3px;
+    top: 8px;
+    left: calc(50% - 40px);
+  }
+
+
+`:""}
+*/

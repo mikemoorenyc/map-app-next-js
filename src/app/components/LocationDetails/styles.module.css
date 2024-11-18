@@ -1,0 +1,15 @@
+.locationDetails {
+  border: 1px dashed currentColor;
+padding: 10px;
+margin-top: 8px;
+font-size: 12px;
+overflow-wrap: break-word;
+}
+.item {
+  margin: 6px 0;
+}
+.svg {
+  width: 1em;
+  height: 1em;
+  margin-right:6px;
+}

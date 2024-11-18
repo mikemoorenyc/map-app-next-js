@@ -1,8 +1,9 @@
 
 import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
-import "./globalCSS/scaffold.scss"
+import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
+import "./maps/[id]/Mobile/styles.css"
 
 
 export const metadata = {
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
       <body >
       
         {children}
+        <div id="menu-container"></div>
         <div id="portal-container"></div>
+        
       </body>
     </html>
   );

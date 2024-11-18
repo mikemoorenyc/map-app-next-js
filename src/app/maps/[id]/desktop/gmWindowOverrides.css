@@ -1,0 +1,27 @@
+.gm-style .gm-style-iw-c {
+   
+    
+    overflow: auto !important;
+    border: 1px solid var(--screen-text);
+    box-shadow: 3px 3px 0px var(--screen-text) !important;
+    -webkit-box-shadow: 3px 3px 0px var(--screen-text) !important;
+    
+}
+.gm-style .gm-style-iw-tc {
+    border : 1px solid var(--screen-text) !important;
+    border-width: 0 1px 1px 0 !important;
+    -webkit-filter: none !important;
+    filter: none !important; 
+    top: -8px !important;
+    height: 16px !important;
+    width: 16px !important;
+    background:white !important;
+    -webkit-transform: translateX(-50%) rotate(45deg) !important;
+    transform: translateX(-50%) rotate(45deg) !important;
+}
+.gm-style .gm-style-iw-tc:after {
+    display: none !important;
+}
+.gm-style-iw-d {
+    overflow: visible !important;
+}

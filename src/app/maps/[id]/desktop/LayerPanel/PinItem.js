@@ -1,4 +1,4 @@
-import Pin from '../components/Pin';
+import Pin from '../../sharedComponents/Pin';
 import { useEffect,useRef,useContext } from 'react';
 import ActiveContext from '@/app/contexts/ActiveContext';
 
@@ -38,10 +38,11 @@ const PinItem = (props) => {
         interactable={false}
         size={10}
       />
+      </div>
       <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1}}>
         {p.title}
       </div>
-    </div>
+    
   </div>
 
 

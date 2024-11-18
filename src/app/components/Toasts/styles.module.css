@@ -1,0 +1,23 @@
+.toastContainer {
+  position:fixed;
+z-index: 999;
+left: 366px;
+bottom: 20px;
+display:flex;
+flex-direction: column;
+align-items: flex-start;
+}
+.toast {
+  background: var(--screen-text);
+border: 1px solid var(--screen-bg);
+color: var(--screen-bg);
+border-radius: 4px;
+box-shadow: 1px 1px 0 var(--screen-text);
+padding: 4px 8px;
+font-size: 13px;
+white-space: nowrap; 
+display:inline-block;
+}
+.toast:not(:first-child) {
+  margin-top: 6px;
+}

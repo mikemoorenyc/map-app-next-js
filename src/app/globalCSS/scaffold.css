@@ -22,9 +22,7 @@ a,.a {
 }
 img, svg {
 	display: block;
-    &:not(.panner) {
-        max-width: 100%;
-    }
+
 }
 sup,sub {
     font-size: 80%;

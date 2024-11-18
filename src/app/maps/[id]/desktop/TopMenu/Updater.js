@@ -1,6 +1,8 @@
 import { useState,useContext,useEffect,useRef } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import { updateMap } from "@/app/actions/maps";
+import { FloppyDiskArrowIn } from "iconoir-react";
+import styles from "./styles.module.css"
 
 const Updater = ({id})=> {
   const {layerData,pageTitle,mapId} = useContext(DataContext);
@@ -33,7 +35,11 @@ const Updater = ({id})=> {
 
 
   const dateString = `${lastSaved.getFullYear()}/${lastSaved.getMonth()}/`
-  return <div className={"Updater"} style={{flex:1, fontSize: "12px"}}>{isSaving? "Saving...":""}</div>
+  return <div
+  style={{
+    visibility: isSaving ? "visible": "hidden"
+  }}
+   className={`${styles.updater}  border-1 flex-center`}><FloppyDiskArrowIn width={12} height={12} /></div>
 
 }
 

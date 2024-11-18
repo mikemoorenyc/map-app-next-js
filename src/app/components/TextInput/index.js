@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import styles from "./styles.module.css"
-import utilStyles from "../../lib/utilities.module.css"
+
 
 const TextInput = forwardRef((props,ref) => {
   const {modifiers=[],type="input",style=null,name, onChange, onKeyDown,value,onBlur} = props
@@ -14,7 +14,7 @@ const TextInput = forwardRef((props,ref) => {
     onChange={onChange||undefined}
     onKeyDown={onKeyDown||undefined}
     onBlur= {onBlur || undefined}
-    className={`${styles.input} ${!modifiers.includes("smaller")? utilStyles['big-drop-shadow']:""} ${modClasses}`}
+    className={`${styles.input} ${!modifiers.includes("smaller")? 'big-drop-shadow':""} ${modClasses}`}
   />
 })
 
