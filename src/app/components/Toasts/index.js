@@ -1,7 +1,7 @@
 'use client'
 import  { useContext} from "react";
 import ToastContext from "@/app/contexts/ToastContext";
-import Toast from "./toast";
+import Toast from "./Toast";
 import styles from "./styles.module.css"
 
 
