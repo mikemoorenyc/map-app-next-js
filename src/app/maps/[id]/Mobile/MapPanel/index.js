@@ -5,6 +5,7 @@ import Pins from "./Pins"
 import MobileSearch from "./MobileSearch"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Legend from "../Legend"
+import GeoLocation from "./GeoLocation"
 
 const MapPanel = () => {
   const {activeDispatch} = useContext(MobileActiveContext)
@@ -27,6 +28,7 @@ const MapPanel = () => {
   <Pins />
   <MobileSearch />
       <Legend />
+      <GeoLocation />
     </Map>
     
    
