@@ -24,10 +24,18 @@
     display:flex;
     align-items: center;
 }
+.flex-center-center {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
 .cursor-default {
     cursor:default;
 }
 .border-1 {
     border-width: 1px;
     border-style: solid;
+}
+.round-border {
+    border-radius: var(--border-radius);
 }

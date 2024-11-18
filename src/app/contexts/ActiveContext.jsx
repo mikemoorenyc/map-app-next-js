@@ -8,10 +8,10 @@ const ActiveContext = createContext()
 
 const ActiveContextProvider = ({children, mapData}) => {
     
-  const initLayers = mapData?.layerData;
+  const initLayers = mapData?.layerData || [];
   const initActives = {
     editingLayer : null, 
-    activeLayer : initLayers[0]?.id || null,
+    activeLayer : initLayers.length ?  initLayers[0]?.id : null,
     editingPin : null,
     pinRefs : [],
     collapsedLayers : [],

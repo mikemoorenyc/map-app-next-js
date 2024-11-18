@@ -23,7 +23,15 @@ export default async function RootLayout({ children }) {
         {children}
         <div id="menu-container"></div>
         <div id="portal-container"></div>
-        <form
+     
+        
+      </body>
+    </html>
+  );
+}
+
+/*
+   <form
       action={async () => {
         "use server"
         await signIn("google",{ redirectTo: "/" })
@@ -39,8 +47,4 @@ export default async function RootLayout({ children }) {
     >
       <button type="submit">Sign Out</button>
     </form>
-        
-      </body>
-    </html>
-  );
-}
+    */

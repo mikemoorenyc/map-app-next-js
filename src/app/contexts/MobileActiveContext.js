@@ -4,7 +4,7 @@ import { useReducer, createContext} from "react";
 const MobileActiveContext = createContext()
 const MobileActiveContextProvider = ({children,mapData}) => {
   const initActives = {
-    activeLayers : mapData.layerData.map(e => e.id),
+    activeLayers : mapData?.layerData ? mapData.layerData.map(e => e.id) : [],
     activePin : null,
     legendOpen : false,
     drawerState: "minimized",

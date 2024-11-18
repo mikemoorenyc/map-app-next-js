@@ -10,7 +10,8 @@
   padding: 0 var(--gutter);
   }
   .input::-webkit-input-placeholder {
-    color:currentColor
+    color:currentColor;
+    opacity: .75
   }
   .smaller {
     box-shadow: 1px 1px 0 black;

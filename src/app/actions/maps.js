@@ -26,17 +26,29 @@ export async function getMapData(id) {
 */
 const addMap = async function(mapName) {
   const createddate = new Date().toLocaleString()
+  const id = Date.now()
     const payload = {
       TableName: "MapApp",
       Item: {
-        id: Date.now(),
+        id: id,
         created_at : createddate,
         modified_at: createddate,
         title: mapName ,
+        layerData: [
+          {
+            title: "Untitled Layer",
+          color: "#f0f0f0",
+          id: Date.now(),
+          lightOrDark: "light",
+          pins: [],
+          }
+        ]
       }
     }
     try {
       const data = await ddbDocClient.send(new PutCommand(payload));
+      const map = await getMap(id)
+      return map; 
       const items = getAllMaps(); 
       return items; 
       return {message:"success"};

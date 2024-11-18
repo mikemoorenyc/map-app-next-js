@@ -1,0 +1,28 @@
+.formContainer {
+  position:fixed;
+  left: 0;
+  right: 0;
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.formInner {
+  padding: 24px;
+  text-align: center;
+}
+.signedInHeader {
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.userImg {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 8px; 
+}
+.buttonContainer {
+  margin-top: 16px;
+}
