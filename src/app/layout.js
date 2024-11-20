@@ -22,7 +22,8 @@ export const metadata = {
   description: "Mike & Danielle's Map App",
   appleWebApp: {
     capable: true,
-  }
+    title: "Map App"
+  }  
 
 };
 
