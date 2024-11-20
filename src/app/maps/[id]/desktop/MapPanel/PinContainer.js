@@ -13,6 +13,9 @@ const PinContainer = () => {
     const {collapsedLayers} = useContext(ActiveContext).activeData; 
     
     const pinsFlat = layerData.map(l => l.pins).flat()      
+    if(!pinsFlat.length) {
+        return ; 
+    }
     const map = useMap(); 
     
     const [initialPinsAdded,updateInitialPinsAdded] = useState(false)
