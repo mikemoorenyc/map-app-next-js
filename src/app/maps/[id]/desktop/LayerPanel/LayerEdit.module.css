@@ -25,16 +25,3 @@
   border:1px solid var(--screen-text);
   box-shadow: inset 0 0 0px 1px white;
 }
-.deleteQuestion {
-  font-size: 18px;
-    line-height: 1.4;
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 24px;
-}
-.deleteButtons {
-   margin-bottom: 16px;
-}
-.deleteButtons > * {
-  margin-right: 6px;
-}

@@ -7,7 +7,7 @@ import layerUpdater from "./layerUpdater";
 const DataContext = createContext()
 
 const DataContextProvider = ({children,mapData}) => {
- 
+  
   const initLayers =  mapData?.layerData || [];
 
   const [pageTitle,updatePageTitle] = useReducer((oldTitle,newTitle) => {

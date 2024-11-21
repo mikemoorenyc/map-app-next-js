@@ -3,7 +3,7 @@ import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
-import "./maps/[id]/Mobile/styles.css"
+//import "./maps/[id]/Mobile/styles.css"
 
 
 export const viewport = {

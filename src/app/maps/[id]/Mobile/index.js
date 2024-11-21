@@ -19,6 +19,34 @@ return (
   --screen-text: white;
   --screen-bg: black; 
 }
+.GeoTag {
+  font-size: 16px;
+  display: block;
+  will-change:transform;
+  text-shadow: 1px 1px 0 black;
+}
+.mobile-app {
+  background:black; 
+  color:white; 
+}
+.mobile-app .gm-title {
+  color:black;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(20deg);
+  }
+  50% {transform: rotate(0deg);}
+  75% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 
 
 `}

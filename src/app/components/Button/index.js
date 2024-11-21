@@ -3,9 +3,9 @@ import utilStyles from "../../lib/utilities.module.css"
 import styles from "./styles.module.css";
 import Link from "next/link";
 const Button = (props) => {
-  const {children,icon,onClick,type,link=false,modifiers=[],className,style,url,internalLink=false} = props
+  const {children,icon,onClick,type,link=false,modifiers=[],className="",style,url,internalLink=false} = props
   
-  const classString = `${utilStyles["flex-center"]} ${styles.button} ${modifiers.map(m=>styles[m]).join(" ")} ${className || ""}`
+  const classString = `${utilStyles["flex-center"]} ${styles.button} ${modifiers.map(m=>styles[m]).join(" ")} ${className}`
   const attributes = {
     href : link ? url : undefined,
     target : link && !internalLink ? "_blank" : undefined,

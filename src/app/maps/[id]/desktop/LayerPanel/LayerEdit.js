@@ -6,6 +6,7 @@ import Modal from "../../sharedComponents/Modal"
 import Button from "@/app/components/Button"
 import styles from "./LayerEdit.module.css"
 import ActionBar from "../../sharedComponents/ActionBar"
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 
 const LayerEdit = () => {
   const {activeData,activeDispatch} = useContext(ActiveContext)
@@ -60,15 +61,10 @@ const LayerEdit = () => {
         id: null
     })
   }
-  
+  //(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}
+  //deleteLayer
   return <Modal header={"Edit Layer"} closeEvent={cancelEdit}>
-    {deleteConfirmation == "pending" && <div className='LayerEdit-delete-confirm' style={{width:350}}>
-      <div className={`${styles.deleteQuestion} `}>🤔Are you sure you want to delete this layer permanently? </div>
-      <div className={`${styles.deleteButtons} flex-center`}>
-          <Button modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}} >No...</Button>
-          <Button  onClick={deleteLayer} >Yes, delete it</Button>
-      </div>
-    </div>}
+    {deleteConfirmation == "pending" && <DeleteConfirmationModal title={'Are you sure you want to delete this layer?'} cancelClick={(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}} deleteClick={deleteLayer}/>}
     {!deleteConfirmation && <div className="editing" style={{width: 350}}>
       <div>
             <div className={`${styles.layerEditSection} flex-center`} key={"title"}>

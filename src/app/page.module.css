@@ -35,3 +35,10 @@
     font-size: 18px;
   }
 }
+.trashButton {
+  margin-left: 6px; 
+  visibility: hidden;
+}
+.mapItem:hover .trashButton {
+  visibility: visible;
+}

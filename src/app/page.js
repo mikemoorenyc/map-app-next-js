@@ -1,13 +1,19 @@
 
 import {  getAllMaps } from "./actions/maps";
 
-import Link from "next/link"
-import AddMapForm from "./components/AddMapForm";
-import styles from "./page.module.css";
+
+import PageClient from "./PageClient";
 
 const Page = async function() {
   let initMapData = await getAllMaps(); 
-  return <div className={`${styles.container}`}>
+  return <PageClient mapData={initMapData} />
+}
+
+export default Page 
+
+/*
+
+<div className={`${styles.container}`}>
   <h1 className={`${styles.title}`}>💏 Mike & Danielle's Map App</h1>
   <h2 className={`${styles.warning}`}>❌NO ONE ELSE ALLOWED❌</h2>
   <div className={`${styles.form}`}>
@@ -16,13 +22,13 @@ const Page = async function() {
   <h3 className={styles.mapTitle}>All Maps</h3>
   
   <ul className={`${styles.mapList}`}>
-  {initMapData.map(m=><li className={`${styles.mapItem}`} key={m.id}><Link href={`maps/${m.id}`}>{m.title}</Link></li>)}
+  {initMapData.map(m=><li className={`${styles.mapItem}`} key={m.id}><Link href={`maps/${m.id}`}>{m.title}</Link> <DeleteMapForm id={m.id} /></li>)}
   </ul>
   
   </div>
-}
+  */
 
-export default Page 
+
 /*
 export default function() {
   const [mapList,updateMapList] = useState([]);

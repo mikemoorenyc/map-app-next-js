@@ -27,8 +27,9 @@ const MapPanel = () => {
     >
   <Pins />
   <MobileSearch />
-      <Legend />
+   
       <GeoLocation />
+         <Legend />
     </Map>
     
    

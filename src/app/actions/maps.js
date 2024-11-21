@@ -1,7 +1,7 @@
 "use server";
 import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
-import { GetCommand,UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
 /*
 import { sql } from '@vercel/postgres';
@@ -24,6 +24,7 @@ export async function getMapData(id) {
   
 }
 */
+
 const addMap = async function(mapName) {
   const createddate = new Date().toLocaleString()
   const id = Date.now()
@@ -100,8 +101,22 @@ const updateMap = async function(id,pageTitle,layerData) {
     ReturnValues: "ALL_NEW"
   }
   const update = await ddbDocClient.send(new UpdateCommand(command));
-  const mapData = await getMap(id)
+  const mapData = await getMap(id)  
   return mapData; 
 
 }
-export{getMap,getAllMaps,addMap,updateMap}  
+const deleteMap = async function(id) {
+  const command = {
+    TableName:"MapApp",
+    Key : {
+      id: id
+    }
+  }
+  const deleteItem = await ddbDocClient.send(new DeleteCommand(command));
+  console.log(deleteItem);
+  //return deleteItem; 
+  
+  return getAllMaps(); 
+
+}
+export{getMap,getAllMaps,addMap,updateMap, deleteMap}  
