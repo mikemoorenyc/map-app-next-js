@@ -3,6 +3,8 @@ import { AdvancedMarker, useMap, useMapsLibrary } from "@vis.gl/react-google-map
 import mapCenterer from "../lib/mapCenterer";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import TextInput from "@/app/components/TextInput";
+import Button from "@/app/components/Button";
+import { NavArrowLeft } from "iconoir-react";
 
 
 export default () => {
@@ -31,6 +33,7 @@ export default () => {
     autocompleteWidget.addListener("place_changed",()=> {
  
             const place = autocompleteWidget.getPlace()
+            place.title = place.name
             console.log(place);
             const pos = place.geometry.location.toJSON()
             mapCenterer(map, pos);
@@ -47,13 +50,14 @@ export default () => {
 
     
 
-    return <><div style={{
+    return <><div className={`flex-center`} style={{
               transition: "transform .15s",
               transform: activeData.drawerState == "maximized" ? "translateY(-300%)" : null,
               position:"absolute", 
               left: 24, top:24, 
               width: "calc(100% - 48px)"}}>
-         <TextInput type={"text"} ref={inputEl} style={{width:"100%"}}/>
+              <Button href={"/"} icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12}}/>
+         <TextInput type={"text"} ref={inputEl}  className={`flex-1`}/>
          <div>
          
           {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker position={markerPosition} />}

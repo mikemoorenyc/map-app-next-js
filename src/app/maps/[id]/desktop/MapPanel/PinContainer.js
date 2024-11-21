@@ -11,17 +11,11 @@ const PinContainer = () => {
     
     const {layerData} = useContext(DataContext);
     const {collapsedLayers} = useContext(ActiveContext).activeData; 
-    
-    const pinsFlat = layerData.map(l => l.pins).flat()      
-    if(!pinsFlat.length) {
-        return ; 
-    }
     const map = useMap(); 
-    
     const [initialPinsAdded,updateInitialPinsAdded] = useState(false)
-    //Set initial viewport
+    const pinsFlat = layerData.map(l => l.pins).flat() 
     useEffect(()=> {
-        if (!map || !layerData.length || initialPinsAdded) return ;
+        if (!map || !layerData.length || initialPinsAdded || !pinsFlat.length ) return ;
         var bounds = new google.maps.LatLngBounds();
         updateInitialPinsAdded(true);
         pinsFlat.forEach(p => {
@@ -31,6 +25,15 @@ const PinContainer = () => {
 
 
     },[map,layerData ])
+       
+    if(!pinsFlat.length) {
+        return ; 
+    }
+    
+    
+    
+    //Set initial viewport
+    
     
     
     //const pins = [{lat:0,lng:0},{lat:20,lng:20},{lat:30,lng:30}];

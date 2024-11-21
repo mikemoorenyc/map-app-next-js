@@ -30,8 +30,8 @@ const MapPanel = () => {
     mapId={process.env.NEXT_PUBLIC_MAP_EDITOR_ID}
     onClick={mapClickHandler}
     style={{width: '100%', height: '100%',position:"absolute"}}
-    defaultCenter={{lat: 0, lng:0}}
-    defaultZoom={3}
+    defaultCenter={{lat: 40.7219697,lng:-73.9478447}}
+    defaultZoom={13}
     disableDefaultUI={true}
   >
   <PinContainer/>

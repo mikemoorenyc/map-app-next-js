@@ -37,7 +37,7 @@ const ContentPanel = ({pinId, $transform})=> {
         <Button  modifiers={["bigger"]} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}}>
           <List width={16} height={16}/>
         </Button>
-        {pin?.url &&<Button style={{marginLeft:16}} modifiers={["bigger", ""]} link={true} url={makeNativeLink(pin.url)}>
+        {pin?.url &&<Button style={{marginLeft:16}} modifiers={["bigger", ""]} target={"_blank"} href={makeNativeLink(pin.url)}>
           <GMIcon />
         </Button>}
       </div>

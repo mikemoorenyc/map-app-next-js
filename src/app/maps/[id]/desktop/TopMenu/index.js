@@ -18,11 +18,8 @@ const TopMenu = () => {
     <Updater />
     <Button
     icon={<Map />}
-    link={true}
-    url={"/"}
-    internalLink={true}
+    href={"/"}
     modifiers={["secondary","sm"]}
-   
     >
     All Maps
     </Button>

@@ -14,8 +14,8 @@ const TempMarker = forwardRef((props,ref)=> {
         activeColor = currentLayer?.color
     }
 
-    let foregroundColor = "#000000";
-    
+    let foregroundColor = "#ffffff";
+  
     if(currentLayer?.lightOrDark == "light") {
         foregroundColor = "#000000";
     }

@@ -3,31 +3,30 @@ import utilStyles from "../../lib/utilities.module.css"
 import styles from "./styles.module.css";
 import Link from "next/link";
 const Button = (props) => {
-  const {children,icon,onClick,type,link=false,modifiers=[],className="",style,url,internalLink=false} = props
+  const {children,icon,type="button",onClick=undefined,modifiers=[],className="",style=undefined,href=undefined,target=undefined} = props
   
   const classString = `${utilStyles["flex-center"]} ${styles.button} ${modifiers.map(m=>styles[m]).join(" ")} ${className}`
   const attributes = {
-    href : link ? url : undefined,
-    target : link && !internalLink ? "_blank" : undefined,
-    onClick : onClick || undefined,
+    href : href,
+    target : target,
+    onClick : onClick,
     className: classString,
-    style : style || undefined,
+    style : style ,
    
   }
-  const iconHTML = icon ? <span className={`${styles.icon} ${!children? styles.noText : ""}`}>{icon}</span> : null; 
-  if(link) {
-    return <Link
-    href={url}
-    target={!internalLink ?"_blank": undefined}
-    style={style || undefined}
-    className={classString}
-    >
-    {iconHTML}
+
+  const inner = <>
+    {icon && <span className={`${styles.icon} ${!children? styles.noText : ""}`}>{icon}</span>}
     {children}
-    </Link>
+  </>
+
+
+
+  if(href) {
+    return <Link {...attributes}>{inner}</Link>
   }
-  return createElement(link?"a":"button",attributes,<>{icon && iconHTML}
-        {children}</>)
+  attributes.type=type; 
+  return <button {...attributes}>{inner}</button>
 }
 
 export default Button; 
