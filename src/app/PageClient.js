@@ -9,8 +9,8 @@ import { deleteMap } from "./actions/maps"
 import Button from "./components/Button"
 import { Trash } from "iconoir-react"
 
-export default function PageClient({mapData}){
-
+export default function PageClient({mapData,isMobile}){
+  console.log(isMobile);
   const [deleteConfirmOpen,updateDeleteConfirmationOpen] = useState(false)
   const [deleteId,updateDeleteId] = useState(null)
 
@@ -32,12 +32,12 @@ export default function PageClient({mapData}){
   <ul className={`${styles.mapList}`}>
     {mapList.map(m=>(
       <li className={`${styles.mapItem} flex-center`} key={m.id}>
-        <Link href={`maps/${m.id}`}>{m.title}</Link>
+        {!isMobile ? <><Link href={`maps/${m.id}`}>{m.title}</Link>
         <Button modifiers={['sm','ghost']} icon={<Trash />} className={styles.trashButton} onClick={(e)=>{
           e.preventDefault(); 
           updateDeleteConfirmationOpen(true);
           updateDeleteId(m.id)
-          }}></Button>
+          }}></Button></> : <Button  style={{width: "100%"}} modifiers={["secondary","big"]} href={`maps/${m.id}`}>{m.title}</Button>}
       </li>
 
     ))}

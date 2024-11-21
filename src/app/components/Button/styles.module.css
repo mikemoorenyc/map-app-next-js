@@ -19,6 +19,12 @@ text-transform:uppercase;
 padding: 3px 4px 4px 4px;
 font-weight: 600;
 }
+.big {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px 12px 12px 12px;
+  text-align: center;
+}
 .ghost {
   background:none;
   color: var(--screen-text);
