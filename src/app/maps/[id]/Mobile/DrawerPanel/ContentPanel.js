@@ -32,7 +32,7 @@ const ContentPanel = ({pinId, $transform})=> {
          
       <div className={`${styles.metadata} display-flex align-items-center`} >
         {layer && <div className={`layer flex-1`}>
-          {layer.name}
+          {layer.title}
         </div>}
         <Button  modifiers={["bigger"]} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}}>
           <List width={16} height={16}/>
