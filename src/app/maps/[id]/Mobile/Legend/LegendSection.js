@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext,  } from "react"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import { ArrowDownCircle,  ArrowUpCircle, CheckCircle, CheckCircleSolid } from "iconoir-react"
 import Pin from "../../sharedComponents/Pin"
@@ -15,7 +15,7 @@ const LegendSection = ({layer}) => {
   const map = useMap(); 
   if(!activeData) return ;
   
-  const {activeLayers, activePin} = activeData
+  const {activeLayers, activePin,expandedLayers} = activeData
   
   if(!activeLayers) {
     return ; 
@@ -40,25 +40,21 @@ const LegendSection = ({layer}) => {
     mapCenterer(map,pin.location)
   }
   const cutoff = 4
-  const [expanded,updateExpanded] = useState(false);
-  const containsActivePin = layer.pins.filter(p => p.id == activePin).length
-  useEffect(()=> {
-    console.log("update expand");
-    if(layer.pins.filter(p => p.id == activePin).length) {
-      updateExpanded(true)
-    } else {
-      updateExpanded(false);
-    }
-  },[activePin])
-
-  const pins = (expanded ) ? layer.pins : layer.pins.slice(0,cutoff);
   
+  const containsActivePin = layer.pins.filter(p => p.id == activePin).length
+
+  const openedManually = expandedLayers.includes(layer.id)
+  const isExpanded = openedManually || containsActivePin;
+
+  const pins = (isExpanded ) ? layer.pins : layer.pins.slice(0,cutoff);
+  /*
   const ExpandButton = () => {
     if(layer.pins.length <= cutoff || containsActivePin ) return ; 
     return <div className={styles.expandButton} ><Button onClick={()=>{console.log(expanded);updateExpanded(!expanded)}} icon={!expanded?<ArrowDownCircle />:<ArrowUpCircle/>} modifiers={["ghost"]}>
     Show {!expanded?"all":"less"}
     </Button></div>
   }
+  */
   
   return <div className={styles.legendSection}>
     <div className={`${styles.legendSectionheader} flex-center`} onClick={headerClick}>
@@ -79,7 +75,20 @@ const LegendSection = ({layer}) => {
           </div>
           </div>
         })}
-      <ExpandButton />
+      {layer.pins.length > cutoff && !containsActivePin && (
+        <div className={styles.expandButton} > 
+          <Button
+            icon={!isExpanded?<ArrowDownCircle />:<ArrowUpCircle/>}
+            modifiers={["ghost"]}
+            onClick={(e)=> {
+              e.preventDefault(); 
+              activeDispatch({type: "UPDATE_EXPANDED_LAYERS", id:layer.id,state: openedManually?"collapsed":"expanded"})
+            }}
+          >
+            Show {!isExpanded?"all":"less"}
+          </Button>
+        </div>
+      )}
       </div>
   </div>
 }

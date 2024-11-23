@@ -8,7 +8,8 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     activePin : null,
     legendOpen : false,
     drawerState: "minimized",
-    tempData: null
+    tempData: null,
+    expandedLayers: []
    
   }
   const activeUpdater = (actives,action) => {
@@ -23,6 +24,16 @@ const MobileActiveContextProvider = ({children,mapData}) => {
       }
       case "REMOVE_ACTIVE_LAYER" : {
         return {...actives, ...{activeLayers : actives.activeLayers.filter(l => l != action.id)}}
+      }
+      case "UPDATE_EXPANDED_LAYERS" : {
+        let newLayers = [...actives.expandedLayers]
+        if(action.state == "expanded") {
+          newLayers = [...newLayers, ...[action.id]]
+        }
+        if(action.state == "collapsed") {
+          newLayers = newLayers.filter(l => l != action.id);
+        }
+        return {...actives, ...{expandedLayers: newLayers}}
       }
       case "ADD_ACTIVE_LAYER" : {
         
