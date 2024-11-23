@@ -9,7 +9,6 @@ const Pins = () => {
   const {activeLayers, activePin} = useContext(MobileActiveContext).activeData 
   const {layerData} = useContext(DataContext);
   const pinsFlat = layerData.map(l => l.pins).flat();
-  console.log(layerData)
   useEffect(()=> {
     if(!map) return ;
     var bounds = new google.maps.LatLngBounds();

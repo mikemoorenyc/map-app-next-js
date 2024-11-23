@@ -40,7 +40,7 @@ const PinItem = (props) => {
         size={10}
       />
       </div>
-      <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1}}>
+      <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1, textDecoration: p?.visited ? "line-through":""}}>
         {p.title}
       </div>
     

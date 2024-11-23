@@ -94,6 +94,9 @@ export default function EditPanel() {
   <TextField>
     <Switch label={'Favorited'} valueChanger={valueChanger} on={pinState?.favorited} valueKey={"favorited"}/>
   </TextField>
+  <TextField>
+    <Switch label={'Visited'} valueChanger={valueChanger} on={pinState?.visited} valueKey={"visited"}/>
+  </TextField>
  
   
 

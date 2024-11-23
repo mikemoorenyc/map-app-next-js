@@ -74,7 +74,7 @@ const LegendSection = ({layer}) => {
           <div className="pin-icon"> 
             <Pin pin={pin} mobile={true} layer={layer} layerData={mapData}/>
           </div>
-          <div className={`${styles.pinName} overflow-ellipsis`}>
+          <div className={`${styles.pinName} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>
             {pin.title}
           </div>
           </div>

@@ -29,7 +29,8 @@ const Pin = (props) => {
     height: dim,
     transform: !interactable ? "none" : "",
     pointerEvents : !interactable ? "none" : "",
-    textShadow: textShadowStyles
+    textShadow: textShadowStyles,
+    filter: pin?.visited ? "grayscale(1)" : ""
   }
 
 

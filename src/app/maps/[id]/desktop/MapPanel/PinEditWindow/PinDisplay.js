@@ -13,7 +13,7 @@ import Linkify from 'linkify-react';
 import styles from "./styles.module.css";
 
 
-import {  EditPencil, Emoji, Star, StarSolid, Trash } from "iconoir-react";
+import {  CheckCircle, CheckCircleSolid, EditPencil, Emoji, Star, StarSolid, Trash } from "iconoir-react";
 
 export default ({pinsFlat, pId,lId}) => {
   const {layerData,layerDispatch} = useContext(DataContext);
@@ -65,6 +65,15 @@ const [tempData, updateTempData] = useState(p);
     })
     updateEditingText(false)
 
+  }
+  const updateVisited = () => {
+    layerDispatch({
+      type: "UPDATED_PIN",
+      id: p.id,
+      data: {
+        visited: p?.visited ? false : true
+      }
+    })
   }
 
   const updateFavorite  = () => {
@@ -161,6 +170,7 @@ const [tempData, updateTempData] = useState(p);
         <button onClick={updateFavorite} style={{marginRight:6}}>
             {p.favorited ? <StarSolid /> : <Star />}
           </button>
+          <button onClick={updateVisited}>{!p?.visited ? <CheckCircle />:<CheckCircleSolid />}</button>
 
 
 
