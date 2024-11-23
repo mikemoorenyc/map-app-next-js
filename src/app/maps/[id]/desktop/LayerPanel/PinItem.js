@@ -4,7 +4,7 @@ import ActiveContext from '@/app/contexts/ActiveContext';
 
 import styles from "./PinItem.module.css"
 const PinItem = (props) => {
-  const {p,isActive,isDragging} = props;
+  const {p,isActive,isDragging,layer} = props;
   const {activeData,activeDispatch} = useContext(ActiveContext)
 
   const pinEl = useRef(null);
@@ -34,7 +34,8 @@ const PinItem = (props) => {
   >
     <div style={{marginRight: 4}}>
       <Pin 
-        pId={p.id}
+        pin={p}
+        layer={layer}
         interactable={false}
         size={10}
       />

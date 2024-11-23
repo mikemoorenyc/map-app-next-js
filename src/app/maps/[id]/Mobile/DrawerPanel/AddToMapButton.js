@@ -1,0 +1,47 @@
+import Button from "@/app/components/Button";
+import { useContext } from "react";
+import DataContext from "@/app/contexts/DataContext";
+import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import { MapPinPlus } from "iconoir-react";
+
+export default function AddToMapButton() {
+  const {layerData,layerDispatch} = useContext(DataContext)
+  const {activeData} = useContext(MobileActiveContext)
+  const {activeDispatch} = useContext(MobileActiveContext);
+  const tempData = activeData.tempData
+  if(!tempData) return ; 
+  const {website,name,formatted_address,international_phone_number,url,geometry} = tempData
+  const tempID = Date.now()
+console.log(layerData);
+  const addPin = (e) => {
+    e.preventDefault(); 
+    const payload = {
+      title: name,
+      website: website,
+      formatted_address:formatted_address,
+      international_phone_number:international_phone_number,
+      url:url,
+      description:null,
+      icon: null  ,
+      id: tempID,
+      location: geometry.location.toJSON(),
+      viewport: geometry.viewport.toJSON(),
+      test: "asdfasd",
+      layerId : layerData[0].id
+    }
+    layerDispatch({
+      type: "ADDED_PIN",
+      layerToAdd: layerData[0].id,
+      pinData : payload,
+    })
+    activeDispatch({type:"SET_ACTIVE_PIN",id:tempID})
+    activeDispatch({type:"DRAWER_STATE",state:"open"})
+  }
+  
+
+
+return <div className={`flex-1`}><Button onClick={addPin} icon={<MapPinPlus width={16} height={16}/>} modifiers={["secondary","bigger"]}>
+          Add to map
+        </Button></div>
+
+}

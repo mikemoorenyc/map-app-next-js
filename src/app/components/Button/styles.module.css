@@ -8,6 +8,7 @@ line-height: 1em;
 box-shadow: 1px 1px 0px var(--screen-text);
 justify-content: center;
 }
+
 .secondary {
   background:var(--screen-bg);
 box-shadow:none;
@@ -32,7 +33,7 @@ font-weight: 600;
   padding-right: 0;
   border: 0;
   box-shadow:none;
-  color:inherit;
+
 }
 
 
@@ -46,4 +47,10 @@ font-weight: 600;
 .icon svg {
   width: 1.25em;
   height: 1.25em;
+}
+.caution {
+  --screen-text: #d10000; 
+}
+.cautionMobile {
+  --screen-text: #F2B8B5;
 }

@@ -6,6 +6,8 @@ import MobileSearch from "./MobileSearch"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Legend from "../Legend"
 import GeoLocation from "./GeoLocation"
+import Updater from "../../desktop/TopMenu/Updater"
+import styles from "../"
 
 const MapPanel = () => {
   const {activeDispatch} = useContext(MobileActiveContext)
@@ -27,7 +29,7 @@ const MapPanel = () => {
     >
   <Pins />
   <MobileSearch />
-   
+  <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
          <Legend />
     </Map>

@@ -4,12 +4,13 @@ import DataContext from "@/app/contexts/DataContext";
 import Pin from "../../sharedComponents/Pin";
 import Button from "@/app/components/Button";
 import LocationDetails from "@/app/components/LocationDetails";
-import { List } from "iconoir-react";
+import { EditPencil, List, MapPinPlus } from "iconoir-react";
 import Linkify from "linkify-react";
 import GMIcon from "./GMIcon";
 import makeNativeLink from "../lib/makeNativeLink";
 import DrawerPanelHeader from "./DrawerPanelHeader";
 import styles from "./styles.module.css";
+import AddToMapButton from "./AddToMapButton";
 
 const ContentPanel = ({pinId, $transform})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
@@ -21,9 +22,7 @@ const ContentPanel = ({pinId, $transform})=> {
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
   if(!pin) return;
 
-  return <div className={styles.contentPanel}
-
-  >
+  return <div className={styles.contentPanel}>
     <div className="top-section">
       <DrawerPanelHeader 
         title={pin.title} 
@@ -34,10 +33,14 @@ const ContentPanel = ({pinId, $transform})=> {
         {layer && <div className={`layer flex-1`}>
           {layer.title}
         </div>}
-        <Button  modifiers={["bigger"]} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}}>
+        {pinId == "temp" && <AddToMapButton />}
+        {pinId != "temp" && <Button  modifiers={["bigger","secondary"]} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}}>
+          <EditPencil width={16} height={16}/>
+        </Button>}
+        <Button  modifiers={["bigger"]} style={{marginLeft:12}} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}}>
           <List width={16} height={16}/>
         </Button>
-        {pin?.url &&<Button style={{marginLeft:16}} modifiers={["bigger", ""]} target={"_blank"} href={makeNativeLink(pin.url)}>
+        {pin?.url &&<Button style={{marginLeft:12}} modifiers={["bigger", ""]} target={"_blank"} href={makeNativeLink(pin.url)}>
           <GMIcon />
         </Button>}
       </div>

@@ -8,6 +8,7 @@ import ContentPanel from "./ContentPanel";
 import DrawerPanelHeader from "./DrawerPanelHeader";
 import { useSwipeable } from "react-swipeable";
 import styles from "./styles.module.css";
+import EditPanel from "./EditPanel";
 
 const DrawerPanel = () => {
   const {pageTitle} = useContext(DataContext)
@@ -22,14 +23,19 @@ const DrawerPanel = () => {
   if(drawerState == "maximized") {
     transform = window.innerHeight - 40;
   }
+  if(drawerState == "editing") {
+    transform = window.innerHeight - 10
+  }
 
   if(legendOpen) {
     transform = 0;
   }
+  const isEditing = drawerState == "editing"
   
   const handlers = useSwipeable({
     onSwipedDown: (e) => {
-      if(drawerState == "minimized") return ; 
+      if(isEditing) return;
+      if(drawerState == "minimized" ) return ; 
      
       if(drawerState == "maximized") {
         activeDispatch({type: "DRAWER_STATE", state: "open"});
@@ -42,7 +48,7 @@ const DrawerPanel = () => {
 
     },
     onSwipedUp : (e) => {
-      if(!activePin) return ; 
+      if(!activePin || isEditing) return ; 
       if(drawerState == "maximized") return ;
     
       if(drawerState == "open") activeDispatch({type: "DRAWER_STATE", state: "maximized"});
@@ -58,9 +64,10 @@ const DrawerPanel = () => {
     transform: `translateY(calc(100% - ${transform}px))`
   }
   
-  return <div className={`${styles.drawerPanel} ${activePin ? styles.swipeable : ""}`} {...handlers}   style={transformPosition}>
-    {!activePin && <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}>Open legend</Button>} />}
-    {activePin && <ContentPanel $transform={transform} pinId={activePin}/>}
+  return <div className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`} {...handlers}   style={transformPosition}>
+    {isEditing && <EditPanel />}
+    {(!activePin && isEditing == false)&& <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}>Open legend</Button>} />}
+    {(activePin && isEditing == false )&& <ContentPanel $transform={transform} pinId={activePin}/>}
   </div>
 }
 

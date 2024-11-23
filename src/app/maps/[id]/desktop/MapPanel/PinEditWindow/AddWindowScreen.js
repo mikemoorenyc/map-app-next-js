@@ -4,7 +4,7 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import LocationDetails from "@/app/components/LocationDetails";
 import Button from "@/app/components/Button";
-import { PlusCircleSolid } from "iconoir-react";
+import { MapPinPlus } from "iconoir-react";
 import InfoWindowHeader from "./InfoWindowHeader";
 import ActionBar from "../../../sharedComponents/ActionBar";
 
@@ -50,7 +50,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
     </InfoWindowHeader>
     <div className="description-placeholder"  style={{height: "var(--edit-description-height)"}}  />
     <LocationDetails placeData={placeData} />
-    <ActionBar primaryButtons={<Button onClick={addItem} icon={<PlusCircleSolid />}>
+    <ActionBar primaryButtons={<Button onClick={addItem} icon={<MapPinPlus />}>
     
     <span className={"Button-text"}>Add to map</span>
 </Button>} />

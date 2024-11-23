@@ -88,9 +88,9 @@ const LayerEdit = () => {
               <Button onClick={cancelEdit} modifiers={["secondary"]}>Cancel</Button>
               </>
             )}
-            secondaryButtons={(
+            secondaryButtons={layerData.length > 1 && (
               <>
-              <Button modifiers={["ghost","sm"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
+              <Button modifiers={["ghost","sm","caution"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
                 Delete Layer
             </Button>
               </>

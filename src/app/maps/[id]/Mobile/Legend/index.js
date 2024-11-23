@@ -13,8 +13,9 @@ const Legend = () => {
   const {layerData,pageTitle} = useContext(DataContext);
   const mapData = layerData
   console.log(activeData.legendOpen);
+  const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
   
-  return <div className={`${styles.legend} ${activeData?.legendOpen ? styles.open : ""}`}>
+  return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>
     <div className={`${styles.legendHeader} flex-center`}>
       <div className={`${styles.legendTitle} overflow-ellipsis flex-1`}>{pageTitle}</div>
       

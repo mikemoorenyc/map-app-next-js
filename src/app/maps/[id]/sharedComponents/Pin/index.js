@@ -4,19 +4,17 @@ import { useContext } from "react";
 import { Star } from "iconoir-react";
 
 const Pin = (props) => {
-  const {layerData} = useContext(DataContext)
-  const {size, interactable, highlighted,className,pId} = props;
+  
+  const {size, interactable, highlighted,className,pin,layer} = props;
+  if(!pin) return ; 
   
   
-  const p = layerData.map(layer => layer?.pins).flat().find(pin => pin.id == pId);
-  if(!p) return ; 
-  if(!p?.title) return ; 
-  const layer =layerData.filter(layer => layer.id == p.layerId)[0];
+ 
   let dim = size || 10;
   dim = dim * (18/10);
   dim = 2 * Math.round(dim / 2);
-  const hasIcon = p?.icon ? true : false 
-  const icon = p?.icon || p.title.charAt(0);
+  const hasIcon = pin?.icon ? true : false 
+  const icon = pin?.icon || pin.title.charAt(0);
   const lightOrDark = layer?.lightOrDark;
   let textShadowStyles = null;
   if(hasIcon) {
@@ -40,10 +38,10 @@ const Pin = (props) => {
   return <div 
     className={`${styles.pin} ${styles[lightOrDark]} ${highlighted?styles.highlighted:""} ${className || ""}`}
     style={inlineStyles}
-    data-id={p?.id}
+    data-id={pin.id}
     >
       <span>{icon}</span>
-      {p?.favorited && <Star className={styles.favoriteStar} />}
+      {pin.favorited && <Star className={styles.favoriteStar} />}
 
 
   </div>
