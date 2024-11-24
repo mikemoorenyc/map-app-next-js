@@ -15,9 +15,22 @@ const LayerSection = ({children,layerId,activeId}) => {
   const isActive = activeLayer == layer.id
   const isCollapsed = collapsedLayers.includes(layer.id);
   const hasPins = layer?.pins?.length > 0; 
+  let textColor;
+  switch(layer?.lightOrDark) {
+    case "dark":
+      textColor = "white"
+      break;
+    case "light": 
+      textColor = "black"
+      break;
+    default:
+      textColor = "var(--screen-text)"
+  }
+   
+
   const activeStyles = {
     background: isActive ? layer.color : null,
-    color: (layer?.lightOrDark == "dark" && isActive) ? "white" : null
+    color: (isActive) ? textColor : null
   }
   
   return <div onClick={()=>{

@@ -2,7 +2,7 @@
   font-size: 13px;
   padding: 3px 2px;
   position:relative;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid transparent;
   width: calc(100% + 4px);
   left: -2px;
   line-height: 1.4;
@@ -10,15 +10,16 @@
   display: flex;
   align-items: center;
 }
-.pinItem.active {
-  border-color:black;
+.pinItem.isActive {
   font-weight: 600;
-  background:black;
-  color:white;
+  background:var(--screen-text);
+  color:var(--screen-bg)
 }
 .pinItem.isDragging {
-  border-color:black; background: var(--screen-bg); box-shadow: 1px 1px 0 var(--screen-text)
+  border-color:currentColor; 
+  background: var(--screen-bg); 
+  box-shadow: 1px 1px 0 var(--screen-text)
 }
 .pinItem:hover {
-  border-color:black;
+  border-color:var(--screen-text);
 }

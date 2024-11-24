@@ -76,7 +76,7 @@ export default (layers, action) => {
           }
           return pin
         })
-        console.log(updatedPinArray);
+      
         return layers.map(layer => {
           if(layer.id == layerToUpdate.id) {
             return {...layerToUpdate, ...{pins: updatedPinArray}}

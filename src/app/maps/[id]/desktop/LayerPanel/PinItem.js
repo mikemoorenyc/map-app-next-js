@@ -4,9 +4,10 @@ import ActiveContext from '@/app/contexts/ActiveContext';
 
 import styles from "./PinItem.module.css"
 const PinItem = (props) => {
-  const {p,isActive,isDragging,layer} = props;
+  const {p,isDragging,layer} = props;
   const {activeData,activeDispatch} = useContext(ActiveContext)
 
+  const isActive = p.id == activeData.editingPin;
   const pinEl = useRef(null);
   useEffect(()=> {
         if(!pinEl) return ; 

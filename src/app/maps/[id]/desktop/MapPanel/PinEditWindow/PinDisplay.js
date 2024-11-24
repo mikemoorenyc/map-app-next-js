@@ -66,23 +66,16 @@ const [tempData, updateTempData] = useState(p);
     updateEditingText(false)
 
   }
-  const updateVisited = () => {
-    layerDispatch({
-      type: "UPDATED_PIN",
-      id: p.id,
-      data: {
-        visited: p?.visited ? false : true
-      }
-    })
-  }
 
-  const updateFavorite  = () => {
+
+
+  const updateValue = (value,key) => {
+    const payload = {};
+    payload[key] = value 
     layerDispatch({
       type: "UPDATED_PIN",
       id: p.id,
-      data: {
-        favorited: p?.favorited ? false : true
-      }
+      data: payload
     })
   }
 
@@ -107,7 +100,7 @@ const [tempData, updateTempData] = useState(p);
       id: p.id, 
       content: <div className="flex-center">
         <span style={{margin: "0 3px 4px"}} >Deleted {p.name} </span >
-        <Button modifiers={["sm","ghost"]} onClick={(e)=>{e.preventDefault(); undoPinDelete();}} style={{textDecoration: "underline"}}>Undo</Button></div>,
+        <button onClick={(e)=>{e.preventDefault(); undoPinDelete();}} style={{textDecoration: "underline"}}>Undo</button></div>,
      
     }})
 
@@ -166,11 +159,11 @@ const [tempData, updateTempData] = useState(p);
         <div ref={pickerContainer} style={{position:"relative",cursor: "pointer"}} className={styles.controlContainer} onClick={(e)=>{updateIconSelectorOpen(true)}}>
           {p.icon? <div style={{fontSize: 16}} className={"pin-icon"}>{p.icon}</div> :<Emoji />}
         </div>
-        {iconSelectorOpen && <IconSelector id={p.id} pickerAnchor={pickerContainer.current.getBoundingClientRect()} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
-        <button onClick={updateFavorite} style={{marginRight:6}}>
+        {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current.getBoundingClientRect()} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
+        <button onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
             {p.favorited ? <StarSolid /> : <Star />}
           </button>
-          <button onClick={updateVisited}>{!p?.visited ? <CheckCircle />:<CheckCircleSolid />}</button>
+          <button onClick={()=>{updateValue(p?.visited ? false : true,"visited")}}>{!p?.visited ? <CheckCircle />:<CheckCircleSolid />}</button>
 
 
 

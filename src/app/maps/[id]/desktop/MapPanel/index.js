@@ -1,6 +1,6 @@
 'use client'
 import { APIProvider , Map} from "@vis.gl/react-google-maps";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
 
 import PinEditWindow from "./PinEditWindow";
@@ -9,6 +9,12 @@ import PinContainer from "./PinContainer";
 
 const MapPanel = () => {
   const [clickEvent,updateClickEvent] = useState(null);
+  const [mapStyleId, updateMapStyleId] = useState(process.env.NEXT_PUBLIC_MAP_EDITOR_ID)
+  useEffect(()=> {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      updateMapStyleId(process.env.NEXT_PUBLIC_MAP_MOBILE_ID)
+    }
+  },[])
   const mapClickHandler = (e) => {
     if(e.detail.placeId) {
             e.stop(); 
@@ -27,7 +33,7 @@ const MapPanel = () => {
   <APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
   <InfoWindowContextProvider>
   <Map 
-    mapId={process.env.NEXT_PUBLIC_MAP_EDITOR_ID}
+    mapId={mapStyleId}
     onClick={mapClickHandler}
     style={{width: '100%', height: '100%',position:"absolute"}}
     defaultCenter={{lat: 40.7219697,lng:-73.9478447}}

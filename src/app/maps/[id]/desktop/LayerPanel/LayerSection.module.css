@@ -2,7 +2,7 @@
   border: 1px solid var(--screen-text);
   border-radius: var(--border-radius);
   margin: 0 12px 12px 12px;
-  background:white;
+  background:var(--screen-bg);
   
   
 }
@@ -29,9 +29,7 @@
   height: 36px;
   line-height: 36px;
   padding: 0 10px;
-  &.active {
-    background: var(--screen-text);
-  }
+
 }
 .collapseButton {
   width: 20px;

@@ -1,32 +1,15 @@
 'use client'
 import Picker from "@emoji-mart/react";
-import  { useContext } from "react";
 import { createPortal } from 'react-dom';
-import DataContext from '@/app/contexts/DataContext';
-export default ({id,updateIconSelectorOpen,onEmojiClick,pickerAnchor}) => {
-  const {layerDispatch} = useContext(DataContext)
+
+export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
+
   const emojiClicked = (e) => {
     updateIconSelectorOpen(prev => {
       return false; 
     });
-    console.log("click")
-    console.log(e);
-
-  
-
     const icon = e.native; 
-    
-
-    layerDispatch({
-      type: "UPDATED_PIN",
-      id: id,
-      data : {
-        icon: icon
-      }
-    })
-
-    
-
+    updateValue(icon,"icon")
   }
 
   

@@ -5,7 +5,9 @@ import Button from "@/app/components/Button";
 import { Xmark } from "iconoir-react";
 import { useEffect } from "react";
 
+
 const Modal = ({children,header,closeEvent}) => {
+  
   const escapePress = (e) => {
       if(e.code === "Escape") {
           closeEvent(); 

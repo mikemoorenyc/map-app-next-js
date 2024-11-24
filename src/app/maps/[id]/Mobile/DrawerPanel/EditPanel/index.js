@@ -73,7 +73,7 @@ export default function EditPanel() {
 <div className={styles.editPanelContainer}>
   <div className={`${styles.editPanelHeader} flex-center`}>
     <div className={`flex-1`}>
-      <Button icon={<BinMinusIn/>} modifiers={['ghost','cautionMobile']} onClick={e=>{e.preventDefault(); updateDeletePending(true)}}>Delete</Button>
+      <Button icon={<BinMinusIn/>} modifiers={['ghost','caution']} onClick={e=>{e.preventDefault(); updateDeletePending(true)}}>Delete</Button>
     </div>
     <Button icon={<Xmark/>} modifiers={['secondary']} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"open"})}}>Cancel</Button>
     <Button icon={<FloppyDisk />} style={{marginLeft: 16}} modifiers={[]} onClick={saveData}>Save</Button>

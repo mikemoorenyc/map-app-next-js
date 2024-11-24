@@ -14,11 +14,7 @@ return (
 <MapPanel />
 <DrawerPanel />
 <style jsx global>{`
-:root {
-  --blue-accent : #75b0e8;  
-  --screen-text: white;
-  --screen-bg: black; 
-}
+
 .GeoTag {
   font-size: 16px;
   display: block;
@@ -32,21 +28,7 @@ return (
 .mobile-app .gm-title {
   color:black;
 }
-@keyframes spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(20deg);
-  }
-  50% {transform: rotate(0deg);}
-  75% {
-    transform: rotate(-20deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
+
 
 
 `}

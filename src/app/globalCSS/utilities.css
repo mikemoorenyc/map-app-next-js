@@ -1,8 +1,8 @@
 .big-drop-shadow {
-    box-shadow: 3px 3px 0px black
+    box-shadow: 3px 3px 0px var(--screen-text)
 }
 .sm-drop-shadow {
-    box-shadow: 1px 1px 0 black;
+    box-shadow: 1px 1px 0 var(--screen-text);
 }
 .overflow-ellipsis {
     overflow:hidden;

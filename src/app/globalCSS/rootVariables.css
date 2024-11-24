@@ -9,6 +9,7 @@
     --half-gutter : calc(var(--gutter) / 2);
     --animation-speed: .2s;
     --error-color: #F2B8B5;
+    --caution-color: #d10000;
     --bg-super-dark: rgba(0,0,0,.97);
     --border-radius: 6px;
     --font-sans: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
@@ -19,4 +20,11 @@
   
     --edit-description-height : 4em; 
 }
-  
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --screen-bg: #000;
+    --screen-text: #fff; 
+    --caution-color: #F2B8B5;
+    --blue-accent : #75b0e8; 
+  }
+}

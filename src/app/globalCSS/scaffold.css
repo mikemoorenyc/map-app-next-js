@@ -35,3 +35,10 @@ sub {
 button {
     cursor: pointer;
 }
+input,textarea {
+    border: 1px solid currentColor;
+    border-radius: var(--border-radius);
+    color: var(--screen-text);
+    background: var(--screen-bg);
+    padding: 4px;
+}

@@ -3,7 +3,7 @@
   left: 0;
   top: 0;
   width: 350px;
-  background: white;
+  background: var(--screen-bg);
   border-right: 1px solid var(--screen-text);
   height: 100%;
   overflow: hidden;
