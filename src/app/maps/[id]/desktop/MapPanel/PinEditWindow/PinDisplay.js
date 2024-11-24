@@ -99,7 +99,7 @@ const [tempData, updateTempData] = useState(p);
     toastDispatch({type: "ADD_TOAST", toast: {
       id: p.id, 
       content: <div className="flex-center">
-        <span style={{margin: "0 3px 4px"}} >Deleted {p.name} </span >
+        <span style={{margin: "0 3px 4px"}} >Deleted {p.title} </span >
         <button onClick={(e)=>{e.preventDefault(); undoPinDelete();}} style={{textDecoration: "underline"}}>Undo</button></div>,
      
     }})
