@@ -15,11 +15,7 @@ const MapPanel = () => {
     activeDispatch({type: "SET_ACTIVE_PIN",id:null})
     activeDispatch({type: "DRAWER_STATE", state: "minimized"});
   }
-  useEffect(()=> {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    // dark mode
-    }
-  },[])
+
   
   return <div className="mobile-app" style={{position:"absolute", width:"100vw",height:"100vh"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <Map

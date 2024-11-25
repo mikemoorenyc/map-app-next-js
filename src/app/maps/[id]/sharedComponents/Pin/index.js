@@ -42,7 +42,7 @@ const Pin = (props) => {
     data-id={pin.id}
     >
       <span>{icon}</span>
-      {pin.favorited && <Star className={styles.favoriteStar} />}
+      {pin.favorited && <Star className={styles.favoriteStar} style={{animation: pin?.visited? "none":undefined}}/>}
 
 
   </div>
