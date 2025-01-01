@@ -1,4 +1,4 @@
-import { useContext,useState } from "react"
+import { useContext,useState,useEffect } from "react"
 import DataContext from "@/app/contexts/DataContext"
 import ActiveContext from "@/app/contexts/ActiveContext"
 import lightOrDark from "@/app/lib/lightOrDark"
@@ -8,6 +8,7 @@ import styles from "./LayerEdit.module.css"
 import ActionBar from "../../sharedComponents/ActionBar"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 
+
 const LayerEdit = () => {
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {layerData, layerDispatch} = useContext(DataContext)
@@ -16,20 +17,8 @@ const LayerEdit = () => {
   if(!layer)return ; 
   const [tempLayerData, updateTempLayerData] = useState({title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
   const [deleteConfirmation, updateDeleteConfirmation] = useState(false)
-  const inputer = (e) => {
-        e.preventDefault(e);
-        console.log("dafa"); 
-        updateTempLayerData(prev => {
-            const payload = {};
-            const attr = e.target.getAttribute("name")
-            payload[attr] = e.target.value;
-            if(attr == "color") {
-                payload.lightOrDark = lightOrDark(e.target.value);
-            } 
-            return {...prev, ...payload}
-        })
-  }
   const saveData = (e) => {
+    console.log(tempLayerData)
         layerDispatch({
             type: "UPDATED_LAYER",
             id: layer.id,
@@ -61,6 +50,35 @@ const LayerEdit = () => {
         id: null
     })
   }
+  const keyPressSave = (e) => {
+    console.log(tempLayerData.title);
+    const metas = ["altKey","shiftKey","ctrlKey","metaKey"];
+    if(e.key === "Enter" && metas.filter(k => e[k] == true).length === 0){
+      saveData()
+    } 
+
+  }
+  /*
+  useEffect(()=> {
+    document.body.addEventListener("keydown", keyPressSave)
+    return () => {
+      document.body.removeEventListener("keydown",keyPressSave)
+    }
+  },[])*/
+  const inputer = (e) => {
+        e.preventDefault(e);
+        console.log(tempLayerData.title); 
+        updateTempLayerData(prev => {
+            const payload = {};
+            const attr = e.target.getAttribute("name")
+            payload[attr] = e.target.value;
+            if(attr == "color") {
+                payload.lightOrDark = lightOrDark(e.target.value);
+            } 
+            return {...prev, ...payload}
+        })
+  }
+  
   //(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}
   //deleteLayer
   return <Modal header={"Edit Layer"} closeEvent={cancelEdit}>

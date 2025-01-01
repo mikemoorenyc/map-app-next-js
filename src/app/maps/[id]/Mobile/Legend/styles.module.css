@@ -75,3 +75,39 @@ flex-direction:column;
   padding-bottom: 36px;
     overflow: auto; 
 }
+
+.editingSection {
+  position:fixed;
+  inset: 0;
+  background: var(--screen-bg);
+  display: flex;
+  flex-direction: column;
+}
+.editingBody {
+  flex:1;
+  overflow:auto;
+  padding: var(--gutter)
+}
+.layerColorContainer {
+  position: relative;
+  display: flex;
+ 
+  border-radius: var(--border-radius);
+
+  align-items: center;
+}
+.layerColorPickerIcon {
+  padding: 6px;
+  border-radius: var(--border-radius);
+  margin-right: 8px;
+  border:1px solid
+}
+
+.layerColorInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  display:block;
+  width: 100%;
+  height: 100%;
+}

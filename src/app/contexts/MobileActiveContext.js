@@ -4,7 +4,7 @@ import { useReducer, createContext} from "react";
 const MobileActiveContext = createContext()
 const MobileActiveContextProvider = ({children,mapData}) => {
   const initActives = {
-    activeLayers : mapData?.layerData ? mapData.layerData.map(e => e.id) : [],
+    disabledLayers : [],
     activePin : null,
     legendOpen : false,
     drawerState: "minimized",
@@ -22,8 +22,8 @@ const MobileActiveContextProvider = ({children,mapData}) => {
       case "SET_TEMP_DATA": {
         return {...actives, ...{tempData: action.data}}
       }
-      case "REMOVE_ACTIVE_LAYER" : {
-        return {...actives, ...{activeLayers : actives.activeLayers.filter(l => l != action.id)}}
+      case "REMOVE_DISABLED_LAYER" : {
+        return {...actives, ...{disabledLayers : actives.disabledLayers.filter(l => l != action.id)}}
       }
       case "UPDATE_EXPANDED_LAYERS" : {
         let newLayers = [...actives.expandedLayers]
@@ -35,11 +35,11 @@ const MobileActiveContextProvider = ({children,mapData}) => {
         }
         return {...actives, ...{expandedLayers: newLayers}}
       }
-      case "ADD_ACTIVE_LAYER" : {
+      case "ADD_DISABLED_LAYER" : {
         
         
       
-        return {...actives, ...{activeLayers: [...actives.activeLayers, ...[action.id]]}}
+        return {...actives, ...{disabledLayers: [...actives.disabledLayers, ...[action.id]]}}
       }
       case "LEGEND_OPEN" : {
         console.log("legend open")

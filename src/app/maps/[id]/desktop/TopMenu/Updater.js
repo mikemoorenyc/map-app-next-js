@@ -1,11 +1,11 @@
 import { useState,useContext,useEffect,useRef } from "react";
 import DataContext from "@/app/contexts/DataContext";
-import { updateMap } from "@/app/actions/maps";
+import { updateMap,getMap } from "@/app/actions/maps";
 import { FloppyDiskArrowIn } from "iconoir-react";
 import styles from "./styles.module.css"
 
 const Updater = ({id})=> {
-  const {layerData,pageTitle,mapId} = useContext(DataContext);
+  const {layerData,pageTitle,mapId,layerDispatch} = useContext(DataContext);
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const firstRun = useRef(true);
@@ -15,6 +15,19 @@ const Updater = ({id})=> {
     updateIsSaving(false);
     updateLastSaved(new Date())
   }
+  useEffect(()=> {
+    const getFirstData = async () => {
+      const freshData = await getMap(mapId);
+      console.log(freshData);
+      if(freshData) {
+        layerDispatch({
+          type: "REFRESH_LAYERS",
+          newLayers: freshData.layerData
+        })
+      }
+    }
+    getFirstData();
+  },[])
 
   useEffect(()=> {
     if(!mapId) return; 

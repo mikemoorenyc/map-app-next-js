@@ -6,7 +6,7 @@
   --padding: 16px;
 }
 .editPanelHeader {
-  padding: var(--padding);
+  padding: var(--gutter);
   border-bottom: 1px solid var(--screen-text);
 }
 .editPanelBody {

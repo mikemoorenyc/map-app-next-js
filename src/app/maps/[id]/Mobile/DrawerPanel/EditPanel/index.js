@@ -10,6 +10,8 @@ import ChangeIcon from "./ChangeIcon"
 import { findLayer } from "../../../desktop/MapPanel/lib/finders"
 import Switch from "./Switch"
 import { createPortal } from "react-dom"
+import DeleteModal from "../../_components/DeleteModal"
+import EditingModalHeader from "../../_components/EditingModalHeader"
 
 export default function EditPanel() {
   const {layerData, layerDispatch} = useContext(DataContext);
@@ -71,13 +73,13 @@ export default function EditPanel() {
   const layer = findLayer(layerData,pinState.layerId)
   return (
 <div className={styles.editPanelContainer}>
-  <div className={`${styles.editPanelHeader} flex-center`}>
-    <div className={`flex-1`}>
-      <Button icon={<BinMinusIn/>} modifiers={['ghost','caution']} onClick={e=>{e.preventDefault(); updateDeletePending(true)}}>Delete</Button>
-    </div>
-    <Button icon={<Xmark/>} modifiers={['secondary']} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"open"})}}>Cancel</Button>
-    <Button icon={<FloppyDisk />} style={{marginLeft: 16}} modifiers={[]} onClick={saveData}>Save</Button>
-  </div>
+<EditingModalHeader 
+saveFunction={saveData}
+cancelFunction={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"open"})}}
+deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
+
+/>
+
   <div className={styles.editPanelBody}>
   <TextField name={"title"} label={"Pin name"}>
     <input onChange={(e)=>{e.preventDefault(); valueChanger(e.target.value,"title")}} value={pinState.title} className={styles.textFieldInput} type="text" name={"title"} id={"title"}/>
@@ -103,10 +105,8 @@ export default function EditPanel() {
 
   </div>
   {deletePending && createPortal(
-    <div className={`flex-center-center`} style={{position:"fixed",inset:"0px",background:"var(--screen-bg)",padding:16}}> 
-    <div style={{paddingBottom: 36}}>
-    <h2 className={`${styles.deleteQuestion}`}>Are you sure you want to delete this pin?</h2>
-    <div><Button className={styles.deleteButton} modifiers={["big","caution"]} onClick={(e)=> {
+    <DeleteModal questionText={'Are you sure you want to delete this pin?'} 
+    confirmFunction={(e)=> {
       e.preventDefault(); 
       layerDispatch({
         type: "DELETED_PIN",
@@ -115,12 +115,9 @@ export default function EditPanel() {
       })
       activeDispatch({type: "SET_ACTIVE_PIN",id:null})
       activeDispatch({type: "DRAWER_STATE", state: "minimized"});
-    }}>Yes</Button></div>
-    <div  style={{marginTop:12}}><Button className={styles.deleteButton} onClick={(e)=>{e.preventDefault(); updateDeletePending(false)}} modifiers={["big","secondary"]}>No</Button></div>
+    }}
+    cancelFunction={(e)=>{e.preventDefault(); updateDeletePending(false)}}/>
     
-    </div>
-    </div>
-
   ,document.getElementById("portal-container"))}
 </div>
 

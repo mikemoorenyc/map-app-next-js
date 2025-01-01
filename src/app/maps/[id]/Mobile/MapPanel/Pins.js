@@ -6,7 +6,7 @@ import Marker from "./Marker";
 
 const Pins = () => {
   const map = useMap(); 
-  const {activeLayers, activePin} = useContext(MobileActiveContext).activeData 
+  const {disabledLayers, activePin} = useContext(MobileActiveContext).activeData 
   const {layerData} = useContext(DataContext);
   const pinsFlat = layerData.map(l => l.pins).flat();
   useEffect(()=> {
@@ -20,7 +20,7 @@ const Pins = () => {
 
   },[map])
   return <>
-  {pinsFlat.filter(p => activeLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
 
 
   </>

@@ -1,6 +1,7 @@
-import React, { useContext,  } from "react"
+import React, { useContext, useState } from "react"
+
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-import { ArrowDownCircle,  ArrowUpCircle, CheckCircle, CheckCircleSolid } from "iconoir-react"
+import { ArrowDownCircle,  ArrowUpCircle, CheckCircle, CheckCircleSolid, MoreVert, } from "iconoir-react"
 import Pin from "../../sharedComponents/Pin"
 import { useMap } from "@vis.gl/react-google-maps"
 import mapCenterer from "../lib/mapCenterer"
@@ -8,25 +9,26 @@ import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 
 import styles from "./styles.module.css";
+import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 const LegendSection = ({layer}) => {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext)
+  const [isEditing,updateIsEditing] = useState(false)
   const mapData = layerData
   const map = useMap(); 
   if(!activeData) return ;
   
-  const {activeLayers, activePin,expandedLayers} = activeData
+  const {disabledLayers, activePin,expandedLayers} = activeData
   
-  if(!activeLayers) {
-    return ; 
-  }
-  const isActive = activeLayers.includes(layer.id);
+
+  const isActive = !disabledLayers.includes(layer.id);
   
   const headerClick = () => {
+    console.log("clicked");
     if(isActive) {
-      activeDispatch({type: "REMOVE_ACTIVE_LAYER",id: layer.id})
+      activeDispatch({type: "ADD_DISABLED_LAYER",id: layer.id})
     } else {
-      activeDispatch({type: "ADD_ACTIVE_LAYER",id:layer.id})
+      activeDispatch({type: "REMOVE_DISABLED_LAYER",id:layer.id})
     }
   }
 
@@ -57,11 +59,12 @@ const LegendSection = ({layer}) => {
   */
   
   return <div className={styles.legendSection}>
-    <div className={`${styles.legendSectionheader} flex-center`} onClick={headerClick}>
-      <button className={styles.legendSectionheaderCheckBox}>
+    <div className={`${styles.legendSectionheader} flex-center`} >
+      <button className={styles.legendSectionheaderCheckBox} onClick={headerClick}>
         {isActive? <CheckCircleSolid width={16} height={16} /> : <CheckCircle width={16} height={16}/>}
       </button>
       <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1`}>{layer.title}</div>
+      <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><MoreVert width={16} height={16} /></button>
     </div>
     <div className={`${styles.pins}`}>
         {pins.map(pin=> {
@@ -90,7 +93,9 @@ const LegendSection = ({layer}) => {
         </div>
       )}
       </div>
+      {isEditing && <LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} />}
   </div>
+
 }
 
 export default LegendSection;

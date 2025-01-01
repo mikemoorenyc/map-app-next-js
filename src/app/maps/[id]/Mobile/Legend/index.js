@@ -2,7 +2,7 @@ import  { useContext } from "react"
 
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import LegendSection from "./LegendSection"
-import {  Xmark } from "iconoir-react"
+import {  PlusCircleSolid, Xmark } from "iconoir-react"
 import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 import styles from "./styles.module.css";
@@ -10,7 +10,7 @@ import styles from "./styles.module.css";
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   
-  const {layerData,pageTitle} = useContext(DataContext);
+  const {layerData,pageTitle,layerDispatch} = useContext(DataContext);
   const mapData = layerData
   console.log(activeData.legendOpen);
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
@@ -26,7 +26,15 @@ const Legend = () => {
 
       return <LegendSection key={l.id} layer={l} />;
     })}
+    <div className={styles.legendSection}>
+    <Button icon={<PlusCircleSolid />} onClick={(e)=>{
+      e.preventDefault();
+      layerDispatch({type:"ADDED_LAYER"})
+      
+      }} >Add a layer</Button>
     </div>
+    </div>
+    
   
   </div>
 }
