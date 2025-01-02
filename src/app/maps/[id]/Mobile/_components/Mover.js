@@ -20,7 +20,7 @@ export default function Mover({arraySet,id,arrayId,type})  {
       currentIndex: idIndex
     })
   } 
-  return <></>
+
   return <div className="display-flex">
   <Button onClick={(e)=> {
     e.preventDefault(); 

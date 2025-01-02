@@ -125,18 +125,25 @@ export default (layers, action) => {
         
         const {itemType,arrayId,itemId,goingUp,currentIndex} = action; 
         const arrSplicer = (arr) => {
-          var itemToMove = arr.splice(currentIndex,1)[0]
-          return arr.splice(goingUp? currentIndex-1 : currentIndex+1 ,0,itemToMove)
+          let spliced = [...arr];
+          var itemToMove = spliced.splice(currentIndex,1)[0]
+          spliced.splice(goingUp? currentIndex-1 : currentIndex+1 ,0,itemToMove)
+          return spliced; 
         }
-        const newLayers = [...layers]; 
+      
         
-        return newLayers.map(l => {
+        const newLayers =  layers.map(l => {
           if(itemType == "pin" && l.id === arrayId) {
-            const mutedPins = arrSplicer(newLayers.find(n => n.id === arrayId).pins)
+            const mutedPins = arrSplicer(layers.find(n => n.id === arrayId).pins)
+     
             return {...l, ...{pins:mutedPins}};
           }
           return l 
         })
+        if(itemType == "layer") {
+          return arrSplicer(newLayers);
+        }
+        return newLayers; 
         
       }
       case "FULL_REFRESH" : {

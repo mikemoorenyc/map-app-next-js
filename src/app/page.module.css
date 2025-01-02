@@ -74,7 +74,7 @@ border-top:1px solid;
   .mapList.active {
     display:grid; 
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 16px;        
   }
   .mapItem.active {
     margin-bottom: 0;

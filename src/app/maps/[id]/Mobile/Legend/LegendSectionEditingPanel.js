@@ -9,6 +9,7 @@ import lightOrDark from "@/app/lib/lightOrDark"
 import DataContext from "@/app/contexts/DataContext"
 import DeleteModal from "../_components/DeleteModal"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+import Mover from "../_components/Mover"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   const [tempData,updateTempData] = useState(layerData);
@@ -104,6 +105,9 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
               }}/>
             
             </div>
+          </TextField>
+          <TextField>
+            <Mover type="layer" arraySet={dataC.layerData} id={layerData.id} arrayId={layerData.id}/>
           </TextField>
         </div> 
     </div>
