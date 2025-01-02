@@ -138,7 +138,7 @@ const SearchBar =  ({clickEvent}) => {
     
 
     return <div style={{position:"absolute", left:24, top: 24}}  >
-         <TextInput style={{width:325}}type={"text"} ref={inputEl} />
+         <TextInput style={{width:400}}type={"text"} ref={inputEl} />
         
       <TempMarker ref={markerRef}  visible={false}position={placeData?.geometry?.location.toJSON() }></TempMarker> 
       <POICheck clickEvent={clickEvent} updatePin={updatePin}/>

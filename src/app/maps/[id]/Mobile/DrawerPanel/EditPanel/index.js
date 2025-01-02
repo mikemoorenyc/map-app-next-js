@@ -12,6 +12,7 @@ import Switch from "./Switch"
 import { createPortal } from "react-dom"
 import DeleteModal from "../../_components/DeleteModal"
 import EditingModalHeader from "../../_components/EditingModalHeader"
+import Mover from "../../_components/Mover"
 
 export default function EditPanel() {
   const {layerData, layerDispatch} = useContext(DataContext);
@@ -24,7 +25,7 @@ export default function EditPanel() {
   const [pinState,updatePinState] = useState(pinData);
   const [deletePending, updateDeletePending] = useState(false)
  
-  
+  const pinLayer = layerData.find(l => l.id == pinData.layerId);
   const saveData = (e) => {
     e.preventDefault();
     let newLayerData = [...layerData]; 
@@ -98,6 +99,9 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
   </TextField>
   <TextField>
     <Switch label={'Visited'} valueChanger={valueChanger} on={pinState?.visited} valueKey={"visited"}/>
+  </TextField>
+  <TextField>
+    <Mover id={pinData.id} arraySet={pinLayer.pins} type="pin" arrayId={pinLayer.id}/>
   </TextField>
  
   

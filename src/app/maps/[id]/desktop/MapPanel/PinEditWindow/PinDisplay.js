@@ -59,7 +59,7 @@ const [tempData, updateTempData] = useState(p);
       type: "UPDATED_PIN",
       id: p.id,
       data : {
-        name : tempData.name,
+        title : tempData.title,
         description: tempData.description
       }
     })

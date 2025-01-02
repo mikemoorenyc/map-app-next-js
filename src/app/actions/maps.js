@@ -86,6 +86,28 @@ const getMap = async function(id) {
       console.log("Error", err);
     }
 }
+const archiveMap = async (id,isArchived) => {
+  const command = {
+    TableName: "MapApp",
+    Key: {
+      id: id
+    },
+    UpdateExpression:`set isArchived = :isArchived`,
+    ExpressionAttributeValues: {
+      ":isArchived":isArchived
+    },
+    ReturnValues: "ALL_NEW"
+  }
+  try {
+    const setArchived = await ddbDocClient.send(new UpdateCommand(command));
+    console.log(setArchived); 
+    return await getMap(id); 
+  } catch(err) {
+    console.log("error",err); 
+    return false; 
+    
+  }
+}
 const updateMap = async function(id,pageTitle,layerData) {
   const command = {
     TableName:"MapApp",
@@ -119,4 +141,4 @@ const deleteMap = async function(id) {
   return getAllMaps(); 
 
 }
-export{getMap,getAllMaps,addMap,updateMap, deleteMap}  
+export{getMap,getAllMaps,addMap,updateMap, deleteMap,archiveMap}  

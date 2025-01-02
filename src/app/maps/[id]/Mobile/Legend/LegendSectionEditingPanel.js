@@ -10,10 +10,13 @@ import DataContext from "@/app/contexts/DataContext"
 import DeleteModal from "../_components/DeleteModal"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
+
   const [tempData,updateTempData] = useState(layerData);
   const {activeDispatch} = useContext(MobileActiveContext);
   const [deletePending,updateDeletePending] = useState(false);
-  const {layerDispatch} = useContext(DataContext);
+  const dataC = useContext(DataContext)
+  const {layerDispatch} = dataC;
+  
 
   const valueChanger = (value,key) => {
     const updater = {};
@@ -32,7 +35,14 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
   }
   const deleteLayer = (e) => {
     console.log("called");
-    e.preventDefault(); 
+    
+    e.preventDefault();
+
+    if(dataC.layerData.length < 2) {
+      alert("Must have at least one layer");
+      updateDeletePending(false);
+      return false; 
+    } 
     activeDispatch({
       type: "SET_ACTIVE_PIN",
       id:null

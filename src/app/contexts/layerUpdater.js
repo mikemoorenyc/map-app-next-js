@@ -121,6 +121,24 @@ export default (layers, action) => {
         const currentIndex = layers.findIndex()
         return ; 
       }
+      case "MOVE_ITEM" : {
+        
+        const {itemType,arrayId,itemId,goingUp,currentIndex} = action; 
+        const arrSplicer = (arr) => {
+          var itemToMove = arr.splice(currentIndex,1)[0]
+          return arr.splice(goingUp? currentIndex-1 : currentIndex+1 ,0,itemToMove)
+        }
+        const newLayers = [...layers]; 
+        
+        return newLayers.map(l => {
+          if(itemType == "pin" && l.id === arrayId) {
+            const mutedPins = arrSplicer(newLayers.find(n => n.id === arrayId).pins)
+            return {...l, ...{pins:mutedPins}};
+          }
+          return l 
+        })
+        
+      }
       case "FULL_REFRESH" : {
         return action.newData;
       }
