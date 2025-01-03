@@ -50,7 +50,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
   }}
           onEmojiSelect={emojiClicked}
           autoFocus={true}
-          maxFrequentRows={0}
+          maxFrequentRows={1}
           previewPosition={"none"} 
           onClickOutside={()=>{;updateIconSelectorOpen(false)}}
           />

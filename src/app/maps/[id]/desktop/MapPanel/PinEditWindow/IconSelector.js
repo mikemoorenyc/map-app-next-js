@@ -34,7 +34,7 @@ export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
   }}
           onEmojiSelect={emojiClicked}
           autoFocus={true}
-          maxFrequentRows={0}
+          maxFrequentRows={1}
           previewPosition={"none"} /></div>
       ,document.getElementById("portal-container")
     )}
