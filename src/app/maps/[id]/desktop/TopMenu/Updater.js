@@ -8,7 +8,7 @@ const Updater = ({id})=> {
   const {layerData,pageTitle,mapId,layerDispatch} = useContext(DataContext);
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
-  const firstRun = useRef(true);
+  const [firstRun,updateFirstRun] = useState(true);
   const sendData = async () => {
     let updated = await updateMap(mapId,pageTitle,layerData);
     console.log(updated);
@@ -26,13 +26,13 @@ const Updater = ({id})=> {
         })
       }
     }
-    getFirstData();
+   // getFirstData();
   },[])
 
   useEffect(()=> {
     if(!mapId) return; 
-    if(firstRun.current) {
-      firstRun.current = false; 
+    if(firstRun) {
+      updateFirstRun(false)
       return ; 
     }
    
