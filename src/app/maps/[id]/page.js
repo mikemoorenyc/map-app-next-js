@@ -1,4 +1,4 @@
-'use server'
+
 import { getMap } from "@/app/actions/maps";
 import Composer from "./desktop/Composer";
 import { headers } from "next/headers";
