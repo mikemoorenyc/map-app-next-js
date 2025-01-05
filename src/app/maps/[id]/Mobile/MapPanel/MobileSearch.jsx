@@ -12,9 +12,11 @@ import SearchLogic from "@/app/components/ModernSearch/SearchLogic";
 import resultFormatter from "@/app/components/ModernSearch/lib/resultFormatter";
 import DataContext from "@/app/contexts/DataContext";
 import SearchDropDown from "./SearchDropDown";
+import { usePreventScroll } from '@react-aria/overlays';
 
 
 export default () => {
+  const prevent = usePreventScroll()
   //query,updatePredictionResults,predictionChoiceCallBack,predictionChoice
   const [queryVal,updateQueryVal] = useState("")
   const [predictionResults,updatePredictionResults] = useState([]);
@@ -132,7 +134,7 @@ export default () => {
     right: 0;
     bottom: 0;
     top: 0;
-    touch-action:none
+    
     }
     `}}
     
