@@ -1,0 +1,25 @@
+.DropDown {
+  background: var(--screen-bg);
+  
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  border: 1px solid;
+  border-width: 0 1px 1px 1px; 
+  width: 400px;
+}
+.OptionContainer {
+  padding: calc(var(--gutter) - 2px) calc(var(--gutter) - 3px);
+}
+.SearchOption {
+  padding: 2px 3px; 
+  font-size: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+}
+.SearchOption.active {
+  border-color: var(--screen-text)
+}
+.SearchOption:not(:last-child) {
+  margin-bottom: calc(var(--gutter) / 3); 
+}

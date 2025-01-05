@@ -4,6 +4,10 @@ export default (infoState, action) => {
       case "UPDATE_TEMP_REF" :{
         return {...infoState, ...{tempRef: action.tempRef}}
       }
+      case "UPDATE_TEMP_MARKER_POSITION": {
+        console.log(action)
+        return {...infoState,...{tempMarkerPosition:action.position}}
+      }
       case "UPDATE_ANCHOR": {
         return {...infoState, ...{anchor:action.anchor}}
       }
@@ -16,7 +20,7 @@ export default (infoState, action) => {
         if (action.callback) {
           action.callback(); 
         }
-        return {...{infoState},...{infoWindowShown: true,
+        return {...infoState,...{infoWindowShown: true,
         infoWindowPosition: action.position || null ,
           infoWindowAnchor: action.anchor || infoState.tempRef,
           infoWindowContent : action.content}}
@@ -26,9 +30,10 @@ export default (infoState, action) => {
         if(action.callback) {
           action.callback()
         }
-        return {...{infoState},...{
+        return {...infoState,...{
           infoWindowShown:false, 
           infoWindowAnchor: null,
+          tempMarkerPosition: null,
           infoWindowContent: {
             body:null,
             content:null

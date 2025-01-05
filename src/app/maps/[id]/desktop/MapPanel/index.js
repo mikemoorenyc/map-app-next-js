@@ -6,6 +6,8 @@ import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
 import PinEditWindow from "./PinEditWindow";
 import SearchBar from "./SearchBar";
 import PinContainer from "./PinContainer";
+import ModernSearch from "@/app/components/ModernSearch"
+import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
 
 const MapPanel = () => {
   const [clickEvent,updateClickEvent] = useState(null);
@@ -41,11 +43,12 @@ const MapPanel = () => {
     disableDefaultUI={true}
   >
   <PinContainer/>
-  <SearchBar clickEvent={clickEvent} />
+<ModernSearch clickEvent={clickEvent} />
   <PinEditWindow clickEvent={clickEvent} />
+  <ModernTempMarker />
   </Map>
   </InfoWindowContextProvider>
-
+  
   </APIProvider>
   
   
@@ -53,3 +56,5 @@ const MapPanel = () => {
 }
 
 export default MapPanel
+
+//  <SearchBar clickEvent={clickEvent} />

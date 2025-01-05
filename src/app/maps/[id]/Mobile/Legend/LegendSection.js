@@ -39,6 +39,7 @@ const LegendSection = ({layer}) => {
     activeDispatch({type:"SET_ACTIVE_PIN",id:pin.id})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
     activeDispatch({type: "LEGEND_OPEN", state: false})
+    activeDispatch({type:"BACK_STATE",state:"back_to_legend"})
     mapCenterer(map,pin.location)
   }
   const cutoff = 4

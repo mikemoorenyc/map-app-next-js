@@ -9,7 +9,8 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     legendOpen : false,
     drawerState: "minimized",
     tempData: null,
-    expandedLayers: []
+    expandedLayers: [],
+    backState: "base"
    
   }
   const activeUpdater = (actives,action) => {
@@ -47,6 +48,9 @@ const MobileActiveContextProvider = ({children,mapData}) => {
       }
       case "DRAWER_STATE" : {
         return {...actives, ...{drawerState: action.state}}
+      }
+      case "BACK_STATE" : {
+        return {...actives, ...{backState: action.state}}
       }
     }
     throw Error('Unknown action: ' + action.type);

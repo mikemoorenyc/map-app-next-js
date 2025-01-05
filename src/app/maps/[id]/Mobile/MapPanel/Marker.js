@@ -10,12 +10,18 @@ import DataContext from "@/app/contexts/DataContext";
 
 const Marker = ({pin, active}) => {
   const {layerData} = useContext(DataContext)
-  const {activeDispatch} = useContext(MobileActiveContext);
+  const {activeDispatch,activeData} = useContext(MobileActiveContext);
+  const {activePin,backState} = activeData
   const map = useMap(); 
   const layer = findLayer(layerData,pin.layerId);
   const markerClicked = () => {
+    if(activePin == pin.id) {
+      
+      return ; 
+    }
     activeDispatch({type:"SET_ACTIVE_PIN",id:pin.id})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
+    activeDispatch({type:"BACK_STATE",state:backState == "back_to_legend"? "back_to_legend":"back_to_base"})
     mapCenterer(map, pin.location);
   }
   return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || pin.favorited ? 999999 : null}>

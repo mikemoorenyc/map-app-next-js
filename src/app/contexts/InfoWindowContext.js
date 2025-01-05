@@ -17,7 +17,8 @@ const InfoWindowContextProvider = ({children}) => {
       header: null,
       body: null
     },
-    tempRef: null
+    tempRef: null,
+    tempMarkerPosition: null
   
   }
   

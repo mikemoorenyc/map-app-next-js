@@ -1,4 +1,4 @@
-import { useContext, useState , useRef} from "react";
+import { useContext, useState , useRef, useEffect} from "react";
 import DataContext from "@/app/contexts/DataContext";
 import ToastContext from "@/app/contexts/ToastContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
@@ -29,6 +29,10 @@ export default ({pinsFlat, pId,lId}) => {
 const p = layerData.map(l => l.pins).flat().find(p=>p.id == activeData.editingPin);
 if(!p) return ; 
 const [tempData, updateTempData] = useState(p);
+useEffect(()=> {
+  console.log("update");
+  updateTempData(p);
+},[p])
 
   const currentLayer =layerData.filter(layer => {
     return layer.id == p.layerId;

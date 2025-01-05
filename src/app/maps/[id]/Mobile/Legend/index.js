@@ -19,7 +19,11 @@ const Legend = () => {
     <div className={`${styles.legendHeader} flex-center`}>
       <div className={`${styles.legendTitle} overflow-ellipsis flex-1`}>{pageTitle}</div>
       
-      <Button className={styles.legendHeaderButton} modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:false})}} icon={<Xmark />}> <span>Close</span></Button>
+      <Button className={styles.legendHeaderButton} modifiers={["secondary"]} onClick={(e)=>{
+        e.preventDefault(); 
+        activeDispatch({type:"LEGEND_OPEN",state:false})
+        activeDispatch({type:"BACK_STATE",state:"base"})
+        }} icon={<Xmark />}> <span>Close</span></Button>
     </div>
     <div className={`${styles.legendSections} flex-1`}>
     {mapData.map(l => {

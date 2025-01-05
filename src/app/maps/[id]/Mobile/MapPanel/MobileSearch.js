@@ -3,8 +3,8 @@ import { AdvancedMarker, useMap, useMapsLibrary } from "@vis.gl/react-google-map
 import mapCenterer from "../lib/mapCenterer";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import TextInput from "@/app/components/TextInput";
-import Button from "@/app/components/Button";
-import { NavArrowLeft } from "iconoir-react";
+import BackButton from "./BackButton";
+
 
 
 export default () => {
@@ -41,6 +41,7 @@ export default () => {
             activeDispatch({type:"SET_ACTIVE_PIN",id:"temp"})
             activeDispatch({type:"DRAWER_STATE",state:"open"})
             activeDispatch({type: "SET_TEMP_DATA",data: place})
+            activeDispatch({type:"BACK_STATE",state:"base"})
             inputEl.current.value = ""
             
       })
@@ -56,8 +57,8 @@ export default () => {
               position:"absolute", 
               left: 24, top:24, 
               width: "calc(100% - 48px)"}}>
-              <Button href={"/"} icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12}}/>
-         <TextInput type={"text"} ref={inputEl}  className={`flex-1`}/>
+            <BackButton />  
+         <TextInput onFocus={(e)=>{console.log(e)}} type={"text"} ref={inputEl}  className={`flex-1`}/>
          <div>
          
           {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker position={markerPosition} />}

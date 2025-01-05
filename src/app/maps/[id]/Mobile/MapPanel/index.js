@@ -14,6 +14,7 @@ const MapPanel = () => {
   const closeActive = () => {
     activeDispatch({type: "SET_ACTIVE_PIN",id:null})
     activeDispatch({type: "DRAWER_STATE", state: "minimized"});
+    activeDispatch({type: "BACK_STATE",state:"base"})
   }
 
   

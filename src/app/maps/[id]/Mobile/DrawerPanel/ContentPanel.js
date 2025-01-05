@@ -50,7 +50,7 @@ const ContentPanel = ({pinId, $transform})=> {
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>
       <div style={{padding: "0 16px"}}>
-        <LocationDetails placeData={pin} />
+        <LocationDetails placeData={pin} isMobile={true}/>
       </div>
     </div>
   </div>
