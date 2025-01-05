@@ -42,7 +42,7 @@ export default () => {
       e.preventDefault();
       
       const newValue = e.target.value; 
-
+     
       
       updateIncrement(prev => prev+1);
       if(newValue.length === 0) {
@@ -109,7 +109,7 @@ export default () => {
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
       transform: activeData.drawerState == "maximized" ? "translateY(-300%)" : null,
-      position:"absolute", 
+      position:"relative", 
       left: 0, 
       top:focused?0:24,
       height:focused?"100vh":"auto",
@@ -129,6 +129,10 @@ export default () => {
               {(focused && inputVal) && <button onClick={e => {
                 e.preventDefault(); 
                 updateInputVal("");
+                updateQueryVal("")
+                updatePredictionResults([])
+                updateIncrement(0)
+                inputEl.current.value = ""
                 inputEl.current.focus();
               }}
               
