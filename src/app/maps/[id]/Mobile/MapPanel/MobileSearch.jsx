@@ -120,6 +120,9 @@ export default () => {
     .mobile-app, #drawer-panel {
     display: ${focused?"none":"block"}
     }
+    html,body {
+    ${focused? `height: ${viewPortHeight}px;`:""}
+    }
     `}}
     
     />
@@ -132,7 +135,7 @@ export default () => {
       position:"fixed", 
       left: 0, 
       top:focused?0:24,
-      height: viewPortHeight,
+      height: focused?viewPortHeight : "auto",
       paddingTop: focused?24:0,
       display:focused?"flex":"block",
       flexDirection: "column", 

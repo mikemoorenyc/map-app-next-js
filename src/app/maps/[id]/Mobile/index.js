@@ -28,6 +28,14 @@ return (
 .mobile-app .gm-title {
   color:black;
 }
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  height: 100%;
+  overflow-y:hidden;
+}
+
 
 
 
