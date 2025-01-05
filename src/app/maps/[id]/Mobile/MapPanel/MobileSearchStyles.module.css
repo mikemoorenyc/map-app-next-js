@@ -1,0 +1,57 @@
+.inputContainer {
+  flex:1;
+  background:var(--screen-bg);
+  border:1px solid;
+  font-size: var(--font-bigger);
+  border-radius: var(--border-radius);
+  display: flex;
+  margin-right:16px
+}
+.searchInput {
+  border: 0;
+  background: transparent;
+  color: var(--screen-text);
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 var(--gutter);
+  font-size: 13px;
+}
+.xButton {
+  width: 32px;
+  justify-content: center;
+  position: relative;
+}
+.xButton:before {
+  display: block;
+  content: "";
+  inset: 6px;
+  border: 2px solid;
+  border-radius:50%;
+  position: absolute;
+}
+.pinOuter {
+  flex: 1;
+  overflow-x:hidden;
+  overflow-y: scroll;
+  padding-top:8px
+}
+.searchItemIcon {
+  margin: 0 12px 0 16px; 
+  width: 32px
+
+}
+.searchItemTitle {
+  padding: 12px 8px 12px 0;
+  min-width: 1px;
+  flex: 1;
+  font-size: 14px;
+}
+.searchItem:not(:last-child) .searchItemTitle {
+  border-bottom: 1px solid
+}
+.searchHR {
+  border-width: 1px 0 0 0;
+  border-color: var(--screen-text);
+  border-style: dashed;
+}

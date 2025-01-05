@@ -6,7 +6,7 @@ import { useContext } from "react";
 export default function BackButton() {
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {backState} = activeData;
-  console.log(activeData);
+
   let fn;
   switch (backState) {
     case "base":
@@ -25,8 +25,8 @@ export default function BackButton() {
       }
   }
 
-  return <Button onClick={backState=="base"?undefined: (e)=> {
+  return <Button  onClick={backState=="base"?undefined: (e)=> {
     e.preventDefault(); 
     fn(); 
-  }} href={backState == "base"?"/":undefined} icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12}}/>
+  }} href={backState == "base"?"/":undefined} icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12,marginLeft:16}}/>
 }

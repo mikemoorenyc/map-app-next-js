@@ -4,9 +4,8 @@ import { useEffect, useState } from "react"
 import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
 
 import PinEditWindow from "./PinEditWindow";
-import SearchBar from "./SearchBar";
+import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
-import ModernSearch from "@/app/components/ModernSearch"
 import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
 
 const MapPanel = () => {
@@ -43,7 +42,7 @@ const MapPanel = () => {
     disableDefaultUI={true}
   >
   <PinContainer/>
-<ModernSearch clickEvent={clickEvent} />
+<DesktopSearch clickEvent={clickEvent} />
   <PinEditWindow clickEvent={clickEvent} />
   <ModernTempMarker />
   </Map>

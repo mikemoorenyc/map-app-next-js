@@ -8,27 +8,28 @@ import DataContext from "@/app/contexts/DataContext";
 import { MapPin } from "iconoir-react";
 
 
-export default function DropDown({activePins=[],query,predictions=[],style="desktop",itemActivated}) {
+export default function DropDown({activePins=[],query,predictions=[],style="desktop",itemActivated,pinsFlat=[]}) {
+
 
   const {layerData} = useContext(DataContext);
   const [currentIndex,updateCurrentIndex] = useState(-1); 
  
   const [currentHover, updateCurrentHover] = useState(null);
-  const predictionsFormatted = predictions.length? predictions.map(p=> {
+  /*const predictionsFormatted = predictions.length? predictions.map(p=> {
     return {
       title: p.description, 
       id: p.place_id,
       new:true
     }
-  }) : [];  
-  const itemsFlat = [...activePins,...predictionsFormatted]; 
+  }) : []; */ 
+  /*const itemsFlat = [...activePins,...predictionsFormatted]; 
   useEffect(()=> {
     updateCurrentIndex(-1);
-  },[predictions,activePins])
+  },[predictions,activePins])*/
 
   useEffect(()=> {
     const checkKey = (e) => {
-      console.log(e);
+
       switch (e.code) {
         case "ArrowUp":
    
@@ -41,7 +42,7 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
           break;
         case "ArrowDown" :
        
-          if(currentIndex === itemsFlat.length - 1) {
+          if(currentIndex === pinsFlat.length - 1) {
             return 
           }
           updateCurrentIndex(prev => {
@@ -49,7 +50,7 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
           })
           break; 
         case "Enter" : 
-          const item = itemsFlat[currentIndex]; 
+          const item = pinsFlat[currentIndex]; 
           itemActivated(item)
           break; 
       }
@@ -64,7 +65,8 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
   
   
   const SearchItem = ({p,icon}) => {
-    const cIndex = itemsFlat.findIndex(item => item.id === p.id); 
+  
+    const cIndex = pinsFlat.findIndex(item => item.id === p.id); 
     const active = cIndex == currentIndex;
     return (
       <div className={`${styles.SearchOption} flex-center ${active?styles.active:""}`}
@@ -80,7 +82,9 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
   }}
   >
     <span style={{marginRight:4}}>{icon}</span>
-    <span className={`${styles.SearchTitle} flex-1 overflow-ellipsis`}><StringHighlight query={query} string={p.title} /></span>
+    <span className={`${styles.SearchTitle} flex-1 overflow-ellipsis`}><span
+      dangerouslySetInnerHTML={{__html: p.titleBolded}}
+     /></span>
   </div>
     )
   }
@@ -94,9 +98,9 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
       })}
     
     </div>:""}
-    {(predictionsFormatted.length && activePins.length) ? <hr style={{margin:0}}/>:""}
-    {predictionsFormatted.length ? <div className={styles.OptionContainer}>
-      {predictionsFormatted.map(p => {
+    {(predictions.length && activePins.length) ? <hr style={{margin:0}}/>:""}
+    {predictions.length ? <div className={styles.OptionContainer}>
+      {predictions.map(p => {
         return <SearchItem key={p.id} p={p} icon={<MapPin width={18} height={18}/>}/>
       })}
     </div> : ""}

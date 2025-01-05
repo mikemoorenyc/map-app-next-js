@@ -12,7 +12,7 @@ const Legend = () => {
   
   const {layerData,pageTitle,layerDispatch} = useContext(DataContext);
   const mapData = layerData
-  console.log(activeData.legendOpen);
+ 
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
   
   return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>

@@ -11,10 +11,13 @@ import styles from "../"
 
 const MapPanel = () => {
   const {activeDispatch} = useContext(MobileActiveContext)
-  const closeActive = () => {
+  const closeActive = (e) => {
     activeDispatch({type: "SET_ACTIVE_PIN",id:null})
     activeDispatch({type: "DRAWER_STATE", state: "minimized"});
     activeDispatch({type: "BACK_STATE",state:"base"})
+    if(e.detail.placeId) {
+            e.stop(); 
+    }
   }
 
   
