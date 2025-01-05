@@ -105,7 +105,7 @@ export default () => {
       updateViewPortHeight(e.currentTarget.height);
     }
     window.visualViewport.addEventListener("resize",resizeHandler)
-
+    updateViewPortHeight(window.visualViewport.height)
     return () => {
       window.visualViewport.removeEventListener("resize",resizeHandler);
     }
@@ -117,6 +117,9 @@ export default () => {
     return <>
     <style 
     dangerouslySetInnerHTML={{__html:`
+    :root {
+    --view-port-size: ${viewPortHeight}px
+    }
     .mobile-app, #drawer-panel {
     display: ${focused?"none":"block"}
     }
@@ -141,7 +144,7 @@ export default () => {
       flexDirection: "column", 
       zIndex:99,
       width: "100%"}}>
-      <div className="flex-center">
+      <div className="flex-center" style={{height:34}}>
         {!focused ? <BackButton /> : <Button icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12,marginLeft:16}} onClick={(e)=>{e.preventDefault(); reset(); 
             }}/>  }
 
@@ -164,16 +167,16 @@ export default () => {
               </button>}
             </div>
       </div>
-      {pinsFlat.length?<SearchDropDown itemClicked={itemClicked} results={resultsFormatted} />:""}
+     {focused && <SearchDropDown itemClicked={itemClicked} results={resultsFormatted} />}
             
             
             
             
          
-         <div>
+         {<>
          
           {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker position={markerPosition} />}
-         </div>
+         </>}
       
     
     

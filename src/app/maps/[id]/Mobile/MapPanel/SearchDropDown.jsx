@@ -16,10 +16,20 @@ export default function({results,itemClicked}) {
   }
   
   
-  if(!pinsFlat) return <></>
+ 
 
   return (
-    <div className={styles.pinOuter}>
+    <div className={styles.pinOuter}
+      style={{
+        height: `calc(var(--view-port-size) - 34px - 24px)`
+      }}
+    >
+      <div 
+        style={{
+          minHeight: `calc(100% + 5px)`,
+          background:"blue"
+        }}
+      className="scroll-mover">
       {activePins.length ? (<div className={styles.pinContainer}>
         {activePins.map(p=> {
           const layer = layerData.find(l => l.id == p.layerId); 
@@ -36,7 +46,7 @@ export default function({results,itemClicked}) {
         })}
         </div>
       ):""}
-    
+      </div>
     </div>
   )
 
