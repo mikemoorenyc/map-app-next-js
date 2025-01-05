@@ -115,6 +115,14 @@ export default () => {
   const {pinsFlat} = resultsFormatted; 
  
     return <>
+    <style 
+    dangerouslySetInnerHTML={{__html:`
+    .mobile-app {
+    display: ${focused?"none":"block"}
+    }
+    `}}
+    
+    />
     {!activeData.legendOpen && createPortal(<>
      
     <div style={{
