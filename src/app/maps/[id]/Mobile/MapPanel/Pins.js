@@ -16,6 +16,7 @@ const Pins = () => {
        bounds.extend(p.location);
     })
     map.fitBounds(bounds);
+    map.setZoom(12);
 
 
   },[map])
