@@ -117,7 +117,7 @@ export default () => {
     return <>
     <style 
     dangerouslySetInnerHTML={{__html:`
-    .mobile-app {
+    .mobile-app, #drawer-panel {
     display: ${focused?"none":"block"}
     }
     `}}
