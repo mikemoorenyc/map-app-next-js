@@ -27,6 +27,7 @@ export default () => {
   const [increment,updateIncrement] = useState(0);
   const [focused,updateFocused] = useState(false);
   const [predictionChoice,updatePredictionChoice] = useState("")
+  const [viewPortHeight, updateViewPortHeight] = useState("100%")
   const {layerData} = useContext(DataContext)
   const reset = ()=> {
     updateInputVal("")
@@ -98,8 +99,19 @@ export default () => {
       return resultFormatter(queryVal,layerData,predictionResults)
   },[layerData,queryVal,predictionResults])
  
+  useEffect(()=> {
+    if(!window.visualViewport) return ; 
+    const resizeHandler = (e) => {
+      updateViewPortHeight(e.currentTarget.height);
+    }
+    window.visualViewport.addEventListener("resize",resizeHandler)
 
-  
+    return () => {
+      window.visualViewport.removeEventListener("resize",resizeHandler);
+    }
+
+  },[])
+  console.log(viewPortHeight);
   const {pinsFlat} = resultsFormatted; 
  
     return <>
@@ -112,7 +124,7 @@ export default () => {
       position:"fixed", 
       left: 0, 
       top:focused?0:24,
-      bottom: focused?0 : "auto",
+      height: viewPortHeight,
       paddingTop: focused?24:0,
       display:focused?"flex":"block",
       flexDirection: "column", 
