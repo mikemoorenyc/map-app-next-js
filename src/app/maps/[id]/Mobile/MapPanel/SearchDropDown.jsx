@@ -27,7 +27,7 @@ export default function({results,itemClicked}) {
       <div 
         style={{
           minHeight: `calc(100% + 5px)`,
-          background:"blue"
+      
         }}
       className="scroll-mover">
       {activePins.length ? (<div className={styles.pinContainer}>
