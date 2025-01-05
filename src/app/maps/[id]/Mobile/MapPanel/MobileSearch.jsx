@@ -124,7 +124,15 @@ export default () => {
     display: ${focused?"none":"block"}
     }
     html,body {
-    ${focused? `height: ${viewPortHeight}px;`:""}
+    /*${focused? `height: ${viewPortHeight}px;`:""}*/
+    }
+    body {
+    position:fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    touch-action:none
     }
     `}}
     
