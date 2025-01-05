@@ -80,7 +80,7 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
   }}
   >
     <span style={{marginRight:4}}>{icon}</span>
-    <span className={`${styles.SearchTitle} flex-1 overflow-ellipsis`}><StringHighlight query={query} string={p.title} />{cIndex}</span>
+    <span className={`${styles.SearchTitle} flex-1 overflow-ellipsis`}><StringHighlight query={query} string={p.title} /></span>
   </div>
     )
   }
