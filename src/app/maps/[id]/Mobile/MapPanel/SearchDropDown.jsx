@@ -5,8 +5,8 @@ import Pin from "../../sharedComponents/Pin";
 import { MapPin } from "iconoir-react";
 export default function({results,itemClicked}) {
   const {layerData} = useContext(DataContext);
-  const {pinsFlat, predictions, activePins} = results; 
-  console.log(results); 
+  const { predictions, activePins} = results; 
+
   const SearchItem = ({item,icon}) => {
 
     return <div onClick={()=>{itemClicked(item)}} className={`${styles.searchItem} flex-center`}>

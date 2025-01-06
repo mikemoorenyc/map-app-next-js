@@ -79,7 +79,7 @@ export default function DesktopSearch({clickEvent}) {
         updateQueryVal("")
       }
       
-      if(increment > 0 || Math.abs(newValue - inputVal) > 4) {
+      if(increment > 0 || Math.abs(newValue.length - inputVal.length) > 4) {
         updateIncrement(0);
         updateQueryVal(newValue);
       }

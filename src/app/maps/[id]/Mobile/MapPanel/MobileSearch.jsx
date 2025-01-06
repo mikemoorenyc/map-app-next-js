@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState,useCallback, useMemo } from "react";
-import { AdvancedMarker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, useMap} from "@vis.gl/react-google-maps";
 import mapCenterer from "../lib/mapCenterer";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import TextInput from "@/app/components/TextInput";
+
 import BackButton from "./BackButton";
 import Button from "@/app/components/Button";
 import { NavArrowLeft, Xmark } from "iconoir-react";
@@ -46,15 +46,15 @@ export default () => {
       
       const newValue = e.target.value; 
      
-      
+     
       updateIncrement(prev => prev+1);
       if(newValue.length === 0) {
         updatePredictionResults([]);
         updateIncrement(0)
         updateQueryVal("")
       }
-      
-      if(increment > 0 || Math.abs(newValue - inputVal) > 4) {
+
+      if(increment > 0 || Math.abs(newValue.length - inputVal.length) > 4) {
         updateIncrement(0);
         updateQueryVal(newValue);
       }
@@ -114,7 +114,7 @@ export default () => {
 
   },[])
   console.log(viewPortHeight);
-  const {pinsFlat} = resultsFormatted; 
+ 
 
     return <>
     <style 
