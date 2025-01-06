@@ -1,7 +1,7 @@
-import { BinMinusIn, FloppyDisk, Xmark } from "iconoir-react"
+
 import styles from "./EditPanel.module.css"
-import Button from "@/app/components/Button"
-import { useContext,useState} from "react"
+
+import { useContext,useState,useMemo,useCallback} from "react"
 import DataContext from "@/app/contexts/DataContext"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import TextField from "./TextField"
@@ -18,23 +18,23 @@ export default function EditPanel() {
   const {layerData, layerDispatch} = useContext(DataContext);
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {activePin} = activeData;
-  const pinData = layerData.map(l => l.pins).flat().find(p => p.id == activePin);
+  const pinData = useMemo(()=>layerData.map(l => l.pins).flat().find(p => p.id == activePin),[layerData,activePin]);
   
   
 
   const [pinState,updatePinState] = useState(pinData);
   const [deletePending, updateDeletePending] = useState(false)
  
-  const pinLayer = layerData.find(l => l.id == pinData.layerId);
-  const saveData = (e) => {
+  const pinLayer = useMemo(()=>layerData.find(l => l.id == pinData.layerId),[layerData,pinData]);
+  const saveData = useCallback((e) => {
     e.preventDefault();
     let newLayerData = [...layerData]; 
     if(pinState.layerId != pinData.layerId) {
       
-      const oldLayer = layerData.find(l => l.id == pinData.layerId);
+      
       const newLayer = layerData.find(l => l.id == pinState.layerId); 
       newLayerData = newLayerData.map(l => {
-        if(l.id == oldLayer.id) {
+        if(l.id == pinLayer.id) {
           const newPinSet = l.pins.filter(p => p.id != pinState.id);
           return {...l, ...{pins:newPinSet}}
         }
@@ -60,7 +60,7 @@ export default function EditPanel() {
     }
     layerDispatch({type: "FULL_REFRESH",newData: newLayerData})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
-  }
+  },[pinState,layerData,pinData,pinLayer])
   
 
   const valueChanger =(value,key) => {

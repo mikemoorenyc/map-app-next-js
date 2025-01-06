@@ -1,6 +1,6 @@
 import styles from "./LayerSelector.module.css"
-import {useContext,useEffect,useState} from "react"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+import {useContext} from "react"
+
 import DataContext from "@/app/contexts/DataContext"
 import { ArrowDownTag } from "iconoir-react"
 

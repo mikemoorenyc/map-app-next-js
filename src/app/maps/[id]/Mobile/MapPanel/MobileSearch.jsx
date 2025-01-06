@@ -115,7 +115,7 @@ export default () => {
   },[])
   console.log(viewPortHeight);
   const {pinsFlat} = resultsFormatted; 
- 
+
     return <>
     <style 
     dangerouslySetInnerHTML={{__html:`
@@ -144,7 +144,7 @@ export default () => {
     <div style={{
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
-      transform: activeData.drawerState == "maximized" ? "translateY(-300%)" : null,
+      transform: ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
       position:"fixed", 
       left: 0, 
       top:focused?0:24,

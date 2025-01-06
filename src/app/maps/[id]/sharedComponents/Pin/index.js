@@ -1,6 +1,6 @@
-import DataContext from "@/app/contexts/DataContext";
+
 import styles from "./styles.module.css"
-import { useContext } from "react";
+
 import { Star } from "iconoir-react";
 
 const Pin = (props) => {

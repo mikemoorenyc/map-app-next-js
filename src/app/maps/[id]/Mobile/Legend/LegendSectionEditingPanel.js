@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState,useCallback } from "react"
 import { createPortal } from "react-dom"
 import styles from "./styles.module.css"
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
@@ -34,7 +34,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
     })
     cancelFunction(); 
   }
-  const deleteLayer = (e) => {
+  const deleteLayer = useCallback((e) => {
     console.log("called");
     
     e.preventDefault();
@@ -57,7 +57,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
       type: "DELETED_LAYER",
       id: layerData.id
     })
-  }
+  },[dataC])
 
 
   return <>

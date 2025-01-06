@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
@@ -8,7 +8,7 @@ const Pins = () => {
   const map = useMap(); 
   const {disabledLayers, activePin} = useContext(MobileActiveContext).activeData 
   const {layerData} = useContext(DataContext);
-  const pinsFlat = layerData.map(l => l.pins).flat();
+  const pinsFlat = useMemo(()=>layerData.map(l => l.pins).flat(),[layerData])
   useEffect(()=> {
     if(!map) return ;
     var bounds = new google.maps.LatLngBounds();

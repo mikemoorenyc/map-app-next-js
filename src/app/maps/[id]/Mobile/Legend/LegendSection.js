@@ -7,6 +7,7 @@ import { useMap } from "@vis.gl/react-google-maps"
 import mapCenterer from "../lib/mapCenterer"
 import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
+import { useCallback } from "react"
 
 import styles from "./styles.module.css";
 import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
@@ -23,14 +24,14 @@ const LegendSection = ({layer}) => {
 
   const isActive = !disabledLayers.includes(layer.id);
   
-  const headerClick = () => {
+  const headerClick = useCallback(() => {
     console.log("clicked");
     if(isActive) {
       activeDispatch({type: "ADD_DISABLED_LAYER",id: layer.id})
     } else {
       activeDispatch({type: "REMOVE_DISABLED_LAYER",id:layer.id})
     }
-  }
+  },[isActive])
 
   const activatePin = (pin) => {
     if(!isActive) return ; 

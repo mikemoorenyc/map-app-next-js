@@ -17,7 +17,6 @@ const ContentPanel = ({pinId, $transform})=> {
   const {layerData} = useContext(DataContext);
   
   
-  const {drawerState} = activeData;
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
   if(!pin) return;

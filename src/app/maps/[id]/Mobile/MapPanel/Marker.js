@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext,useMemo } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import Pin from "../../sharedComponents/Pin";
@@ -13,7 +13,7 @@ const Marker = ({pin, active}) => {
   const {activeDispatch,activeData} = useContext(MobileActiveContext);
   const {activePin,backState} = activeData
   const map = useMap(); 
-  const layer = findLayer(layerData,pin.layerId);
+  const layer = useMemo(()=>findLayer(layerData,pin.layerId),[layerData]);
   const markerClicked = () => {
     if(activePin == pin.id) {
       
