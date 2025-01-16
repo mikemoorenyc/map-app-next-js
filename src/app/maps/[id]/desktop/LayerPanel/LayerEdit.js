@@ -1,4 +1,4 @@
-import { useContext,useState,useEffect } from "react"
+import { useContext,useState,useEffect,useRef } from "react"
 import DataContext from "@/app/contexts/DataContext"
 import ActiveContext from "@/app/contexts/ActiveContext"
 import lightOrDark from "@/app/lib/lightOrDark"
@@ -7,6 +7,7 @@ import Button from "@/app/components/Button"
 import styles from "./LayerEdit.module.css"
 import ActionBar from "../../sharedComponents/ActionBar"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
+import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 
 
 const LayerEdit = () => {
@@ -17,6 +18,9 @@ const LayerEdit = () => {
   if(!layer)return ; 
   const [tempLayerData, updateTempLayerData] = useState({title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
   const [deleteConfirmation, updateDeleteConfirmation] = useState(false)
+  const [colorPickerOpen,updateColorPickerOpen] =useState(false);
+  const [colorPickerPosition,updateColorPickerPosition] = useState([0,0]);
+  const colorPickerButtonRef = useRef(null)
   const saveData = (e) => {
     console.log(tempLayerData)
         layerDispatch({
@@ -78,6 +82,21 @@ const LayerEdit = () => {
             return {...prev, ...payload}
         })
   }
+  const openColorPicker = () => {
+    console.log(colorPickerButtonRef.current.offsetLeft)
+    updateColorPickerPosition([colorPickerButtonRef.current.offsetLeft,colorPickerButtonRef.current.offsetTop]);
+    updateColorPickerOpen(true);
+  }
+  const updateColor = (color) => {
+    updateTempLayerData(prev => {
+      const payload = {
+        color: color,
+        lightOrDark: lightOrDark(color)
+      };
+      return {...prev,...payload};
+
+    })
+  }
   
   //(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}
   //deleteLayer
@@ -92,11 +111,29 @@ const LayerEdit = () => {
             <div className={`${styles.layerEditSection} flex-center`}  key={"color"}>
                 <label className={styles.sectionLabel}>Color</label>
                 <div className={styles.colorPickerContainer}>
-                    <input className={styles.colorPickerInput} type="color" onChange={inputer} name="color" value={tempLayerData.color} />
+                    
                     <div style={{background:tempLayerData.color}} className={styles.colorPickerMask}></div>
                 </div>
-                <div style={{marginLeft: 8}}>{tempLayerData.color}</div>          
+                <div style={{marginLeft: 8}} ref={colorPickerButtonRef}><Button 
+                onClick={(e)=> {
+                  e.preventDefault();
+                  openColorPicker()
+                }}
+                
+                >Pick layer color</Button></div>       
+                  
             </div>
+           {colorPickerOpen && <div
+            style={{position:"fixed",left:colorPickerPosition[0],top:colorPickerPosition[1]}}
+           ><ColorPicker cancelCallback={()=> {
+            updateColorPickerOpen(false);
+           }}
+           currentColor={tempLayerData.color}
+           selectCallback={(color)=> {
+            updateColor(color);
+           }}
+           
+           /> </div> }
       </div>
             <ActionBar 
             style={{marginTop: 16,borderTop:"1px solid var(--screen-text)"}}

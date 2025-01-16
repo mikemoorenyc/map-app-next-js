@@ -1,0 +1,29 @@
+.container {
+  border:1px solid; 
+  background:var(--screen-text);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  border-color:var(--screen-bg);
+  max-width:210px
+}
+
+.button {
+  width: 15px;
+  height:15px;
+  margin:  4px 4px;
+  border: 1px solid var(--screen-bg); 
+}
+.button.selected {
+  border-width: 2px; 
+}
+@media(max-width: 600px) {
+  .button {
+    width: 25px;
+    height:25px;
+    margin: 5px;
+  }
+  
+  .container {
+    max-width: calc(100% - 36px);
+  }
+}

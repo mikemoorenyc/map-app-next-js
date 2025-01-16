@@ -10,6 +10,8 @@ import DataContext from "@/app/contexts/DataContext"
 import DeleteModal from "../_components/DeleteModal"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Mover from "../_components/Mover"
+import Button from "@/app/components/Button"
+import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   const [tempData,updateTempData] = useState(layerData);
@@ -17,6 +19,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
   const [deletePending,updateDeletePending] = useState(false);
   const dataC = useContext(DataContext)
   const {layerDispatch} = dataC;
+  const [colorPickerOpen,updateColorPickerOpen]= useState(false);
   
 
   const valueChanger = (value,key) => {
@@ -96,13 +99,29 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
           <TextField>
             <div className={styles.layerColorContainer}>
               <div className={styles.layerColorPickerIcon} style={{backgroundColor:tempData.color}}>
-                <FillColorSolid color={tempData.lightOrDark == "dark"?"white":"black"} width={18} height={18}/>
+               
               </div>
-              <div className={styles.layerColorPickerText}>{tempData.color}</div>
-              <input className={styles.layerColorInput} type="color" value={tempData.color} onChange={(e)=> {
-                valueChanger(e.target.value,"color")
-                valueChanger(lightOrDark(e.target.value),"lightOrDark")
-              }}/>
+              <Button icon={<FillColorSolid />} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
+              {colorPickerOpen &&<>
+              {createPortal(<div className="flex-center-center" style={{
+                background: "var(--screen-bg)",
+                position:"fixed",
+                inset:0
+              }}>
+              <ColorPicker 
+              currentColor={tempData.color}
+              cancelCallback={()=> {
+                updateColorPickerOpen(false);
+              }}
+              selectCallback={(color)=> {
+                valueChanger(color,"color")
+                valueChanger(lightOrDark(color),"lightOrDark")
+              }}
+              />
+              </div>,document.getElementById("portal-container"))}
+              
+              </>}
+              
             
             </div>
           </TextField>
