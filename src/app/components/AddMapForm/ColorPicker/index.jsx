@@ -38,7 +38,7 @@ export default function ColorPicker({selectCallback,cancelCallback,currentColor}
       colorPicked(c);
     }} className={`${styles.button} ${c == currentColor ? styles.selected:""}`} style={{background:c}} key={c}></button>
   })}
-
+ 
   
   </div>
 
