@@ -22,8 +22,8 @@ return (
   text-shadow: 1px 1px 0 black;
 }
 .mobile-app {
-  background:black; 
-  color:white; 
+ /* background:black; 
+  color:white; */ 
 }
 .mobile-app .gm-title {
   color:black;

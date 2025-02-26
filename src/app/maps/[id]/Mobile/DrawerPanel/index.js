@@ -28,7 +28,7 @@ const DrawerPanel = () => {
   }
 
   if(legendOpen) {
-    transform = 0;
+    transform = -3;
   }
   const isEditing = drawerState == "editing"
   
