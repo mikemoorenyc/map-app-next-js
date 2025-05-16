@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { use, useEffect, useState } from "react";
+import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
 import { Compass } from "iconoir-react";
+import mapCenterer from "../lib/mapCenterer";
 
 export default () => {
   const [currentLocation, updateCurrentLocation] = useState(null);
   const [heading,updateHeading] = useState(0);
- 
+  const map = useMap()
+  const [centerInit, updateCenterInit] = useState(false);
+
   useEffect(()=> {
    
     if(!navigator.geolocation) return ; 
@@ -57,6 +60,20 @@ export default () => {
       )
   }
 
+  //Move to center
+  useEffect(()=> {
+    if(centerInit) return ; 
+    if(!map || currentLocation == null) return ; 
+ 
+   updateCenterInit(true);
+   if(!map.getBounds().contains(currentLocation)) return ;
+
+  map.setZoom(15)
+  map.setCenter(currentLocation);
+
+    
+
+  },[map,currentLocation])
   
   
 
