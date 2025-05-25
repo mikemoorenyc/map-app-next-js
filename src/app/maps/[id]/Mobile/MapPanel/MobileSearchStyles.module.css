@@ -1,6 +1,6 @@
 .inputContainer,.inputContainerFocused {
   flex: 1;
-  border:1px solid var(--screen-white);
+  border:1px solid var(--screen-black);
   margin-right: var(--gutter);
   margin-left: 8px; 
   display: flex;
@@ -12,7 +12,7 @@
 .inputContainer {
   flex:1;
   background:var(--screen-white);
-  border:1px solid var(--screen-white);
+  border:1px solid var(--screen-black);
   font-size: var(--font-bigger);
   border-radius: var(--border-radius);
   box-shadow: 4px 4px 0 var(--screen-black);
