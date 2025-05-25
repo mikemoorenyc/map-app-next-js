@@ -43,7 +43,7 @@
   width: calc(100% + 4px);
   height: calc(100% + 4px);
   
-  animation: starRotate 8s linear infinite;
+ /* animation: starRotate 8s linear infinite;*/
 }
 
 .starShape path {
