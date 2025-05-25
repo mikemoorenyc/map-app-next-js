@@ -32,7 +32,7 @@
   animation: starRotate 4s linear infinite;;
 }
 .pin.favorited {
-  background: none; 
+  background: none !important; 
   border-color:transparent;
   box-shadow: none; 
 }

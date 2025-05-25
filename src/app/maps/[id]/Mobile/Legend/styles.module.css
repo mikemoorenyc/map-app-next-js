@@ -84,7 +84,7 @@ flex-direction:column;
   font-family: var(--font-headline);
 }
 .legendSections {
-  padding-bottom: 86px;
+  padding-bottom: 20px;
   padding-top: 20px;
     overflow: auto; 
 }
@@ -127,7 +127,8 @@ flex-direction:column;
 }
 
 .addSection {
-  position:fixed;
-  right: 24px;
-  bottom: 24px;
+  padding: var(--gutter);
+  display:flex;
+  justify-content:flex-end;
+  width:100%;
 }

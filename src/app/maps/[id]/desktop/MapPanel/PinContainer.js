@@ -45,7 +45,7 @@ const PinContainer = () => {
             return ; 
         }
       
-        return <PinMarker  key={p.id } pId={p.id}/>
+        return <PinMarker  key={p.id } pId={p.id} onMap={true}/>
     })}
     
     </>

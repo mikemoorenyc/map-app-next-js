@@ -18,6 +18,7 @@ const Legend = () => {
   const legendScroll = useRef(null);
   
   return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>
+  {legendIsOpen && (<>
     <div className={`${styles.legendHeader} flex-center`}>
       <div className={`${styles.legendTitle} overflow-ellipsis flex-1`}>{pageTitle}</div>
       
@@ -33,7 +34,7 @@ const Legend = () => {
       return <LegendSection key={l.id} layer={l} />;
     })}
     <div className={styles.addSection}>
-    <Button icon={<RiStackLine/>} modifiers={["raised"]} onClick={(e)=>{
+    <Button icon={<RiStackLine/>} modifiers={["sm"]} onClick={(e)=>{
       e.preventDefault();
       layerDispatch({type:"ADDED_LAYER"})
       legendScroll.current.scrollTop = legendScroll.current.scrollHeight + 500
@@ -42,7 +43,7 @@ const Legend = () => {
     </div>
     </div>
     
-  
+ </>)}
   </div>
 }
 

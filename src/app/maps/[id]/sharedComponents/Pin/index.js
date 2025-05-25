@@ -1,11 +1,11 @@
 
 import styles from "./styles.module.css"
-
+import { Pin } from "@vis.gl/react-google-maps";
 import { Star } from "iconoir-react";
 
-const Pin = (props) => {
+export default (props) => {
   
-  const {size, interactable, highlighted,className,pin,layer} = props;
+  const {size, interactable, highlighted,className,pin,layer,onMap,imgSize} = props;
   if(!pin) return ; 
   
 
@@ -24,9 +24,9 @@ const Pin = (props) => {
     const color = lightOrDark == "dark" ? "white" : "black"
     textShadowStyles = `.5px .5px 0 ${color}, -.5px -.5px 0 ${color}, .5px -.5px 0 ${color}, -.5px .5px 0 ${color}`
   }
-  
+  const color = layer?.color || "#ffffff";
   const inlineStyles = {
-    backgroundColor : !pin.favorited? layer?.color || "#ffffff":undefined,
+    backgroundColor : color,
     fontSize: size ||10,
     width: dim,
     height: dim,
@@ -35,10 +35,14 @@ const Pin = (props) => {
     textShadow: textShadowStyles,
     filter: pin?.visited ? "grayscale(1)" : ""
   }
+  console.log(lightOrDark);
+  console.log(color)
+  if(onMap && !highlighted && !pin.favorited) {
+    return <img src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}`} />
+  }
 
-
-
-
+  console.log("still render");
+  
   return <div 
     className={`${styles.pin} ${styles[lightOrDark]} ${highlighted?styles.highlighted:""} ${className || ""} ${pin.favorited?styles.favorited:""}`}
     style={inlineStyles}
@@ -55,6 +59,6 @@ const Pin = (props) => {
 
 }
 //
-export default Pin; 
+
 
 //{pin.favorited && <Star className={styles.favoriteStar} style={{display:"none",animation: pin?.visited? "none":undefined}}/>}

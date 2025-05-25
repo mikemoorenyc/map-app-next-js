@@ -25,7 +25,7 @@ const Marker = ({pin, active}) => {
     mapCenterer(map, pin.location);
   }
   return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || pin.favorited ? 999999 : null}>
-    <Pin windowOpen={false} interactable={true} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
+    <Pin windowOpen={false} onMap={true} interactable={true} imgSize={26} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
   </AdvancedMarker>
   
 }
