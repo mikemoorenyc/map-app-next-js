@@ -49,10 +49,12 @@ const Pin = (props) => {
 </svg>}
       <span style={{position:"relative"}}>{icon}</span>
       
-{pin.favorited && <Star className={styles.favoriteStar} style={{display:"none",animation: pin?.visited? "none":undefined}}/>}
+
 
   </div>
 
 }
 //
 export default Pin; 
+
+//{pin.favorited && <Star className={styles.favoriteStar} style={{display:"none",animation: pin?.visited? "none":undefined}}/>}
