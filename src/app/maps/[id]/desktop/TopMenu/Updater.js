@@ -1,8 +1,9 @@
 import { useState,useContext,useEffect,useRef } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import { updateMap,getMap } from "@/app/actions/maps";
-import { FloppyDiskArrowIn } from "iconoir-react";
+
 import styles from "./styles.module.css"
+import { RiUploadCloudLine } from "@remixicon/react";
 
 const Updater = ({id})=> {
   const {layerData,pageTitle,mapId,layerDispatch} = useContext(DataContext);
@@ -52,7 +53,7 @@ const Updater = ({id})=> {
   style={{
     visibility: isSaving ? "visible": "hidden"
   }}
-   className={`${styles.updater}  border-1 flex-center`}><FloppyDiskArrowIn width={12} height={12} /></div>
+   className={`${styles.updater}  border-1 flex-center`}><RiUploadCloudLine width={12} height={12} /></div>
 
 }
 

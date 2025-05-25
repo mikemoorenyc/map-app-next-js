@@ -3,8 +3,9 @@ import { createPortal } from "react-dom";
 import Updater from "./Updater";
 import { useEffect,useState } from "react";
 import styles from "./styles.module.css";
-import { Map } from "iconoir-react";
+
 import Button from "@/app/components/Button";
+import { RiMap2Line } from "@remixicon/react";
 
 const TopMenu = () => {
   const [isMounted,updateIsMounted] = useState(false)
@@ -17,11 +18,11 @@ const TopMenu = () => {
   <div className={`${styles.topMenu} `}>
     <Updater />
     <Button
-    icon={<Map />}
+    icon={<RiMap2Line />}
     href={"/"}
     modifiers={["secondary","sm"]}
     >
-    All Maps
+    All maps
     </Button>
   </div>  
    , document.getElementById("menu-container")

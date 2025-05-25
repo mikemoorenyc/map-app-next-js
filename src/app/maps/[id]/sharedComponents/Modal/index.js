@@ -24,13 +24,11 @@ const Modal = ({children,header,closeEvent}) => {
 
   return <>
     {createPortal(
-      <div className={styles.modal}>
+      <div className={`${styles.modal} polka-text`}>
         <div className={`${styles.inner} big-drop-shadow`}>
           <div className={`${styles.header} flex-center`}>
             {header && <div className={`${styles.title} flex-1`}>{header}</div>}
-            <Button modifiers={["ghost"]} onClick={(e)=>{e.preventDefault(); closeEvent()}}>
-              <Xmark />
-            </Button>
+
           </div>
           {children}
         

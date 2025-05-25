@@ -1,0 +1,5 @@
+.addButton {
+  position:fixed;
+  right: calc(var(--gutter) * 1.5);
+  bottom: calc(var(--gutter) * 1.5);
+}

@@ -5,7 +5,8 @@ import Button from "@/app/components/Button"
 import MapTitle from "./MapTitle"
 
 import DataContext from "@/app/contexts/DataContext"
-import { PlusCircle } from "iconoir-react"
+
+import { RiStackLine } from "@remixicon/react"
 
 const Header = ({id}) => {
   
@@ -16,7 +17,7 @@ const Header = ({id}) => {
     <MapTitle />
    
          
-            <Button icon={<PlusCircle/>} onClick={(e)=>{e.preventDefault();layerDispatch({type:"ADDED_LAYER"})}}   modifiers={["sm","ghost"]}>
+            <Button icon={<RiStackLine/>} onClick={(e)=>{e.preventDefault();layerDispatch({type:"ADDED_LAYER"})}}   modifiers={["sm","ghost"]}>
                     Add layer
             </Button>
    

@@ -1,0 +1,26 @@
+.archiveItem {
+  display:flex; 
+}
+.link {
+  color:currentColor;
+}
+.title {
+  font-size: 14px; 
+  margin-right: 8px; 
+  font-weight: var(--font-semibold);
+}
+.count {
+  font-size: 12px;
+}
+@media(min-width: 600px) {
+  .archiveItem {
+   
+  }
+  .link {
+    flex-direction:column; 
+    align-items: flex-start; 
+  }
+  .count {
+    padding: 8px 0 0 4px; 
+  }
+}

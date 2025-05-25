@@ -1,12 +1,12 @@
 .locationDetails {
-  border: 1px dashed currentColor;
-padding: 10px;
+  border: 1px dotted currentColor;
+padding: 12px 16px;
 margin-top: 8px;
 font-size: 12px;
 overflow-wrap: break-word;
 }
 .item {
-  margin: 6px 0;
+  margin: 8px 0;
 }
 .svg {
   width: 1em;

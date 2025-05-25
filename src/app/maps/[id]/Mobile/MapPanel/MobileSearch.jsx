@@ -5,7 +5,6 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 
 import BackButton from "./BackButton";
 import Button from "@/app/components/Button";
-import { NavArrowLeft, Xmark } from "iconoir-react";
 import { createPortal } from "react-dom";
 import styles from "./MobileSearchStyles.module.css"
 import SearchLogic from "@/app/components/ModernSearch/SearchLogic";
@@ -13,6 +12,7 @@ import resultFormatter from "@/app/components/ModernSearch/lib/resultFormatter";
 import DataContext from "@/app/contexts/DataContext";
 import SearchDropDown from "./SearchDropDown";
 import { usePreventScroll } from '@react-aria/overlays';
+import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
 
 
 export default () => {
@@ -147,22 +147,24 @@ export default () => {
       transform: ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
       position:"fixed", 
       left: 0, 
-      top:focused?0:24,
+      top:focused?0:20,
+
       height: focused?viewPortHeight : "auto",
-      paddingTop: focused?24:0,
+      paddingTop: focused?20:0,
       display:focused?"flex":"block",
       flexDirection: "column", 
       zIndex:99,
       width: "100%"}}>
-      <div className="flex-center" style={{height:34}}>
-        {!focused ? <BackButton /> : <Button icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12,marginLeft:16}} onClick={(e)=>{e.preventDefault(); reset(); 
+      <div className="flex-center" style={{borderBottom:focused?"1px solid var(--screen-text)":""}}>
+        {!focused ? <BackButton /> : <Button style={{marginLeft:"var(--gutter)"}} icon={<RiArrowLeftFill />} modifiers={['ghost','icon','round']}  onClick={(e)=>{e.preventDefault(); reset(); 
             }}/>  }
 
-        <div className={`${styles.inputContainer} big-drop-shadow `}>
-              <input ref={inputEl} className={`${styles.searchInput} flex-1`} onFocus={()=> {
+        <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
+              <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
               updateFocused(true);
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
-              {(focused && inputVal) && <button onClick={e => {
+              {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
+              {(focused && inputVal) && <Button onClick={e => {
                 e.preventDefault(); 
                 updateInputVal("");
                 updateQueryVal("")
@@ -171,10 +173,9 @@ export default () => {
                 inputEl.current.value = ""
                 inputEl.current.focus();
               }}
-              
-               className={`${styles.xButton} flex-center`}>
-                <Xmark width={14} height={14} className={styles.xIcon} />
-              </button>}
+              icon={<RiCloseFill />}
+              modifiers={['ghost','icon']}
+               className={`${styles.xButton} flex-center`}/>}
             </div>
       </div>
      {focused && <SearchDropDown itemClicked={itemClicked} results={resultsFormatted} />}

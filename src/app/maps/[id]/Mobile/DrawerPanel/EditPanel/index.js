@@ -91,7 +91,7 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
   <TextField name={"layerId"} label={"Layer"}>
     <LayerSelector pinState={pinState} updater={valueChanger}/>
   </TextField>
-  <TextField >
+  <TextField label={"Icon"} >
     <ChangeIcon layer={layer} pinState={pinState} valueChanger={valueChanger}/>
   </TextField>
   <TextField>

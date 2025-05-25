@@ -2,7 +2,8 @@ import { useContext } from "react";
 import styles from "./MobileSearchStyles.module.css"
 import DataContext from "@/app/contexts/DataContext";
 import Pin from "../../sharedComponents/Pin";
-import { MapPin } from "iconoir-react";
+
+import { RiMapPinLine } from "@remixicon/react";
 export default function({results,itemClicked}) {
   const {layerData} = useContext(DataContext);
   const { predictions, activePins} = results; 
@@ -42,7 +43,7 @@ export default function({results,itemClicked}) {
       {predictions.length? (
         <div className={styles.pinContainer}>
         {predictions.map(p => {
-          return <SearchItem key={p.id} icon={<MapPin />} item={p}/>
+          return <SearchItem key={p.id} icon={<RiMapPinLine />} item={p}/>
         })}
         </div>
       ):""}

@@ -2,7 +2,8 @@ import styles from "./LayerSelector.module.css"
 import {useContext} from "react"
 
 import DataContext from "@/app/contexts/DataContext"
-import { ArrowDownTag } from "iconoir-react"
+
+import { RiArrowDownSLine } from "@remixicon/react"
 
 
 
@@ -19,7 +20,7 @@ export default function LayerSelector({updater,pinState}) {
 <div className={styles.container}>
   <div className={`${styles.mask} flex-center`} style={maskStyles}>
     <div className={`${styles.maskLabel} flex-1`}>{currentLayer.title}</div>
-    <div className={styles.maskIcon}> <ArrowDownTag /> </div>
+    <div className={styles.maskIcon}> <RiArrowDownSLine /> </div>
   </div>
   <select className={styles.select} name="layerId" id={"layerId"} onChange={(e)=>{e.preventDefault(); updater(parseInt(e.target.value),"layerId")}} value={pinState.layerId}>
       {layerData.map(l => {

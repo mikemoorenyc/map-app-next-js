@@ -1,0 +1,18 @@
+.bottomSheetContainer {
+  position:fixed; 
+  inset: 0;
+}
+.closeOverlay {
+  position:absolute;
+  inset: 0;
+}
+.bottomSheet {
+  position:absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%; 
+  background: var(--screen-bg);
+  border-top:1px solid var(--screen-text); 
+  box-shadow: 0 -2px 0 var(--screen-bg), 0 -4px 0 var(--screen-text);
+  padding: 8px 0;
+}

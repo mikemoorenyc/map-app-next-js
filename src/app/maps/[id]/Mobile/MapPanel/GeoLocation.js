@@ -2,8 +2,9 @@ import { use, useEffect, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
-import { Compass } from "iconoir-react";
-import mapCenterer from "../lib/mapCenterer";
+
+import { RiCompass3Line } from "@remixicon/react";
+
 
 export default () => {
   const [currentLocation, updateCurrentLocation] = useState(null);
@@ -77,11 +78,11 @@ export default () => {
   
   
 
- 
+ //
 
   return <>
-  {(DeviceOrientationEvent.requestPermission && heading === 0) && <Button onClick={setUpCompass} style={{position:"fixed", right: 24, top: 74} } modifiers={["sm"]}>
-  <Compass />
+  { (DeviceOrientationEvent.requestPermission && heading === 0) &&<Button onClick={setUpCompass} style={{position:"fixed", right: 24, top: 78} } modifiers={["sm","icon","secondary","round"]}>
+  <RiCompass3Line/>
   </Button>}
   {currentLocation && <AdvancedMarker position={currentLocation}>
     <span className="GeoTag" style={{pointerEvents:"none", transform: `rotate(${heading}deg)`}}>💏</span>

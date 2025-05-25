@@ -6,7 +6,8 @@
 }
 .title {
   line-height: 40px;
-  font-weight: 800;
+  font-weight: 600;
+  font-family:var(--font-headline);
   font-size: 1.25em;
   cursor: pointer;
   margin-right: 12px;

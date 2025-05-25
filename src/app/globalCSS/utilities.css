@@ -39,3 +39,48 @@
 .round-border {
     border-radius: var(--border-radius);
 }
+.list-style-none {
+    list-style:none; 
+}
+
+
+/*TYPE*/
+.headline-style {
+    font-family: var(--font-headline);
+
+    font-weight: normal; 
+    letter-spacing: .075em; 
+    line-height: 1.2;
+}
+
+/*Stripes*/
+.stripes-text-on-bg {
+    background-image: linear-gradient(45deg, var(--screen-text) 5.56%, var(--screen-bg) 5.56%, var(--screen-bg)  50%, var(--screen-text) 50%, var(--screen-text) 55.56%, var(--screen-bg)  55.56%, var(--screen-bg)  100%);
+    background-size: 12.73px 12.73px;
+}
+.stripes-text-on-transparent {
+    background-image: linear-gradient(45deg, var(--screen-text) 5.56%, transparent 5.56%, transparent  50%, var(--screen-text) 50%, var(--screen-text) 55.56%, transparent  55.56%, transparent  100%);
+    background-size: 12.73px 12.73px;
+}
+.stripes-bg-on-transparent {
+    background-image: linear-gradient(45deg, var(--screen-bg) 5.56%, transparent 5.56%, transparent  50%, var(--screen-bg) 50%, var(--screen-bg) 55.56%, transparent  55.56%, transparent  100%);
+    background-size: 12.73px 12.73px;
+}
+.stripes-transparent-on-bg {
+    background-image: linear-gradient(45deg, transparent 5.56%, var(--screen-bg) 5.56%, var(--screen-bg)  50%, transparent 50%, transparent 55.56%, var(--screen-bg)  55.56%, var(--screen-bg)  100%);
+    background-size: 12.73px 12.73px;
+}
+.stripes-transparent-on-text {
+    background-image: linear-gradient(45deg, transparent 5.56%, var(--screen-text) 5.56%, var(--screen-text)  50%, transparent 50%, transparent 55.56%, var(--screen-text)  55.56%, var(--screen-text)  100%);
+    background-size: 12.73px 12.73px;
+}
+
+.polka {
+background-image: linear-gradient(45deg, var(--screen-bg) 25%,transparent 25%, transparent 50%,var(--screen-bg) 50%,var(--screen-bg) 75%, transparent 75%, transparent 100%);
+background-size: 2.83px 2.83px;
+}
+
+.polka-text {
+background-image: linear-gradient(45deg, var(--screen-text) 25%,transparent 25%, transparent 50%,var(--screen-text) 50%,var(--screen-text) 75%, transparent 75%, transparent 100%);
+background-size: 2.83px 2.83px;
+}

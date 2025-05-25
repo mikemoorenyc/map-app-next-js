@@ -124,7 +124,7 @@ export default function DesktopSearch({clickEvent}) {
     }
   },[pinsFlat])
   return <div ref={wrapperRef} style={{position:"absolute", left:24, top: 24}} >
-    <TextInput placeholder="Search for a location" style={inputStyles}type={"text"} value={inputVal} onChange={inputChange}/>
+    <TextInput modifiers={['raised']} placeholder="Search for a location" style={inputStyles}type={"text"} value={inputVal} onChange={inputChange}/>
 
     {predictionResults.length || activePins.length ? <DropDown itemActivated={itemActivated} pinsFlat={pinsFlat} activePins={activePins} predictions={predictions} query={inputVal} />:""}
   <POICheck clickEvent={clickEvent} updatePin={updatePin}/>

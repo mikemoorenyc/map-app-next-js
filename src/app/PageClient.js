@@ -1,26 +1,38 @@
 'use client'
 import styles from "./page.module.css"
-import AddMapForm from "./components/AddMapForm"
-import Link from "next/link"
+
 import {useState} from "react"
 import DeleteConfirmationModal from "./components/DeleteConfirmationModal"
 import Modal from "./maps/[id]/sharedComponents/Modal"
-import { deleteMap,archiveMap,getAllMaps } from "./actions/maps"
-import Button from "./components/Button"
-import { Archive, Trash } from "iconoir-react"
+import { getAllMaps } from "./actions/maps"
+
+import ActiveCard from "./_homepageComponents/ActiveCard/ActiveCard"
+import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
+import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
+import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 
 export default function PageClient({mapData,isMobile}){
+  const activeStart = mapData.filter(m => !m.isArchived);
+  const archiveStart = mapData.filter(m => m.isArchived);
+  const sortedMaps = [...activeStart,...archiveStart];
+  console.log(sortedMaps);
+
  
   const [deleteConfirmOpen,updateDeleteConfirmationOpen] = useState(false)
   const [deleteId,updateDeleteId] = useState(null)
 
-  const [mapList,updateMapList] = useState(mapData);
+  const [mapList,updateMapList] = useState(sortedMaps);
   const deleteClick = async (id) => {
     const deletedMap = await deleteMap(deleteId);
     updateDeleteConfirmationOpen(false);
     updateDeleteId(null);
     updateMapList(deletedMap);
 
+  }
+  const actions = {
+    archive: (mapId,toArchive) => { archiveMap(mapId,toArchive,updateMapList,mapList)},
+    delete: (mapId) => {deleteMap(mapId,mapList,updateMapList)},
+    move: (mapId,direction) => {moveMap(mapId,direction,mapList,updateMapList)}
   }
   const archiver = async(id,isArchived) => {
     updateMapList(prev => {
@@ -41,11 +53,17 @@ export default function PageClient({mapData,isMobile}){
   }
   const activeMaps = mapList.filter(m => !m.isArchived); 
   const archiveMaps = mapList.filter(m => m.isArchived);
+
+/*
   const MapItem = ({m}) => {
     const activeClass = m.isArchived ? "":styles.active
+ 
     return (
       <li className={`${styles.mapItem} ${activeClass}`}>
-        <Link className={`${styles.mapLink} ${activeClass}`} href={`maps/${m.id}`}>{m.title}</Link>
+        <div className={styles.cardText}>
+          <Link className={`${styles.mapLink} ${activeClass} ${activeClass ? "headline-style":""}`} href={`maps/${m.id}`}>{m.title}</Link>
+        <div className={styles.cardCount}>{m.layerData.map(l => l.pins).flat().length} places</div>
+        </div>
         <div className={`${styles.mapActions} ${activeClass} flex-center`}>
           
           
@@ -64,35 +82,37 @@ export default function PageClient({mapData,isMobile}){
       </li>
     )
   } 
- 
+ */
   return<div className={styles.container}>
-  <h1 className={`${styles.title}`}>💏 Mike & Danielle's Map App</h1>
-  <h2 className={`${styles.warning}`}>❌NO ONE ELSE ALLOWED❌</h2>
-  <div className={`${styles.form}`}>
-    <AddMapForm />
-  </div>
+  <h1 className={`${styles.title} headline-style`}>
+    <span className={styles.headlineIcon}>💏</span>
+    Mike & Danielle&rsquo;s <br/>
+    Map App
+  </h1>
+
   <div className={styles.mapListsContainer}>
     <div className={styles.activeMapContainer}>
-      <h3 className={styles.mapTitle}>All Maps</h3>
-      <ul className={`${styles.mapList} ${styles.active}`}>
-        {activeMaps.map(m=>(
-          <MapItem m={m} key={m.id}/>
+
+      <ul className={`${styles.activeMapList} list-style-none`}>
+        {activeMaps.map((m,i)=>(
+         <li key={m.id}> <ActiveCard actions={actions} top={i===0} bottom={i == activeMaps.length - 1} appMap={m} /></li>
 
         ))}
       </ul>
         
     </div>
     {archiveMaps.length ? <div>
-    <h4 style={{marginTop:24}}>Archived Maps</h4>
-    <ul className={styles.mapList}>
+    <h4 className={`headline-style ${styles.archiveHeader}`} >Archived Maps</h4>
+    <ul className={`${styles.archiveList} list-style-none`}>
     {archiveMaps.map(m=> {
-      return <MapItem m={m} key={m.id}/>
+      return <li key={m.id}><ArchiveItem actions={actions} appMap={m} /></li>
     })}
     </ul>
   
   </div>:""}
   
   </div>
+  <AddMapButton />
   
   {deleteConfirmOpen && <Modal header={"Delete Map"} closeEvent={()=>{updateDeleteConfirmationOpen(false)}}>
     <DeleteConfirmationModal 
@@ -104,3 +124,9 @@ export default function PageClient({mapData,isMobile}){
   </Modal>}
   </div>
 }
+
+/*
+  <div className={`${styles.form}`}>
+    <AddMapForm />
+  </div>
+  */

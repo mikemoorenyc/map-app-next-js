@@ -9,3 +9,8 @@
   inset: 0px;
 
 }
+.pickerContainer {
+  border: 1px solid;
+  border-radius: var(--border-radius-xl);
+  overflow:hidden;
+}

@@ -16,7 +16,7 @@
 
 }
 .textFieldContainer {
-  margin-bottom: 16px
+  margin-bottom: var(--gutter);
 }
 .textFieldContainer.noLabel {
   padding-top: 8px;
@@ -31,12 +31,13 @@
   background: var(--screen-bg);
   border: 1px solid var(--screen-text);
   color: var(--screen-text);
-  padding: 8px; 
-  font-size: 18px;
+  padding: 12px; 
+  font-size: 16px;
   border-radius: var(--border-radius);
 }
 .textFieldInput.textarea {
   font-size: 16px;
+  line-height: 1.4;
 }
 .textFieldInput:focus {
   box-shadow: inset 0px -2px 0 white; 
@@ -50,4 +51,12 @@
 }
 .deleteButton {
   width: 100%; 
+}
+.saveButtonContainer {
+  position:fixed;
+  left: 0;
+  right: 0;
+  bottom: 48px;
+  display:flex;
+  justify-content:center;
 }

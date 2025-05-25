@@ -15,7 +15,7 @@ const TextInput = forwardRef((props,ref) => {
     onChange={onChange||undefined}
     onKeyDown={onKeyDown||undefined}
     onBlur= {onBlur || undefined}
-    className={`${styles.input} ${!modifiers.includes("smaller")? 'big-drop-shadow':""} ${modClasses} ${className || ""}`}
+    className={`${styles.input}  ${modClasses} ${className || ""}`}
   />
 })
 

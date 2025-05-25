@@ -26,6 +26,7 @@ export async function getMapData(id) {
 */
 
 const addMap = async function(mapName) {
+
   const createddate = new Date().toLocaleString()
   const id = Date.now()
     const payload = {
@@ -86,7 +87,8 @@ const getMap = async function(id) {
       console.log("Error", err);
     }
 }
-const archiveMap = async (id,isArchived) => {
+const archiveMap = async (id,toArchive) => {
+  console.log(toArchive);
   const command = {
     TableName: "MapApp",
     Key: {
@@ -94,7 +96,7 @@ const archiveMap = async (id,isArchived) => {
     },
     UpdateExpression:`set isArchived = :isArchived`,
     ExpressionAttributeValues: {
-      ":isArchived":isArchived
+      ":isArchived":toArchive
     },
     ReturnValues: "ALL_NEW"
   }

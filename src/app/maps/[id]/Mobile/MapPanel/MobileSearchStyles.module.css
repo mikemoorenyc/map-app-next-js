@@ -1,35 +1,47 @@
+.inputContainer,.inputContainerFocused {
+  flex: 1;
+  border:1px solid var(--screen-white);
+  margin-right: var(--gutter);
+  margin-left: 8px; 
+  display: flex;
+  color: var(--screen-black);
+}
+.inputContainerFocused {
+  border-color:transparent; 
+}
 .inputContainer {
   flex:1;
-  background:var(--screen-bg);
-  border:1px solid;
+  background:var(--screen-white);
+  border:1px solid var(--screen-white);
   font-size: var(--font-bigger);
   border-radius: var(--border-radius);
+  box-shadow: 4px 4px 0 var(--screen-black);
   display: flex;
-  margin-right:16px
+  align-items:center; 
+  margin-right: var(--gutter);
+  margin-left: 8px; 
+  border-radius: 500px;
+  color: var(--screen-black);
+  padding-right: 4px
+}
+
+.searchStarter {
+  color: var(--screen-black);
 }
 .searchInput {
   border: 0;
   background: transparent;
-  color: var(--screen-text);
+  color: var(--screen-black);
   display: block;
-  height: 32px;
-  line-height: 32px;
-  padding: 0 var(--gutter);
-  font-size: 13px;
+  
+  line-height: 24px;
+  padding: 12px 0 12px var(--gutter);
+  font-size: 16px;
 }
-.xButton {
-  width: 32px;
-  justify-content: center;
-  position: relative;
+.searchInput.focused {
+  color:var(--screen-text);
 }
-.xButton:before {
-  display: block;
-  content: "";
-  inset: 6px;
-  border: 2px solid;
-  border-radius:50%;
-  position: absolute;
-}
+
 .pinOuter {
   flex: 1;
   overflow-x:hidden;
@@ -48,7 +60,7 @@
   font-size: 14px;
 }
 .searchItem:not(:last-child) .searchItemTitle {
-  border-bottom: 1px solid
+  border-bottom: 1px dashed
 }
 .searchHR {
   border-width: 1px 0 0 0;

@@ -14,6 +14,7 @@
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@hello-pangea/dnd": "^17.0.0",
+    "@remixicon/react": "^4.6.0",
     "@vercel/postgres": "^0.10.0",
     "@vis.gl/react-google-maps": "^1.4.0",
     "array-move": "^4.0.0",

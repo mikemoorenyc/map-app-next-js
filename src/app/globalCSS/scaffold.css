@@ -7,8 +7,9 @@ body {
     background: var(--screen-bg);
     font-family: var(--font-sans);
    font-size: 16px;
-
+    letter-spacing: .05em;
     position: relative;
+    font-optical-sizing: auto;
 }
 a,.a {
     color: var(--blue-accent);

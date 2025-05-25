@@ -4,10 +4,11 @@
   background: var(--screen-bg);
   border: 1px solid currentColor;
   color:currentColor;
-  font-size: var(--font-bigger);
+  font-size: 16px;
+  font-family: var(--font-sans);
   border-radius: var(--border-radius);
-  line-height: 40px;
-  padding: 0 var(--gutter);
+
+  padding: 12px;
   }
   .input::-webkit-input-placeholder {
     color:currentColor;
@@ -20,4 +21,10 @@
     border-radius: 3px; 
     line-height: 32px;
     padding: 0 12px
+  }
+  .input.raised {
+    box-shadow: 4px 4px 0 var(--screen-black);
+    border: 1px solid var(--screen-black);
+    background:var(--screen-white);
+    color:var(--screen-black);
   }

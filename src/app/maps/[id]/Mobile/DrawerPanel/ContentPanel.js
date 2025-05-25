@@ -11,6 +11,7 @@ import makeNativeLink from "../lib/makeNativeLink";
 import DrawerPanelHeader from "./DrawerPanelHeader";
 import styles from "./styles.module.css";
 import AddToMapButton from "./AddToMapButton";
+import { RiListUnordered, RiPencilLine } from "@remixicon/react";
 
 const ContentPanel = ({pinId, $transform})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
@@ -22,36 +23,37 @@ const ContentPanel = ({pinId, $transform})=> {
   if(!pin) return;
 
   return <div className={styles.contentPanel}>
-    <div className="top-section">
-      <DrawerPanelHeader 
-        title={pin.title} 
-        before={pin?.icon && <div className="header-icon" style={{paddingRight: 4}}><Pin layerData={layerData} pId={pin.id} interactable={false}/></div>} 
-        contentOpen={true} />
-         
+    <div className={`${styles.topSection}`}>
+     
+        <div className={styles.pinTitle}>{pin.title}</div> 
       <div className={`${styles.metadata} display-flex align-items-center`} >
-        {layer && <div className={`layer flex-1`}>
+        
+        {layer && <div className={`${styles.layerTitle} flex-1 overflow-ellipsis`}>
           {layer.title}
         </div>}
         {pinId == "temp" && <AddToMapButton />}
-        {pinId != "temp" && <Button  modifiers={["bigger","secondary"]} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}}>
-          <EditPencil width={16} height={16}/>
-        </Button>}
-        <Button  modifiers={["bigger"]} style={{marginLeft:12}} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}}>
-          <List width={16} height={16}/>
-        </Button>
-        {pin?.url &&<Button style={{marginLeft:12}} modifiers={["bigger", ""]} target={"_blank"} href={makeNativeLink(pin.url)}>
-          <GMIcon />
-        </Button>}
+        {pinId != "temp" && <Button icon={<RiPencilLine />} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}} modifiers={["icon","round","secondary","sm"]}/>}
+        <Button icon={<RiListUnordered />} modifiers={["icon","round","secondary","sm"]} style={{marginLeft:8}} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}} />
+        {pin?.url &&<Button style={{marginLeft:8}} modifiers={["bigger", "round","icon"]} target={"_blank"} href={makeNativeLink(pin.url)} icon={  <GMIcon />}/>}
       </div>
     </div>
     <div className={styles.bottomSection}>
+      
       <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>
-      <div style={{padding: "0 16px"}}>
+      <div style={{marginTop:16}}>
         <LocationDetails placeData={pin} isMobile={true}/>
       </div>
     </div>
   </div>
 }
 export default ContentPanel; 
+
+
+/*
+   <DrawerPanelHeader 
+        title={pin.title} 
+        before={pin?.icon && <div className="header-icon" style={{paddingRight: 4}}><Pin layerData={layerData} pId={pin.id} interactable={false}/></div>} 
+        contentOpen={true} />
+        */

@@ -66,7 +66,7 @@ const DrawerPanel = () => {
   
   return <div id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`} {...handlers}   style={transformPosition}>
     {isEditing && <EditPanel />}
-    {(!activePin && isEditing == false)&& <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}>Open legend</Button>} />}
+    {(!activePin && isEditing == false)&& <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
     {(activePin && isEditing == false )&& <ContentPanel $transform={transform} pinId={activePin}/>}
   </div>
 }

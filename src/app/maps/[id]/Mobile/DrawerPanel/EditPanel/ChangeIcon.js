@@ -26,21 +26,19 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
     valueChanger(e.native,"icon")
   }
   return<> 
-    <Button onClick={(e)=>{e.preventDefault(); updateIconSelectorOpen(true)}} className={`${styles.button } round-border`} style={{textAlign:"left"}}>
-      
-      <span className={`flex-1`} style={{paddingRight: 6}}>Change icon</span>
-      <span>
+    <div className={`flex-center`}>
+      <Button style={{marginRight:8}} onClick={(e)=>{e.preventDefault(); updateIconSelectorOpen(true)}} modifiers={["secondary"]}>Change icon</Button>
       <Pin 
         pin={pinState}
         layer={layer}
         interactable={false}
-        size={12}
+        size={20}
       />
-      </span>
-  </Button>
+    </div>
+
   {iconSelectorOpen && createPortal(
     <div className={`${styles.iconModal} flex-center-center`}>
-      <Picker 
+      <div className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
           data={async () => {
     const response = await fetch(
       'https://cdn.jsdelivr.net/npm/@emoji-mart/data',
@@ -53,7 +51,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
           maxFrequentRows={1}
           previewPosition={"none"} 
           onClickOutside={()=>{;updateIconSelectorOpen(false)}}
-          />
+          /></div>
     </div>
     , document.getElementById("portal-container")
   )}

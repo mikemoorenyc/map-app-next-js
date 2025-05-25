@@ -31,6 +31,28 @@
   color:var(--screen-bg);
   animation: starRotate 4s linear infinite;;
 }
+.pin.favorited {
+  background: none; 
+  border-color:transparent;
+  box-shadow: none; 
+}
+.starShape {
+  position:absolute; 
+  left: -2px;
+  top: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  
+  animation: starRotate 8s linear infinite;
+}
+.starShape path {
+  stroke:white;
+  filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black) drop-shadow(-1px 1px 0 black) drop-shadow(1px -1px 0 black);
+}
+.starShape.light path {
+  stroke: black; 
+  filter: drop-shadow(1px 1px 0 white) drop-shadow(-1px -1px 0 white) drop-shadow(-1px 1px 0 white) drop-shadow(1px -1px 0 white);
+}
 @keyframes starRotate {
   from {
     transform: rotate(0deg);

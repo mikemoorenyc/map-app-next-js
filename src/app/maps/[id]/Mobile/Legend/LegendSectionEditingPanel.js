@@ -101,7 +101,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
               <div className={styles.layerColorPickerIcon} style={{backgroundColor:tempData.color}}>
                
               </div>
-              <Button icon={<FillColorSolid />} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
+              <Button modifiers={['secondary']} icon={<FillColorSolid />} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
               {colorPickerOpen &&<>
               {createPortal(<div className="flex-center-center" style={{
                 background: "var(--screen-bg)",

@@ -1,8 +1,9 @@
 import  { useContext } from "react" 
-import { Xmark } from "iconoir-react";
+
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import styles from "./styles.module.css";
+import { RiCloseLine } from "@remixicon/react";
 
 const InfoWindowHeader = ({children}) => {
   const {infoWindowDispatch} = useContext(InfoWindowContext);
@@ -18,7 +19,7 @@ const InfoWindowHeader = ({children}) => {
       </div>
       <div className="PinEditWindow-close">
           <button className={styles.closeButton} onClick={(e)=>{e.preventDefault; handleClose()}} >
-              <Xmark />
+              <RiCloseLine/>
           </button>
       </div>
   </div>

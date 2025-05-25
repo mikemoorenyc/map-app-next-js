@@ -1,33 +1,69 @@
 .container {
-  padding: 24px;
+  padding: var(--gutter);
+  padding-top: calc(var(--gutter) * 1.5);
+  padding-bottom: 120px; 
+}
+@media(min-width:600px) {
+  .container {
+    padding: calc(var(--gutter)* 2) var(--gutter-dt) 200px var(--gutter-dt);
+    margin: 0 auto; 
+    max-width: 1220px; 
+  }
+
 }
 .title {
-  font-weight: bold;
-  font-size: 48px;
-  line-height: 1.2;
-  margin-bottom: .25em;
+  font-size: 36px;
+  line-height: 1; 
+  font-weight: 800
+
+}
+.headlineIcon {
+  display:block; 
+  font-style: normal; 
+  margin-bottom: 8px; 
+
+}
+@media(min-width: 600px) {
+  .title {
+    font-size: 42px;
+  }
+
+  .title br {
+    display:none; 
+  }
 }
 .warning {
   font-size: 22px;
   font-weight: bold;
 }
 .form {
-  padding-top: 24px;
+  padding-top: var(--gutter)
 }
 .mapTitle {
-  margin-top: 24px;
+  margin-top: var(--gutter);
     font-weight: bold;
     font-size: 20px;
 }
 .mapList {
   list-style: none;
-  margin: 16px 0 ;
+  margin: 8px 0 var(--gutter) 0;
+}
+.archiveHeader {
+  margin-top: 48px; 
+}
+.archiveList {
+  position:relative;
+  width: calc(100% + (var(--gutter) * 2));
+  left: calc(var(--gutter) * -1);
+
+}
+.archiveList > li {
+  border-bottom: 1px dashed var(--screen-text);
+  padding: 8px 8px 8px var(--gutter);
 }
 
 @media(max-width: 600px) {
-  .title {
-    font-size: 36px;
-  }
+
   .warning {
     font-size: 18px;
   }
@@ -39,13 +75,21 @@ margin-bottom: 12px;
   
   font-weight: 600;
   border: 1px solid;
-  border-radius: var(--border-radius)
+  border-radius: var(--border-radius-md)
+}
+.cardText {
+  padding: 16px 12px 12px 12px;
 }
 .mapLink.active {
   font-size: 20px;
-  font-weight:bold;
   display: block;
-  padding: 16px;  
+  line-height: normal; 
+  color: var(--screen-text);
+}
+.cardCount {
+  font-size: 14px;
+  line-height:normal;
+  margin-top: 0px;
 }
 
 .mapActions {
@@ -55,26 +99,49 @@ margin-bottom: 12px;
   
 }
 .mapActions.active {
-padding: 6px 8px; 
+padding: 8px 12px; 
 border-top:1px solid; 
+}
+.activeMapList {
+  padding-top: 24px;
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+ 
 }
 
 @media(min-width: 601px) {
   .mapListsContainer {
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 22px;
+    gap: var(--gutter-dt);
   }
   .activeMapContainer {
     grid-column-start: 1;
     grid-column-end: span 2; 
   }
+  .headline-style {
+    margin-top: 0;
+  }
+  .archiveHeader {
+    margin: 24px 0 0 0;
+  }
+  .archiveList {
+    position:static;
+    width: auto; 
+    margin-top: 8px; 
+  }
+  .archiveList > li {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
 }
 @media(min-width: 930px) {
-  .mapList.active {
+  .activeMapList {
     display:grid; 
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;        
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) ;
+    gap: var(--gutter);
   }
   .mapItem.active {
     margin-bottom: 0;

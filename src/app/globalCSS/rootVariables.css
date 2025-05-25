@@ -1,28 +1,36 @@
 :root {
+    --screen-black: #151515;
+    --screen-white: #F5F5F5;
     --btn-bg: #000000d9;
-    --screen-text: black;
+    --screen-text: var(--screen-black);
     --screen-text-em : #222;
     --screen-text-sub : #777 ;
-    --screen-bg: #fff;
+    --screen-bg: var(--screen-white);
     --blue-accent:#0b24a0;
-    --gutter: 16px;
+    --gutter: 20px;
     --half-gutter : calc(var(--gutter) / 2);
+    --gutter-dt: 24px;
     --animation-speed: .2s;
     --error-color: #F2B8B5;
     --caution-color: #d10000;
     --bg-super-dark: rgba(0,0,0,.97);
-    --border-radius: 6px;
-    --font-sans: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
-  --font-serif: Iowan Old Style, Apple Garamond, Baskerville, Georgia, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+    --border-radius-md : 12px; 
+    --border-radius-xl: 28px; 
+    --font-sans: var(--font-inter);
+    --font-headline : var(--font-sofiaSans);
+  --font-serif: serif;
     --font-base : 13px;
     --font-bigger : calc(var(--font-base) * 1.15);
+    --font-semibold: 600; 
     
   
     --edit-description-height : 4em; 
 }
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --screen-bg: #000;
+    --screen-bg:var(--screen-black);
     --screen-text: #fff; 
     --caution-color: #F2B8B5;
     --blue-accent : #75b0e8; 

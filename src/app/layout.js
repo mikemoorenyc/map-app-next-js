@@ -4,6 +4,7 @@ import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
 //import "./maps/[id]/Mobile/styles.css"
+import {Inter, Sofia_Sans} from "next/font/google"
 
 
 export const viewport = {
@@ -14,7 +15,14 @@ export const viewport = {
   // Also supported by less commonly used
   // interactiveWidget: 'resizes-visual',
 }
-
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter"
+})
+const sofiaSans = Sofia_Sans({
+  subsets:["latin"],
+  variable: "--font-sofiaSans"
+})
 
 
 export const metadata = {
@@ -30,7 +38,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${sofiaSans.variable}`}>
       <body >
       
         {children}

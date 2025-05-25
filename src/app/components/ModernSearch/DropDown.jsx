@@ -5,7 +5,8 @@ import styles from "./styles.module.css"
 import Pin from "@/app/maps/[id]/sharedComponents/Pin";
 import { useContext,useState,useEffect } from "react";
 import DataContext from "@/app/contexts/DataContext";
-import { MapPin } from "iconoir-react";
+
+import { RiMapPinLine } from "@remixicon/react";
 
 
 export default function DropDown({activePins=[],query,predictions=[],style="desktop",itemActivated,pinsFlat=[]}) {
@@ -101,7 +102,7 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
     {(predictions.length && activePins.length) ? <hr style={{margin:0}}/>:""}
     {predictions.length ? <div className={styles.OptionContainer}>
       {predictions.map(p => {
-        return <SearchItem key={p.id} p={p} icon={<MapPin width={18} height={18}/>}/>
+        return <SearchItem key={p.id} p={p} icon={<RiMapPinLine width={18} height={18}/>}/>
       })}
     </div> : ""}
   

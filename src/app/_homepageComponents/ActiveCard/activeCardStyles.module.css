@@ -1,0 +1,57 @@
+.activeCard {
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--screen-text);
+  overflow:hidden; 
+  position:relative; 
+  cursor: pointer;
+}
+.imageContainer {
+  aspect-ratio: 4/3;
+  border-radius: var(--border-radius-md);
+  overflow:hidden;
+  position:relative;
+}
+.imageContainer:before {
+  display:block;
+  content:"";
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 -1px 0 var(--screen-text);
+  border-radius: var(--border-radius-md);
+  position:absolute;
+  left: 0;
+  top: 0; 
+}
+.mapIcon {
+  width: 75%;
+  height: 75%;
+}
+.text {
+  padding: 12px; 
+}
+.mapName {
+  font-weight: 600;
+  font-size: 16px; 
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height: 1.4;
+}
+.mapName a {
+  color: currentColor; 
+}
+.amountLine {
+  font-size: 12px; 
+  padding-left: 2px; 
+  padding-top: 2px; 
+}
+.moreButton {
+  position:absolute;
+  right: 8px;
+  top: 8px; 
+}
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: var(--border-radius-md);
+}

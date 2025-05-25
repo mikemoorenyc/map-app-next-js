@@ -4,9 +4,9 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import LocationDetails from "@/app/components/LocationDetails";
 import Button from "@/app/components/Button";
-import { MapPinPlus } from "iconoir-react";
 import InfoWindowHeader from "./InfoWindowHeader";
 import ActionBar from "../../../sharedComponents/ActionBar";
+import { RiMapPinAddLine } from "@remixicon/react";
 
 export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick}) => {
   console.log("opens")
@@ -50,7 +50,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
     </InfoWindowHeader>
     <div className="description-placeholder"  style={{height: "var(--edit-description-height)"}}  />
     <LocationDetails placeData={placeData} />
-    <ActionBar primaryButtons={<Button onClick={addItem} icon={<MapPinPlus />}>
+    <ActionBar  primaryButtons={<Button modifiers={["sm"]} onClick={addItem} icon={<RiMapPinAddLine />}>
     
     <span className={"Button-text"}>Add to map</span>
 </Button>} />

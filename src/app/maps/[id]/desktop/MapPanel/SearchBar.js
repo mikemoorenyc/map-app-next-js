@@ -71,7 +71,7 @@ const SearchBar =  ({clickEvent}) => {
         infoWindowDispatch({
                 type: "OPEN_WINDOW",
                 anchor: null,
-                position: place.geometry.location.toJSON(),
+                position: place.location,
                 content: {
                     header: place.name,
                     body: <AddWindowScreen placeData={place}></AddWindowScreen>
@@ -81,11 +81,11 @@ const SearchBar =  ({clickEvent}) => {
        // console.log("pinup");
         const data = open ? place : null
         //updatePlaceData(data)
-        updatePinLocation(open ? data.geometry.location.toJSON() : null);
+        updatePinLocation(open ? data.location : null);
         updatePlaceData(place)
        // updateInfoWindowShown(open);
         if(open) {
-            mapMover(map, data.geometry.location.toJSON(),place.geometry.viewport.toJSON())
+            mapMover(map, data.location,place.viewport)
         }
     }
     useEffect(()=> {

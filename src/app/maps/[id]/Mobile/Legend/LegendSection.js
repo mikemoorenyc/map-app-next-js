@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-import { ArrowDownCircle,  ArrowUpCircle, CheckCircle, CheckCircleSolid, MoreVert, } from "iconoir-react"
+
 import Pin from "../../sharedComponents/Pin"
 import { useMap } from "@vis.gl/react-google-maps"
 import mapCenterer from "../lib/mapCenterer"
@@ -11,6 +11,7 @@ import { useCallback } from "react"
 
 import styles from "./styles.module.css";
 import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
+import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
 const LegendSection = ({layer}) => {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext)
@@ -60,13 +61,13 @@ const LegendSection = ({layer}) => {
   }
   */
   
-  return <div className={styles.legendSection}>
+  return <><div className={styles.legendSection}>
     <div className={`${styles.legendSectionheader} flex-center`} >
       <button className={styles.legendSectionheaderCheckBox} onClick={headerClick}>
-        {isActive? <CheckCircleSolid width={16} height={16} /> : <CheckCircle width={16} height={16}/>}
+        {isActive? <RiCheckboxCircleFill width={16} height={16} /> : <RiCheckboxCircleLine width={16} height={16}/>}
       </button>
       <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1`}>{layer.title}</div>
-      <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><MoreVert width={16} height={16} /></button>
+      <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine width={16} height={16} /></button>
     </div>
     <div className={`${styles.pins}`}>
         {pins.map(pin=> {
@@ -83,8 +84,8 @@ const LegendSection = ({layer}) => {
       {layer.pins.length > cutoff && !containsActivePin && (
         <div className={styles.expandButton} > 
           <Button
-            icon={!isExpanded?<ArrowDownCircle />:<ArrowUpCircle/>}
-            modifiers={["ghost"]}
+            icon={!isExpanded?<RiArrowDownSLine />:<RiArrowUpSLine/>}
+            modifiers={["secondary","sm"]}
             onClick={(e)=> {
               e.preventDefault(); 
               activeDispatch({type: "UPDATE_EXPANDED_LAYERS", id:layer.id,state: openedManually?"collapsed":"expanded"})
@@ -97,6 +98,8 @@ const LegendSection = ({layer}) => {
       </div>
       {isEditing && <LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} />}
   </div>
+  <hr className={styles.sectionDivider} />
+  </> 
 
 }
 

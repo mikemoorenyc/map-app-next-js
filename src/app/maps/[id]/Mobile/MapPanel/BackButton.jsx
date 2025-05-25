@@ -1,7 +1,8 @@
 import Button from "@/app/components/Button";
-import { NavArrowLeft } from "iconoir-react";
+
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useContext } from "react";
+import { RiArrowLeftFill } from "@remixicon/react";
 
 export default function BackButton() {
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
@@ -28,5 +29,5 @@ export default function BackButton() {
   return <Button  onClick={backState=="base"?undefined: (e)=> {
     e.preventDefault(); 
     fn(); 
-  }} href={backState == "base"?"/":undefined} icon={<NavArrowLeft />} modifiers={['secondary']} style={{marginRight: 12,marginLeft:16}}/>
+  }} href={backState == "base"?"/":undefined} icon={<RiArrowLeftFill />} modifiers={['secondary',"icon", "round"]} style={{marginLeft: "var(--gutter)"}}/>
 }

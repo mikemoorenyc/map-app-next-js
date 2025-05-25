@@ -13,7 +13,8 @@ import Linkify from 'linkify-react';
 import styles from "./styles.module.css";
 
 
-import {  CheckCircle, CheckCircleSolid, EditPencil, Emoji, Star, StarSolid, Trash } from "iconoir-react";
+
+import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiDeleteBinLine, RiEmojiStickerLine, RiPencilLine, RiStarFill, RiStarLine } from "@remixicon/react";
 
 export default ({pinsFlat, pId,lId}) => {
   const {layerData,layerDispatch} = useContext(DataContext);
@@ -161,27 +162,27 @@ useEffect(()=> {
     {!editingText&&<div className={`${styles.controlsDefault} display-flex`}>
         <div className="flex-center">
         <div ref={pickerContainer} style={{position:"relative",cursor: "pointer"}} className={styles.controlContainer} onClick={(e)=>{updateIconSelectorOpen(true)}}>
-          {p.icon? <div style={{fontSize: 16}} className={"pin-icon"}>{p.icon}</div> :<Emoji />}
+          {p.icon? <div style={{fontSize: 16}} className={"pin-icon"}>{p.icon}</div> :<RiEmojiStickerLine />}
         </div>
         {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current.getBoundingClientRect()} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
         <button onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
-            {p.favorited ? <StarSolid /> : <Star />}
+            {p.favorited ? <RiStarFill /> : <RiStarLine />}
           </button>
-          <button onClick={()=>{updateValue(p?.visited ? false : true,"visited")}}>{!p?.visited ? <CheckCircle />:<CheckCircleSolid />}</button>
+          <button onClick={()=>{updateValue(p?.visited ? false : true,"visited")}}>{!p?.visited ? <RiCheckboxCircleLine />:<RiCheckboxCircleFill/>}</button>
 
 
 
         </div>
         <div className="flex-center">
-            <button style={{marginRight:4}} onClick={(e)=>{e.preventDefault();updateEditingText(true)}}><EditPencil /></button><br/>
-            <button onClick={(e)=>{deletePin()}}><Trash /></button>
+            <button style={{marginRight:4}} onClick={(e)=>{e.preventDefault();updateEditingText(true)}}><RiPencilLine /></button><br/>
+            <button onClick={(e)=>{deletePin()}}><RiDeleteBinLine/></button>
 
         </div>
     </div>
     }
-    {editingText && <div className={`${styles.controlsDefault} display-flex`} style={{justifyContent:"flex-start"}}>
-    <Button style={{marginRight:6, width:80}}  onClick={(e)=>{e.preventDefault(); saveEditing()}} >Save</Button>
-      <Button style={{}} modifiers={["secondary"]} onClick={cancelEditing} >Cancel</Button>
+    {editingText && <div className={`${styles.controlsDefault} flex-center`} style={{justifyContent:"flex-start"}}>
+    <Button modifiers={["sm"]} style={{marginRight:6, width:80}}  onClick={(e)=>{e.preventDefault(); saveEditing()}} >Save</Button>
+      <Button style={{}} modifiers={["secondary","sm"]} onClick={cancelEditing} >Cancel</Button>
       
     
     </div>}

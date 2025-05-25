@@ -1,8 +1,9 @@
 import DataContext from "@/app/contexts/DataContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import { useContext} from "react";
-import {  Check, Settings } from 'iconoir-react';
+
 import styles from "./LayerSection.module.css";  
+import { RiCheckLine, RiSettingsLine } from "@remixicon/react";
 
 const LayerSection = ({children,layerId,activeId}) => {
   
@@ -61,7 +62,7 @@ const LayerSection = ({children,layerId,activeId}) => {
             id: layer.id
           })
         }}>
-          {!isCollapsed && <Check className={styles.svg}  />}
+          {!isCollapsed && <RiCheckLine className={styles.svg}  />}
         </button>
         <div className={`flex-1 overflow-ellipsis cursor-default`}>{layer.title}</div>
         <button className={styles.gear} onClick={(e) => {
@@ -71,7 +72,7 @@ const LayerSection = ({children,layerId,activeId}) => {
                                     id: layer.id
                                 });
                   }}>
-          <Settings />
+          <RiSettingsLine />
         </button>
       </div>
       {!isCollapsed && <div className={styles.pinContainer}style={{
