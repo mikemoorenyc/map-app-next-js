@@ -12,7 +12,7 @@ export async function GET(request,) {
   const visited = searchParams.get("visited") == "true";
   const hasIcon = searchParams.get("hasIcon") == "true";
   const size = parseInt(searchParams.get("w"));
-console.log(searchParams);
+
   const shadowColor = ld == "dark" ? "white" : "black"
   try {
     return new ImageResponse(

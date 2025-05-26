@@ -10,13 +10,21 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     drawerState: "minimized",
     tempData: null,
     expandedLayers: [],
-    backState: "base"
+    backState: "base",
+    inBounds: false,
+    geolocation: null
    
   }
   const activeUpdater = (actives,action) => {
 
 
     switch(action.type) {
+      case "UPDATE_GEOLOCATION": {
+        return {...actives, ...{geolocation: action.geolocation}}
+      }
+      case "UPDATE_INBOUNDS": {
+        return {...actives, ...{inBounds: action.inBounds}}
+      }
       case "SET_ACTIVE_PIN" : {
         return {...actives, ...{activePin : action.id} }
       }

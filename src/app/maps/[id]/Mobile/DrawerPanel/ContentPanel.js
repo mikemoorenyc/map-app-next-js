@@ -1,22 +1,20 @@
 import { useContext } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
-import Pin from "../../sharedComponents/Pin";
 import Button from "@/app/components/Button";
 import LocationDetails from "@/app/components/LocationDetails";
-import { EditPencil, List, MapPinPlus } from "iconoir-react";
 import Linkify from "linkify-react";
 import GMIcon from "./GMIcon";
 import makeNativeLink from "../lib/makeNativeLink";
-import DrawerPanelHeader from "./DrawerPanelHeader";
 import styles from "./styles.module.css";
 import AddToMapButton from "./AddToMapButton";
 import { RiListUnordered, RiPencilLine } from "@remixicon/react";
+import Directions from "./Directions";
 
 const ContentPanel = ({pinId, $transform})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
-  
+  const {geolocation,inBounds} = activeData;
   
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
@@ -39,9 +37,10 @@ const ContentPanel = ({pinId, $transform})=> {
     </div>
     <div className={styles.bottomSection}>
       
-      <div className={styles.description}>
+      {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
-      </div>
+      </div>}
+ 
       <div style={{marginTop:16}}>
         <LocationDetails placeData={pin} isMobile={true}/>
       </div>

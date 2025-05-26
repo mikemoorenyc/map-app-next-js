@@ -48,9 +48,10 @@ box-shadow: 0px -4px 0 var(--screen-black);
   padding: 12px var(--gutter) 0;
 }
 .description {
-  padding-top:16px;
+
   font-size:16px;
     line-height: 1.4;
+    padding-bottom:16px;
     overflow-wrap: break-word;
 }
 .bottomSection {
@@ -62,6 +63,7 @@ box-shadow: 0px -4px 0 var(--screen-black);
 }
 .topSection {
   padding-top: var(--gutter);
+  padding-bottom:16px;
 }
 .pinTitle {
   font-weight:600;
@@ -73,4 +75,20 @@ box-shadow: 0px -4px 0 var(--screen-black);
 .layerTitle {
   font-size: 14px;
   padding-right: 12px; 
+}
+.dirButtons {
+  display:flex; 
+}
+.dirButton {
+  display:flex;
+  flex-direction:column;
+  justify-content: center; 
+  align-items:center; 
+  margin-right: 8px; 
+  padding: 8px;
+  font-size: 12px; 
+}
+.dirButton svg {
+  width: 20px;
+  height: 20px; 
 }

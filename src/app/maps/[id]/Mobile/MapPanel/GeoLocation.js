@@ -1,9 +1,10 @@
-import { use, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
 
 import { RiCompass3Line } from "@remixicon/react";
+import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 
 
 export default () => {
@@ -11,6 +12,8 @@ export default () => {
   const [heading,updateHeading] = useState(0);
   const map = useMap()
   const [centerInit, updateCenterInit] = useState(false);
+  const {activeData, activeDispatch} = useContext(MobileActiveContext)
+  const {geolocation,inBounds} = activeData;
 
   useEffect(()=> {
    
@@ -22,11 +25,11 @@ export default () => {
         maximumAge: 0,
       }
     const updatePOS = (e) => {
-    
-      updateCurrentLocation({
+      activeDispatch({type:"UPDATE_GEOLOCATION",geolocation:{
         lat: e.coords.latitude,
         lng: e.coords.longitude
-      })
+      } })
+
     }
     navigator.geolocation.getCurrentPosition(updatePOS, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
@@ -64,17 +67,18 @@ export default () => {
   //Move to center
   useEffect(()=> {
     if(centerInit) return ; 
-    if(!map || currentLocation == null) return ; 
+    if(!map || geolocation == null) return ; 
  
    updateCenterInit(true);
-   if(!map.getBounds().contains(currentLocation)) return ;
+   activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(geolocation)})
+   if(!map.getBounds().contains(geolocation)) return ;
 
   map.setZoom(15)
-  map.setCenter(currentLocation);
+  map.setCenter(geolocation);
 
     
 
-  },[map,currentLocation])
+  },[map,geolocation])
   
   
 
@@ -84,7 +88,7 @@ export default () => {
   { (DeviceOrientationEvent.requestPermission && heading === 0) &&<Button onClick={setUpCompass} style={{position:"fixed", right: 24, top: 78} } modifiers={["sm","icon","secondary","round"]}>
   <RiCompass3Line/>
   </Button>}
-  {currentLocation && <AdvancedMarker position={currentLocation}>
+  {geolocation && <AdvancedMarker position={geolocation}>
     <span className="GeoTag" style={{pointerEvents:"none", transform: `rotate(${heading}deg)`}}>💏</span>
   
   </AdvancedMarker>}
