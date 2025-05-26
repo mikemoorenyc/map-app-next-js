@@ -10,6 +10,7 @@ export async function GET(request,) {
   const ld = searchParams.get('ld');
   const favorited = searchParams.get("favorited") == "true";
   const visited = searchParams.get("visited") == "true";
+  const hasIcon = searchParams.get("hasIcon") == "true";
   const size = parseInt(searchParams.get("w"));
 console.log(searchParams);
   const shadowColor = ld == "dark" ? "white" : "black"
@@ -30,7 +31,8 @@ console.log(searchParams);
             width: size,
             height: size,
             backgroundColor: color,
-            filter: visited? "grayscale(1)" : "none"
+            filter: visited? "grayscale(1)" : "none",
+            color: ld == "dark"?"white":"black"
           }}
         
         >
@@ -39,7 +41,7 @@ console.log(searchParams);
              position:"relative",
              left:-1, 
              top:-1,
-             textShadow: `1px 1px 0 black`
+             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `1px 1px 0 black` : "none"
            }}
            >
             {icon}
