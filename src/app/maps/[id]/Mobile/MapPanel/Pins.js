@@ -4,12 +4,13 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
 
-const Pins = () => {
+const Pins = ({showPins}) => {
   const map = useMap(); 
   const {disabledLayers, activePin} = useContext(MobileActiveContext).activeData 
   const {layerData} = useContext(DataContext);
   const [firstLoad,updateFirstLoad] = useState(false);
   const pinsFlat = useMemo(()=>layerData.map(l => l.pins).flat(),[layerData])
+  const [flickerState,updateFlickerState] = useState(false);
   useEffect(()=> {
     if(!map || !pinsFlat.length) return ;
     if(firstLoad) return ; 
@@ -27,7 +28,20 @@ const Pins = () => {
 
 
   },[map,pinsFlat])
+
+  useEffect(() => {
+    const updateFlick = setInterval(()=> {
+      updateFlickerState(!flickerState);
+    },200)
+    return () => {
+      clearInterval(updateFlick);
+    }
+  },[])
+
+
+  if(!showPins ) return ; 
   return <>
+
   {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
 
 

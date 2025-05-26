@@ -14,6 +14,7 @@ const MapPanel = () => {
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const {activeDispatch} = useContext(MobileActiveContext)
   const [mapStyleId,updateMapStyleId] = useState(darkModeId);
+  const [showPins,updateShowPins] = useState(true)
   useEffect(()=> {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     updateMapStyleId(darkModeId);
@@ -48,12 +49,14 @@ const MapPanel = () => {
       onClick={closeActive}
       mapId={mapStyleId}
       defaultZoom={3}
+      onZoomChanged={()=>{updateShowPins(false)}}
+      onIdle={()=>{updateShowPins(true)}}
       defaultCenter={{lat: 22.54992, lng: 0}}
       gestureHandling={'greedy'}
       disableDefaultUI={true}
       style={{width: '100%', height: '100%',position:"absolute"}}
     >
-  <Pins />
+  <Pins showPins={showPins} />
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />

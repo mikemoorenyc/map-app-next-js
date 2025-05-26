@@ -35,14 +35,13 @@ export default (props) => {
     textShadow: textShadowStyles,
     filter: pin?.visited ? "grayscale(1)" : ""
   }
-  console.log(lightOrDark);
-  console.log(color)
+
   if(onMap && !highlighted && !pin.favorited) {
     //return <Pin />
     //return <img src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 
-  console.log("still render");
+
   
   return <div 
     className={`${styles.pin} ${styles[lightOrDark]} ${highlighted?styles.highlighted:""} ${className || ""} ${pin.favorited?styles.favorited:""}`}
