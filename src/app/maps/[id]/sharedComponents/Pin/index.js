@@ -38,7 +38,8 @@ export default (props) => {
   console.log(lightOrDark);
   console.log(color)
   if(onMap && !highlighted && !pin.favorited) {
-    return <img src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}`} />
+    return <Pin />
+    //return <img src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}`} />
   }
 
   console.log("still render");
