@@ -83,6 +83,8 @@ export default function PageClient({mapData,isMobile}){
     )
   } 
  */
+ const [inputVal,updateInputVal] = useState("");
+ return <div><input value={inputVal} onChange={(e)=>{updateInputVal(e.target.value)}}/></div>
   return<div className={styles.container}>
   <h1 className={`${styles.title} headline-style`}>
     <span className={styles.headlineIcon}>💏</span>
