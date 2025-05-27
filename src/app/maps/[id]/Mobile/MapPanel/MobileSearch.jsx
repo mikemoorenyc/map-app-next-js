@@ -168,8 +168,7 @@ export default () => {
             }}/>  }
 
         <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
-              {!focused && <div onClick={focusClick} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} > Search for a location</div>}
-               <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} value={inputVal} onChange={inputChange} type="text" style={!focused?{position:"absolute",left:-9999}:{}} placeholder="Search for a location"/>
+            <input value={inputVal} onChange={(e)=>{updateInputVal(e.target.value)}} />
 
       
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
@@ -218,3 +217,9 @@ export default () => {
               updateFocused(true); inputEl.current.focus(); 
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               */
+
+/*
+
+         {!focused && <div onClick={focusClick} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} > Search for a location</div>}
+               <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} value={inputVal} onChange={inputChange} type="text" style={!focused?{position:"absolute",left:-9999}:{}} placeholder="Search for a location"/>
+               */
