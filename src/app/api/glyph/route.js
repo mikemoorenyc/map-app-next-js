@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-export const contentType = 'image/png'
+//export const contentType = 'image/png'
 export async function GET(request,) {
 
 
@@ -11,7 +11,8 @@ export async function GET(request,) {
   const favorited = searchParams.get("favorited") == "true";
   const visited = searchParams.get("visited") == "true";
   const hasIcon = searchParams.get("hasIcon") == "true";
-  const size = parseInt(searchParams.get("w")) * 2;
+  const size = parseInt(searchParams.get("w")) ;
+  const fontSize = parseInt(searchParams.get("size"))
 
   const shadowColor = ld == "dark" ? "white" : "black"
   try {
@@ -23,8 +24,8 @@ export async function GET(request,) {
             alignItems: 'center',
             justifyContent: 'center',
             border:"1px solid black",
-            fontSize:16 * 2,
-            lineHeight:16 * 2,
+            fontSize:fontSize ,
+            lineHeight:16 ,
             fontWeight:600,
             borderRadius:"50%",
             boxShadow: "1px 1px 0 black",
@@ -39,9 +40,9 @@ export async function GET(request,) {
           <div
             style={{
              position:"relative",
-             left:-2, 
-             top:-2,
-             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
+             left:-1, 
+             top:-1,
+             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `1px 1px 0 black` : "none"
            }}
            >
             {icon}
@@ -49,8 +50,8 @@ export async function GET(request,) {
         </div>
       ),
       {
-        width: size + 2,
-        height:size + 2,
+        width: size + 1,
+        height:size + 1,
       }
     )
   } catch (e) {

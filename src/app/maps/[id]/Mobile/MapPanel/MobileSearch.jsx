@@ -115,7 +115,14 @@ export default () => {
 
   },[])
 
- 
+ const SearchInput = () => {
+
+  useEffect(()=> {
+    if(!inputEl) return ;
+    inputEl.current.focus(); 
+  },[inputEl])
+  return         <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
+ }
 
     return <>
     <style 
@@ -161,9 +168,10 @@ export default () => {
             }}/>  }
 
         <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
-              <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
-              updateFocused(true); inputEl.current.focus(); 
-              }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
+              {!focused && <div onClick={()=>{updateFocused(true)}} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} > Search for a location</div>}
+              {focused && <SearchInput />}  
+
+      
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
               {(focused && inputVal) && <Button onClick={e => {
                 e.preventDefault(); 
@@ -203,3 +211,10 @@ export default () => {
     </>
 }
 //<TextInput placeholder={"Search for a location"} onFocus={(e)=>{console.log(e)}} type={"text"} ref={inputEl}  className={`flex-1`}/>
+
+
+/*
+        <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
+              updateFocused(true); inputEl.current.focus(); 
+              }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
+              */
