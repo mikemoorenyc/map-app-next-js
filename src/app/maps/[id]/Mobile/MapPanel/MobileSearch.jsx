@@ -116,7 +116,10 @@ export default () => {
   },[])
 
  const focusClick = () => {
-  updateFocused(true); inputEl.current.focus()
+  updateFocused(true); 
+  setTimeout(()=> {
+    inputEl.current.focus()
+  },100)
  }
 
     return <>
