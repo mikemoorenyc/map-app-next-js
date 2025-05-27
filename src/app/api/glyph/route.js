@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-//export const contentType = 'image/png'
+export const contentType = 'image/png'
 export async function GET(request,) {
 
 
@@ -11,7 +11,7 @@ export async function GET(request,) {
   const favorited = searchParams.get("favorited") == "true";
   const visited = searchParams.get("visited") == "true";
   const hasIcon = searchParams.get("hasIcon") == "true";
-  const size = parseInt(searchParams.get("w")) ;
+  const size = parseInt(searchParams.get("w")) * 1;
   const fontSize = parseInt(searchParams.get("size"))
 
   const shadowColor = ld == "dark" ? "white" : "black"
@@ -24,8 +24,8 @@ export async function GET(request,) {
             alignItems: 'center',
             justifyContent: 'center',
             border:"1px solid black",
-            fontSize:fontSize ,
-            lineHeight:16 ,
+            fontSize:fontSize * 1,
+            lineHeight:fontSize * 1 ,
             fontWeight:600,
             borderRadius:"50%",
             boxShadow: "1px 1px 0 black",
