@@ -118,8 +118,9 @@ export default () => {
  const focusClick = () => {
   updateFocused(true); 
   setTimeout(()=> {
-    inputEl.current.focus()
+    
   },100)
+  inputEl.current.focus()
  }
 
     return <>
@@ -167,7 +168,7 @@ export default () => {
 
         <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
               {!focused && <div onClick={focusClick} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} > Search for a location</div>}
-               <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} value={inputVal} onChange={inputChange} type="text" style={!focused?{position:"absolute",left:-9999}:{}}placeholder="Search for a location"/>
+               <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
 
       
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
