@@ -162,7 +162,7 @@ export default () => {
 
         <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
               <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
-              updateFocused(true);
+              updateFocused(true); inputEl.current.focus(); 
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
               {(focused && inputVal) && <Button onClick={e => {

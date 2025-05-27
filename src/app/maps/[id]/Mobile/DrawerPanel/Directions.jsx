@@ -17,7 +17,7 @@ console.log(routes["DRIVING"]);
     {methods.map((m,i)=> {
       const r = routes[m];
       if(!r) return false; 
-      return <div className={styles.dirButton}> 
+      return <div keu={m} className={styles.dirButton}> 
         <span>{icons[i]}</span>
         <span>{r.value <= 3600 ? r.text: Math.floor(r.value/3600) + " hrs"}</span>
 
