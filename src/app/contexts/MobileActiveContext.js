@@ -12,7 +12,8 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     expandedLayers: [],
     backState: "base",
     inBounds: false,
-    geolocation: null
+    geolocation: null,
+    routes: null
    
   }
   const activeUpdater = (actives,action) => {
@@ -21,6 +22,13 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     switch(action.type) {
       case "UPDATE_GEOLOCATION": {
         return {...actives, ...{geolocation: action.geolocation}}
+      }
+      case "SET_ROUTES": {
+        if(action.reset == true) {
+          return {...actives, ...{routes:null}};
+        }
+        const newRoutes = {...actives.routes, ...action.updatedRoute};
+        return {...actives, ...{routes:newRoutes}}
       }
       case "UPDATE_INBOUNDS": {
         return {...actives, ...{inBounds: action.inBounds}}

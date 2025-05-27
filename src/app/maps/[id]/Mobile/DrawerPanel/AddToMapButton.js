@@ -13,7 +13,7 @@ export default function AddToMapButton() {
   if(!tempData) return ; 
   const {website,name,formatted_address,international_phone_number,url,geometry} = tempData
   const tempID = Date.now()
-console.log(layerData);
+
   const addPin = (e) => {
     e.preventDefault(); 
     const payload = {

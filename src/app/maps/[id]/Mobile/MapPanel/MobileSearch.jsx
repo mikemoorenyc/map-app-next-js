@@ -62,7 +62,7 @@ export default () => {
   },[increment,inputVal]);
 
   const itemClicked= (p) => {
-    
+    activeDispatch({type:"SET_ACTIVE_PIN",id:null})
     if(!p.new) {
       if(activePin == p.id) {
         reset();
@@ -85,6 +85,7 @@ export default () => {
    
     place.title = place.name;
     const pos = place.geometry.location.toJSON()
+    place.location = place.geometry.location.toJSON(); 
     mapCenterer(map, pos);
     updateMarkerPosition(pos);
     activeDispatch({type:"SET_ACTIVE_PIN",id:"temp"})
@@ -113,7 +114,7 @@ export default () => {
     }
 
   },[])
-  console.log(viewPortHeight);
+
  
 
     return <>

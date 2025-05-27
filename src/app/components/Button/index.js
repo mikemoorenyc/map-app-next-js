@@ -24,7 +24,7 @@ const Button = (props) => {
    
   }
   
-  console.log(isDisabled);
+
 
   const inner = <>
     {icon && <span className={`${styles.icon} ${!children? styles.noText : ""}`}>{icon}</span>}

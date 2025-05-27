@@ -11,11 +11,12 @@ import AddToMapButton from "./AddToMapButton";
 import { RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 
+
 const ContentPanel = ({pinId, $transform})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
-  const {geolocation,inBounds} = activeData;
-  
+  const {routes} = activeData;
+
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
   if(!pin) return;
@@ -40,14 +41,17 @@ const ContentPanel = ({pinId, $transform})=> {
       {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>}
- 
+      {routes && <Directions />}
       <div style={{marginTop:16}}>
         <LocationDetails placeData={pin} isMobile={true}/>
       </div>
     </div>
   </div>
+ 
 }
 export default ContentPanel; 
+
+//{geolocation && inBounds && <Directions pin={pin} />}
 
 
 /*

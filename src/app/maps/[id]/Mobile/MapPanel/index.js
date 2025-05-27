@@ -8,6 +8,7 @@ import Legend from "../Legend"
 import GeoLocation from "./GeoLocation"
 import Updater from "../../desktop/TopMenu/Updater"
 import styles from "../"
+import DirectionServicer from "./DirectionServicer"
 
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
@@ -59,6 +60,7 @@ const MapPanel = () => {
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
+      <DirectionServicer />
          <Legend />
     </Map>
     
