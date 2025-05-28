@@ -45,7 +45,7 @@ const MapPanel = () => {
   }
 
   
-  return <div className="mobile-app" style={{position:"absolute", width:"100%",height:"100vh"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
+  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <Map
       onClick={closeActive}
       mapId={mapStyleId}
