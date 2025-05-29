@@ -13,6 +13,8 @@ import { createPortal } from "react-dom"
 import DeleteModal from "../../_components/DeleteModal"
 import EditingModalHeader from "../../_components/EditingModalHeader"
 import Mover from "../../_components/Mover"
+import Button from "@/app/components/Button"
+import { RiDeleteBinLine } from "@remixicon/react"
 
 export default function EditPanel() {
   const {layerData, layerDispatch} = useContext(DataContext);
@@ -82,8 +84,9 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
 />
 
   <div className={styles.editPanelBody}>
+
   <TextField name={"title"} label={"Pin name"}>
-    <input onChange={(e)=>{e.preventDefault(); valueChanger(e.target.value,"title")}} value={pinState.title} className={styles.textFieldInput} type="text" name={"title"} id={"title"}/>
+    <input onChange={(e)=>{ valueChanger(e.target.value,"title")}} value={pinState.title} className={styles.textFieldInput} type="text" name={"title"} id={"title"}/>
   </TextField>
   <TextField name={"description"} label={"Description"} >
     <textarea id={"description"} name={"description"} rows={4} className={`${styles.textFieldInput} ${styles.textarea}`} value={pinState.description||""} onChange={(e)=> {e.preventDefault(); valueChanger(e.target.value,"description")}}/>
@@ -103,6 +106,9 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
   <TextField>
     <Mover id={pinData.id} arraySet={pinLayer.pins} type="pin" arrayId={pinLayer.id}/>
   </TextField>
+  <div className={`${styles.deleteButtonContainer} flex-center-center`}>
+    <Button onClick={e=>{e.preventDefault(); updateDeletePending(true)}} icon={<RiDeleteBinLine />} modifiers={["caution","secondary"]}>Delete pin</Button>
+  </div>
  
   
 

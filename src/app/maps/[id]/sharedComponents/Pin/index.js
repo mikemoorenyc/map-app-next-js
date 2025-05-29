@@ -1,7 +1,6 @@
 
 import styles from "./styles.module.css"
-import { Pin } from "@vis.gl/react-google-maps";
-import { Star } from "iconoir-react";
+
 
 export default (props) => {
   

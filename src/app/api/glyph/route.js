@@ -11,7 +11,7 @@ export async function GET(request,) {
   const favorited = searchParams.get("favorited") == "true";
   const visited = searchParams.get("visited") == "true";
   const hasIcon = searchParams.get("hasIcon") == "true";
-  const size = parseInt(searchParams.get("w")) * 1;
+  const size = parseInt(searchParams.get("w")) * 2;
   const fontSize = parseInt(searchParams.get("size"))
 
   const shadowColor = ld == "dark" ? "white" : "black"
@@ -24,8 +24,8 @@ export async function GET(request,) {
             alignItems: 'center',
             justifyContent: 'center',
             border:"1px solid black",
-            fontSize:fontSize * 1,
-            lineHeight:fontSize * 1 ,
+            fontSize:fontSize * 2,
+            lineHeight:fontSize * 2 ,
             fontWeight:600,
             borderRadius:"50%",
             boxShadow: "1px 1px 0 black",
@@ -40,9 +40,9 @@ export async function GET(request,) {
           <div
             style={{
              position:"relative",
-             left:-1, 
-             top:-1,
-             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `1px 1px 0 black` : "none"
+             left:-2, 
+             top:-2,
+             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
            }}
            >
             {icon}

@@ -3,20 +3,23 @@ import {  getAllMaps } from "./actions/maps";
 import { isMobile } from "./lib/isMobile";
 import { headers } from "next/headers";
 
+
 import PageClient from "./PageClient";
 
 const Page = async function() {
+  
   const h = await headers(); 
   const userAgent = h.get("user-agent") || "";
   const mobileCheck = isMobile(userAgent);
   let initMapData = await getAllMaps(); 
+
   return <PageClient mapData={initMapData} isMobile={mobileCheck} />
 }
 
 export default Page 
 
 /*
-
+<PageClient mapData={initMapData} isMobile={mobileCheck} />
 <div className={`${styles.container}`}>
   <h1 className={`${styles.title}`}>💏 Mike & Danielle's Map App</h1>
   <h2 className={`${styles.warning}`}>❌NO ONE ELSE ALLOWED❌</h2>

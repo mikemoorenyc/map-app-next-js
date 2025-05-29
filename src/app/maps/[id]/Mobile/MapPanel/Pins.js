@@ -10,6 +10,7 @@ const Pins = ({showPins}) => {
   const {layerData} = useContext(DataContext);
   const [firstLoad,updateFirstLoad] = useState(false);
   const pinsFlat = useMemo(()=>layerData.map(l => l.pins).flat(),[layerData])
+//  const [pins,updatePins] = useState(pinsFlat);
 
   useEffect(()=> {
     if(!map || !pinsFlat.length) return ;
@@ -22,7 +23,16 @@ const Pins = ({showPins}) => {
     })
     map.fitBounds(bounds, 1
     );
-
+/*
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      updatePins(prev => {
+        return pinsFlat.filter(p=> {
+          return map.getBounds().contains(new google.maps.LatLng(p.location.lat,p.location.lng))
+        })
+      })
+    
+    });
+*/
   
     
 

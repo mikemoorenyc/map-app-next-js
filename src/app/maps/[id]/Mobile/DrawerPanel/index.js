@@ -3,12 +3,13 @@ import { useContext } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import Button from "@/app/components/Button";
-import { List } from "iconoir-react";
+
 import ContentPanel from "./ContentPanel";
 import DrawerPanelHeader from "./DrawerPanelHeader";
 import { useSwipeable } from "react-swipeable";
 import styles from "./styles.module.css";
 import EditPanel from "./EditPanel";
+import { RiListUnordered } from "@remixicon/react";
 
 const DrawerPanel = () => {
   const {pageTitle} = useContext(DataContext)
@@ -32,8 +33,8 @@ const DrawerPanel = () => {
   }
   const isEditing = drawerState == "editing"
   
-  const handlers = useSwipeable({
-    onSwipedDown: (e) => {
+  const handlers =   useSwipeable({
+    onSwipedDown: isEditing ? undefined : (e) => {
       if(isEditing) return;
       if(drawerState == "minimized" ) return ; 
      
@@ -47,7 +48,7 @@ const DrawerPanel = () => {
       ;
 
     },
-    onSwipedUp : (e) => {
+    onSwipedUp : isEditing ? undefined : (e) => {
       if(!activePin || isEditing) return ; 
       if(drawerState == "maximized") return ;
     
@@ -66,7 +67,7 @@ const DrawerPanel = () => {
   
   return <div id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`} {...handlers}   style={transformPosition}>
     {isEditing && <EditPanel />}
-    {(!activePin && isEditing == false)&& <DrawerPanelHeader title={pageTitle} after={<Button icon={<List className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
+    {(!activePin && isEditing == false)&& <DrawerPanelHeader title={pageTitle} after={<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
     {(activePin && isEditing == false )&& <ContentPanel $transform={transform} pinId={activePin}/>}
   </div>
 }

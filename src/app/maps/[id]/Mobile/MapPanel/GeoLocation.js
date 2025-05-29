@@ -80,12 +80,13 @@ export default () => {
 
   },[map,geolocation])
   
-  
+  const dCheck = typeof DeviceOrientationEvent;
+  console.log(dCheck); 
 
  //
 
   return <>
-  { (DeviceOrientationEvent.requestPermission && heading === 0) &&<Button onClick={setUpCompass} style={{position:"fixed", right: 24, top: 78} } modifiers={["sm","icon","secondary","round"]}>
+  { (dCheck !== "undefined" && heading === 0) &&<Button className={"compass-icon"} onClick={setUpCompass} style={{position:"fixed", right: 24, top: 78} } modifiers={["sm","icon","secondary","round"]}>
   <RiCompass3Line/>
   </Button>}
   {geolocation && <AdvancedMarker position={geolocation}>

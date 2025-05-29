@@ -15,7 +15,7 @@ export default function PageClient({mapData,isMobile}){
   const activeStart = mapData.filter(m => !m.isArchived);
   const archiveStart = mapData.filter(m => m.isArchived);
   const sortedMaps = [...activeStart,...archiveStart];
-  console.log(sortedMaps);
+  
 
  
   const [deleteConfirmOpen,updateDeleteConfirmationOpen] = useState(false)
@@ -34,23 +34,7 @@ export default function PageClient({mapData,isMobile}){
     delete: (mapId) => {deleteMap(mapId,mapList,updateMapList)},
     move: (mapId,direction) => {moveMap(mapId,direction,mapList,updateMapList)}
   }
-  const archiver = async(id,isArchived) => {
-    updateMapList(prev => {
-      return prev.map(m => {
-        if(m.id === id) {
-          return {...m, ...{isArchived:isArchived}}
-        }
-        return m; 
-      })
-    })
-    const mapArchived = await archiveMap(id,isArchived);
-    if(!mapArchived) {
-      alert("Couldn't unarchive");
-      return ; 
-    }
-    const updatedMapList = await getAllMaps();
-    updateMapList(updatedMapList);
-  }
+ 
   const activeMaps = mapList.filter(m => !m.isArchived); 
   const archiveMaps = mapList.filter(m => m.isArchived);
 
@@ -83,9 +67,9 @@ export default function PageClient({mapData,isMobile}){
     )
   } 
  */
- const [inputVal,updateInputVal] = useState("");
- return <div><input value={inputVal} onChange={(e)=>{updateInputVal(e.target.value)}}/></div>
+
   return<div className={styles.container}>
+
   <h1 className={`${styles.title} headline-style`}>
     <span className={styles.headlineIcon}>💏</span>
     Mike & Danielle&rsquo;s <br/>

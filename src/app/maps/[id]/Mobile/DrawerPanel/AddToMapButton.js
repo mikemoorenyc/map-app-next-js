@@ -2,7 +2,7 @@ import Button from "@/app/components/Button";
 import { useContext } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import { MapPinPlus } from "iconoir-react";
+
 import { RiMapPinAddLine } from "@remixicon/react";
 
 export default function AddToMapButton() {

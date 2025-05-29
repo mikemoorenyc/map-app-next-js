@@ -6,13 +6,15 @@
   --padding: 16px;
 }
 .editPanelHeader {
-  padding: var(--gutter);
+  padding: 12px var(--gutter);
   border-bottom: 1px solid var(--screen-text);
+  justify-content: space-between
 }
 .editPanelBody {
   flex:1;
-  overflow:auto;
-  padding: var(--padding)
+  overflow:scroll;
+  padding: var(--padding);
+
 
 }
 .textFieldContainer {
@@ -52,11 +54,6 @@
 .deleteButton {
   width: 100%; 
 }
-.saveButtonContainer {
-  position:fixed;
-  left: 0;
-  right: 0;
-  bottom: 48px;
-  display:flex;
-  justify-content:center;
+.deleteButtonContainer {
+  padding: var(--gutter); 
 }

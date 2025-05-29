@@ -2,8 +2,8 @@ import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import { useContext } from "react";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import DataContext from "@/app/contexts/DataContext";
-import { MapPin } from "iconoir-react";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
+
+import { Marker } from "@vis.gl/react-google-maps";
 
 export default function ModernTempMarker() {
   const {infoWindowState} = useContext(InfoWindowContext)
@@ -23,11 +23,6 @@ export default function ModernTempMarker() {
     }
 
   return <>
-  {position && <AdvancedMarker position={position}>
-    <div>
-      <MapPin  color={foregroundColor} width={36} height={36} fill={activeColor}/>
-    </div>
-  
-  </AdvancedMarker>}
+  {position && <Marker position={position}/>}
   </>
 }

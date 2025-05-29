@@ -54,7 +54,8 @@ const MapPanel = () => {
       defaultCenter={{lat: 22.54992, lng: 0}}
       gestureHandling={'greedy'}
       disableDefaultUI={true}
-      style={{width: '100%', height: '100%',position:"absolute"}}
+      style={{inset:0,position:"absolute"}}
+      id={"mobile-map"}
     >
   <Pins  />
   <MobileSearch />

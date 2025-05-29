@@ -1,5 +1,6 @@
-import { Check } from "iconoir-react"
+
 import styles from "./Switch.module.css"
+import { RiCheckLine } from "@remixicon/react";
 
 export default function Switch({on,valueKey,label,valueChanger}) {
   const changeState = (e) => {
@@ -11,7 +12,7 @@ export default function Switch({on,valueKey,label,valueChanger}) {
     <div className={`${styles.label} flex-1`}>{label}</div>
     <div className={`${styles.switch} border-1 ${onClass}`} >
       <div className={`${styles.nub} border-1 ${onClass} flex-center-center`} > 
-      {on && <Check width={14} height={14} />}
+      {on && <RiCheckLine width={14} height={14} />}
       </div>
     </div>
   </button>

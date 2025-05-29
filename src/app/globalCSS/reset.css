@@ -45,7 +45,7 @@ table {
 	border-spacing: 0;
 }
 *:focus,*:focus-visible,*:focus-within {
-	outline: 0;
+	outline: 0; 
 }
 button {
 	background: none;

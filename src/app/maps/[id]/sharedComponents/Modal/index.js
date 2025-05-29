@@ -1,8 +1,7 @@
 'use client'
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css"
-import Button from "@/app/components/Button";
-import { Xmark } from "iconoir-react";
+
 import { useEffect } from "react";
 
 

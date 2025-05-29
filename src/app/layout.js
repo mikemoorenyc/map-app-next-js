@@ -11,7 +11,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false,
+  
   // Also supported by less commonly used
   // interactiveWidget: 'resizes-visual',
 }
@@ -34,8 +34,11 @@ export const metadata = {
   }  
 
 };
-  
+
+
 export default async function RootLayout({ children }) {
+
+  
   
   return (
     <html lang="en" className={`${inter.variable} ${sofiaSans.variable}`}>

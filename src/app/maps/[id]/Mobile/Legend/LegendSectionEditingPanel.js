@@ -4,7 +4,7 @@ import styles from "./styles.module.css"
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
 import EditingModalHeader from "../_components/EditingModalHeader"
 import TextField from "../DrawerPanel/EditPanel/TextField"
-import { FillColorSolid } from "iconoir-react"
+
 import lightOrDark from "@/app/lib/lightOrDark"
 import DataContext from "@/app/contexts/DataContext"
 import DeleteModal from "../_components/DeleteModal"
@@ -12,6 +12,7 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Mover from "../_components/Mover"
 import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
+import { RiPaintFill } from "@remixicon/react"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   const [tempData,updateTempData] = useState(layerData);
@@ -101,7 +102,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
               <div className={styles.layerColorPickerIcon} style={{backgroundColor:tempData.color}}>
                
               </div>
-              <Button modifiers={['secondary']} icon={<FillColorSolid />} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
+              <Button modifiers={['secondary']} icon={<RiPaintFill/>} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
               {colorPickerOpen &&<>
               {createPortal(<div className="flex-center-center" style={{
                 background: "var(--screen-bg)",

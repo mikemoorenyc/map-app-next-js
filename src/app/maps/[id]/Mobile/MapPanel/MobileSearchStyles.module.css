@@ -22,7 +22,8 @@
   margin-left: 8px; 
   border-radius: 500px;
   color: var(--screen-black);
-  padding-right: 4px
+  padding-right: 4px;
+  position:relative; 
 }
 
 .searchStarter {
