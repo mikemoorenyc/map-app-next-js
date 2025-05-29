@@ -42,6 +42,19 @@ export default (props) => {
     background={color}
     borderColor="b"
     />*/
+    
+    const imgURL = `/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`
+    const sizing = pin.favorited ? dim * 1.3 : dim+1;
+    /*return <Pin 
+      glyph={icon}
+      background={color}
+    />
+    return <div style={{
+      width: sizing,
+      height: sizing,
+
+    }}
+    >{icon}</div>*/
     return <img width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 

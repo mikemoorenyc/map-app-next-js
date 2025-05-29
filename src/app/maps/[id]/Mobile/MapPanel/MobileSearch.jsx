@@ -141,10 +141,10 @@ export default () => {
     />
     
      
-    {!activeData.legendOpen && createPortal(<><div style={{
+    {true && createPortal(<><div style={{
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
-      transform: ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
+      transform: activeData.legendOpen || ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
       position:"fixed", 
       left: 0, 
       top:focused?0:20,

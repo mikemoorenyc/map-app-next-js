@@ -15,7 +15,7 @@ export async function GET(request,) {
   const fontSize = parseInt(searchParams.get("size"))
   
 
-
+  const emojiType = "fluent";
   const shadowColor = ld == "dark" ? "white" : "black";
   const favoritedSize = size * 1.3;
   const isLight = ld == "light";
@@ -48,7 +48,9 @@ export async function GET(request,) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    lineHeight:1
+    lineHeight:1,
+    textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
+   
   }}
   
   
@@ -57,7 +59,7 @@ export async function GET(request,) {
     
     </div>
   ),
-  {width: favoritedSize,height:favoritedSize}
+  {width: favoritedSize,height:favoritedSize, emoji: "noto"}
   )
 
   const PlainIcon = new ImageResponse(
@@ -85,6 +87,7 @@ export async function GET(request,) {
             style={{
              position:"relative",
              left:-2, 
+           
              top:-2,
              textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
            }}
@@ -96,6 +99,7 @@ export async function GET(request,) {
       {
         width: size + 1,
         height:size + 1,
+        emoji: emojiType
       }
     )
   try {

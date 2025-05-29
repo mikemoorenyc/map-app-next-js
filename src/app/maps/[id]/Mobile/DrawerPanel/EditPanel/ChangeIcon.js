@@ -51,6 +51,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
           maxFrequentRows={1}
           previewPosition={"none"} 
           onClickOutside={()=>{;updateIconSelectorOpen(false)}}
+          
           /></div>
     </div>
     , document.getElementById("portal-container")
