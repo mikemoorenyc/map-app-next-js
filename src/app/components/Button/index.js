@@ -13,7 +13,7 @@ const Button = (props) => {
   if(isDisabled && modifiers.includes("secondary")) {
     disabledClass = "stripes-text-on-transparent"
   }
-
+  
   const classString = `${utilStyles["flex-center"]} ${styles.button} ${modifiers.map(m=>styles[m]).join(" ")} ${className} ${disabledClass}`
   const attributes = {
     href : href,

@@ -42,7 +42,7 @@
   line-height: 1.4;
 }
 .textFieldInput:focus {
-  box-shadow: inset 0px -2px 0 white; 
+  box-shadow: inset 0px -2px 0 var(--screen-text); 
 
 }
 .deleteQuestion {

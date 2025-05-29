@@ -16,7 +16,7 @@ import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
 
 
 export default () => {
-  const prevent = usePreventScroll()
+
   //query,updatePredictionResults,predictionChoiceCallBack,predictionChoice
   const [queryVal,updateQueryVal] = useState("")
   const [predictionResults,updatePredictionResults] = useState([]);
@@ -163,7 +163,7 @@ export default () => {
         
 
       <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
-              updateFocused(true); setTimeout(()=>{inputEl.current.focus(); inputEl.current.value = inputVal+" " },0)
+              updateFocused(true); 
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
               {(focused && inputVal) && <Button onClick={e => {
@@ -179,7 +179,7 @@ export default () => {
               modifiers={['ghost','icon']}
                className={`${styles.xButton} flex-center`}/>}
 
-               {!focused && <div style={{position:"absolute",inset:0,cursor:"pointer",background:"transparent"}} onClick={()=>{inputEl.current.focus()}}/>}
+             
             </div>
       </div>
      {focused && <SearchDropDown itemClicked={itemClicked} results={resultsFormatted} />}
