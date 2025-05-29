@@ -33,6 +33,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
         layer={layer}
         interactable={false}
         size={20}
+        onMap={true}
       />
     </div>
 
@@ -41,7 +42,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
       <div className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
           data={async () => {
     const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/@emoji-mart/data',
+      'https://cdn.jsdelivr.net/npm/@emoji-mart/data/sets/15/twitter.json',
     )
 
     return response.json()
@@ -51,7 +52,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
           maxFrequentRows={1}
           previewPosition={"none"} 
           onClickOutside={()=>{;updateIconSelectorOpen(false)}}
-          
+          set={"twitter"}
           /></div>
     </div>
     , document.getElementById("portal-container")

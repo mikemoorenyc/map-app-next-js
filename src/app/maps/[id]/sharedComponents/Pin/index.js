@@ -35,7 +35,7 @@ export default (props) => {
     filter: pin?.visited ? "grayscale(1)" : ""
   }
 
-  if(onMap && (!highlighted)) {
+  if(onMap ) {
     /*return <Pin 
     glyph={icon}
     scale={.8}
@@ -55,7 +55,7 @@ export default (props) => {
 
     }}
     >{icon}</div>*/
-    return <img width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
+    return <img className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 
 

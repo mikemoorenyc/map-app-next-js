@@ -17,9 +17,13 @@
   color:black;
   border-color: black;
 }
-.pin.highlighted {
+.highlighted {
   transform: scale(1.2);
+  
+}
+.highlighted:not(.favorited) {
   box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+  border-radius:50%
 }
 .favoriteStar {
   position:absolute;

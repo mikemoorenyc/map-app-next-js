@@ -1,7 +1,7 @@
+import { constant } from 'lodash'
 import { ImageResponse } from 'next/og'
 export const contentType = 'image/png'
 export async function GET(request,) {
-
 
  
   const {searchParams} = request.nextUrl
@@ -15,7 +15,7 @@ export async function GET(request,) {
   const fontSize = parseInt(searchParams.get("size"))
   
 
-  const emojiType = "fluent";
+
   const shadowColor = ld == "dark" ? "white" : "black";
   const favoritedSize = size * 1.3;
   const isLight = ld == "light";
@@ -59,7 +59,7 @@ export async function GET(request,) {
     
     </div>
   ),
-  {width: favoritedSize,height:favoritedSize, emoji: "noto"}
+  {width: favoritedSize,height:favoritedSize}
   )
 
   const PlainIcon = new ImageResponse(
@@ -99,7 +99,7 @@ export async function GET(request,) {
       {
         width: size + 1,
         height:size + 1,
-        emoji: emojiType
+
       }
     )
   try {
