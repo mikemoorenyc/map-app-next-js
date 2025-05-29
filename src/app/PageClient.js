@@ -2,9 +2,8 @@
 import styles from "./page.module.css"
 
 import {useState} from "react"
-import DeleteConfirmationModal from "./components/DeleteConfirmationModal"
-import Modal from "./maps/[id]/sharedComponents/Modal"
-import { getAllMaps } from "./actions/maps"
+
+import { mapSort } from "./lib/sortMaps"
 
 import ActiveCard from "./_homepageComponents/ActiveCard/ActiveCard"
 import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
@@ -12,31 +11,25 @@ import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 
 export default function PageClient({mapData,isMobile}){
-  const activeStart = mapData.filter(m => !m.isArchived);
-  const archiveStart = mapData.filter(m => m.isArchived);
-  const sortedMaps = [...activeStart,...archiveStart];
+
   
 
  
-  const [deleteConfirmOpen,updateDeleteConfirmationOpen] = useState(false)
+ 
   const [deleteId,updateDeleteId] = useState(null)
 
-  const [mapList,updateMapList] = useState(sortedMaps);
-  const deleteClick = async (id) => {
-    const deletedMap = await deleteMap(deleteId);
-    updateDeleteConfirmationOpen(false);
-    updateDeleteId(null);
-    updateMapList(deletedMap);
+  const [mapList,updateMapList] = useState(mapSort(mapData));
 
+  const updater = (map) => {
+     updateMapList(mapSort(map));
   }
   const actions = {
-    archive: (mapId,toArchive) => { archiveMap(mapId,toArchive,updateMapList,mapList)},
-    delete: (mapId) => {deleteMap(mapId,mapList,updateMapList)},
-    move: (mapId,direction) => {moveMap(mapId,direction,mapList,updateMapList)}
+    archive: (mapId,toArchive) => { archiveMap(mapId,toArchive,updater,mapList.all)},
+    delete: (mapId) => {deleteMap(mapId,mapList.all,updater)},
+    move: (mapId,direction) => {moveMap(mapId,direction,mapList,updater)}
   }
  
-  const activeMaps = mapList.filter(m => !m.isArchived); 
-  const archiveMaps = mapList.filter(m => m.isArchived);
+
 
 /*
   const MapItem = ({m}) => {
@@ -80,17 +73,17 @@ export default function PageClient({mapData,isMobile}){
     <div className={styles.activeMapContainer}>
 
       <ul className={`${styles.activeMapList} list-style-none`}>
-        {activeMaps.map((m,i)=>(
-         <li key={m.id}> <ActiveCard actions={actions} top={i===0} bottom={i == activeMaps.length - 1} appMap={m} /></li>
+        {mapList.active.map((m,i)=>(
+         <li key={m.id}> <ActiveCard actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
 
         ))}
       </ul>
         
     </div>
-    {archiveMaps.length ? <div>
+    {mapList.archived.length ? <div>
     <h4 className={`headline-style ${styles.archiveHeader}`} >Archived Maps</h4>
     <ul className={`${styles.archiveList} list-style-none`}>
-    {archiveMaps.map(m=> {
+    {mapList.archived.map(m=> {
       return <li key={m.id}><ArchiveItem actions={actions} appMap={m} /></li>
     })}
     </ul>
@@ -100,14 +93,7 @@ export default function PageClient({mapData,isMobile}){
   </div>
   <AddMapButton />
   
-  {deleteConfirmOpen && <Modal header={"Delete Map"} closeEvent={()=>{updateDeleteConfirmationOpen(false)}}>
-    <DeleteConfirmationModal 
-      title={'Are you sure you want to delete this map? All data will be lost'}
-      cancelClick={(e)=>{e.preventDefault(); updateDeleteConfirmationOpen(false)}}
-      deleteClick={(e)=>{e.preventDefault(); deleteClick()}}
 
-    />
-  </Modal>}
   </div>
 }
 

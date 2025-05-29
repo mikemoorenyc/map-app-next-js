@@ -32,7 +32,7 @@ export default  ({pin, active}) => {
     const lightOrDark = layer?.lightOrDark;
     return <Marker onClick={markerClicked} position={pin.location} icon={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${13}&w=${24}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`}/>
   }*/
-  return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || pin.favorited ? 999999 : null}>
+  return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || (pin.favorited && !pin.visited) ? 999999 : null}>
     <Pin windowOpen={false} onMap={true} interactable={true} imgSize={26} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
   </AdvancedMarker>
   

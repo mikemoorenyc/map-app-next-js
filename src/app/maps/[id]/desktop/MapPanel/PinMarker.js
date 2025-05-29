@@ -17,8 +17,10 @@ const PinMarker = ({pId, onMap}) => {
     if(!pin) return ; 
     const layer = findLayer(layerData, pin.layerId);
     const {location,viewport} = pin;
+    const {editingPin} = activeData;
     
     const handleClick = (e) => {
+        if(editingPin === pin.id) return ; 
         activeDispatch({
             type: "EDITING_PIN",
             id:pin.id
@@ -31,7 +33,7 @@ const PinMarker = ({pId, onMap}) => {
     const map = useMap(); 
     useEffect(()=> {
  
-        const {editingPin} = activeData;
+        
         //DO NOTHING NOT THE RIGHT PIN
         if(editingPin !== pin.id) return ;
         //INFO WINDOW ALREADY OPEN

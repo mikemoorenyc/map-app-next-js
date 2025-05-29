@@ -1,6 +1,6 @@
 
 import styles from "./styles.module.css"
-
+import { Pin } from "@vis.gl/react-google-maps";
 
 export default (props) => {
   
@@ -35,9 +35,14 @@ export default (props) => {
     filter: pin?.visited ? "grayscale(1)" : ""
   }
 
-  if(onMap && !highlighted && !pin.favorited) {
-    //return <Pin />
-    return <img width={dim+1} height={dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
+  if(onMap && (!highlighted)) {
+    /*return <Pin 
+    glyph={icon}
+    scale={.8}
+    background={color}
+    borderColor="b"
+    />*/
+    return <img width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 
 

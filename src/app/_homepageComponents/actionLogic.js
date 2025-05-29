@@ -1,4 +1,5 @@
 import { archiveMap as archiveMapsServer,deleteMap as deleteMapServer,getAllMaps } from "../actions/maps";
+import { reindexMap } from "../lib/sortMaps";
 export async function archiveMap(mapId, toArchive,updateFunction,mapData) {
   console.log(mapId);
   console.log(mapData);
@@ -69,12 +70,20 @@ export async function deleteMap(mapId,mapData,updateFunction) {
 }
 
 export async function moveMap(mapId, direction, mapData, updateFunction) {
-  const sortedMaps = [...mapData];
+  
+  const sortedMaps = [...mapData.active];
+  
+
 
   const currentIndex = sortedMaps.findIndex(m=>m.id==mapId)
   const itemToMove = sortedMaps.splice(currentIndex,1)[0];
   sortedMaps.splice(direction=="up"?currentIndex-1: currentIndex+1,0,itemToMove)
-  updateFunction([...sortedMaps]);
+  const ordered = sortedMaps.map((e,i) => {
+    return {...e, ...{order: i}}
+  })
+  console.log(ordered);
+  updateFunction([...ordered,...mapData.archived]);
+  
 
   //updateFunction([...sortedMaps]);
   /*const arrSplicer = (arr) => {

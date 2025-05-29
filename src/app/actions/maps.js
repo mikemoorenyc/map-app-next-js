@@ -2,7 +2,7 @@
 import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
 import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
-
+import { mapSort ,reindexMap} from "../lib/sortMaps";
 /*
 import { sql } from '@vercel/postgres';
 
@@ -26,6 +26,9 @@ export async function getMapData(id) {
 */
 
 const addMap = async function(mapName) {
+  const allMaps = await getAllMaps();
+  if(!allMaps) return false; 
+  const mapsSorted = mapSort(allMaps);
 
   const createddate = new Date().toLocaleString()
   const id = Date.now()
@@ -33,6 +36,7 @@ const addMap = async function(mapName) {
       TableName: "MapApp",
       Item: {
         id: id,
+        order: mapsSorted.active.length,
         created_at : createddate,
         modified_at: createddate,
         title: mapName ,
@@ -89,14 +93,20 @@ const getMap = async function(id) {
 }
 const archiveMap = async (id,toArchive) => {
   console.log(toArchive);
+  const allMaps = await getAllMaps(); 
+  if(!allMaps) return false; 
+  const mapsSorted = mapSort(allMaps);
+  const orderSort = toArchive ? mapsSorted.archived.length - 1 : mapsSorted.active.length - 1
   const command = {
     TableName: "MapApp",
     Key: {
-      id: id
+      id: id,
+   
     },
-    UpdateExpression:`set isArchived = :isArchived`,
+    UpdateExpression:`set isArchived = :isArchived, order = :order`,
     ExpressionAttributeValues: {
-      ":isArchived":toArchive
+      ":isArchived":toArchive,
+      ":order": orderSort
     },
     ReturnValues: "ALL_NEW"
   }
