@@ -41,16 +41,7 @@ export default function MenuButton ({mapData,modifiers,containerClasses,top,bott
       }}
     
      state={"caution"} icon={<RiDeleteBinLine />} mobile={isMobile}>Delete map</DropDownItem>
-    {top !== undefined && <DropDownItem
-      onClick={() => {
-        closeCallback(); 
-        actions.move(mapData.id, "up")
-      }}
-     icon={<RiArrowUpCircleLine />} state={top ? "disabled":undefined} mobile={isMobile}>Move up</DropDownItem>}
-    {bottom !== undefined && <DropDownItem onClick={()=> {
-      closeCallback(); 
-      actions.move(mapData.id,"down");
-    }} icon={<RiArrowDownCircleLine />}mobile={isMobile} state={bottom ? "disabled":undefined}>Move down</DropDownItem>}
+
   </>
 
   return <>
@@ -88,3 +79,19 @@ export default function MenuButton ({mapData,modifiers,containerClasses,top,bott
   
   </>
 }
+
+
+/*
+
+    {top !== undefined && <DropDownItem
+      onClick={() => {
+        closeCallback(); 
+        actions.move(mapData.id, "up")
+      }}
+     icon={<RiArrowUpCircleLine />} state={top ? "disabled":undefined} mobile={isMobile}>Move up</DropDownItem>}
+    {bottom !== undefined && <DropDownItem onClick={()=> {
+      closeCallback(); 
+      actions.move(mapData.id,"down");
+    }} icon={<RiArrowDownCircleLine />}mobile={isMobile} state={bottom ? "disabled":undefined}>Move down</DropDownItem>}
+
+*/
