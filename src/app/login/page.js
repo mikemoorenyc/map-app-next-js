@@ -1,7 +1,7 @@
-import { GoogleCircle } from "iconoir-react";
 import { auth,signIn,signOut } from "../auth"
 import Button from "../components/Button";
 import styles from "./page.module.css"
+import { RiGoogleLine } from "@remixicon/react";
 
 export default async function Page() {
  const session = await auth();
@@ -29,7 +29,7 @@ export default async function Page() {
         await signIn("google",{ redirectTo: "/" })
       }}
     >
-      <Button type={"submit"} icon={<GoogleCircle />}>Sign in with Google</Button>
+      <Button type={"submit"} icon={<RiGoogleLine/>}>Sign in with Google</Button>
     </form></div>}
     
   
