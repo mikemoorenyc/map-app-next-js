@@ -11,7 +11,6 @@ const Mobile = ({mapData}) => {
 return (
 <DataContextProvider mapData={mapData}>
 <MobileActiveContextProvider mapData={mapData}>
-
 <MapPanel />
 <DrawerPanel />
 <style jsx global>{`
@@ -51,3 +50,9 @@ body {
 }
 
 export default Mobile; 
+
+/*
+
+
+
+*/
