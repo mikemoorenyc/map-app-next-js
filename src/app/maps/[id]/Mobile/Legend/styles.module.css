@@ -41,13 +41,19 @@ font-weight: 700;
 opacity: .5;
 pointer-events: none;
 }
-
+.pinIcon.favorited {
+  position:relative;
+  margin-left: -2px; 
+}
 
 
 .pinName {
   margin-left: 4px;
     line-height: 1.4;
     font-size: 14px;
+}
+.pinName.favorited {
+  margin-left: 2px; 
 }
 
 

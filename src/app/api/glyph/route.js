@@ -49,7 +49,7 @@ export async function GET(request,) {
     alignItems: "center",
     justifyContent: "center",
     lineHeight:1,
-    textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
+    textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black, -2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black` : "none"
    
   }}
   
@@ -68,10 +68,11 @@ export async function GET(request,) {
           style={{
             display: 'flex',
             alignItems: 'center',
+            
             justifyContent: 'center',
             border:"1px solid black",
-            fontSize:fontSize * 2,
-            lineHeight:fontSize * 2 ,
+            fontSize:fontSize * 1.85,
+            lineHeight:`${size}px` ,
             fontWeight:600,
             borderRadius:"50%",
             boxShadow: "1px 1px 0 black",
@@ -85,11 +86,12 @@ export async function GET(request,) {
         >
           <div
             style={{
+            
              position:"relative",
-             left:-2, 
-           
-             top:-2,
-             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black` : "none"
+       
+             textAlign: "center",
+             lineHeight: 1,
+             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black, -2px -2px 0 black, -2px 2px 0 black, 2px -2px 0 black` : "none"
            }}
            >
             {icon}
@@ -97,8 +99,8 @@ export async function GET(request,) {
         </div>
       ),
       {
-        width: size + 1,
-        height:size + 1,
+        width: size + 2,
+        height:size + 2,
 
       }
     )
