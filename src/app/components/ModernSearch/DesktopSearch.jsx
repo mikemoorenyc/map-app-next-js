@@ -99,7 +99,7 @@ export default function DesktopSearch({clickEvent}) {
       type: "EDITING_PIN", 
       id: null,
     })
-    mapMover(map, placeDetails.geometry.location.toJSON(),placeDetails.geometry.viewport.toJSON())
+    mapMover(map, placeDetails.geometry.location.toJSON())
     infoWindowDispatch({
       type: "OPEN_WINDOW",
       anchor: null,

@@ -50,7 +50,7 @@ const PinMarker = ({pId, onMap}) => {
                 }
             
             })
-            mapMover(map,location,viewport);
+            mapMover(map,location);
            
 
     },[activeData.editingPin])

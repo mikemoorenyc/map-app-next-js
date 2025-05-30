@@ -85,7 +85,7 @@ const SearchBar =  ({clickEvent}) => {
         updatePlaceData(place)
        // updateInfoWindowShown(open);
         if(open) {
-            mapMover(map, data.location,place.viewport)
+            mapMover(map, data.location)
         }
     }
     useEffect(()=> {

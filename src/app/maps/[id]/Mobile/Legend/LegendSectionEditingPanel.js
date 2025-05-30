@@ -132,7 +132,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
             <Mover type="layer" arraySet={dataC.layerData} id={layerData.id} arrayId={layerData.id}/>
           </TextField>
           
-          {dataC.layerData.length > 1 && <div className={`${styles.legendEditDelete} flex-center-center`}>
+          {dataC.layerData.length > 1 && <div  className={`${styles.legendEditDelete} flex-center-center`}>
             <Button modifiers={["caution","secondary","sm"]} icon={<RiDeleteBinLine/>} onClick={(e) => {
       
               e.preventDefault(); 
