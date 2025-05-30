@@ -1,5 +1,5 @@
 'use client'
-import { useContext ,useEffect,useState} from "react"
+import { act, useContext ,useEffect,useState} from "react"
 import { APIProvider, Map } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
 import MobileSearch from "./MobileSearch"
@@ -15,18 +15,25 @@ const MapPanel = () => {
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const {activeDispatch} = useContext(MobileActiveContext)
   const [mapStyleId,updateMapStyleId] = useState(darkModeId);
-
+  const changeColor = (color,id) => {
+    updateMapStyleId(id);
+    activeDispatch({
+          type:"UPDATE_COLOR_MODE",
+          colorMode: color
+        })
+  }
   useEffect(()=> {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    updateMapStyleId(darkModeId);
+    changeColor("dark",darkModeId)
     } else {
-      updateMapStyleId(lightModeId);
+      changeColor("light",lightModeId);
     }
     const changeMode = (event) => {
       if(event.matches) {
-        updateMapStyleId(darkModeId);
+        changeColor("dark",darkModeId)
+        
       } else {
-        updateMapStyleId(lightModeId);
+        changeColor("light",darkModeId);
       }
     }
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeMode);

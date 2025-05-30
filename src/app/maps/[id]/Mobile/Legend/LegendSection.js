@@ -73,7 +73,7 @@ const LegendSection = ({layer}) => {
         {pins.map(pin=> {
           const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
           return <div className={`${classString } flex-center`} key={pin.id} onClick={()=>{activatePin(pin)}}  >
-          <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""}`}> 
+          <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""} flex-center-center`}> 
             <Pin pin={pin} mobile={true} onMap={true} layer={layer} layerData={mapData}/>
           </div>
           <div className={`${styles.pinName} ${pin.favorited?styles.favorited:""} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>

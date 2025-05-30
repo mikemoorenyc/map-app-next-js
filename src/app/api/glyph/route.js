@@ -1,4 +1,4 @@
-import { constant } from 'lodash'
+
 import { ImageResponse } from 'next/og'
 export const contentType = 'image/png'
 export async function GET(request,) {
@@ -15,10 +15,11 @@ export async function GET(request,) {
   const fontSize = parseInt(searchParams.get("size"))
   
 
-
+  
   const shadowColor = ld == "dark" ? "white" : "black";
   const favoritedSize = size * 1.3;
   const isLight = ld == "light";
+  const textShadow = hasIcon || (!hasIcon && ld=="dark") ? `1px 1px 0 ${shadowColor}, -1px 1px 0 ${shadowColor}, -1px -1px 0 ${shadowColor}, 1px -1px 0 ${shadowColor}` : "none"
   const FavoritedIcon = new ImageResponse((
     <div
       style={{
@@ -49,7 +50,7 @@ export async function GET(request,) {
     alignItems: "center",
     justifyContent: "center",
     lineHeight:1,
-    textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black, -2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black` : "none"
+    textShadow: textShadow
    
   }}
   
@@ -91,7 +92,7 @@ export async function GET(request,) {
        
              textAlign: "center",
              lineHeight: 1,
-             textShadow: hasIcon || (!hasIcon && ld=="dark") ? `2px 2px 0 black, -2px -2px 0 black, -2px 2px 0 black, 2px -2px 0 black` : "none"
+             textShadow: textShadow
            }}
            >
             {icon}

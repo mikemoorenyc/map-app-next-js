@@ -4,7 +4,8 @@ import styles from "./styles.module.css"
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
 import EditingModalHeader from "../_components/EditingModalHeader"
 import TextField from "../DrawerPanel/EditPanel/TextField"
-
+import Modal from "../../sharedComponents/Modal"
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 import lightOrDark from "@/app/lib/lightOrDark"
 import DataContext from "@/app/contexts/DataContext"
 import DeleteModal from "../_components/DeleteModal"
@@ -12,7 +13,7 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Mover from "../_components/Mover"
 import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
-import { RiPaintFill } from "@remixicon/react"
+import { RiDeleteBinLine, RiPaintFill } from "@remixicon/react"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   const [tempData,updateTempData] = useState(layerData);
@@ -21,6 +22,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
   const dataC = useContext(DataContext)
   const {layerDispatch} = dataC;
   const [colorPickerOpen,updateColorPickerOpen]= useState(false);
+  const [deleteId,updateDeleteId] = useState(false)
   
 
   const valueChanger = (value,key) => {
@@ -41,7 +43,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
   const deleteLayer = useCallback((e) => {
     console.log("called");
     
-    e.preventDefault();
+
 
     if(dataC.layerData.length < 2) {
       alert("Must have at least one layer");
@@ -66,7 +68,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   return <>
   {createPortal(<>
-    {!deletePending && (
+    {true && (
 <div className={styles.editingSection}>
         <EditingModalHeader 
           cancelFunction={(e)=>{
@@ -129,18 +131,42 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
           <TextField>
             <Mover type="layer" arraySet={dataC.layerData} id={layerData.id} arrayId={layerData.id}/>
           </TextField>
+          
+          {dataC.layerData.length > 1 && <div className={`${styles.legendEditDelete} flex-center-center`}>
+            <Button modifiers={["caution","secondary","sm"]} icon={<RiDeleteBinLine/>} onClick={(e) => {
+      
+              e.preventDefault(); 
+              updateDeletePending(true);
+              updateDeleteId(layerData.id);
+            }}>
+             Delete layer 
+            </Button>
+          
+          </div>}
         </div> 
     </div>
 
 
     )}
-    {deletePending && <DeleteModal questionText={"Are you sure you want to delete this layer? All pins will be lost too!"}
-    cancelFunction={(e)=> {
-      e.preventDefault(); 
-      updateDeletePending(false)
-    }}
-    confirmFunction={deleteLayer}
-    />}
+    
   </>,document.getElementById("portal-container"))}
+
+
+  {deletePending && <Modal header={"Delete Map"} closeEvent={()=>{updateDeletePending(false); updateDeleteId(null)}}>
+    <DeleteConfirmationModal 
+      title={'Are you sure you want to delete this layer? All data will be lost'}
+      cancelClick={(e)=>{updateDeletePending(false); updateDeleteId(null)}}
+      deleteClick={(e)=>{
+          e.preventDefault(); 
+          updateDeleteId(null);
+          updateDeletePending(false);
+          cancelFunction(); 
+          deleteLayer();
+          
+      }}
+
+    />
+  </Modal>}
+
   </>
 }

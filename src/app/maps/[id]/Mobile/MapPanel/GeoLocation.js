@@ -81,7 +81,7 @@ export default () => {
   },[map,geolocation])
   
   const dCheck = typeof DeviceOrientationEvent;
-  console.log(dCheck); 
+ 
 
  //
 

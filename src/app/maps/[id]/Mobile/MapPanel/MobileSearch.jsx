@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState,useCallback, useMemo } from "react";
-import { AdvancedMarker, useMap} from "@vis.gl/react-google-maps";
+import { AdvancedMarker, useMap,Pin} from "@vis.gl/react-google-maps";
 import mapCenterer from "../lib/mapCenterer";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 
@@ -21,7 +21,7 @@ export default () => {
   const [queryVal,updateQueryVal] = useState("")
   const [predictionResults,updatePredictionResults] = useState([]);
   const {activeData,activeDispatch} = useContext(MobileActiveContext)
-  const {activePin,backState} = activeData;
+  const {activePin,colorMode} = activeData;
   const map = useMap(); 
   const inputEl = useRef(null);
   const [markerPosition, updateMarkerPosition] = useState(null);
@@ -37,8 +37,9 @@ export default () => {
     updateFocused(false)
     updateQueryVal("")
     updatePredictionResults([])
-
+   
   }
+
 
 
   const inputChange = useCallback((e) => {
@@ -62,8 +63,12 @@ export default () => {
   },[increment,inputVal]);
 
   const itemClicked= (p) => {
+    console.log("newchoice",p);
+    console.log("current",predictionChoice);
+  
     activeDispatch({type:"SET_ACTIVE_PIN",id:null})
     if(!p.new) {
+  
       if(activePin == p.id) {
         reset();
         return ; 
@@ -94,8 +99,7 @@ export default () => {
     activeDispatch({type:"BACK_STATE",state:"base"})
     reset(); 
   }
-  
- console.log()
+
 
     
   const resultsFormatted = useMemo(()=> {
@@ -144,11 +148,11 @@ export default () => {
     {true && createPortal(<><div style={{
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
-      transform: activeData.legendOpen || ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
+      transform:  ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : null,
       position:"fixed", 
       left: 0, 
       top:focused?0:20,
-     
+      visibility: activeData.legendOpen ? "hidden": undefined,
       height: focused?viewPortHeight : "auto",
       paddingTop: focused?20:0,
       display:focused?"flex":"block",
@@ -164,6 +168,7 @@ export default () => {
 
       <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
               updateFocused(true); 
+              updatePredictionChoice("");
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               {(!focused && !inputVal) && <Button onClick={()=>{inputEl.current.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
               {(focused && inputVal) && <Button onClick={e => {

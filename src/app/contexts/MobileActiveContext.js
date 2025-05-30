@@ -13,13 +13,17 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     backState: "base",
     inBounds: false,
     geolocation: null,
-    routes: null
+    routes: null,
+    colorMode: "light"
    
   }
   const activeUpdater = (actives,action) => {
 
 
     switch(action.type) {
+      case "UPDATE_COLOR_MODE": {
+        return {...actives, ...{colorMode:action.colorMode}}
+      }
       case "UPDATE_GEOLOCATION": {
         return {...actives, ...{geolocation: action.geolocation}}
       }

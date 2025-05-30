@@ -12,6 +12,7 @@ const Page = async function({params}) {
   const mobileCheck = isMobile(userAgent);
   const {id} = await params; 
   const map = await getMap(parseInt(id));
+  
   if(mobileCheck) {
     return <Mobile mapData={map} />
   } else {

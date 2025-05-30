@@ -1,5 +1,5 @@
 import FAButton from "@/app/components/FAButton/FAButton"
-import { RiAddCircleFill } from "@remixicon/react"
+import {RiMap2Line} from "@remixicon/react"
 import { addMap } from "@/app/actions/maps"
 import { redirect } from "next/navigation"
 
@@ -15,5 +15,5 @@ export default function() {
     }
     redirect(`/maps/${added.id}`)
   }
-  return <FAButton onClick={addClicked} icon={<RiAddCircleFill/>}>New map</FAButton>
+  return <FAButton onClick={addClicked} icon={<RiMap2Line/>}>New map</FAButton>
 }
