@@ -37,6 +37,7 @@ export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
           onEmojiSelect={emojiClicked}
           autoFocus={true}
           maxFrequentRows={1}
+          set={"twitter"}
           previewPosition={"none"} /></div>
       ,document.getElementById("portal-container")
     )}
