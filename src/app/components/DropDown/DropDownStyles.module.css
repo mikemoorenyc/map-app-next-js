@@ -5,6 +5,7 @@
   border:1px solid var(--screen-text);
   background: var(--screen-bg);
   box-shadow: 1px 1px 0 var(--screen-bg), 2px 2px 0 var(--screen-text);
+  z-index: 999;
 }
 
 .dropDownItem {

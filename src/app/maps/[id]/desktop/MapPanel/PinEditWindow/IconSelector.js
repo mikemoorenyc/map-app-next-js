@@ -1,5 +1,6 @@
 'use client'
 import Picker from "@emoji-mart/react";
+import { transform } from "lodash";
 import { createPortal } from 'react-dom';
 
 export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
@@ -15,7 +16,8 @@ export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
   
   const pos = {
     left: pickerAnchor.x,
-    top: pickerAnchor.y,
+    top: "50%",
+    transform:"translateY(-50%)",
     position:"fixed",
     
   }

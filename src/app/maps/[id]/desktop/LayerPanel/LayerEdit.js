@@ -8,9 +8,11 @@ import styles from "./LayerEdit.module.css"
 import ActionBar from "../../sharedComponents/ActionBar"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
+import DropDown from "@/app/components/DropDown/DropDown"
 
 
 const LayerEdit = () => {
+  
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {layerData, layerDispatch} = useContext(DataContext)
   const editingLayer = activeData.editingLayer
@@ -19,7 +21,7 @@ const LayerEdit = () => {
   const [tempLayerData, updateTempLayerData] = useState({title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
   const [deleteConfirmation, updateDeleteConfirmation] = useState(false)
   const [colorPickerOpen,updateColorPickerOpen] =useState(false);
-  const [colorPickerPosition,updateColorPickerPosition] = useState([0,0]);
+
   const colorPickerButtonRef = useRef(null)
   const saveData = (e) => {
     console.log(tempLayerData)
@@ -82,11 +84,7 @@ const LayerEdit = () => {
             return {...prev, ...payload}
         })
   }
-  const openColorPicker = () => {
-    console.log(colorPickerButtonRef.current.offsetLeft)
-    updateColorPickerPosition([colorPickerButtonRef.current.offsetLeft,colorPickerButtonRef.current.offsetTop]);
-    updateColorPickerOpen(true);
-  }
+
   const updateColor = (color) => {
     updateTempLayerData(prev => {
       const payload = {
@@ -110,22 +108,30 @@ const LayerEdit = () => {
             </div>
             <div className={`${styles.layerEditSection} flex-center`}  key={"color"}>
                 <label className={styles.sectionLabel}>Color</label>
-                <div className={styles.colorPickerContainer}>
-                    
-                    <div style={{background:tempLayerData.color}} className={styles.colorPickerMask}></div>
-                </div>
-                <div style={{marginLeft: 8}} ref={colorPickerButtonRef}><Button 
-                onClick={(e)=> {
-                  e.preventDefault();
-                  openColorPicker()
-                }}
+                <div  ref={colorPickerButtonRef} className={`flex-center`}>
+                  <button className={styles.colorPickerContainer} onClick={(e)=>{e.preventDefault(); updateColorPickerOpen(!colorPickerOpen)}}>
+                    <div style={{background:tempLayerData.color}} className={styles.colorPickerMask} />
+                  </button>
+                  <div style={{marginLeft: 8}} >
+                    <Button modifiers={["ghost"]}
+                      onClick={(e)=> {
+                        console.log("click");
+                        if(colorPickerOpen) return ; 
+                        updateColorPickerOpen(!colorPickerOpen);
+                      }}
+                    >
+                      Pick layer color
+                    </Button>
+
+                  </div>
+                </div>   
                 
-                >Pick layer color</Button></div>       
-                  
-            </div>
-           {colorPickerOpen && <div
-            style={{position:"fixed",left:colorPickerPosition[0],top:colorPickerPosition[1]}}
-           ><ColorPicker cancelCallback={()=> {
+                
+                    
+                
+                </div>   
+                {colorPickerOpen && <DropDown anchor={colorPickerButtonRef.current} dir={"left"} closeCallback={()=>{updateColorPickerOpen(false)}}>
+                  <ColorPicker cancelCallback={()=> {
             updateColorPickerOpen(false);
            }}
            currentColor={tempLayerData.color}
@@ -133,14 +139,20 @@ const LayerEdit = () => {
             updateColor(color);
            }}
            
-           /> </div> }
+           />
+                </DropDown>}    
+                  
+            
+          
       </div>
             <ActionBar 
             style={{marginTop: 16,borderTop:"1px solid var(--screen-text)"}}
             primaryButtons={(
               <>
-              <Button onClick={saveData} >Save layer</Button>
-              <Button onClick={cancelEdit} modifiers={["secondary"]}>Cancel</Button>
+              <div style={{display:"flex",justifyContent:"flex-end", width: "100%"}}>
+                <Button onClick={cancelEdit} modifiers={["secondary"]}>Cancel</Button>
+                <Button style={{marginLeft:8}} onClick={saveData} >Save layer</Button>
+              </div>
               </>
             )}
             secondaryButtons={layerData.length > 1 && (
@@ -160,3 +172,20 @@ const LayerEdit = () => {
 
 }
 export default LayerEdit
+
+
+/*
+
+ {colorPickerOpen && <div
+            style={{position:"fixed",left:colorPickerPosition[0],top:colorPickerPosition[1]}}
+           ><ColorPicker cancelCallback={()=> {
+            updateColorPickerOpen(false);
+           }}
+           currentColor={tempLayerData.color}
+           selectCallback={(color)=> {
+            updateColor(color);
+           }}
+           
+           /> </div> }
+
+           */

@@ -14,6 +14,7 @@ import Mover from "../_components/Mover"
 import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 import { RiDeleteBinLine, RiPaintFill } from "@remixicon/react"
+import BottomSheet from "@/app/components/BottomSheet/BottomSheet"
 export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   const [tempData,updateTempData] = useState(layerData);
@@ -105,25 +106,18 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
                
               </div>
               <Button modifiers={['secondary']} icon={<RiPaintFill/>} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
-              {colorPickerOpen &&<>
-              {createPortal(<div className="flex-center-center" style={{
-                background: "var(--screen-bg)",
-                position:"fixed",
-                inset:0
-              }}>
-              <ColorPicker 
-              currentColor={tempData.color}
-              cancelCallback={()=> {
+              {colorPickerOpen && <BottomSheet closeCallback={()=> {
                 updateColorPickerOpen(false);
-              }}
+              }}>
+                <ColorPicker 
+              currentColor={tempData.color}
+            cancelCallback={()=>{updateColorPickerOpen(false);}}
               selectCallback={(color)=> {
                 valueChanger(color,"color")
                 valueChanger(lightOrDark(color),"lightOrDark")
               }}
               />
-              </div>,document.getElementById("portal-container"))}
-              
-              </>}
+              </BottomSheet>}
               
             
             </div>

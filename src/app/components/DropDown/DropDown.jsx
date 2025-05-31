@@ -50,7 +50,7 @@ export default function ({children,anchor,closeCallback, dir}) {
       console.log("click check");
    
       
-      if (!boxRef.current.contains(e.target)){
+      if (!boxRef.current.contains(e.target) || anchor.contains(e.target)){
         console.log("close");
        closeCallback(); 
        return ; 
