@@ -42,7 +42,7 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
       <div className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
           data={async () => {
     const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/@emoji-mart/data/sets/15/twitter.json',
+      process.env.NEXT_PUBLIC_EMOJI_SPRITE,
     )
 
     return response.json()

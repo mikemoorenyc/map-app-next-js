@@ -39,6 +39,7 @@ const PinItem = (props) => {
         layer={layer}
         interactable={false}
         size={10}
+        onMap={true}
       />
       </div>
       <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1, textDecoration: p?.visited ? "line-through":""}}>

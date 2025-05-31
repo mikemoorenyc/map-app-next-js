@@ -29,9 +29,9 @@ export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
         <Picker 
           data={async () => {
     const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/@emoji-mart/data',
+      process.env.NEXT_PUBLIC_EMOJI_SPRITE,
     )
-
+    console.log(response);
     return response.json()
   }}
           onEmojiSelect={emojiClicked}

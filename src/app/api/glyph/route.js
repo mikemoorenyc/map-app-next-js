@@ -63,6 +63,28 @@ export async function GET(request,) {
   {width: favoritedSize,height:favoritedSize}
   )
 
+  const PickerGlyph = new ImageResponse(
+    (
+      <div
+        style={{
+          width: 44,
+          height:40,
+          display:"flex",
+          alignItems:"center",
+          justifyContent:"center",
+          fontSize: "36px",
+          lineHeight: "36px"
+        }}
+      >
+        <span>{icon}</span>
+      </div>
+    ),
+    {
+      width: 44,
+      height: 40
+    }
+  )
+
   const PlainIcon = new ImageResponse(
       (
         <div
@@ -106,6 +128,9 @@ export async function GET(request,) {
       }
     )
   try {
+    if(searchParams.get("picker") == "true") {
+      return PickerGlyph;
+    }
     return favorited ? FavoritedIcon : PlainIcon
   } catch (e) {
     console.log(`${e.message}`)

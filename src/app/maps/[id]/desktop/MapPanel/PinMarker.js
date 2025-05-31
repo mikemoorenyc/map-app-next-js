@@ -59,7 +59,7 @@ const PinMarker = ({pId, onMap}) => {
     const highlighted = isHighlighted(activeData,pin.id); 
     
     return <AdvancedMarker {...((highlighted || pin?.favorited )? {zIndex:9999} : {})}  onClick={handleClick}  position={location}>
-    <Pin  windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
+    <Pin onMap={true}  windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
     </AdvancedMarker>
 }
 export default PinMarker

@@ -162,7 +162,7 @@ useEffect(()=> {
     {!editingText&&<div className={`${styles.controlsDefault} display-flex`}>
         <div className="flex-center">
         <div ref={pickerContainer} style={{position:"relative",cursor: "pointer"}} className={styles.controlContainer} onClick={(e)=>{updateIconSelectorOpen(true)}}>
-          {p.icon? <div style={{fontSize: 16}} className={"pin-icon"}>{p.icon}</div> :<RiEmojiStickerLine />}
+          {p.icon? <img src={`/api/glyph?icon=${p.icon}&picker=true`} width={22} height={20} />  :<RiEmojiStickerLine />}
         </div>
         {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current.getBoundingClientRect()} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
         <button onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
