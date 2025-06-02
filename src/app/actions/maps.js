@@ -36,7 +36,7 @@ const addMap = async function(mapName) {
       TableName: "MapApp",
       Item: {
         id: id,
-        order: mapsSorted.active.length,
+        sortOrder: mapsSorted.active.length,
         created_at : createddate,
         modified_at: createddate,
         title: mapName ,
