@@ -11,10 +11,7 @@ const sortMaps = async (mapData,updateFunction, mapId,goingUp) => {
     if(oldData.sortOrder === map.sortOrder) continue; 
 
     const updatedItem = await updateMapServer(mapId,{
-      UpdateExpression: "set sortOrder = :sortOrder",
-      ExpressionAttributeValues: {
-        ":sortOrder": map.sortOrder
-      }
+      sortOrder: map.sortOrder
     })
     if(!updatedItem) alert("couldn't update Item on server"); 
     updateFunction(newMapData.map(m => {
