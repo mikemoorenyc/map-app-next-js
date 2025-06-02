@@ -19,7 +19,7 @@ const sortMaps = async (mapData,updateFunction, mapId,goingUp) => {
   updateFunction(updatedOnServer); 
 }
 
-const updateMaps = async (oldMapData,newMapData, mapId, updatePackage) =>{
+const updateMaps = async (oldMapData,newMapData, mapId, updatePackage={}) =>{
   for (const map of newMapData) {
     const oldData = oldMapData.find(m => m.id === map.id);
     if(!oldData) continue; 
