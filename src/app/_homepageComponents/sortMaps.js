@@ -59,22 +59,22 @@ const archiveMap = async (mapData,mapId, toArchive, updateFunction) => {
     return false; 
   } 
   updateFunction(updatedOnServer); 
-  
+}
 
-  const deletedMap = async (mapData,mapId,updateFunction) => {
-  const deleted = mapSort(sortMaps.filter(m=>m.id !== mapId)); 
-  const reIndexed = [...reindexMap(deleted.active),...reindexMap(deleted.archived)];
-  updateFunction(reIndexed); 
-  const deletedMap = await deleteMap(mapId); 
-  if(!deleteMap){
-    alert("Couldn't delete on server"); 
-     updateFunction(mapData); 
-  }
-  const updatedOnServer = await updateMaps(mapData,reIndexed);
-  if(!updatedOnServer) {
-    alert("Couldn't update"); 
-    updateFunction(mapData); 
-    return false
-  } 
-  updateFunction(updatedOnServer);
+  const deleteMap = async (mapData,mapId,updateFunction) => {
+    const deleted = mapSort(sortMaps.filter(m=>m.id !== mapId)); 
+    const reIndexed = [...reindexMap(deleted.active),...reindexMap(deleted.archived)];
+    updateFunction(reIndexed); 
+    const deletedMap = await deleteMap(mapId); 
+    if(!deleteMap){
+      alert("Couldn't delete on server"); 
+      updateFunction(mapData); 
+    }
+    const updatedOnServer = await updateMaps(mapData,reIndexed);
+    if(!updatedOnServer) {
+      alert("Couldn't update"); 
+      updateFunction(mapData); 
+      return false
+    } 
+    updateFunction(updatedOnServer);
 }
