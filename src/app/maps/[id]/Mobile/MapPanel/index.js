@@ -51,9 +51,9 @@ const MapPanel = () => {
     }
   }
 
-  
-  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
-      <Map
+  const MemoPins = useMemo(()=><Pins />); 
+  const TheMap = useMemo()=>(
+    <Map
       onClick={closeActive}
       mapId={mapStyleId}
       defaultZoom={3}
@@ -64,13 +64,17 @@ const MapPanel = () => {
       style={{inset:0,position:"absolute"}}
       id={"mobile-map"}
     >
-  <Pins  />
+  <MemoPins />
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
       <DirectionServicer />
          <Legend />
     </Map>
+    
+  ),[closeActive,mapStyleId]);
+  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
+      <TheMap />
     
    
   
