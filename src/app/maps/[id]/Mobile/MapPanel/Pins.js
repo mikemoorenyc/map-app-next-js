@@ -39,15 +39,14 @@ const Pins = ({showPins}) => {
 
   },[map,pinsFlat])
 
+  const FlatPins = <>
+    {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
+    </>
 
 
 
-  return <>
 
-  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
-
-
-  </>
+  return useMemo(()=><FlatPins />,[disabledLayers,activePin,pinsFlat]);
 }
 
 export default Pins
