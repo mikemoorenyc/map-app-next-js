@@ -5,7 +5,9 @@ import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
 
 
-const updateMap = async (mapId, payload={}) => {
+export const updateMapServer = async (mapId, payload={}) => {
+  console.log(mapId);
+  console.log(payload);
   const updateExpression = [];
   let attributes = {
     ":modified_at": new Date().toLocaleString()
@@ -16,12 +18,13 @@ const updateMap = async (mapId, payload={}) => {
   }
   if(!updateExpression.length) return;
 
+
   const command = {
     TableName: "MapApp",
     Key: {
       id: mapId
     },
-    UpdateExpression: `set ${updateExpression.join(",")}`,
+    UpdateExpression: `set ${updateExpression.join(",")},modified_at=:modified_at`,
     ExpressionAttributeValues: attributes,
     ReturnValues: "ALL_NEW"
   }
@@ -30,6 +33,7 @@ const updateMap = async (mapId, payload={}) => {
     return updatedItem;
   } catch(err) {
     console.log(Error,"error"); 
+    console.log(err);
     return false;
   }
 

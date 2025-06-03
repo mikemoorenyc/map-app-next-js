@@ -4,16 +4,16 @@ import { MobileActiveContextProvider } from "@/app/contexts/MobileActiveContext"
 import MapPanel from "./MapPanel"
 import "./styles.css";
 import DrawerPanel from "./DrawerPanel";
-const MapMemo = useMemo(()=> <MapPanel />);
-const DrawerMemo = useMemo(()=><DrawerPanel />); 
+
 
 const Mobile = ({mapData}) => {
 
 return (
 <DataContextProvider mapData={mapData}>
 <MobileActiveContextProvider mapData={mapData}>
-<MapMemo />
-<DrawerMemo />
+
+<MapPanel />
+<DrawerPanel />
 <style jsx global>{`
 
 .GeoTag {
@@ -51,9 +51,3 @@ body {
 }
 
 export default Mobile; 
-
-/*
-
-
-
-*/

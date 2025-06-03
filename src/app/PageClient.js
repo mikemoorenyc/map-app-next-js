@@ -15,18 +15,18 @@ export default function PageClient({mapData,isMobile}){
   
 
  
- 
   const [deleteId,updateDeleteId] = useState(null)
 
   const [mapList,updateMapList] = useState(mapSort(mapData));
 
   const updater = (map) => {
+    console.log(map);
      updateMapList(mapSort(map));
   }
   const actions = {
-    archive: (mapId,toArchive) => { archiveMap(mapId,toArchive,updater,mapList.all)},
-    delete: (mapId) => {deleteMap(mapId,mapList.all,updater)},
-    move: (mapId,direction) => {moveMap(mapId,direction,mapList,updater)}
+    archive: (mapId,toArchive) => { archiveMap(mapList.all,mapId,toArchive,updater)},
+    delete: (mapId) => {deleteMap(mapList.all,mapId,updater)},
+    move: (mapId,direction) => {moveMap(mapList.all,mapId,updater,direction)}
   }
  
 

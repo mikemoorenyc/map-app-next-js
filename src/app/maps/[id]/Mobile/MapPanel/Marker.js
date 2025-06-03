@@ -1,4 +1,4 @@
-import { useContext,useMemo ,useCallback} from "react";
+import { useContext,useMemo } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { AdvancedMarker, Marker } from "@vis.gl/react-google-maps";
 import Pin from "../../sharedComponents/Pin";
@@ -14,8 +14,7 @@ export default  ({pin, active}) => {
   const {activePin,backState} = activeData
   const map = useMap(); 
   const layer = useMemo(()=>findLayer(layerData,pin.layerId),[layerData]);
-  const markerClicked = useCallback(()=> {
-    () => {
+  const markerClicked = () => {
     if(activePin == pin.id) {
       
       return ; 
@@ -25,12 +24,6 @@ export default  ({pin, active}) => {
     activeDispatch({type:"BACK_STATE",state:backState == "back_to_legend"? "back_to_legend":"back_to_base"})
     mapCenterer(map, pin.location);
   }
-  },[activePin,pin,map,backState]);
-  
-  const MarkerComponent = <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || (pin.favorited && !pin.visited) ? 999999 : null}>
-    <Pin windowOpen={false} onMap={true} interactable={true} imgSize={26} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
-  </AdvancedMarker>
-    return useMemo(()=><MarkerComponent />,[markerClicked,pin,active])
   /*
   if(!pin.favorited && !pin.highlighted && !active) {
     const icon = pin?.icon || pin.title.charAt(0);
@@ -39,10 +32,8 @@ export default  ({pin, active}) => {
     const lightOrDark = layer?.lightOrDark;
     return <Marker onClick={markerClicked} position={pin.location} icon={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${13}&w=${24}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`}/>
   }*/
-/*
-  return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || (pin.favorited && !pin.visited) ? 999999 : null}>
+  return <AdvancedMarker onClick={markerClicked} position={pin.location} zIndex={active || pin.favorited ? 999999 : null}>
     <Pin windowOpen={false} onMap={true} interactable={true} imgSize={26} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
   </AdvancedMarker>
-  */
   
 }

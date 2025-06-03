@@ -1,6 +1,6 @@
 const mapSort = (mapList) => {
-  const activeSort = mapList.filter(m => !m.isArchived).sort((a,b)=>{a.order - b.order});
-  const archiveSort = mapList.filter(m => m.isArchived).sort((a,b)=>{a.order-b.order});
+  const activeSort = mapList.filter(m => !m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder);
+  const archiveSort = mapList.filter(m => m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder);
   return {
     active: activeSort,
     archived: archiveSort,
@@ -9,7 +9,7 @@ const mapSort = (mapList) => {
 }
 const reindexMap = (mapList) => {
   return mapList.map((e,i)=> {
-    return {...e, ...{order:i}}
+    return {...e, ...{sortOrder:i}}
   })
 }
 

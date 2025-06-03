@@ -1,5 +1,5 @@
 'use client'
-import { act, useContext ,useEffect,useState} from "react"
+import { useContext ,useEffect,useState} from "react"
 import { APIProvider, Map } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
 import MobileSearch from "./MobileSearch"
@@ -15,25 +15,18 @@ const MapPanel = () => {
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const {activeDispatch} = useContext(MobileActiveContext)
   const [mapStyleId,updateMapStyleId] = useState(darkModeId);
-  const changeColor = (color,id) => {
-    updateMapStyleId(id);
-    activeDispatch({
-          type:"UPDATE_COLOR_MODE",
-          colorMode: color
-        })
-  }
+
   useEffect(()=> {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    changeColor("dark",darkModeId)
+    updateMapStyleId(darkModeId);
     } else {
-      changeColor("light",lightModeId);
+      updateMapStyleId(lightModeId);
     }
     const changeMode = (event) => {
       if(event.matches) {
-        changeColor("dark",darkModeId)
-        
+        updateMapStyleId(darkModeId);
       } else {
-        changeColor("light",darkModeId);
+        updateMapStyleId(lightModeId);
       }
     }
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeMode);
@@ -51,9 +44,9 @@ const MapPanel = () => {
     }
   }
 
-  const MemoPins = useMemo(()=><Pins />); 
-  const TheMap = useMemo()=>(
-    <Map
+  
+  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
+      <Map
       onClick={closeActive}
       mapId={mapStyleId}
       defaultZoom={3}
@@ -64,17 +57,13 @@ const MapPanel = () => {
       style={{inset:0,position:"absolute"}}
       id={"mobile-map"}
     >
-  <MemoPins />
+  <Pins  />
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
       <DirectionServicer />
          <Legend />
     </Map>
-    
-  ),[closeActive,mapStyleId]);
-  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
-      <TheMap />
     
    
   
