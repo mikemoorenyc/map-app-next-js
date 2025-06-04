@@ -1,13 +1,13 @@
 import {useEffect} from "react"
 
-export default function useKeyPress(toTrack) {
+export default function useKeyPress(key,action) {
   useEffect(()=> {
     const clickTrack = (e) => {
-      toTrack.forEach((t) => {
-        if(e === t[0]) {
-          t[1](); 
+     
+        if(e === key) {
+          action(); 
         }
-      }
+      
     }
     window.addEventListener("keydown",clickTrack);
     return () => {
