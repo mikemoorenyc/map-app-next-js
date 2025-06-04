@@ -104,3 +104,6 @@ background-size: 2.83px 2.83px;
 .z-dropdown-2 {
     z-index: 6
 }
+.z-dialog {
+    z-index: 99
+}
