@@ -1,11 +1,13 @@
 'use client'
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css"
+import useKeyPress from "@/lib/useKeyPress"
 
 import { useEffect } from "react";
 
 
 const Modal = ({children,header,closeEvent}) => {
+  const escapePress = useKeyPress()
   
   const escapePress = (e) => {
       if(e.code === "Escape") {
