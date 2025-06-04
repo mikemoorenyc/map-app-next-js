@@ -7,13 +7,9 @@ import { useEffect } from "react";
 
 
 const Modal = ({children,header,closeEvent}) => {
-  const escapePress = useKeyPress()
+  const escapePress = useKeyPress("Escape",closeEvent)
   
-  const escapePress = (e) => {
-      if(e.code === "Escape") {
-          closeEvent(); 
-      } 
-  }
+  
   useEffect(()=> {
 
     document.body.addEventListener("keydown", escapePress)
