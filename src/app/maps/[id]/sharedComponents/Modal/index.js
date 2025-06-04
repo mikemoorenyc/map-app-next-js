@@ -2,27 +2,20 @@
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css"
 import useKeyPress from "@/lib/useKeyPress"
-
-import { useEffect } from "react";
+import useClickOutside from "@/lib/useClickOutside"
+import { useRef } from "react";
 
 
 const Modal = ({children,header,closeEvent}) => {
   const escapePress = useKeyPress("Escape",closeEvent)
-  
-  
-  useEffect(()=> {
-
-    document.body.addEventListener("keydown", escapePress)
-    return () => {
-      document.body.removeEventListener("keydown",escapePress)
-    }
-  },[])
-
+  const modalContainer = useRef(null); 
+  const clickOutside = useClickOutside(modalContainer.current, closeEvent); 
+ 
 
   return <>
     {createPortal(
       <div className={`${styles.modal} polka-text`}>
-        <div className={`${styles.inner} big-drop-shadow`}>
+        <div ref={modalContainer} className={`${styles.inner} big-drop-shadow`}>
           <div className={`${styles.header} flex-center`}>
             {header && <div className={`${styles.title} flex-1`}>{header}</div>}
 
