@@ -4,7 +4,7 @@ export default function useKeyPress(key,action) {
   useEffect(()=> {
     const clickTrack = (e) => {
      
-        if(e === key) {
+        if(e.code === key) {
           action(); 
         }
       
