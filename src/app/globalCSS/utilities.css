@@ -84,3 +84,20 @@ background-size: 2.83px 2.83px;
 background-image: linear-gradient(45deg, var(--screen-text) 25%,transparent 25%, transparent 50%,var(--screen-text) 50%,var(--screen-text) 75%, transparent 75%, transparent 100%);
 background-size: 2.83px 2.83px;
 }
+
+/* Elevation */
+.z-1 {
+    z-index:1;
+}
+.z-2 {
+    z-index:2;
+}
+.z-3 {
+    z-index:3;
+}
+.z-modal {
+    z-index:4;
+}
+.z-dropdown {
+    z-index:5
+}
