@@ -1,18 +1,21 @@
 'use client'
 import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
-import { useRef ,useLayoutEffect} from "react";
-import useClickOutside from "@/app/lib/useClickOutside";
-import useKeyPress from "@/app/lib/useKeyPress";
 
-export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
+
+import useModalCloser from "@/app/lib/useModalCloser";
+import { pick } from "lodash";
+
+
+export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor,stickToTop}) => {
 console.log(pickerAnchor);
 const closer = () => {
     console.log("daf");
     updateIconSelectorOpen(false);
   }
-  const clickOutside = useClickOutside(closer)
-  const keyPress = useKeyPress("Escape",closer)
+const closeModal = useModalCloser(closer, "icon")
+
+  
   const emojiClicked = (e) => {
     updateIconSelectorOpen(prev => {
       return false; 
@@ -24,18 +27,20 @@ const closer = () => {
   
   const pos = {
     left: pickerAnchor.getBoundingClientRect().left,
-    top: "50%",
-    transform:"translateY(-50%)",
+    top: stickToTop ? pickerAnchor.getBoundingClientRect().top : "50%",
+    transform:stickToTop ? "none":"translateY(-50%)",
     position:"fixed",
     border: "1px solid var(--screen-text)",
     borderRadius: "var(--border-radius)"
   }
-  
+
+
   
 
   return <>
     {createPortal(
-      <div className={`z-modal big-drop-shadow`} style={pos} ref={clickOutside}>
+
+       <div className={`z-modal big-drop-shadow`} style={pos} ref={closeModal}>
 
         <Picker 
           data={async () => {
@@ -50,6 +55,7 @@ const closer = () => {
           maxFrequentRows={1}
           set={"twitter"}
           previewPosition={"none"} /></div>
+
       ,document.getElementById("portal-container")
     )}
   </>

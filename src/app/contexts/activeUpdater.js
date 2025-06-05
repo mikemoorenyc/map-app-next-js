@@ -10,6 +10,15 @@ export default (actives, action) => {
  
             return {...actives, ...{activeLayer:action.id}}
         }
+        case "UPDATE_ACTIVE_MODAL": {
+            let newModalStack
+            if(action.remove === true) {
+                newModalStack = actives.activeModal.filter(m => m !== action.id);
+            } else {
+                newModalStack = [action.id, ...actives.activeModal.filter(x => x !== action.id)];
+            }
+            return {...actives,...{activeModal:newModalStack}}
+        }
         case "EDITING_PIN": {
             //SCROLL TO PIN
         

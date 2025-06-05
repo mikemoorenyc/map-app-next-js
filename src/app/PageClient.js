@@ -9,6 +9,8 @@ import ActiveCard from "./_homepageComponents/ActiveCard/ActiveCard"
 import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
 import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
+import { ModalProvider } from "./contexts/ModalContext"
+
 
 export default function PageClient({mapData,isMobile}){
 
@@ -61,7 +63,7 @@ export default function PageClient({mapData,isMobile}){
   } 
  */
 
-  return<div className={styles.container}>
+  return<ModalProvider><div className={styles.container}>
 
   <h1 className={`${styles.title} headline-style`}>
     <span className={styles.headlineIcon}>💏</span>
@@ -94,7 +96,7 @@ export default function PageClient({mapData,isMobile}){
   <AddMapButton />
   
 
-  </div>
+  </div></ModalProvider>
 }
 
 /*

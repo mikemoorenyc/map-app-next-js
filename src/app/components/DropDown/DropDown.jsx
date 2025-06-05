@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom"
 import styles from "./DropDownStyles.module.css"
 import { useLayoutEffect,useRef,useState } from "react"
+import useModalCloser from "@/app/lib/useModalCloser";
 export default function ({children,anchor,closeCallback, dir}) {
   if(!anchor) return ; 
   const aPos = anchor.getBoundingClientRect(),
@@ -14,6 +15,8 @@ export default function ({children,anchor,closeCallback, dir}) {
     right: dir == "right" ? window.innerWidth - aPos.right : undefined
   }
   const [dPos,updatedPos] = useState(position);
+
+  
   
   //Update positioning to keep in bounds 
   useLayoutEffect(()=> {
@@ -60,19 +63,17 @@ export default function ({children,anchor,closeCallback, dir}) {
     const closeScroll = () => {
       closeCallback(); 
     }
-    setTimeout(()=> {
-      console.log("added")
-      window.addEventListener("click",closeCheck);
-    },500)
+   
     window.addEventListener("scroll",closeScroll)
     window.addEventListener("resize",closeScroll)
     return () => {
       console.log("removed");
       window.removeEventListener("scroll",closeScroll);
-      window.removeEventListener('click',closeCheck);
+    
       window.removeEventListener("resize",closeScroll)
     }
   },[])
+  const modalCloser = useModalCloser(closeCallback, "dropDown"+new Date(), boxRef)
   return <>
     {createPortal(
       <div ref={boxRef} style={dPos} className={`${styles.dropdown} z-dropdown`}>

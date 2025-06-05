@@ -17,7 +17,8 @@ const ActiveContextProvider = ({children, mapData}) => {
     collapsedLayers : [],
     layerPanelRef : null,
     pinItemsRef : [],
-    hoveringPin: null
+    hoveringPin: null,
+    activeModal: [] 
   }
   
   const [activeData, activeDispatch] = useReducer(activeUpdater, initActives);

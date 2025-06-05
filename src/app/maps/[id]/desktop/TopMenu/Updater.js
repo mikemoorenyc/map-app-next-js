@@ -6,12 +6,12 @@ import styles from "./styles.module.css"
 import { RiUploadCloudLine } from "@remixicon/react";
 
 const Updater = ({id})=> {
-  const {layerData,pageTitle,mapId,layerDispatch} = useContext(DataContext);
+  const {layerData,pageTitle,mapId,layerDispatch,mapIcon} = useContext(DataContext);
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState(true);
   const sendData = async () => {
-    let updated = await updateMap(mapId,pageTitle,layerData);
+    let updated = await updateMap(mapId,pageTitle,layerData,mapIcon);
     console.log(updated);
     updateIsSaving(false);
     updateLastSaved(new Date())
@@ -45,7 +45,7 @@ const Updater = ({id})=> {
       clearTimeout(updateLocal);
     }
 
-  },[layerData, pageTitle])
+  },[layerData, pageTitle,mapIcon])
 
 
   const dateString = `${lastSaved.getFullYear()}/${lastSaved.getMonth()}/`

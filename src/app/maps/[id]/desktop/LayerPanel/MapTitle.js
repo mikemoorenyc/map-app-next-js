@@ -53,9 +53,10 @@ const TitleEditForm = ({currentTitle,updateEditing}) => {
 }
 
 const MapTitle = ()=> {
+
   const [editing, updateEditing] = useState(false)
-  const {pageTitle} = useContext(DataContext)
-  
+  const {pageTitle,mapIcon} = useContext(DataContext)
+    
   return <>
   {!editing ? <div onClick={(e)=>{e.preventDefault(); updateEditing(true)}} className={`${styles.title} overflow-ellipsis flex-1`}>
         {pageTitle}

@@ -11,7 +11,7 @@ import { RiArrowLeftFill,  RiStackLine } from "@remixicon/react"
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   
-  const {layerData,pageTitle,layerDispatch} = useContext(DataContext);
+  const {layerData,pageTitle,layerDispatch,mapIcon} = useContext(DataContext);
   const mapData = layerData
  
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
@@ -27,7 +27,10 @@ const Legend = () => {
         activeDispatch({type:"LEGEND_OPEN",state:false})
         activeDispatch({type:"BACK_STATE",state:"base"})
         }} icon={<RiArrowLeftFill />} />
-      <div className={`${styles.legendTitle} overflow-ellipsis flex-1`}>{pageTitle}</div>
+      <div className={`${styles.legendTitle} overflow-ellipsis flex-1 flex-center`}>
+        {mapIcon && <img src={`/api/glyph?picker=true&w=20&icon=${mapIcon}`} width={24} height={24} style={{marginRight:8}}/>}
+        <span>{pageTitle}</span>
+      </div>
     </div>
     <div className={`${styles.legendSections} flex-1`} ref={legendScroll}>
     {mapData.map(l => {

@@ -16,3 +16,12 @@
   display: flex;
   align-items: center;
 }
+.editMapIconButton:hover .mapIcon{
+  display: none
+}
+.editMapIcon {
+  display:none; 
+}
+.editMapIconButton:hover .editMapIcon {
+  display:block;
+}

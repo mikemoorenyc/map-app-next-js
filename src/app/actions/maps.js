@@ -120,17 +120,18 @@ const archiveMap = async (id,toArchive) => {
     
   }
 }
-const updateMap = async function(id,pageTitle,layerData) {
+const updateMap = async function(id,pageTitle,layerData,mapIcon) {
   const command = {
     TableName:"MapApp",
     Key : {
       id: id
     },
-    UpdateExpression: `set title = :title, modified_at = :modified_at ${layerData ? ", layerData = :layerData" : ""}`,
+    UpdateExpression: `set title = :title, modified_at = :modified_at ${layerData ? ", layerData = :layerData" : ""} ${mapIcon? ", mapIcon=:mapIcon":""}`,
     ExpressionAttributeValues: {
       ":title" : pageTitle,
       ":modified_at" : new Date().toLocaleString(),
-      ":layerData" : layerData || null
+      ":layerData" : layerData || null,
+      ":mapIcon" : mapIcon
     },
     ReturnValues: "ALL_NEW"
   }

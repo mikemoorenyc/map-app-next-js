@@ -8,8 +8,8 @@
 }
 .drawerPanelHeader > .title {
   margin-right: 8px;
-  font-size: 36px;
-  line-height: 36px;
+  font-size: 32px;
+  line-height: 32px;
   font-weight: 600;
   font-family: var(--font-headline);
 }

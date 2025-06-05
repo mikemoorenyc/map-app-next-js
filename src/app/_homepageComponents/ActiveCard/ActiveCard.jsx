@@ -42,7 +42,9 @@ export default function ({appMap,top=false,bottom=false, actions})  {
       {!pinLength ? <RiMap2Line className={styles.mapIcon} />: <MapThumbnail className={styles.thumbnail} appMap={appMap} width={175} height={150} />}
     </div>
     <div className={styles.text}> 
-      <h2 className={`${styles.mapName} overflow-ellipsis`}><Link href={url}>{appMap.title}</Link></h2>
+      <h2 className={`${styles.mapName} overflow-ellipsis `}><Link className="flex-center" href={url}>
+        {appMap.mapIcon && <img width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${appMap.mapIcon}`} style={{marginRight:4}}/>}
+        {appMap.title}</Link></h2>
       <div className={styles.amountLine}>{pinLength} pins</div>
     </div>
 

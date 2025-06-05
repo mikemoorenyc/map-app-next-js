@@ -6,7 +6,7 @@ import Modal from "../maps/[id]/sharedComponents/Modal";
 import { useState,useRef,useEffect } from "react";
 import DropDownItem from "../components/DropDown/DropDownItem";
 import { RiArchiveLine,RiDeleteBinLine,RiArrowUpCircleLine,RiArrowDownCircleLine,RiMore2Fill } from "@remixicon/react";
-import { archive } from "./actionLogic";
+
 export default function MenuButton ({mapData,modifiers,containerClasses,top,bottom, archived=false,actions}) {
   const [dropDownOpen,updateDropDownOpen] = useState(false);
   const dropDownAnchor = useRef(null);
@@ -32,6 +32,7 @@ export default function MenuButton ({mapData,modifiers,containerClasses,top,bott
       >
         {archived? "Una":"A"}rchive map
     </DropDownItem>
+
     <DropDownItem
       onClick={()=> {
         
