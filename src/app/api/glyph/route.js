@@ -67,21 +67,21 @@ export async function GET(request,) {
     (
       <div
         style={{
-          width: 44,
-          height:40,
+          width: size||44,
+          height:size||40,
           display:"flex",
           alignItems:"center",
           justifyContent:"center",
-          fontSize: "36px",
-          lineHeight: "36px"
+          fontSize: `${size?size*.8:36}px`,
+          lineHeight: `${size?size*.8:36}px`
         }}
       >
         <span>{icon}</span>
       </div>
     ),
     {
-      width: 44,
-      height: 40
+      width: size,
+      height: size
     }
   )
 

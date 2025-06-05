@@ -1,45 +1,55 @@
 import styles from "./ChangeIcon.module.css"
 import Button from "@/app/components/Button"
 import Pin from "../../../sharedComponents/Pin"
-import {useState,useEffect} from "react";
+import {useState,useEffect, useCallback, useRef} from "react";
 import Picker from "@emoji-mart/react";
 import { createPortal } from "react-dom";
+import { RiEmojiStickerLine } from "@remixicon/react";
 
-export default function ChangeIcon({pinState,layer,valueChanger}) {
-  const [iconSelectorOpen,updateIconSelectorOpen] = useState(false);
-  useEffect(()=> {
-    const escapePress = (e) => {
+const EmojiContainer = ({emojiClicked,updateOpen,isOpen}) => {
+  const container = useRef(null);
+  
+
+  const escapePress = (e) => {
+      console.log(e);
       if(e.code === "Escape") {
-          if(iconSelectorOpen) {
+        console.log(isOpen);
+          if(isOpen) {
             console.log("ddd")
-            updateIconSelectorOpen(false)
+            updateOpen(false)
           }
-      } 
-    }
-     document.body.addEventListener("keydown", escapePress)
+      }
+  }
+  useEffect(()=> {
+   
+     document.body.addEventListener("keydown", escapePress);
+     console.log("created");
       return () => {
+        console.log("cleaned");
         document.body.removeEventListener("keydown",escapePress)
       }
-  })
-  const emojiClicked = (e) => {
-    updateIconSelectorOpen(false);
-    valueChanger(e.native,"icon")
-  }
-  return<> 
-    <div className={`flex-center`}>
-      <Button style={{marginRight:8}} onClick={(e)=>{e.preventDefault(); updateIconSelectorOpen(true)}} modifiers={["secondary"]}>Change icon</Button>
-      <Pin 
-        pin={pinState}
-        layer={layer}
-        interactable={false}
-        size={20}
-        onMap={true}
-      />
-    </div>
+  },[])
+  useEffect(()=> {
+    if(!container) return ; 
+    const checker = (e) => {
+      if(!container.current.contains(e.target)) {
+        updateOpen(false)
+      }
+    }
+    window.addEventListener("click",checker);
+    return () => {
+      window.removeEventListener("click",checker);
+    }
+  },[container])
 
-  {iconSelectorOpen && createPortal(
-    <div className={`${styles.iconModal} flex-center-center`}>
-      <div className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
+
+
+
+
+
+
+return <div className={`${styles.iconModal} flex-center-center`} >
+      <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
           data={async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_EMOJI_SPRITE,
@@ -51,12 +61,40 @@ export default function ChangeIcon({pinState,layer,valueChanger}) {
           autoFocus={true}
           maxFrequentRows={1}
           previewPosition={"none"} 
-          onClickOutside={()=>{;updateIconSelectorOpen(false)}}
+  
           set={"twitter"}
           /></div>
     </div>
-    , document.getElementById("portal-container")
-  )}
+}
 
-  </>
+export default function ChangeIcon({pinState,layer,type="pin",valueChanger,currentIcon=null}) {
+  const [iconSelectorOpen,updateIconSelectorOpen] = useState(false);
+
+  
+  useEffect(()=> {
+    console.log(iconSelectorOpen)
+  },[iconSelectorOpen]);
+  const emojiClicked = (e) => {
+    updateIconSelectorOpen(false);
+    valueChanger(e.native,"icon")
+  }
+  return(
+    <div className={`flex-center`}>
+      <Button style={{marginRight:8}} onClick={(e)=>{e.preventDefault(); setTimeout(()=>{updateIconSelectorOpen(true)},0)}} modifiers={["secondary"]}>Change icon</Button>
+      <div style={{width:48,height:48}} className="flex-center-center">
+        {type=="pin"&&<Pin 
+        pin={pinState}
+        layer={layer}
+        interactable={false}
+        size={20}
+        onMap={true}
+      />}
+      {type !== "pin"&& !currentIcon && <RiEmojiStickerLine width={46} height={46} />}
+      {type !== "pin" && currentIcon && <img src={`/api/glyph?icon=${currentIcon}&picker=true&w=46`} width={46} height={46}/>}
+      </div>
+      {iconSelectorOpen &&createPortal(<EmojiContainer isOpen={iconSelectorOpen} updateOpen={updateIconSelectorOpen} emojiClicked={emojiClicked}/>, document.getElementById('emoji-picker-container'))}
+    </div>
+  )
+  
+
 }

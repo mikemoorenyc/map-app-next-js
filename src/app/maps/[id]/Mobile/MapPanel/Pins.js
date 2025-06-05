@@ -1,15 +1,29 @@
-import { useContext, useEffect, useMemo,useState } from "react";
+import { useContext, useEffect, useMemo,useState,memo,useCallback } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
-
+import mapCenterer from "../lib/mapCenterer";
+import { findLayer } from "../../desktop/MapPanel/lib/finders";
 const Pins = ({showPins}) => {
   const map = useMap(); 
-  const {disabledLayers, activePin} = useContext(MobileActiveContext).activeData 
+  const {disabledLayers, activePin,backState} = useContext(MobileActiveContext).activeData 
+  const {activeDispatch} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
   const [firstLoad,updateFirstLoad] = useState(false);
   const pinsFlat = useMemo(()=>layerData.map(l => l.pins).flat(),[layerData])
+  const markerClicked = useCallback((pin,active) => {
+    if(active) {
+      
+      return ; 
+    }
+    activeDispatch({type:"SET_ACTIVE_PIN",id:pin.id})
+    activeDispatch({type:"DRAWER_STATE",state:"open"})
+    activeDispatch({type:"BACK_STATE",state:backState == "back_to_legend"? "back_to_legend":"back_to_base"})
+    mapCenterer(map, pin.location);
+  },[mapCenterer,map,activeDispatch])
+
+
 //  const [pins,updatePins] = useState(pinsFlat);
 
   useEffect(()=> {
@@ -40,14 +54,28 @@ const Pins = ({showPins}) => {
   },[map,pinsFlat])
 
 
+  const getLayer = useCallback((pin)=> {
+    return findLayer(layerData,pin.layerId)
+  },[layerData])
+
+
 
 
   return <>
 
-  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><Marker active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker layer={getLayer(pin)} onClick={markerClicked} active={activePin == pin.id} pin={pin}  key={pin.id}/>)}
 
 
   </>
 }
+
+const TheMarker = memo((props)=> {
+
+  
+
+ return  <Marker {...props}/>
+})
+
+
 
 export default Pins

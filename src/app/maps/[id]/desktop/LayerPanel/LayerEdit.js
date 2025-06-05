@@ -9,6 +9,8 @@ import ActionBar from "../../sharedComponents/ActionBar"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 import DropDown from "@/app/components/DropDown/DropDown"
+import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
+import { RiEmojiStickerLine } from "@remixicon/react"
 
 
 const LayerEdit = () => {
@@ -18,9 +20,11 @@ const LayerEdit = () => {
   const editingLayer = activeData.editingLayer
   const layer = layerData.find(layer => layer.id == editingLayer);
   if(!layer)return ; 
-  const [tempLayerData, updateTempLayerData] = useState({title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
+  const [tempLayerData, updateTempLayerData] = useState({icon:layer.icon, title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
   const [deleteConfirmation, updateDeleteConfirmation] = useState(false)
   const [colorPickerOpen,updateColorPickerOpen] =useState(false);
+  const iconPickerRef = useRef(null);
+  const [iconPickerOpen,updateIconPickerOpen] = useState(false)
 
   const colorPickerButtonRef = useRef(null)
   const saveData = (e) => {
@@ -95,6 +99,11 @@ const LayerEdit = () => {
 
     })
   }
+  const updateIcon = (icon) => {
+    updateTempLayerData(prev => {
+      return {...prev, ...{icon:icon}}
+    })
+  }
   
   //(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}
   //deleteLayer
@@ -130,6 +139,16 @@ const LayerEdit = () => {
                     
                 
                 </div>   
+                <div className={`${styles.layerEditSection} flex-center`} key={"icon"}>
+                  <label className={styles.sectionLabel}>Icon</label>
+                  <div className={'flex-center'} ref={iconPickerRef}>
+                    <button onClick={(e)=>{e.preventDefault(); updateIconPickerOpen(!iconPickerOpen)}}>
+                        {tempLayerData.icon ? <img width={32} height={32} src={`/api/glyph?w=32&picker=true&icon=${tempLayerData.icon}`} />: <RiEmojiStickerLine width={32} height={32}/>}
+                    </button>
+                    <Button style={{marginLeft: 8}} modifiers={["sm","ghost"]} onClick={()=>{updateIconPickerOpen(!iconPickerOpen)}}>Pick layer icon</Button>
+                  </div>
+                   {iconPickerOpen && <IconSelector pickerAnchor={iconPickerRef.current} updateIconSelectorOpen={updateIconPickerOpen} updateValue={updateIcon} />}
+                </div>
                 {colorPickerOpen && <DropDown anchor={colorPickerButtonRef.current} dir={"left"} closeCallback={()=>{updateColorPickerOpen(false)}}>
                   <ColorPicker cancelCallback={()=> {
             updateColorPickerOpen(false);
@@ -148,19 +167,20 @@ const LayerEdit = () => {
             <ActionBar 
             style={{marginTop: 16,borderTop:"1px solid var(--screen-text)"}}
             primaryButtons={(
-              <>
+             <>
+              <Button modifiers={["ghost","sm","caution"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
+                Delete 
+            </Button>
+              </>
+            )}
+            secondaryButtons={layerData.length > 1 && (
+               <>
               <div style={{display:"flex",justifyContent:"flex-end", width: "100%"}}>
                 <Button onClick={cancelEdit} modifiers={["secondary"]}>Cancel</Button>
                 <Button style={{marginLeft:8}} onClick={saveData} >Save layer</Button>
               </div>
               </>
-            )}
-            secondaryButtons={layerData.length > 1 && (
-              <>
-              <Button modifiers={["ghost","sm","caution"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
-                Delete Layer
-            </Button>
-              </>
+              
             )}
             />
      

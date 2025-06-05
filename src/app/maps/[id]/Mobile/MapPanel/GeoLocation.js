@@ -8,12 +8,12 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 
 
 export default () => {
-  const [currentLocation, updateCurrentLocation] = useState(null);
+
   const [heading,updateHeading] = useState(0);
   const map = useMap()
   const [centerInit, updateCenterInit] = useState(false);
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
-  const {geolocation,inBounds} = activeData;
+  const {geolocation} = activeData;
 
   useEffect(()=> {
    

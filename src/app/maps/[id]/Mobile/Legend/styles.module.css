@@ -1,6 +1,6 @@
 .legendSection {
   padding: 10px 24px;
-  
+
 }
 .sectionDivider {
   background:none;
@@ -21,6 +21,7 @@
   font-size: 16px;
   line-height: 1.4;
   font-weight: 600;
+  padding-right: 8px; 
 }
 .pins {
   margin-left: 24px;
@@ -77,7 +78,7 @@ flex-direction:column;
   transform: translateX(0%);
 }
 .legendHeader {
-  padding: var(--gutter) ;
+  padding: 16px var(--gutter) ;
     border-bottom: 1px solid ;
 
 }
@@ -87,9 +88,10 @@ flex-direction:column;
   top:2px;
 }
 .legendTitle {
-  font-size: 32px;
+  font-size: 28px;
   font-weight:600;
   font-family: var(--font-headline);
+  line-height: 1;
 }
 .legendSections {
   padding-bottom: 20px;

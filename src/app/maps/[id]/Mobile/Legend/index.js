@@ -6,7 +6,7 @@ import LegendSection from "./LegendSection"
 import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 import styles from "./styles.module.css";
-import { RiArrowLeftFill, RiCloseLine, RiStackLine } from "@remixicon/react"
+import { RiArrowLeftFill,  RiStackLine } from "@remixicon/react"
 
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)

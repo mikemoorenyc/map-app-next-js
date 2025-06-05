@@ -9,6 +9,21 @@ import GeoLocation from "./GeoLocation"
 import Updater from "../../desktop/TopMenu/Updater"
 import styles from "../"
 import DirectionServicer from "./DirectionServicer"
+import { memo, useCallback } from "react"
+
+const MapMemo = memo(function({onClick,mapStyleId,children}){
+  return <Map
+      onClick={onClick}
+      mapId={mapStyleId}
+      defaultZoom={3}
+
+      defaultCenter={{lat: 22.54992, lng: 0}}
+      gestureHandling={'greedy'}
+      disableDefaultUI={true}
+      style={{inset:0,position:"absolute"}}
+      id={"mobile-map"}
+    >{children}</Map>
+})
 
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
@@ -35,35 +50,26 @@ const MapPanel = () => {
     }
 
   },[])
-  const closeActive = (e) => {
+  const closeActive = useCallback((e) => {
     activeDispatch({type: "SET_ACTIVE_PIN",id:null})
     activeDispatch({type: "DRAWER_STATE", state: "minimized"});
     activeDispatch({type: "BACK_STATE",state:"base"})
     if(e.detail.placeId) {
             e.stop(); 
     }
-  }
+  },[activeDispatch])
+
 
   
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
-      <Map
-      onClick={closeActive}
-      mapId={mapStyleId}
-      defaultZoom={3}
-
-      defaultCenter={{lat: 22.54992, lng: 0}}
-      gestureHandling={'greedy'}
-      disableDefaultUI={true}
-      style={{inset:0,position:"absolute"}}
-      id={"mobile-map"}
-    >
+      <MapMemo onClick={closeActive} mapStyleId={mapStyleId}>
   <Pins  />
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
       <DirectionServicer />
          <Legend />
-    </Map>
+    </MapMemo>
     
    
   

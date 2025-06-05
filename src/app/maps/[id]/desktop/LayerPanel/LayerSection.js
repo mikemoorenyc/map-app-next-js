@@ -64,6 +64,7 @@ const LayerSection = ({children,layerId,activeId}) => {
         }}>
           {!isCollapsed && <RiCheckLine className={styles.svg}  />}
         </button>
+        {layer.icon && <img style={{marginRight:4}}width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${layer.icon}`}/>}
         <div className={`flex-1 overflow-ellipsis cursor-default`}>{layer.title}</div>
         <button className={styles.gear} onClick={(e) => {
                                 e.preventDefault();

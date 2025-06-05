@@ -1,10 +1,18 @@
 'use client'
 import Picker from "@emoji-mart/react";
-import { transform } from "lodash";
 import { createPortal } from 'react-dom';
+import { useRef ,useLayoutEffect} from "react";
+import useClickOutside from "@/app/lib/useClickOutside";
+import useKeyPress from "@/app/lib/useKeyPress";
 
 export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
-
+console.log(pickerAnchor);
+const closer = () => {
+    console.log("daf");
+    updateIconSelectorOpen(false);
+  }
+  const clickOutside = useClickOutside(closer)
+  const keyPress = useKeyPress("Escape",closer)
   const emojiClicked = (e) => {
     updateIconSelectorOpen(prev => {
       return false; 
@@ -15,23 +23,26 @@ export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor}) => {
 
   
   const pos = {
-    left: pickerAnchor.x,
+    left: pickerAnchor.getBoundingClientRect().left,
     top: "50%",
     transform:"translateY(-50%)",
     position:"fixed",
-    
+    border: "1px solid var(--screen-text)",
+    borderRadius: "var(--border-radius)"
   }
+  
+  
 
   return <>
     {createPortal(
-      <div style={pos} >
+      <div className={`z-modal big-drop-shadow`} style={pos} ref={clickOutside}>
 
         <Picker 
           data={async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_EMOJI_SPRITE,
     )
-    console.log(response);
+    
     return response.json()
   }}
           onEmojiSelect={emojiClicked}

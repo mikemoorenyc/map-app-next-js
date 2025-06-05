@@ -66,7 +66,9 @@ const LegendSection = ({layer}) => {
       <button className={styles.legendSectionheaderCheckBox} onClick={headerClick}>
         {isActive? <RiCheckboxCircleFill width={16} height={16} /> : <RiCheckboxCircleLine width={16} height={16}/>}
       </button>
-      <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1`}>{layer.title}</div>
+      <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1 flex-center`}>
+        {layer.icon && <img width={22} height={22} src={`/api/glyph?w=22&picker=true&icon=${layer.icon}`}/>}
+      <span className="flex-1 overflow-ellipsis">{layer.title}</span></div>
       <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine width={16} height={16} /></button>
     </div>
     <div className={`${styles.pins}`}>

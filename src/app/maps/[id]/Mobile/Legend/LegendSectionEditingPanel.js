@@ -8,7 +8,7 @@ import Modal from "../../sharedComponents/Modal"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 import lightOrDark from "@/app/lib/lightOrDark"
 import DataContext from "@/app/contexts/DataContext"
-import DeleteModal from "../_components/DeleteModal"
+import ChangeIcon from "../DrawerPanel/EditPanel/ChangeIcon"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Mover from "../_components/Mover"
 import Button from "@/app/components/Button"
@@ -68,8 +68,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
 
   return <>
-  {createPortal(<>
-    {true && (
+  {createPortal( (
 <div className={styles.editingSection}>
         <EditingModalHeader 
           cancelFunction={(e)=>{
@@ -123,6 +122,9 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
             </div>
           </TextField>
           <TextField>
+            <ChangeIcon currentIcon={tempData.icon} valueChanger={valueChanger} type={"layer"}/>
+          </TextField>
+          <TextField>
             <Mover type="layer" arraySet={dataC.layerData} id={layerData.id} arrayId={layerData.id}/>
           </TextField>
           
@@ -141,9 +143,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
     </div>
 
 
-    )}
-    
-  </>,document.getElementById("portal-container"))}
+    ),document.getElementById("portal-container"))}
 
 
   {deletePending && <Modal header={"Delete Map"} closeEvent={()=>{updateDeletePending(false); updateDeleteId(null)}}>

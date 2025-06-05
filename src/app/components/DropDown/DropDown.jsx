@@ -75,7 +75,7 @@ export default function ({children,anchor,closeCallback, dir}) {
   },[])
   return <>
     {createPortal(
-      <div ref={boxRef} style={dPos} className={styles.dropdown}>
+      <div ref={boxRef} style={dPos} className={`${styles.dropdown} z-dropdown`}>
         {children}
       </div>,
       document.getElementById("portal-container")

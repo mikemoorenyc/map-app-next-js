@@ -11,7 +11,6 @@ import SearchLogic from "@/app/components/ModernSearch/SearchLogic";
 import resultFormatter from "@/app/components/ModernSearch/lib/resultFormatter";
 import DataContext from "@/app/contexts/DataContext";
 import SearchDropDown from "./SearchDropDown";
-import { usePreventScroll } from '@react-aria/overlays';
 import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
 
 
