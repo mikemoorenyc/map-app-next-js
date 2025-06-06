@@ -11,6 +11,8 @@ import styles from "../"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
 
+const PinsMemo = memo(Pins); 
+
 const MapMemo = memo(function({onClick,mapStyleId,children}){
   return <Map
       onClick={onClick}
@@ -63,7 +65,7 @@ const MapPanel = () => {
   
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <MapMemo onClick={closeActive} mapStyleId={mapStyleId}>
-  <Pins  />
+  <PinsMemo  />
   <MobileSearch />
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
