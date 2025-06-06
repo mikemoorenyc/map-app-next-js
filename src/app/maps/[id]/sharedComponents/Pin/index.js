@@ -43,8 +43,8 @@ export default (props) => {
     borderColor="b"
     />*/
     
-    const imgURL = `/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`
-    const sizing = pin.favorited ? dim * 1.3 : dim+1;
+    //const imgURL = `/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`
+    //const sizing = pin.favorited ? dim * 1.3 : dim+1;
     /*return <Pin 
       glyph={icon}
       background={color}
@@ -58,7 +58,7 @@ export default (props) => {
     return <img className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 
-
+/*
   
   return <div 
     className={`${styles.pin} ${styles[lightOrDark]} ${highlighted?styles.highlighted:""} ${className || ""} ${pin.favorited?styles.favorited:""}`}
@@ -73,6 +73,7 @@ export default (props) => {
 
 
   </div>
+  */
 
 }
 //
