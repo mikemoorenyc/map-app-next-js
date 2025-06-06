@@ -57,7 +57,7 @@ const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin}) => {
 
   </>
 }
-const PinsMemo = useMemo(Pins)
+const PinsMemo = memo(Pins)
 
 const TheMarker = memo(Marker)
 
