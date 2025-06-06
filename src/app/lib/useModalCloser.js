@@ -40,7 +40,7 @@ useEffect(() => {
   }, [ref, id, closeFunction, getTop]);
 
 
+ const isTop = getTop() === id; 
 
-
- return ref; 
+ return {ref,isTop}; 
 }
