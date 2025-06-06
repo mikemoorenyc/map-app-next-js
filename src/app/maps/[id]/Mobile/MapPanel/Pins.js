@@ -69,12 +69,7 @@ const Pins = ({showPins}) => {
   </>
 }
 
-const TheMarker = memo((props)=> {
-
-  
-
- return  <Marker {...props}/>
-})
+const TheMarker = memo(Marker)
 
 
 
