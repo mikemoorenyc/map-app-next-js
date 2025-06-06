@@ -8,7 +8,7 @@ import useModalCloser from "@/app/lib/useModalCloser";
 
 const Modal = ({children,header,closeEvent}) => {
 
-  const modalCloser = useModalCloser(closeEvent,"modal");
+  const {ref} = useModalCloser(closeEvent,"modal");
   
  
 
@@ -16,7 +16,7 @@ const Modal = ({children,header,closeEvent}) => {
     {createPortal(
       <div className={`${styles.modal} polka-text z-modal`}>
         
-        <div ref={modalCloser} className={`${styles.inner} big-drop-shadow `}>
+        <div ref={ref} className={`${styles.inner} big-drop-shadow `}>
           <div className={`${styles.header} flex-center`}>
             {header && <div className={`${styles.title} flex-1`}>{header}</div>}
 
