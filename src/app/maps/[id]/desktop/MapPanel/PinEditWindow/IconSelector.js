@@ -3,7 +3,7 @@ import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
 
 
-import useModalCloser from "@/app/lib/useModalCloser";
+import {ref} from "@/app/lib/useModalCloser";
 import { pick } from "lodash";
 
 
@@ -40,7 +40,7 @@ const closeModal = useModalCloser(closer, "icon")
   return <>
     {createPortal(
 
-       <div className={`z-modal big-drop-shadow`} style={pos} ref={closeModal}>
+       <div className={`z-modal big-drop-shadow`} style={pos} ref={ref}>
 
         <Picker 
           data={async () => {
