@@ -8,13 +8,13 @@ import useModalCloser from "@/app/lib/useModalCloser";
 
 const Modal = ({children,header,closeEvent}) => {
 
-  const {ref} = useModalCloser(closeEvent,"modal");
-  
+  const {ref,isTop} = useModalCloser(closeEvent,"modal");
+ 
  
 
   return <>
     {createPortal(
-      <div className={`${styles.modal} polka-text z-modal`}>
+      <div className={`${styles.modal} polka-text z-modal ${isTop?"z-interactive-top":""}`}>
         
         <div ref={ref} className={`${styles.inner} big-drop-shadow `}>
           <div className={`${styles.header} flex-center`}>

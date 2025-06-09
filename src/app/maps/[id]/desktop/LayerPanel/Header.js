@@ -1,4 +1,4 @@
-import { useContext,memo } from "react"
+import { useContext,memo, useCallback } from "react"
 import styles from "./Header.module.css"
 import MapIcon from "./MapIcon"
 import Button from "@/app/components/Button"
@@ -8,11 +8,14 @@ import DataContext from "@/app/contexts/DataContext"
 
 import { RiStackLine } from "@remixicon/react"
 
+const MapIconMemo = memo(MapIcon);
+
 const Header = ({id}) => {
   
   const {layerDispatch,mapIcon,updateMapIcon} = useContext(DataContext);
   
-  const MapIconMemo = memo(MapIcon);
+  
+
 
   return <div className={`${styles.header} flex-center`}>
   <MapIconMemo mapIcon={mapIcon} updateMapIcon={updateMapIcon} />

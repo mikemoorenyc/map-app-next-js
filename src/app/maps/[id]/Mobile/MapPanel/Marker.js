@@ -9,6 +9,7 @@ const PinMemo = memo(Pin);
 
 export default  ({pin, active,onClick,layer}) => {
 
+
   const markerClick = useCallback(()=> {
     onClick(pin,active)
   },[onClick,pin,active])

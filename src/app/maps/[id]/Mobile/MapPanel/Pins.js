@@ -50,6 +50,7 @@ const PinsWrapper = () => {
 
 const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin}) => {
 
+
   return <>
 
   {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker layer={getLayer(pin)} onClick={markerClicked} active={activePin == pin.id} pin={pin}  key={pin.id}/>)}

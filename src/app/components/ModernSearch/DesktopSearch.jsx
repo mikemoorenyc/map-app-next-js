@@ -24,7 +24,7 @@ export default function DesktopSearch({clickEvent}) {
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {infoWindowDispatch} = useContext(InfoWindowContext);
   
-  
+
   
   //Close on Change
   const reset = ( ) => {

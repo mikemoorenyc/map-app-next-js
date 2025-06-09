@@ -8,6 +8,7 @@ import Button from "@/app/components/Button";
 import { RiMap2Line } from "@remixicon/react";
 
 const TopMenu = () => {
+  console.log("top menu render")
   const [isMounted,updateIsMounted] = useState(false)
   useEffect(()=> {
     updateIsMounted(true);

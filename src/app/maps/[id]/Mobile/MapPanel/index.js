@@ -14,6 +14,7 @@ import { memo, useCallback } from "react"
 
 
 const MapMemo = memo(function({onClick,mapStyleId,children}){
+  console.log("map render");
   return <Map
       onClick={onClick}
       mapId={mapStyleId}
@@ -25,7 +26,7 @@ const MapMemo = memo(function({onClick,mapStyleId,children}){
       style={{inset:0,position:"absolute"}}
       id={"mobile-map"}
     >{children}</Map>
-})
+}) 
 
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
