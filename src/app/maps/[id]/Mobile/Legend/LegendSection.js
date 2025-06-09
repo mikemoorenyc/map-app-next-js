@@ -6,24 +6,37 @@ import Pin from "../../sharedComponents/Pin"
 import { useMap } from "@vis.gl/react-google-maps"
 import mapCenterer from "../lib/mapCenterer"
 import Button from "@/app/components/Button"
-import DataContext from "@/app/contexts/DataContext"
-import { useCallback } from "react"
+import { useCallback ,memo} from "react"
 
 import styles from "./styles.module.css";
 import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
-const LegendSection = ({layer}) => {
-  const {activeDispatch, activeData} = useContext(MobileActiveContext)
-  const {layerData} = useContext(DataContext)
+
+
+const LegendSectionWrapper = ({layer}) => {
+    const {activeDispatch, activeData} = useContext(MobileActiveContext)
+    if(!activeData) return ;
+    const {disabledLayers, activePin,expandedLayers} = activeData
+    const isActive = !disabledLayers.includes(layer.id);
+    const map = useMap();
+    const props = {layer,isActive,map,activeDispatch,expandedLayers,activePin}
+    return <LegendSectionMemo {...props} />
+}
+
+
+
+const LegendSection = (props) => {
+  const  {layer,isActive,map,activeDispatch,expandedLayers,activePin} = props
+
   const [isEditing,updateIsEditing] = useState(false)
-  const mapData = layerData
-  const map = useMap(); 
-  if(!activeData) return ;
+ 
+   
+
   
-  const {disabledLayers, activePin,expandedLayers} = activeData
+  
   
 
-  const isActive = !disabledLayers.includes(layer.id);
+  
   
   const headerClick = useCallback(() => {
     console.log("clicked");
@@ -34,7 +47,7 @@ const LegendSection = ({layer}) => {
     }
   },[isActive])
 
-  const activatePin = (pin) => {
+  const activatePin = useCallback((pin) => {
     if(!isActive) return ; 
     
 
@@ -43,7 +56,7 @@ const LegendSection = ({layer}) => {
     activeDispatch({type: "LEGEND_OPEN", state: false})
     activeDispatch({type:"BACK_STATE",state:"back_to_legend"})
     mapCenterer(map,pin.location)
-  }
+  },[map,isActive]);
   const cutoff = 4
   
   const containsActivePin = layer.pins.filter(p => p.id == activePin).length
@@ -76,7 +89,7 @@ const LegendSection = ({layer}) => {
           const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
           return <div className={`${classString } flex-center`} key={pin.id} onClick={()=>{activatePin(pin)}}  >
           <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""} flex-center-center`}> 
-            <Pin pin={pin} mobile={true} onMap={true} layer={layer} layerData={mapData}/>
+            <Pin pin={pin} mobile={true} onMap={true} layer={layer} />
           </div>
           <div className={`${styles.pinName} ${pin.favorited?styles.favorited:""} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>
             {pin.title}
@@ -105,4 +118,6 @@ const LegendSection = ({layer}) => {
 
 }
 
-export default LegendSection;
+const LegendSectionMemo = memo(LegendSection);
+
+export default LegendSectionWrapper;
