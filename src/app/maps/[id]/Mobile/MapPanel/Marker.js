@@ -14,7 +14,7 @@ export default  ({pin, active,onClick,layer}) => {
     onClick(pin,active)
   },[onClick,pin,active])
   
-  const zindex = useMemo(()=>{active || pin.favorited ? 999999 : null},[active,pin]);
+  const zindex = active || pin.favorited ? 999999 : null
   
   const location = useMemo(()=>pin.location,[pin])
 
