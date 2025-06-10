@@ -1,5 +1,5 @@
 'use client'
-import { useContext ,useEffect,useState} from "react"
+import {Suspense, useContext ,useEffect,useState} from "react"
 import { APIProvider, Map } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
 import MobileSearch from "./MobileSearch"
@@ -7,7 +7,7 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import Legend from "../Legend"
 import GeoLocation from "./GeoLocation"
 import Updater from "../../desktop/TopMenu/Updater"
-import styles from "../"
+
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
 
@@ -67,11 +67,11 @@ const MapPanel = () => {
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <MapMemo onClick={closeActive} mapStyleId={mapStyleId}>
   <Pins  />
-  <MobileSearch/>
+  <Suspense><MobileSearch/></Suspense>
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
       <GeoLocation />
       <DirectionServicer />
-         <Legend />
+         <Suspense><Legend /></Suspense>
     </MapMemo>
     
    
