@@ -20,7 +20,7 @@ export default  ({pin, active,onClick,layer}) => {
 
   
   return <AMMemo onClick={markerClick} position={location} zIndex={zindex}>
-    <PinMemo windowOpen={false} onMap={true} interactable={true} imgSize={26} size={13} layer={layer} pin={pin} highlighted={active} mobile={true}/>
+    <PinMemo windowOpen={false} onMap={true} interactable={true} imgSize={26} size={14} layer={layer} pin={pin} highlighted={active} mobile={true}/>
   </AMMemo>
   
 }
