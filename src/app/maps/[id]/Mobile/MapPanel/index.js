@@ -13,20 +13,7 @@ import { memo, useCallback } from "react"
 
 
 
-const MapMemo = memo(function({onClick,mapStyleId,children}){
-  console.log("map render");
-  return <Map
-      onClick={onClick}
-      mapId={mapStyleId}
-      defaultZoom={3}
-
-      defaultCenter={{lat: 22.54992, lng: 0}}
-      gestureHandling={'greedy'}
-      disableDefaultUI={true}
-      style={{inset:0,position:"absolute"}}
-      id={"mobile-map"}
-    >{children}</Map>
-}) 
+const MapMemo = memo(Map) 
 
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
@@ -65,7 +52,17 @@ const MapPanel = () => {
 
   
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
-      <MapMemo onClick={closeActive} mapStyleId={mapStyleId}>
+      <MapMemo
+      onClick={closeActive}
+      mapId={mapStyleId}
+      defaultZoom={3}
+
+      defaultCenter={{lat: 22.54992, lng: 0}}
+      gestureHandling={'greedy'}
+      disableDefaultUI={true}
+      style={{inset:0,position:"absolute"}}
+      id={"mobile-map"}
+    >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
   <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>

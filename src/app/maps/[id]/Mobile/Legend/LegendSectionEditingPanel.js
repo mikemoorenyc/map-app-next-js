@@ -87,6 +87,11 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
         <div className={styles.editingBody}>
           <TextField name="title" label="Layer name">
             <input 
+            onFocus={(e)=> {
+                  if(tempData.title == "Untitled Layer") {
+                    e.target.select(); 
+                  }
+                }}
             className={editorStyles.textFieldInput}
               onChange={(e)=> {
                 e.preventDefault(); 

@@ -10,7 +10,7 @@ export default function ({pin}) {
   if(!routes) return ; 
   const methods = ["TRANSIT","WALKING","DRIVING","BICYCLING"];
   const icons = [<RiTrainLine />,<RiWalkLine />,<RiCarLine />,<RiRidingLine />]
-console.log(routes["DRIVING"]);
+
 
   return <div className={styles.dirButtons}>
 

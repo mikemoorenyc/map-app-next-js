@@ -113,7 +113,11 @@ const LayerEdit = () => {
       <div>
             <div className={`${styles.layerEditSection} flex-center`} key={"title"}>
                 <label className={styles.sectionLabel} htmlFor="title">Layer name</label>
-                <input className={"flex-1"} onChange={inputer} name="title" type="text" value={tempLayerData.title}/>
+                <input className={"flex-1"} onChange={inputer} name="title" type="text" value={tempLayerData.title} onFocus={(e)=> {
+                  if(tempLayerData.title == "Untitled Layer") {
+                    e.target.select(); 
+                  }
+                }}/>
             </div>
             <div className={`${styles.layerEditSection} flex-center`}  key={"color"}>
                 <label className={styles.sectionLabel}>Color</label>
