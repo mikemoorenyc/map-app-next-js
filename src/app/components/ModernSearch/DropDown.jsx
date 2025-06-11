@@ -94,7 +94,7 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
     {activePins.length? <div className={styles.OptionContainer}>
       {activePins.map(p=>{
         const layer = layerData.find(l => l.id == p.layerId); 
-        const icon = <Pin interactiable={false} size={9} pin={p} layer={layer}/>
+        const icon = <Pin onMap={true} interactiable={false} size={9} pin={p} layer={layer}/>
         return <SearchItem key={p.id} p={p} icon={icon}/>
       })}
     
