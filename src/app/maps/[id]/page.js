@@ -4,6 +4,8 @@ import Composer from "./desktop/Composer";
 import { headers } from "next/headers";
 import { isMobile } from "@/app/lib/isMobile";
 import "./desktop/gmWindowOverrides.css"
+import { Suspense } from "react";
+import LoadingSkeleton from "@/app/components/LoadingSkeleton";
 import Mobile from "./Mobile";
 export const dynamic = 'force-dynamic';
 const Page = async function({params}) {
@@ -12,12 +14,10 @@ const Page = async function({params}) {
   const mobileCheck = isMobile(userAgent);
   const {id} = await params; 
   const map = await getMap(parseInt(id));
-  
-  if(mobileCheck) {
-    return <Mobile mapData={map} />
-  } else {
-    return <Composer mapData={map} />
-  }
+  return <>
+  {mobileCheck ? <Suspense fallback={<LoadingSkeleton/>}><Mobile mapData={map} /></Suspense>: <Suspense fallback={<LoadingSkeleton />}><Composer mapData={map} /></Suspense>}
+  </>
+
   
 
 }

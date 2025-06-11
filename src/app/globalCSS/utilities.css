@@ -1,8 +1,8 @@
 .big-drop-shadow {
-    box-shadow: 3px 3px 0px var(--screen-text)
+    box-shadow: 3px 3px 0px var(--screen-black)
 }
 .sm-drop-shadow {
-    box-shadow: 1px 1px 0 var(--screen-text);
+    box-shadow: 1px 1px 0 var(--screen-black);
 }
 .overflow-ellipsis {
     overflow:hidden;
@@ -106,4 +106,7 @@ background-size: 2.83px 2.83px;
 }
 .z-dialog {
     z-index: 99
+}
+.z-interactive-top {
+    z-index: 9999; 
 }

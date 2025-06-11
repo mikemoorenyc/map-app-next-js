@@ -73,10 +73,10 @@ export default function ({children,anchor,closeCallback, dir}) {
       window.removeEventListener("resize",closeScroll)
     }
   },[])
-  const modalCloser = useModalCloser(closeCallback, "dropDown"+new Date(), boxRef)
+  const {isTop} = useModalCloser(closeCallback, "dropDown"+new Date(), boxRef)
   return <>
     {createPortal(
-      <div ref={boxRef} style={dPos} className={`${styles.dropdown} z-dropdown`}>
+      <div ref={boxRef} style={dPos} className={`${styles.dropdown} z-dropdown ${isTop?"z-interactive-top":""}`}>
         {children}
       </div>,
       document.getElementById("portal-container")

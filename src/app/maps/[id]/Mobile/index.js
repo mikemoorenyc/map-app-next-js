@@ -4,11 +4,11 @@ import { MobileActiveContextProvider } from "@/app/contexts/MobileActiveContext"
 import MapPanel from "./MapPanel"
 import "./styles.css";
 import DrawerPanel from "./DrawerPanel";
-import { memo } from "react";
+import { memo} from "react";
 import { ModalProvider } from "@/app/contexts/ModalContext";
 
 const MapPanelMemo = memo(MapPanel);
-const DrawerPanelMemo = memo(DrawerPanel); 
+const DrawerPanelMemo = memo(DrawerPanel);
 
 const Mobile = ({mapData}) => {
 
@@ -18,7 +18,7 @@ return (<>
 <MobileActiveContextProvider mapData={mapData}>
 
 <MapPanelMemo />
-<DrawerPanelMemo />
+<DrawerPanelMemo/>
 
 
 </MobileActiveContextProvider>

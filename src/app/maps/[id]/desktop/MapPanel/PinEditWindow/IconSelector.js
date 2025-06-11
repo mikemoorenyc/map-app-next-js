@@ -2,9 +2,9 @@
 import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
 
+import useModalCloser from "@/app/lib/useModalCloser";
 
-import {ref} from "@/app/lib/useModalCloser";
-import { pick } from "lodash";
+
 
 
 export default ({id,updateIconSelectorOpen,updateValue,pickerAnchor,stickToTop}) => {
@@ -13,7 +13,7 @@ const closer = () => {
     console.log("daf");
     updateIconSelectorOpen(false);
   }
-const closeModal = useModalCloser(closer, "icon")
+const {ref,isTop} = useModalCloser(closer, "icon")
 
   
   const emojiClicked = (e) => {
@@ -40,7 +40,7 @@ const closeModal = useModalCloser(closer, "icon")
   return <>
     {createPortal(
 
-       <div className={`z-modal big-drop-shadow`} style={pos} ref={ref}>
+       <div className={`z-modal big-drop-shadow ${isTop?"z-interactive-top":""}`} style={pos} ref={ref}>
 
         <Picker 
           data={async () => {

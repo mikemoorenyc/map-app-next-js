@@ -3,6 +3,7 @@ import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import styles from "./Header.module.css"
 import { useRef, useState } from "react"
 export default function({mapIcon,updateMapIcon}) {
+
   const [iconSelectorOpen,updateIconSelectorOpen] =useState(false)
   const pickerAnchor = useRef(null)
 
