@@ -166,14 +166,14 @@ const LayerEdit = () => {
       </div>
             <ActionBar 
             style={{marginTop: 16,borderTop:"1px solid var(--screen-text)"}}
-            primaryButtons={(
+            primaryButtons={layerData.length > 1 && (
              <>
               <Button modifiers={["ghost","sm","caution"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
                 Delete 
             </Button>
               </>
             )}
-            secondaryButtons={layerData.length > 1 && (
+            secondaryButtons={ (
                <>
               <div style={{display:"flex",justifyContent:"flex-end", width: "100%"}}>
                 <Button onClick={cancelEdit} modifiers={["secondary"]}>Cancel</Button>
