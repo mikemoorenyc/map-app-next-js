@@ -1,7 +1,7 @@
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
-import { useContext,useEffect,useState } from "react"
+import { useContext,useEffect,useState,useCallback } from "react"
 
 export default function ()  {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
@@ -10,15 +10,16 @@ export default function ()  {
   const map = useMap(); 
   const routesLibrary = useMapsLibrary('routes');
   const [dirService,updateDirService] = useState(null); 
+  
   useEffect(()=> {
     if(!map || !routesLibrary)return ; 
     updateDirService(new routesLibrary.DirectionsService());
     console.log("created")
   },[map,routesLibrary]);
   
-  const updateData = async (mode) => {
+  const updateData = useCallback(async (mode) => {
      if (!dirService || !geolocation || !inBounds) return;
-     const pin = activePin == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == activePin);
+     const pin = activePin == "temp" ? tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == activePin);
      console.log(pin.place_id);
      if(!pin) return; 
      dirService.route({
@@ -38,7 +39,7 @@ export default function ()  {
         updatedRoute: newget
       })
      })
-  }
+  },[activeDispatch,dirService,geolocation,inBounds,layerData,activePin,tempData])
 
   useEffect(()=> {
     activeDispatch({
