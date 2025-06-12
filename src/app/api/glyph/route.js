@@ -9,7 +9,6 @@ export async function GET(request,) {
   const color = searchParams.get("color");
   const ld = searchParams.get('ld');
   const favorited = searchParams.get("favorited") == "true";
-  const visited = searchParams.get("visited") == "true";
   const hasIcon = searchParams.get("hasIcon") == "true";
   const size = parseInt(searchParams.get("w")) * 2;
   const fontSize = parseInt(searchParams.get("size"))
@@ -27,7 +26,6 @@ export async function GET(request,) {
         display:"flex",
         width: favoritedSize,
         height: favoritedSize,
-        filter: visited? "grayscale(1)" : "none",
         color: ld == "dark"?"white":"black"
       }}
     >
@@ -102,7 +100,7 @@ export async function GET(request,) {
             width: size,
             height: size,
             backgroundColor: color,
-            filter: visited? "grayscale(1)" : "none",
+ 
             color: ld == "dark"?"white":"black"
           }}
         
