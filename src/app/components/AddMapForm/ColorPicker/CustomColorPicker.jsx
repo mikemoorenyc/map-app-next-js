@@ -4,7 +4,7 @@ import {useState} from "react"
 
 export default function CustomColorPicker(props) {
   const {updateFunction,closeFunction,currentColor,isCustom} = props;
-  const [tempColor,updateTempColor] = useState(isCustom? currentColor : "#814444"); 
+  const [tempColor,updateTempColor] = useState(currentColor); 
   const save = () => {
     updateFunction(tempColor);
     closeFunction();
