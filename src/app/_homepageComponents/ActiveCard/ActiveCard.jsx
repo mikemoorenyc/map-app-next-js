@@ -44,7 +44,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
     <div className={styles.text}> 
       <h2 className={`${styles.mapName} overflow-ellipsis `}><Link className="flex-center" href={url}>
         {appMap.mapIcon && <img width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${appMap.mapIcon}`} style={{marginRight:4}}/>}
-        {appMap.title}</Link></h2>
+        <span className="flex-1 overflow-ellipsis">{appMap.title}</span></Link></h2>
       <div className={styles.amountLine}>{pinLength} pins</div>
     </div>
 
