@@ -1,13 +1,13 @@
 
 import { getMap } from "@/app/actions/maps";
-import Composer from "./desktop/Composer";
 import { headers } from "next/headers";
 import { isMobile } from "@/app/lib/isMobile";
 import "./desktop/gmWindowOverrides.css"
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import LoadingSkeleton from "@/app/components/LoadingSkeleton";
-import Mobile from "./Mobile";
 export const dynamic = 'force-dynamic';
+const Mobile = lazy(()=> import("./Mobile"))
+const Composer = lazy(()=>import("./desktop/Composer"))
 const Page = async function({params}) {
   const h = await headers(); 
   const userAgent = h.get("user-agent") || "";

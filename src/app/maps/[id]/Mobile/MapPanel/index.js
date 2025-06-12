@@ -1,17 +1,16 @@
 'use client'
-import {Suspense, useContext ,useEffect,useState} from "react"
+import {Suspense, useContext ,useEffect,useState,lazy} from "react"
 import { APIProvider, Map } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
-import MobileSearch from "./MobileSearch"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-import Legend from "../Legend"
 import GeoLocation from "./GeoLocation"
 import Updater from "../../desktop/TopMenu/Updater"
 
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
 
-
+const MobileSearch = lazy(()=>import("./MobileSearch"));
+const Legend = lazy(()=> import("../Legend"))
 
 const MapMemo = memo(Map) 
 

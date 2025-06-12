@@ -1,9 +1,10 @@
 import { RiPaintFill } from "@remixicon/react";
 import styles from "./ColorPickerStyles.module.css"
-import {useState,Suspense} from "react"
+import {useState,Suspense,lazy} from "react"
 import lightOrDark from "@/app/lib/lightOrDark";
-import CustomColorPicker from "./CustomColorPicker";
 
+
+const CustomColorPicker = lazy(()=> import("./CustomColorPicker"));
 
 export default function ColorPicker({selectCallback,cancelCallback,currentColor}) {
   const possibleColors = process.env.NEXT_PUBLIC_LAYER_COLORS.split(",");
