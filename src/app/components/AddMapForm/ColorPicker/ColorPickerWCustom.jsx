@@ -7,8 +7,8 @@ export default function ColorPicker({ selectCallback, cancelCallback, currentCol
   const [customColorOpen, updateCustomColorOpen] = useState(false);
   const possibleColors = process.env.NEXT_PUBLIC_LAYER_COLORS.split(",");
   const isCustom = !possibleColors.includes(currentColor);
-  const customColor = isCustom ? currentColor : '#ffffff';
-  const customLD = lightOrDark(customColor);
+
+  const customLD = lightOrDark(currentColor);
 
   const colorPicked = (color) => {
     selectCallback(color);
@@ -31,8 +31,8 @@ export default function ColorPicker({ selectCallback, cancelCallback, currentCol
             />
           ))}
           <button
-            className={`${styles.button} ${customColor === currentColor ? styles.selected : ""}`}
-            style={{ background: customColor }}
+            className={`${styles.button} ${isCustom ? styles.selected : ""}`}
+            style={{ background: currentColor }}
             onClick={(e) => {
               updateCustomColorOpen(true);
             }}
