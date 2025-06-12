@@ -11,6 +11,7 @@
   border-radius:50%;
   font-size: 14px;
   vertical-align:middle;
+  font-size: 16px;
 }
 .customButton {
   display:inline-block;
@@ -18,8 +19,8 @@
   background: var(--screen-text);
 }
 .paintIcon {
-  width: 16px;
-  height: 16px;
+  width: 1em;
+  height: 1em;
   position:absolute;
   left: 50%;
   top: 50%;
@@ -36,15 +37,40 @@
   border-width: 3px; 
   box-shadow: inset 0px 0px 1px 1px var(--screen-bg)
 }
+
+.pickerPalette {
+  padding: 8px;
+}
+.hexInput {
+  width: calc(100% - 16px);
+  margin-left: 8px; 
+}
+.pickerButtonContainer {
+  margin:8px;
+}
+.pickerButtonContainer .pickerButton:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 2px; 
+}
+.pickerButtonContainer .pickerButton:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 2px; 
+}
 @media(max-width: 600px) {
   .button {
     width: 64px;
     height: 64px;
     margin: 8px;
+    font-size: 36px;
   }
   
   .container {
     padding-bottom: 48px;
     max-width: 100%;
+  }
+  .pickerPalette {
+    width: 100% !important;
   }
 }

@@ -73,7 +73,7 @@ export default function ({children,anchor,closeCallback, dir}) {
       window.removeEventListener("resize",closeScroll)
     }
   },[])
-  const {isTop} = useModalCloser(closeCallback, "dropDown"+new Date(), boxRef)
+  const {isTop} = useModalCloser(closeCallback, "dropDown", boxRef)
   return <>
     {createPortal(
       <div ref={boxRef} style={dPos} className={`${styles.dropdown} z-dropdown ${isTop?"z-interactive-top":""}`}>

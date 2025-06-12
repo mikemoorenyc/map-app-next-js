@@ -10,25 +10,31 @@ export default function useModalCloser(closeFunction,id,customRef) {
   const ref = customRef || defaultRef ; 
  useEffect(()=> {
    setActive(id);
+
     return () => removeActive(id);
  },[]);
 
 useEffect(() => {
     const handleClick = (e) => {
-     
+
       const isTop = getTop() === id;
 
       if (isTop && ref.current && !ref.current.contains(e.target)) {
+
         closeFunction(); 
       } else if (ref.current && ref.current.contains(e.target)) {
         // Move back to top if user interacts again
         setActive(id);
+
       }
     };
     const escapePress = (e) => {
+      
       if(e.code !== "Escape") return ; 
+      
       const isTop = getTop() == id; 
       if(isTop) {
+
         closeFunction(); 
       }
     }

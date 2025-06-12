@@ -1,32 +1,57 @@
 import { RiPaintFill } from "@remixicon/react";
 import styles from "./ColorPickerStyles.module.css"
-
-
+import {useState,Suspense} from "react"
+import lightOrDark from "@/app/lib/lightOrDark";
+import CustomColorPicker from "./CustomColorPicker";
 
 
 export default function ColorPicker({selectCallback,cancelCallback,currentColor}) {
   const possibleColors = process.env.NEXT_PUBLIC_LAYER_COLORS.split(",");
-
- 
+  const [customColorOpen, updateCustomColorOpen] = useState(false);
+  const isCustom = !possibleColors.includes(currentColor);
+  const customColor = isCustom ? currentColor : "#ffffff"
+  const customLD = lightOrDark(customColor);
 
   const colorPicked = (color) => {
     selectCallback(color);
     cancelCallback();
   }
-  const isCustom = !possibleColors.includes(currentColor);
+ 
   console.log(isCustom);
 
-  return <div className={`${styles.container} `} >
-  {possibleColors.map(c=> {
-    return <button onClick={(e) => {
-      e.preventDefault();
-      colorPicked(c);
-    }} className={`${styles.button} ${c == currentColor ? styles.selected:""}`} style={{background:c}} key={c}></button>
-  })}
-
- 
-  
-  </div>
+  return (
+    <div className={`${styles.container}`}>
+      {!customColorOpen && (
+        <>
+          {possibleColors.map((c) => (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                colorPicked(c);
+              }}
+              className={`${styles.button} ${c === currentColor ? styles.selected : ""}`}
+              style={{ background: c }}
+              key={c}
+            />
+          ))}
+          <button
+            className={`${styles.button} ${isCustom ? styles.selected : ""} ${styles.customButton}`}
+            style={{ background: customColor }}
+            onClick={(e) => {
+              updateCustomColorOpen(true);
+            }}
+          >
+            <RiPaintFill className={styles.paintIcon} color={customLD == "dark"?"white": "black"}/>
+          </button>
+        </>
+      )}
+      {customColorOpen && (
+        <Suspense fallback={<div style={{height:268}}></div>}>
+          <CustomColorPicker currentColor={currentColor} updateFunction={colorPicked} closeFunction={()=>{updateCustomColorOpen(false)}}/>
+        </Suspense>
+      )}
+    </div>
+  );
 
 }
 

@@ -43,3 +43,6 @@ input,textarea {
     background: var(--screen-bg);
     padding: 8px;
 }
+input:focus,textarea:focus {
+    box-shadow: inset 1px 1px 0 var(--screen-text), inset -1px -1px 0 var(--screen-text);
+}
