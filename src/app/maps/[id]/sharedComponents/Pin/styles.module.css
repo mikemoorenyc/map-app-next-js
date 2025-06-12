@@ -21,6 +21,9 @@
   transform: scale(1.25);
   
 }
+.visited {
+  filter: grayscale(1);
+}
 .highlighted:not(.favorited) {
   box-shadow: 0 0 0 2px white, 0 0 0 4px black;
   border-radius:50%
