@@ -10,6 +10,7 @@ import DataContext from "@/app/contexts/DataContext";
 import { findLayer, findPin, isHighlighted } from "./lib/finders";
 
 const PinMarker = ({pId, onMap}) => {
+    
     const {infoWindowDispatch} = useContext(InfoWindowContext);
     const {activeDispatch, activeData} = useContext(ActiveContext)
     const {layerData} = useContext(DataContext);
@@ -58,7 +59,8 @@ const PinMarker = ({pId, onMap}) => {
     
     const highlighted = isHighlighted(activeData,pin.id); 
     
-    return <AdvancedMarker {...((highlighted || pin?.favorited )? {zIndex:9999} : {})}  onClick={handleClick}  position={location}>
+    return <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
+    onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} {...((highlighted || pin?.favorited )? {zIndex:9999} : {})}  onClick={handleClick}  position={location}>
     <Pin onMap={true}  windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
     </AdvancedMarker>
 }

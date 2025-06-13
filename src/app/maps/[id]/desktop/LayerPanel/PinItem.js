@@ -1,6 +1,7 @@
 import Pin from '../../sharedComponents/Pin';
 import { useEffect,useRef,useContext } from 'react';
 import ActiveContext from '@/app/contexts/ActiveContext';
+import { isHighlighted } from '../MapPanel/lib/finders';
 
 import styles from "./PinItem.module.css"
 const PinItem = (props) => {
@@ -31,7 +32,7 @@ const PinItem = (props) => {
     ref={pinEl}
     onClick={handleClick}
     key={p.id}
-    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""}`}
+    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""}`}
   >
     <div style={{marginRight: 4}}>
       <Pin 
