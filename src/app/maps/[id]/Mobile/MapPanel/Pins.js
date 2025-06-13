@@ -43,17 +43,17 @@ const PinsWrapper = () => {
   const getLayer = useCallback((pin)=> {
     return findLayer(layerData,pin.layerId)
   },[layerData])
-  const p = {pinsFlat,getLayer,disabledLayers,markerClicked,activePin}
+  const p = {pinsFlat,getLayer,disabledLayers,markerClicked,activePin,map}
   return <PinsMemo {...p} />
 
 }
 
-const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin}) => {
+const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin,map}) => {
 
 
   return <>
 
-  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker layer={getLayer(pin)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={getLayer(pin)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
 
 
   </>
