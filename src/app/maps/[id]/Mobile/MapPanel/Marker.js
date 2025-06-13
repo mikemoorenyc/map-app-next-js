@@ -22,15 +22,17 @@ export default  ({pin, activePin,onClick,layer,map}) => {
   }
 
   useEffect(()=> {
-    if(!map) return ;
+    if(!map|| google.maps) return ;
+  
+    let eventCheck ; 
    
     const check = () => {
 
       updateShowing(map.getBounds().contains(pin.location))
     }
-    map.addListener("bounds_changed", check)
+    eventCheck = map.addListener("bounds_changed", check)
     return () => {
-      map.removeListener("bounds_changed",check);
+      map.removeListener(eventCheck);
     }
   },[map])
   
