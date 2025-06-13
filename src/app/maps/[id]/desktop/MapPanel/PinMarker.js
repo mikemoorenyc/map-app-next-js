@@ -58,9 +58,14 @@ const PinMarker = ({pId, onMap}) => {
     
     
     const highlighted = isHighlighted(activeData,pin.id); 
+    let zindex = highlighted ? 9999 : null; 
+    if(pin?.favorited && !activeData.editingPin ) {
+        zindex = 9999;
+    }
+
     
     return <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
-    onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} {...((highlighted || pin?.favorited )? {zIndex:9999} : {})}  onClick={handleClick}  position={location}>
+    onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} zIndex={zindex} onClick={handleClick}  position={location}>
     <Pin onMap={true}  windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
     </AdvancedMarker>
 }
