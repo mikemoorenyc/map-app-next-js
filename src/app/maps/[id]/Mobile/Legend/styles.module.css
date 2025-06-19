@@ -35,8 +35,8 @@
   left: -2px;
 }
 .legendSectionPin.active {
-background:white;
-color: black;
+background:var(--screen-text);
+color: var(--screen-bg);
 font-weight: 700;
 }
 .legendSectionPin.disabled {
