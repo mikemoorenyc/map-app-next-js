@@ -41,6 +41,8 @@
 }
 .searchInput.focused {
   color:var(--screen-text);
+  border: 0;
+  box-shadow: none; 
 }
 
 .pinOuter {
