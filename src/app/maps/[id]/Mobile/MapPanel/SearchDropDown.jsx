@@ -8,6 +8,7 @@ export default function({results,itemClicked}) {
   const {layerData} = useContext(DataContext);
   const { predictions, activePins} = results; 
 
+
   const SearchItem = ({item,icon}) => {
 
     return <div onClick={()=>{itemClicked(item)}} className={`${styles.searchItem} flex-center`}>
@@ -43,6 +44,7 @@ export default function({results,itemClicked}) {
       {predictions.length? (
         <div className={styles.pinContainer}>
         {predictions.map(p => {
+          if(activePins.map(p=>p.id).includes(p.id)) return ; 
           return <SearchItem key={p.id} icon={<RiMapPinLine />} item={p}/>
         })}
         </div>

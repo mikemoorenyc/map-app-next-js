@@ -86,7 +86,7 @@ export default () => {
     return ; 
   }
   const addPredictionPin = (place) => {
-   
+
     place.title = place.name;
     const pos = place.geometry.location.toJSON()
     place.location = place.geometry.location.toJSON(); 

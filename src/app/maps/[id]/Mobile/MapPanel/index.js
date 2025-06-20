@@ -5,7 +5,7 @@ import Pins from "./Pins"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import GeoLocation from "./GeoLocation"
 import Updater from "../../desktop/TopMenu/Updater"
-
+import DrawerPanel from "../DrawerPanel"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
 
@@ -13,6 +13,7 @@ const MobileSearch = lazy(()=>import("./MobileSearch"));
 const Legend = lazy(()=> import("../Legend"))
 
 const MapMemo = memo(Map) 
+const DrawerPanelMemo = memo(DrawerPanel);
 
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
@@ -50,11 +51,12 @@ const MapPanel = () => {
 
 
   
-  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
+  return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider version="beta" apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <MapMemo
       onClick={closeActive}
       mapId={mapStyleId}
       defaultZoom={3}
+    
 
       defaultCenter={{lat: 22.54992, lng: 0}}
       gestureHandling={'greedy'}
@@ -68,6 +70,7 @@ const MapPanel = () => {
       <GeoLocation />
       <DirectionServicer />
          <Suspense><Legend /></Suspense>
+         <DrawerPanelMemo />
     </MapMemo>
     
    

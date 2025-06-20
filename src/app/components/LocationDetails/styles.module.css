@@ -13,3 +13,11 @@ overflow-wrap: break-word;
   height: 1em;
   margin-right:6px;
 }
+.openOrNot {
+  font-size:11px;
+  text-transform:uppercase;
+
+}
+.openOrNotClosed {
+  color: var(--caution-color);
+}

@@ -9,10 +9,10 @@ export default function AddToMapButton() {
   const {layerData,layerDispatch} = useContext(DataContext)
   const {activeData} = useContext(MobileActiveContext)
   const {activeDispatch} = useContext(MobileActiveContext);
-  const tempData = activeData.tempData
+  const tempData = activeData.tempData;
   if(!tempData) return ; 
   const {website,name,formatted_address,international_phone_number,url,geometry} = tempData
-  const tempID = Date.now()
+  const tempID = tempData.place_id
 
   const addPin = (e) => {
     e.preventDefault(); 

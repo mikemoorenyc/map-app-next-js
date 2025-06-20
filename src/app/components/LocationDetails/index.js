@@ -1,20 +1,25 @@
 
 import styles from "./styles.module.css";
 import makeNativeLink from "@/app/maps/[id]/Mobile/lib/makeNativeLink";
-import { RiPhoneLine, RiSafariLine } from "@remixicon/react";
+import { RiPhoneLine, RiSafariLine, } from "@remixicon/react";
+import { Suspense,lazy } from "react";
 
-const ItemRow = ({children}) => (
-  <div className={`${styles.item} flex-center`}>
+
+const OpenOrClosed = lazy(()=>import("./OpenOrClosed"))
+
+const ItemRow = ({children,className=""}) => (
+  <div className={`${className} ${styles.item} flex-center`}>
   {children}
   </div>
 )
 
-const LocationDetails =  ({placeData,isMobile}) => {
+const LocationDetails =  ({placeData,isMobile,inBounds}) => {
     const {website,name,formatted_address,international_phone_number,url,geometry} = placeData
   
 
     return <div className={styles.locationDetails}>
-
+        {inBounds && <Suspense><OpenOrClosed itemRow={ItemRow} placeData={placeData} /></Suspense>}
+        
         {formatted_address && <ItemRow>{formatted_address}</ItemRow>}
         {international_phone_number && <ItemRow>
             <div className="LocationDetails-item-icon"><RiPhoneLine className={styles.svg} /></div> <a href={`tel:${international_phone_number}`}>{international_phone_number}</a>

@@ -15,7 +15,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
     const {infoWindowState,infoWindowContent,infoWindowDispatch } = useContext(InfoWindowContext);
     const {website,name,formatted_address,international_phone_number,url,geometry} = placeData
     const addItem = (e) => {
-        const tempID = Date.now()
+        const tempID = placeData.place_id
         e.preventDefault(); 
         console.log("clicked")
         layerDispatch({

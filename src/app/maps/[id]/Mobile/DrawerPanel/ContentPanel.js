@@ -12,10 +12,11 @@ import { RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 
 
+
 const ContentPanel = ({pinId, $transform})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
-  const {routes} = activeData;
+  const {routes,inBounds} = activeData;
 
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
@@ -43,7 +44,7 @@ const ContentPanel = ({pinId, $transform})=> {
       </div>}
       {routes && <Directions />}
       <div style={{marginTop:16}}>
-        <LocationDetails placeData={pin} isMobile={true}/>
+        <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
     </div>
   </div>
