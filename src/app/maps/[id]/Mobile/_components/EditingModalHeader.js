@@ -9,8 +9,8 @@ export default ({deleteFunction,cancelFunction,saveFunction}) => {
 
     <Button icon={<RiCloseLine/>} modifiers={['ghost',"icon","round","sm"]} onClick={cancelFunction} />
     
-    <div className={styles.saveButtonContainer}>
-      <Button modifiers={["icon","round"]} icon={<RiSave3Line />} style={{marginLeft: 16}}  onClick={saveFunction} />
+     <div className={styles.saveButtonContainer}>
+      <Button modifiers={["icon","round", !saveFunction?"disabled":""]} icon={<RiSave3Line />} style={{marginLeft: 16}}  onClick={saveFunction} />
     </div>
   </div>
   )

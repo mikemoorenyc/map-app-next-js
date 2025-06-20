@@ -24,6 +24,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
   const {layerDispatch} = dataC;
   const [colorPickerOpen,updateColorPickerOpen]= useState(false);
   const [deleteId,updateDeleteId] = useState(false)
+  const [saveDisabled,updateSavedDisabled] = useState(false)
   
 
   const valueChanger = (value,key) => {
@@ -75,7 +76,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
             e.preventDefault(); 
             cancelFunction(); 
           }}
-          saveFunction={(e)=> {
+          saveFunction={saveDisabled?null:(e)=> {
             e.preventDefault();
             saveData(); 
           }}
@@ -95,14 +96,19 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
             className={editorStyles.textFieldInput}
               onChange={(e)=> {
                 e.preventDefault(); 
-                valueChanger(e.target.value,"title")
+                valueChanger(e.target.value,"title");
+                if(!e.target.value.length) {
+                  updateSavedDisabled(true)
+                } else {
+                  updateSavedDisabled(false)
+                }
               }}
               value={tempData.title}
               type="text"
               name="title"
               id="title"
             />
-          
+          <div className={styles.disabledText} style={{visibility:saveDisabled?"visible":"hidden"}}>Layer has to have a name</div>
           </TextField>
           <TextField>
             <div className={styles.layerColorContainer}>

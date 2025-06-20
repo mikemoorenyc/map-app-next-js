@@ -1,4 +1,4 @@
-import  { useContext ,useRef} from "react"
+import  { useContext ,useRef,useState,Suspense,lazy} from "react"
 
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import LegendSection from "./LegendSection"
@@ -6,7 +6,9 @@ import LegendSection from "./LegendSection"
 import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 import styles from "./styles.module.css";
-import { RiArrowLeftFill,  RiStackLine } from "@remixicon/react"
+import { RiArrowLeftFill,  RiSettingsLine,  RiStackLine } from "@remixicon/react"
+
+const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
@@ -16,6 +18,7 @@ const Legend = () => {
  
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
   const legendScroll = useRef(null);
+  const [settingsOpen,updateSettingsOpen] = useState(false);
   
   return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>
   {legendIsOpen && (<>
@@ -38,6 +41,7 @@ const Legend = () => {
       return <LegendSection key={l.id} layer={l} />;
     })}
     <div className={styles.addSection}>
+    <Button icon={<RiSettingsLine />} onClick={()=>{updateSettingsOpen(true)}} className={styles.settingsIcon} modifiers={['sm','secondary','round',"icon"]}/>
     <Button icon={<RiStackLine/>} modifiers={["sm"]} className={styles.layerAddButton} onClick={(e)=>{
       e.preventDefault();
       layerDispatch({type:"ADDED_LAYER"})
@@ -48,6 +52,8 @@ const Legend = () => {
     </div>
     
  </>)}
+  {settingsOpen && <Suspense fallback={<div style={{background:"var(--screen-bg)",position:"fixed",inset:0, zIndex:9999}} />}><MapEditingPanel closeFunction={()=>{updateSettingsOpen(false)}}/></Suspense>}
+
   </div>
 }
 

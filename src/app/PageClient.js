@@ -1,7 +1,7 @@
 'use client'
 import styles from "./page.module.css"
 
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
 import { mapSort } from "./lib/sortMaps"
 
@@ -10,16 +10,28 @@ import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
 import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 import { ModalProvider } from "./contexts/ModalContext"
+import { getAllMaps } from "./actions/maps"
 
 
 export default function PageClient({mapData,isMobile}){
 
   
-
+const [isLoading,updateIsLoading] = useState(true)
  
   const [deleteId,updateDeleteId] = useState(null)
 
-  const [mapList,updateMapList] = useState(mapSort(mapData));
+  const [mapList,updateMapList] = useState({
+    active: [],
+    archived: []
+  });
+  const getMaps = async () => {
+    const maps = await getAllMaps(); 
+    updateMapList(mapSort(maps));
+    updateIsLoading(false);
+  }
+  useEffect(()=> {
+    getMaps(); 
+  },[])
 
   const updater = (map) => {
     console.log(map);
@@ -70,8 +82,11 @@ export default function PageClient({mapData,isMobile}){
     Mike & Danielle&rsquo;s <br/>
     Map App
   </h1>
-
+{isLoading && <div style={{fontSize:24,paddingTop:24}}>
+    🗺️ Getting the maps
+    </div>}
   <div className={styles.mapListsContainer}>
+    
     <div className={styles.activeMapContainer}>
 
       <ul className={`${styles.activeMapList} list-style-none`}>
