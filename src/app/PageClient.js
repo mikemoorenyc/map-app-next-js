@@ -1,7 +1,7 @@
 'use client'
 import styles from "./page.module.css"
 
-import { useState} from "react"
+import { useState,useEffect} from "react"
 
 import { mapSort } from "./lib/sortMaps"
 
@@ -10,7 +10,7 @@ import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
 import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 import { ModalProvider } from "./contexts/ModalContext"
-
+import { getAllMaps } from "./actions/maps"
 
 
 export default function PageClient({mapData,isMobile}){
@@ -32,6 +32,15 @@ export default function PageClient({mapData,isMobile}){
     delete: (mapId) => {deleteMap(mapList.all,mapId,updater)},
     move: (mapId,direction) => {moveMap(mapList.all,mapId,updater,direction)}
   }
+  const firstMaps = async () => {
+    const maps = await getAllMaps(); 
+    updateMapList(mapSort(mapData));
+  }
+  useEffect(()=> {
+    firstMaps(); 
+
+
+  },[])
  
 
 

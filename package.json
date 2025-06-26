@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev   --hostname 192.168.1.15",
+    "dev": "next dev   --hostname 192.168.1.13",
     "devlocal": "next dev",
     "build": "next build",
     "start": "next start",
