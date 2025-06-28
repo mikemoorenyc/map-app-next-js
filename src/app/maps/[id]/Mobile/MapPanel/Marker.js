@@ -72,7 +72,7 @@ export default  ({pin, activePin,onClick,layer,map}) => {
   
   return <AMMemo onClick={markerClick} position={location} zIndex={zindex}>
   <div style={{contentVisibility:showing?"visible":"hidden"}}>
-      <PinMemo windowOpen={false} onMap={true} interactable={true} imgSize={26} size={14} layer={layer} pin={pin} highlighted={active} mobile={true}/>
+      <PinMemo saveGlyph={"mobile"} windowOpen={false} onMap={true} interactable={true} imgSize={26} size={14} layer={layer} pin={pin} highlighted={active} mobile={true}/>
     </div>
     
   </AMMemo>

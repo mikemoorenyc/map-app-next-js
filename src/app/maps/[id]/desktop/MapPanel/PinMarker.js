@@ -66,7 +66,7 @@ const PinMarker = ({pId, onMap}) => {
     
     return <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
     onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} zIndex={zindex} onClick={handleClick}  position={location}>
-    <Pin onMap={true}  windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
+    <Pin onMap={true} saveGlyph={"mapDT"} windowOpen={true} highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
     </AdvancedMarker>
 }
 export default PinMarker

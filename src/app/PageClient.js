@@ -82,6 +82,7 @@ export default function PageClient({mapData,isMobile}){
     Map App
   </h1>
 
+
   <div className={styles.mapListsContainer}>
     
     <div className={styles.activeMapContainer}>

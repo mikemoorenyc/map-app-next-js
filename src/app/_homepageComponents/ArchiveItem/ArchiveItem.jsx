@@ -8,11 +8,12 @@ import MenuButton from "../MenuButton";
 export default function ({appMap,actions}) {
   const pinAmount = appMap.layerData.map(l => l.pins).flat().length; 
   const url = `/maps/${appMap.id}`
+  const imgUrl = `/api/glyph/w_${16}__icon_${appMap.mapIcon}__picker_true`
   return (
     <div className={`${styles.archiveItem} flex-center`}>
       <Link className={`flex-center flex-1 ${styles.link}`} href={url}>
         <span  className={`${styles.title} flex-center`}>
-          {appMap.mapIcon && <img src={"/api/glyph?picker=true&w=16&icon="+appMap.mapIcon} width={16} height={16} style={{marginRight:4}}/>}
+          {appMap.mapIcon && <img src={imgUrl} width={16} height={16} style={{marginRight:4}}/>}
           <span className="flex-1 overflow-ellipsis">{appMap.title}</span>
         </span>
         <span className={styles.count}>{pinAmount} pins</span>

@@ -34,8 +34,8 @@ export default function ({appMap,top=false,bottom=false, actions})  {
   }
 
 
- 
-
+ //<img width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${appMap.mapIcon}`} style={{marginRight:4}}/>
+  const imgUrl = `/api/glyph/w_${16}__icon_${appMap.mapIcon}__picker_true`
   return <>
   <div style={{position:"relative"}}> <div className={styles.activeCard} onMouseUp={clickCheck} onMouseDown={()=>{updateDownTime(+new Date())}}>
     <div  className={`${styles.imageContainer} flex-center-center ${!pinLength ? "stripes-text-on-bg":""}`}>
@@ -43,7 +43,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
     </div>
     <div className={styles.text}> 
       <h2 className={`${styles.mapName} overflow-ellipsis `}><Link className="flex-center" href={url}>
-        {appMap.mapIcon && <img width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${appMap.mapIcon}`} style={{marginRight:4}}/>}
+        {appMap.mapIcon && <img width={16} height={16} src={imgUrl} style={{marginRight:4}}/> }
         <span className="flex-1 overflow-ellipsis">{appMap.title}</span></Link></h2>
       <div className={styles.amountLine}>{pinLength} pins</div>
     </div>

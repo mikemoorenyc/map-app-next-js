@@ -1,21 +1,32 @@
 
 import { ImageResponse } from 'next/og'
 export const contentType = 'image/png'
-export async function GET(request,) {
+export async function GET(request,{params}) {
+
+
+  const {image} = await params; 
+
+
+  const values = ["icon","color","ld","visited","favorited","hasIcon","w","size","picker"];
+  const imgAttr = {}
+  image.split("__").forEach(v => {
+    const item = v.split("_");
+    imgAttr[item[0]] = item[1];
+  });
 
  
-  const {searchParams} = request.nextUrl
-  const icon = searchParams.get("icon")
-  let color = searchParams.get("color") ? searchParams.get("color").replace("#",""):null;
+  const icon = imgAttr?.icon
+  let color = imgAttr?.color ? imgAttr?.color.replace("#",""):null;
   if(color) {
     color = "#"+color; 
   }
-  const ld = searchParams.get('ld');
-  const visited = searchParams.get("visited") == "true";
-  const favorited = searchParams.get("favorited") == "true";
-  const hasIcon = searchParams.get("hasIcon") == "true";
-  const size = parseInt(searchParams.get("w")) * 2;
-  const fontSize = parseInt(searchParams.get("size"))
+  const ld = imgAttr?.ld;
+  const visited = imgAttr?.visited == "true";
+  const favorited = imgAttr?.favorited == "true";
+  const hasIcon = imgAttr?.hasIcon == "true";
+  const size = parseInt(imgAttr?.w) * 2;
+  const fontSize = imgAttr?.size ? parseInt(imgAttr?.size):null
+  const picker = imgAttr?.picker == "true"
   
 
   
@@ -131,7 +142,7 @@ export async function GET(request,) {
       }
     )
   try {
-    if(searchParams.get("picker") == "true") {
+    if(picker) {
       return PickerGlyph;
     }
     return favorited ? FavoritedIcon : PlainIcon

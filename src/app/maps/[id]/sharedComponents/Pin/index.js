@@ -1,10 +1,11 @@
 
 import styles from "./styles.module.css"
-
+import Glyph from "@/app/components/Glyph/Glyph";
+import glyphStringMaker from "@/app/lib/glyphStringMaker";
 
 export default (props) => {
   
-  const {size, interactable, highlighted,className,pin,layer,onMap,imgSize} = props;
+  const {size, interactable, highlighted,className,pin,layer,onMap,imgSize,saveGlyph} = props;
   if(!pin) return ; 
   
 
@@ -36,6 +37,31 @@ export default (props) => {
   }
 
   if(onMap ) {
+    /*
+    if(saveGlyph && pin[`glyph_${saveGlyph}`]) {
+      //Is a glyph
+      const gcloudValue = glyphStringMaker({
+        w: dim, 
+        favorited: pin.favorited,
+        color:color,
+        icon:icon,
+        ld:lightOrDark,
+        hasIcon:hasIcon,
+        size: size||10
+      } 
+        ,"_","__");
+        console.log(gcloudValue);
+        if(pin[`glyph_${saveGlyph}`] == gcloudValue) {
+          return <img 
+            src={`https://storage.googleapis.com/${process.env.NEXT_PUBLIC_GCLOUD_BUCKET}/${gcloudValue}.png`}
+            className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1}
+            alt="not glyph" 
+          
+          />
+        }
+
+    
+    }
     /*return <Pin 
     glyph={icon}
     scale={.8}
@@ -55,7 +81,18 @@ export default (props) => {
 
     }}
     >{icon}</div>*/
-    return <img className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?visited=${(pin.visited|| false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
+   /*return <Glyph className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} 
+    w={dim}
+    favorited={pin.favorited}
+    icon={icon}
+    color={color}
+    size={size||10}
+    hasIcon={hasIcon||false}
+    ld={lightOrDark}
+    pinId={pin.id}
+    saveGlyph={saveGlyph}
+    />*/
+    return <img className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph?favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`} />
   }
 
 /*
