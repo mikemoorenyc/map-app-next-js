@@ -19,6 +19,7 @@ const DataContextProvider = ({children,mapData}) => {
     return newId
   },mapData?.id)
   const [mapIcon,updateMapIcon] = useReducer((oldIcon,newIcon) => {
+    document.title = `${newIcon}${document.title}`
     return newIcon
   },mapData?.mapIcon)
 
