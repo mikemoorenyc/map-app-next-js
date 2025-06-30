@@ -1,18 +1,27 @@
 
 
-import StringHighlight from "./StringHighlight";
 import styles from "./styles.module.css"
 import Pin from "@/app/maps/[id]/sharedComponents/Pin";
-import { useContext,useState,useEffect } from "react";
+import { useContext,useState,useEffect, useCallback } from "react";
 import DataContext from "@/app/contexts/DataContext";
-
+import { memo } from "react";
 import { RiMapPinLine } from "@remixicon/react";
 
-
-export default function DropDown({activePins=[],query,predictions=[],style="desktop",itemActivated,pinsFlat=[]}) {
-
+const PinMemo = memo(Pin)
+const DropDownWrapper = (props) => {
 
   const {layerData} = useContext(DataContext);
+  const newProps = {...props, layerData};
+  return <DropdDownMemo {...newProps} />
+
+
+}
+
+
+const DropDown = (props) =>{
+  const {activePins=[],query,predictions=[],style="desktop",itemActivated,pinsFlat=[],layerData} = props;
+
+
   const [currentIndex,updateCurrentIndex] = useState(-1); 
  
   const [currentHover, updateCurrentHover] = useState(null);
@@ -65,10 +74,52 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
  
   
   
-  const SearchItem = ({p,icon}) => {
+
+
+  const itemActions = {updateCurrentHover,updateCurrentIndex,itemActivated};
+
+
+
+  return <div className={`${styles.DropDown} big-drop-shadow `}>
+    {activePins.length? <div className={styles.OptionContainer}>
+      {activePins.map(p=>{
+
+        return <SearchMemo key={p.id}
+        {...{...itemActions,...{
+
+          icon: <PredictionPin {...{p,layerData}}  />,
+          cIndex: pinsFlat.findIndex(item => item.id === p.id),
+          active: pinsFlat.findIndex(item => item.id === p.id) === currentIndex,
+          currentHover, p
+        }}}
+   
+        />
+      })}
+    
+    </div>:""}
+    
+    {(predictions.length && activePins.length) ? <hr style={{margin:0}}/>:""}
+    {predictions.length ? <div className={styles.OptionContainer}>
+      {predictions.map(p => {
+      
+        return <SearchMemo key={p.id} {...{...itemActions,...{
+          icon: <RiMapPinLine width={18} height={18}/>,
+          cIndex: pinsFlat.findIndex(item => item.id === p.id),
+          active: pinsFlat.findIndex(item => item.id === p.id) === currentIndex,
+          currentHover, p
+        }}}/>
+      })}
+    </div> : ""}
   
-    const cIndex = pinsFlat.findIndex(item => item.id === p.id); 
-    const active = cIndex == currentIndex;
+  </div>
+}
+const PredictionPin = memo(({layerData,p})=> {
+  const layer = layerData.find(l => l.id == p.layerId); 
+  return <PinMemo className={styles.pinSmall} onMap={true} interactiable={false} size={10} pin={p} layer={layer}/>
+}) 
+
+const SearchMemo = memo(({icon,p,cIndex,active,itemActivated,updateCurrentHover,updateCurrentIndex,currentHover})=> {
+ 
     return (
       <div className={`${styles.SearchOption} flex-center ${active?styles.active:""}`}
       onClick={()=> {
@@ -88,23 +139,8 @@ export default function DropDown({activePins=[],query,predictions=[],style="desk
      /></span>
   </div>
     )
-  }
+})
 
-  return <div className={`${styles.DropDown} big-drop-shadow `}>
-    {activePins.length? <div className={styles.OptionContainer}>
-      {activePins.map(p=>{
-        const layer = layerData.find(l => l.id == p.layerId); 
-        const icon = <Pin className={styles.pinSmall} onMap={true} interactiable={false} size={10} pin={p} layer={layer}/>
-        return <SearchItem key={p.id} p={p} icon={icon}/>
-      })}
-    
-    </div>:""}
-    {(predictions.length && activePins.length) ? <hr style={{margin:0}}/>:""}
-    {predictions.length ? <div className={styles.OptionContainer}>
-      {predictions.map(p => {
-        return <SearchItem key={p.id} p={p} icon={<RiMapPinLine width={18} height={18}/>}/>
-      })}
-    </div> : ""}
-  
-  </div>
-}
+const DropdDownMemo = memo(DropDown)
+
+export default DropDownWrapper; 

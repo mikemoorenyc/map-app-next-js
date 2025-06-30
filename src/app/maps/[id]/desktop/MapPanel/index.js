@@ -1,12 +1,15 @@
 'use client'
 import { APIProvider , Map} from "@vis.gl/react-google-maps";
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
 
 import PinEditWindow from "./PinEditWindow";
 import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
 import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
+
+const MapMemo = memo(Map)
+const DesktopSearchMemo = memo(DesktopSearch)
 
 const MapPanel = () => {
   const [clickEvent,updateClickEvent] = useState(null);
@@ -33,7 +36,7 @@ const MapPanel = () => {
   }}>
   <APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
   <InfoWindowContextProvider>
-  <Map 
+  <MapMemo 
     mapId={mapStyleId}
     onClick={mapClickHandler}
     style={{width: '100%', height: '100%',position:"absolute"}}
@@ -42,10 +45,10 @@ const MapPanel = () => {
     disableDefaultUI={true}
   >
   <PinContainer/>
-<DesktopSearch clickEvent={clickEvent} />
+<DesktopSearchMemo clickEvent={clickEvent} />
   <PinEditWindow clickEvent={clickEvent} />
   <ModernTempMarker />
-  </Map>
+  </MapMemo>
   </InfoWindowContextProvider>
   
   </APIProvider>

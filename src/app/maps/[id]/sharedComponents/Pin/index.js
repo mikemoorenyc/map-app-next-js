@@ -1,7 +1,6 @@
 
 import styles from "./styles.module.css"
-import Glyph from "@/app/components/Glyph/Glyph";
-import glyphStringMaker from "@/app/lib/glyphStringMaker";
+
 
 export default (props) => {
   

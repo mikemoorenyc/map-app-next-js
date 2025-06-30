@@ -47,7 +47,7 @@ export default function DesktopSearch({clickEvent}) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   },[wrapperRef])
-  const itemActivated = async (item) => {
+  const itemActivated = useCallback(async (item) => {
     if(!item.new) {
       if(activeData.editingPin != item.id) {
           activeDispatch({
@@ -62,7 +62,7 @@ export default function DesktopSearch({clickEvent}) {
     console.log(item.id);
     updatePredictionChoice(item.id);
     
-  }
+  },[activeData,activeDispatch,updatePredictionChoice])
 
 
   
