@@ -74,9 +74,10 @@ const handleDragEnd = (result) => {
 
         setItems(newParentItems);
         layerDispatch({type: "FULL_REFRESH",newData: newParentItems})
-        layerDispatch({type: "UPDATED_PIN",id: parseInt(draggableId), data: {
+        layerDispatch({type: "UPDATED_PIN",id: draggableId, data: {
           layerId: parseInt(destination.droppableId)
         }})
+
       }
     }
   };
