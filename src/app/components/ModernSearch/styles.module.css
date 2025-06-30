@@ -23,3 +23,7 @@
 .SearchOption:not(:last-child) {
   margin-bottom: calc(var(--gutter) / 3); 
 }
+.pinSmall {
+  width: 17px;
+  height: 17px;
+}
