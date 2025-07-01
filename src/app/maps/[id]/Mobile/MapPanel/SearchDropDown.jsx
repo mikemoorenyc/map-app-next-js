@@ -6,7 +6,10 @@ import Pin from "../../sharedComponents/Pin";
 import { RiMapPinLine } from "@remixicon/react";
 export default function({results,itemClicked}) {
   const {layerData} = useContext(DataContext);
-  const { predictions, activePins} = results; 
+  const { activePins=[]} = results; 
+  const predictions = results.predictions.length ? predictions.filter(p => {
+    return !activePins.map(a=>a.id).includes(p.id); 
+  }):[];
 
 
   const SearchItem = ({item,icon}) => {
@@ -44,7 +47,7 @@ export default function({results,itemClicked}) {
       {predictions.length? (
         <div className={styles.pinContainer}>
         {predictions.map(p => {
-          if(activePins.map(p=>p.id).includes(p.id)) return ; 
+         
           return <SearchItem key={p.id} icon={<RiMapPinLine />} item={p}/>
         })}
         </div>
