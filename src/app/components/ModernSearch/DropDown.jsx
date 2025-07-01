@@ -4,7 +4,7 @@ import styles from "./styles.module.css"
 import Pin from "@/app/maps/[id]/sharedComponents/Pin";
 import { useContext,useState,useEffect, useCallback } from "react";
 import DataContext from "@/app/contexts/DataContext";
-import { memo } from "react";
+import { memo ,useMemo} from "react";
 import { RiMapPinLine } from "@remixicon/react";
 
 const PinMemo = memo(Pin)
@@ -77,6 +77,14 @@ const DropDown = (props) =>{
 
 
   const itemActions = {updateCurrentHover,updateCurrentIndex,itemActivated};
+  /*
+  const pinIds = useMemo(()=>pinsFlat.map(p => p.id),[pinsFlat]);
+  const predictionsFiltered = predictions.filter(p => {
+    if(!activePins.length) return true; 
+     
+    return !pinIds.includes(p.id); 
+  });
+  */
 
 
 
