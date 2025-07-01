@@ -78,7 +78,7 @@ const DropDown = (props) =>{
 
   const itemActions = {updateCurrentHover,updateCurrentIndex,itemActivated};
   /*
-  const pinIds = useMemo(()=>pinsFlat.map(p => p.id),[pinsFlat]);
+  const pinIds = useMemo(()=>activePins.map(p => p.id),[activePins]);
   const predictionsFiltered = predictions.filter(p => {
     if(!activePins.length) return true; 
      
