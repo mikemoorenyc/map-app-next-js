@@ -25,6 +25,9 @@ padding-top: 8px;
 width: 100%;
 white-space: pre-wrap; 
 }
+.displayDescription a {
+  word-break: break-word;
+}
 .displayDescriptionInput {
  width: 100%;
   margin-top:8px;
