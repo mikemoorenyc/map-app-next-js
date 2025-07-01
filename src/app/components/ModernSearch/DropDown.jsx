@@ -77,14 +77,14 @@ const DropDown = (props) =>{
 
 
   const itemActions = {updateCurrentHover,updateCurrentIndex,itemActivated};
-  /*
+  
   const pinIds = useMemo(()=>activePins.map(p => p.id),[activePins]);
   const predictionsFiltered = predictions.filter(p => {
     if(!activePins.length) return true; 
      
     return !pinIds.includes(p.id); 
   });
-  */
+  
 
 
 
@@ -106,9 +106,9 @@ const DropDown = (props) =>{
     
     </div>:""}
     
-    {(predictions.length && activePins.length) ? <hr style={{margin:0}}/>:""}
-    {predictions.length ? <div className={styles.OptionContainer}>
-      {predictions.map(p => {
+    {(predictionsFiltered.length && activePins.length) ? <hr style={{margin:0}}/>:""}
+    {predictionsFiltered.length ? <div className={styles.OptionContainer}>
+      {predictionsFiltered.map(p => {
       
         return <SearchMemo key={p.id} {...{...itemActions,...{
           icon: <RiMapPinLine width={18} height={18}/>,

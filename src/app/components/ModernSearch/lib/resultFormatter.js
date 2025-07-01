@@ -19,21 +19,23 @@ const stringHighlight = (string, query) => {
   }).join(" ")
 }
 
-export default function(query, layerData, predictionsRaw)  {
+export default function(query, layerData, predictionsRaw=[])  {
   
   
   const localPins = layerData.map(l=>l.pins).flat(); 
   const activePins = getCurrentPins(localPins,query).map(p => {
     return {...p, ...{titleBolded: stringHighlight(p.title,query)}}
   });
-  const predictions = predictionsRaw.length ? predictionsRaw.map(p => {
+  const predictions =  predictionsRaw.map(p => {
     return {
       title: p.description, 
       id: p.place_id,
       new:true,
       titleBolded: stringHighlight(p.description,query)
     }
-  }) : []
+  }).filter(p => {
+    return !activePins.map(a=>a.id).includes(p.id);
+  }) 
   
   const pinsFlat = [...activePins,...predictions];
   return {

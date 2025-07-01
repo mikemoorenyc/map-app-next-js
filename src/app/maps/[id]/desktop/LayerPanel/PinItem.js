@@ -32,9 +32,10 @@ const PinItem = (props) => {
     ref={pinEl}
     onClick={handleClick}
     key={p.id}
-    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""}`}
+    
+    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
   >
-    <div style={{marginRight: 4}}>
+    <div style={{marginRight: p.favorited?1: 4}}>
       <Pin 
         pin={p}
         layer={layer}

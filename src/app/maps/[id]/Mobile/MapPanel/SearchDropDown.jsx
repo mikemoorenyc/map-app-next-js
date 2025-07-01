@@ -4,21 +4,19 @@ import DataContext from "@/app/contexts/DataContext";
 import Pin from "../../sharedComponents/Pin";
 
 import { RiMapPinLine } from "@remixicon/react";
-export default function({results,itemClicked}) {
-  const {layerData} = useContext(DataContext);
-  const { activePins=[]} = results; 
-  const predictions = results.predictions.length ? predictions.filter(p => {
-    return !activePins.map(a=>a.id).includes(p.id); 
-  }):[];
-
-
-  const SearchItem = ({item,icon}) => {
+const SearchItem = ({item,icon,itemClicked}) => {
 
     return <div onClick={()=>{itemClicked(item)}} className={`${styles.searchItem} flex-center`}>
       <div  className={`${styles.searchItemIcon} flex-center-center`}>{icon}</div>
       <div className={`${styles.searchItemTitle} `}><span className="overflow-ellipsis" style={{display:"block"}}  dangerouslySetInnerHTML={{__html:item.titleBolded}} /></div>
     </div>
   }
+  
+export default function({results,itemClicked}) {
+  const {layerData} = useContext(DataContext);
+  const { activePins=[],predictions=[]} = results; 
+
+
   
   
  
@@ -39,7 +37,7 @@ export default function({results,itemClicked}) {
         {activePins.map(p=> {
           const layer = layerData.find(l => l.id == p.layerId); 
         const icon = <Pin onMap={true} layer={layer} interactiable={false} size={13} pin={p} />
-          return <SearchItem icon={icon} key={p.id} item={p} />
+          return <SearchItem {...{itemClicked,icon}}  key={p.id} item={p} />
         })}
       
       </div>):""}
