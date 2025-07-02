@@ -23,6 +23,6 @@ export default function ModernTempMarker() {
     }
 
   return <>
-  {position && <AdvancedMarker position={position}>  </AdvancedMarker>}
+  {position && <AdvancedMarker position={position}/>}
   </>
 }
