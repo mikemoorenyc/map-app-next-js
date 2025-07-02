@@ -24,6 +24,7 @@ export default function({id}) {
 
 
   useEffect(()=> {
+    updatePhotos([]);
 
     if(!id || typeof id !== "string" ) return ; 
     const saved = savedPhotos.find(p=>p.id==id);
