@@ -56,13 +56,12 @@ const PinMarker = ({pId, onMap}) => {
 
     },[activeData.editingPin])
     
-    
+    let zindex = pin?.favorited ? 2 : 1; 
     const highlighted = isHighlighted(activeData,pin.id); 
-    let zindex = highlighted ? 9999 : null; 
-    if(pin?.favorited && !activeData.editingPin ) {
-        zindex = 9999;
+    if(highlighted) {
+        zindex=999; 
     }
-
+    
     
     return <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
     onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} zIndex={zindex} onClick={handleClick}  position={location}>

@@ -92,3 +92,17 @@ box-shadow: 0px -4px 0 var(--screen-black);
   width: 20px;
   height: 20px; 
 }
+.contentPanel {
+  max-height:100%; 
+  overflow:hidden;
+  display:flex;
+  flex-direction:column; 
+}
+.photoContainer {
+  margin-top: var(--gutter);
+}
+.photo {
+  margin-bottom: calc(var(--gutter) / 2);
+  width: 100%;
+  display:block; 
+}

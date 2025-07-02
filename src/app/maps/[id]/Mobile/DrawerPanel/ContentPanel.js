@@ -10,7 +10,7 @@ import styles from "./styles.module.css";
 import AddToMapButton from "./AddToMapButton";
 import { RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
-
+import Photos from "./Photos";
 
 
 const ContentPanel = ({pinId, $transform})=> {
@@ -22,7 +22,7 @@ const ContentPanel = ({pinId, $transform})=> {
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
   if(!pin) return;
 
-  return <div className={styles.contentPanel}>
+  return <div className={styles.contentPanel} >
     <div className={`${styles.topSection}`}>
      
         <div className={styles.pinTitle}>{pin.title}</div> 
@@ -37,7 +37,7 @@ const ContentPanel = ({pinId, $transform})=> {
         {pin?.url &&<Button style={{marginLeft:8}} modifiers={["bigger", "round","icon"]} target={"_blank"} href={makeNativeLink(pin.url)} icon={  <GMIcon />}/>}
       </div>
     </div>
-    <div className={styles.bottomSection}>
+    <div className={styles.bottomSection} style={activeData.drawerState !== "maximized"?{overflow:"hidden"}:undefined}>
       
       {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
@@ -46,6 +46,7 @@ const ContentPanel = ({pinId, $transform})=> {
       <div style={{marginTop:16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
+      <Photos id={pin.id || pin.place_id} />
     </div>
   </div>
  

@@ -1,6 +1,6 @@
 import {useState,useEffect,useCallback} from "react"
 import { useMap,useMapsLibrary} from "@vis.gl/react-google-maps"
-
+import {fieldMapping,formatter} from "./lib/fieldMapping";
 
 
 
@@ -11,34 +11,45 @@ export default function SearchLogic(props) {
   
  
   const [sessionToken,setSessionToken] = useState(null)
-  const [autocompleteService,setAutocompleteService] = useState(null)
-  const [placesService,setPlacesService] = useState(null); 
+  /*const [autocompleteService,setAutocompleteService] = useState(null)
+  const [placesService,setPlacesService] = useState(null); */
+
   
   const map = useMap(); 
   const places = useMapsLibrary('places');
+
  
- 
+
   useEffect(()=> {
     if (!places || !map) return;
-    setAutocompleteService(new places.AutocompleteService());
-    setPlacesService(new places.PlacesService(map));
+
+   // setPlacesService(new places.PlacesService(map));
     setSessionToken(new places.AutocompleteSessionToken());
-     return () => setAutocompleteService(null);
+  
+
   },[map,places])
   const fetchPredictions = useCallback(
     async (inputValue) => {
       
-      if (!autocompleteService || !inputValue) {
+      if (!places || !inputValue) {
  
         return;
       }
 
       const request = {input: inputValue, sessionToken,locationBias:map.getBounds()};
-      const response = await autocompleteService.getPlacePredictions(request);
-      updatePredictionResults(response.predictions);
+   
+      const {suggestions} = await places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request)
+
+      const formattedPredictions = suggestions.map(s => {
+        return {
+          place_id: s.placePrediction.placeId,
+          description: s.placePrediction.text.text
+        }
+      })
+      updatePredictionResults(formattedPredictions);
    
     },
-    [autocompleteService, sessionToken]
+    [places, sessionToken]
   );
 
   //Monitor query update
@@ -57,7 +68,14 @@ export default function SearchLogic(props) {
     fetchPredictionData(predictionChoice);
   },[predictionChoice])
 
-  const fetchPredictionData = useCallback((placeId)=>{
+  const fetchPredictionData = useCallback(async (placeId)=>{
+    const newPlace = new places.Place({id:placeId})
+    await newPlace.fetchFields({fields:fieldMapping.map(f => f[0])});
+    const formattedResult = formatter(newPlace);
+    console.log(formattedResult);
+    predictionChoiceCallBack(formattedResult);
+    return ; 
+    /*
     const dataCallback = (placeDetails) => {
       predictionChoiceCallBack(placeDetails)
       setSessionToken(new places.AutocompleteSessionToken());
@@ -67,8 +85,8 @@ export default function SearchLogic(props) {
       sessionToken
     }
     placesService?.getDetails(requestOptions, dataCallback);
-
-  },[places, placesService, sessionToken,predictionChoiceCallBack])
+    */
+  },[places, sessionToken,predictionChoiceCallBack])
 
   return <></>
 }

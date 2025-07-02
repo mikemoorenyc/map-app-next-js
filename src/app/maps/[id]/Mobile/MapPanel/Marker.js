@@ -16,8 +16,9 @@ export default  ({pin, activePin,onClick,layer,map}) => {
   const markerClick = useCallback(()=> {
     onClick(pin,active)
   },[onClick,pin,active])
-  let zindex = active ? 9999 :null; 
-  if(pin.favorited && !activePin) {
+  
+  let zindex = pin.favorited ? 2 :1; 
+  if(active) {
     zindex = 9999;
   }
 

@@ -95,7 +95,7 @@ export default () => {
     activeDispatch({type:"SET_ACTIVE_PIN",id:"temp"})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
     activeDispatch({type: "SET_TEMP_DATA",data: place})
-    activeDispatch({type:"BACK_STATE",state:"base"})
+    activeDispatch({type:"BACK_STATE",state:"back_to_base"})
     reset(); 
   }
 
@@ -194,7 +194,7 @@ export default () => {
          
          {<>
          
-          {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker position={markerPosition} />}
+          {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker zIndex={999} position={markerPosition} />}
          </>}
       
     
