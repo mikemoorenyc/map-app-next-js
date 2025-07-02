@@ -46,7 +46,7 @@ export default function({results,itemClicked}) {
         <div className={styles.pinContainer}>
         {predictions.map(p => {
          
-          return <SearchItem key={p.id} icon={<RiMapPinLine />} item={p}/>
+          return <SearchItem itemClicked={itemClicked} key={p.id} icon={<RiMapPinLine />} item={p}/>
         })}
         </div>
       ):""}
