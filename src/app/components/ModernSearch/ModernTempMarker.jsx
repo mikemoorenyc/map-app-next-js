@@ -3,7 +3,7 @@ import { useContext } from "react";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 
 export default function ModernTempMarker() {
   const {infoWindowState} = useContext(InfoWindowContext)
@@ -23,6 +23,6 @@ export default function ModernTempMarker() {
     }
 
   return <>
-  {position && <AdvancedMarker position={position}/>}
+  {position && <AdvancedMarker position={position}> <Pin background={activeColor} borderColor={foregroundColor} glyphColor={foregroundColor}  /> </AdvancedMarker>}
   </>
 }
