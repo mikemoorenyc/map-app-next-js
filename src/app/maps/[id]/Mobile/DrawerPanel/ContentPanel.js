@@ -13,16 +13,18 @@ import Directions from "./Directions";
 import Photos from "./Photos";
 
 
-const ContentPanel = ({pinId, $transform})=> {
+const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
   const {routes,inBounds} = activeData;
+  const {drawerState} = activeData
 
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
   if(!pin) return;
 
-  return <div className={styles.contentPanel} >
+
+  return <div className={styles.contentPanel} style={{height:`calc(100% - ${drawerTopSpace}px)`}}>
     <div className={`${styles.topSection}`}>
      
         <div className={styles.pinTitle}>{pin.title}</div> 
@@ -43,10 +45,10 @@ const ContentPanel = ({pinId, $transform})=> {
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>}
       {routes && <Directions />}
-      <div style={{marginTop:16}}>
+      <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
-      <Photos id={pin.id || pin.place_id} />
+      <Photos id={pin.id || pin.place_id} {...{drawerState}} />
     </div>
   </div>
  

@@ -36,3 +36,8 @@
     --blue-accent : #75b0e8; 
   }
 }
+@media(max-width: 600px) {
+  :root {
+    --gutter: 16px;
+  }
+}
