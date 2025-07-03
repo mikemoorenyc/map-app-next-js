@@ -132,3 +132,15 @@ flex-direction: column;
   height: var(--container-height);
   border-radius: var(--border-radius);
 }
+.photoSkeleton {
+  flex: 1;
+  border-radius: var(--border-radius);
+  border: 1px dashed; 
+  display:flex; 
+  align-items:center;
+  justify-content: center; 
+}
+.photoPlaceholder {
+  width: 64px;
+  height: 64px; 
+}

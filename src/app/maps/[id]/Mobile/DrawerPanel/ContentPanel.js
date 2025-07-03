@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, Suspense,lazy } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import Button from "@/app/components/Button";
@@ -8,9 +8,11 @@ import GMIcon from "./GMIcon";
 import makeNativeLink from "../lib/makeNativeLink";
 import styles from "./styles.module.css";
 import AddToMapButton from "./AddToMapButton";
-import { RiListUnordered, RiPencilLine } from "@remixicon/react";
+import { RiImage2Line, RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
-import Photos from "./Photos";
+//import Photos from "./Photos";
+
+const Photos = lazy(()=>import("./Photos"))
 
 
 const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
@@ -48,12 +50,16 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
       <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
-      <Photos id={pin.id || pin.place_id} {...{drawerState}} />
+      {typeof (pin.id || pin.place_id) == "string" && drawerState == "maximized" && <Suspense fallback={<div className={styles.photoSkeleton}><RiImage2Line className={styles.photoPlaceholder} /> </div>}>
+        <Photos id={pin.id || pin.place_id} {...{drawerState}} />
+      </Suspense> }
     </div>
   </div>
  
 }
 export default ContentPanel; 
+
+//{drawerState == "maximized" && <Photos id={pin.id || pin.place_id} {...{drawerState}} />}
 
 //{geolocation && inBounds && <Directions pin={pin} />}
 
