@@ -4,6 +4,7 @@ padding: 12px 16px;
 margin-top: 8px;
 font-size: 12px;
 overflow-wrap: break-word;
+border-radius: calc(var(--border-radius) / 2)
 }
 .item {
   margin: 8px 0;
