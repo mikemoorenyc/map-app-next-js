@@ -1,29 +1,16 @@
 import { useMapsLibrary} from "@vis.gl/react-google-maps"
 import { useCallback, useEffect,useState,useRef } from "react"
 import styles from "./styles.module.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
-export default function({id,drawerState}) {
+
+export default function({id}) {
   const [photos,updatePhotos] = useState([]);
-  const containerRef = useRef(null);
-  const [containerHeight, updateContainerHeight] = useState(0);
+ 
 
  
   const places = useMapsLibrary('places');
   const savedPhotos = JSON.parse(sessionStorage.getItem("saved_photos") || "[]");
-  const sliderSettings = {
-    variableWidth: true, 
-    dots:false,
-    arrows: false, 
-    infinite:false, 
-    centerMode: false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    className: styles.photoContainer
-  }
- 
+
 
 
   const findPhotos = useCallback(async (id)=> {
@@ -44,19 +31,6 @@ export default function({id,drawerState}) {
   useEffect(()=> {
     //CLEAR PHOTOS ON ID CHANGE
     updatePhotos([]);
-  },[id])
-  useEffect(()=> {
-    if(!photos.length && containerRef) {
-  
-      //updateContainerHeight(containerRef.current.offsetHeight)
-    }
-
-  },[photos])
-  
-  useEffect(()=> {
-    if(drawerState !== "maximized") return; 
-    //Photos already loaded 
-    if(photos.length ) return ;
     if(!id || typeof id !== "string" ) return ; 
     const saved = savedPhotos.find(p=>p.id==id);
     if(saved) {
@@ -64,24 +38,18 @@ export default function({id,drawerState}) {
       return ; 
     }
     findPhotos(id) 
-
-
-  },[drawerState])
-  useEffect(()=> {
-    if(!containerRef) return ; 
-   
-   // updateContainerHeight(containerRef.current.offsetHeight);
-
+  },[id])
+ 
   
-
-  },[containerRef])
+ 
 
 
 return <div className={styles.containerFlex}>
+<div className={`${styles.spacer} ${styles.front}`} />
    {photos.map(p => 
-    <div key={p.uri} className={styles.photoFlex}><img  src={`${p.uri}&maxWidthPx=700`}  className={styles.imgFlex}/></div>
+    <img key={p.uri}  src={`${p.uri}&maxWidthPx=700`}  className={styles.imgFlex}/>
  )}
-
+<div className={styles.spacer} />
 </div>
 
 

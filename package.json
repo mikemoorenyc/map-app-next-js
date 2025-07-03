@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev   --hostname 192.168.1.13",
+    "dev": "next dev   --hostname 192.168.1.5",
     "devlocal": "next dev",
     "build": "next build",
     "start": "next start",
@@ -32,9 +32,7 @@
     "react-aria": "^3.36.0",
     "react-colorful": "^5.6.1",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "react-slick": "^0.30.3",
     "react-swipeable": "^7.0.2",
-    "sass": "^1.80.6",
-    "slick-carousel": "^1.8.1"
+    "sass": "^1.80.6"
   }
 }
