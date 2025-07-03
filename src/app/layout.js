@@ -3,8 +3,7 @@ import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 //import "./maps/[id]/Mobile/styles.css"
 import {Inter, Sofia_Sans} from "next/font/google"
 import { SpeedInsights } from "@vercel/speed-insights/next"
