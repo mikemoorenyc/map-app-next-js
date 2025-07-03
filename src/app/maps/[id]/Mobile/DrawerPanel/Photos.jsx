@@ -48,7 +48,7 @@ export default function({id,drawerState}) {
   useEffect(()=> {
     if(!photos.length && containerRef) {
   
-      updateContainerHeight(containerRef.current.offsetHeight)
+      //updateContainerHeight(containerRef.current.offsetHeight)
     }
 
   },[photos])
@@ -70,15 +70,22 @@ export default function({id,drawerState}) {
   useEffect(()=> {
     if(!containerRef) return ; 
    
-    updateContainerHeight(containerRef.current.offsetHeight);
+   // updateContainerHeight(containerRef.current.offsetHeight);
 
   
 
   },[containerRef])
 
 
+return <div className={styles.containerFlex}>
+   {photos.map(p => 
+    <div key={p.uri} className={styles.photoFlex}><img  src={`${p.uri}&maxWidthPx=700`}  className={styles.imgFlex}/></div>
+ )}
+
+</div>
 
 
+/*
   return <>
   <style jsx global>{`
   :root {
@@ -95,6 +102,7 @@ export default function({id,drawerState}) {
   
   
   </>
+  */
 
 }
 

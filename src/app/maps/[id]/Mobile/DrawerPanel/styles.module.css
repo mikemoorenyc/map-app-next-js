@@ -144,3 +144,33 @@ flex-direction: column;
   width: 64px;
   height: 64px; 
 }
+.containerFlex {
+  display: flex;             /* Align <li> items in a row */
+  overflow-x: auto;          /* Enable horizontal scrolling */
+  overflow-y: hidden;        /* Prevent vertical scroll */
+  white-space: nowrap;       /* Prevent wrapping */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: calc(100vw - var(--gutter));
+  height: 100%;
+
+}
+.photoFlex {
+   flex: 0 0 auto;  
+
+}
+.photoFlex:not(:last-child) {
+  margin-right: 4px;
+}
+.photoFlex:last-child {
+  margin-right: var(--gutter);
+}
+.photoFlex img {
+  height: 100%;
+  width: auto; 
+  max-width: calc(100vw  - var(--gutter)  - var(--gutter));
+  border-radius: var(--border-radius);
+  object-fit:cover;
+  object-position: center center; 
+}
