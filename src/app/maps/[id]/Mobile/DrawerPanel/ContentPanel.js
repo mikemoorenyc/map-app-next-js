@@ -10,7 +10,7 @@ import styles from "./styles.module.css";
 import AddToMapButton from "./AddToMapButton";
 import {  RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
-//import Photos from "./Photos";
+import Photos from "./Photos";
 
 
 
