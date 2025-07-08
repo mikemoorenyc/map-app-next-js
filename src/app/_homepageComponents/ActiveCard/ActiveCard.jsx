@@ -1,28 +1,22 @@
 'use client'
 import Link from "next/link";
 import styles from "./activeCardStyles.module.css";
-import { redirect } from "next/navigation";
 import MenuButton from "../MenuButton";
-import { useState,useRef,useEffect, use } from "react";
-import Button from "@/app/components/Button";
+import { useState} from "react";
+import { useRouter } from 'next/navigation'
 import MapThumbnail from "./MapThumbnail";
-import { RiArchiveLine, RiArrowDownCircleLine, RiArrowUpCircleLine, RiDeleteBinLine, RiMap2Line, RiMore2Fill } from "@remixicon/react";
+import {  RiMap2Line } from "@remixicon/react";
 //import DropDown from "@/app/components/DropDown/DropDown";
-import DropDownItem from "@/app/components/DropDown/DropDownItem";
+
 //import BottomSheet from "@/app/components/BottomSheet/BottomSheet";
 
 
 export default function ({appMap,top=false,bottom=false, actions})  {
 
   const [downTime, updateDownTime] = useState(0); 
-  const [dropDownOpen,updateDropDownOpen] = useState(false);
-  const dropDownAnchor = useRef(null);
+  const router = useRouter();
   const pinLength = appMap.layerData.map(l => l.pins).flat().length; 
   const url = `/maps/${appMap.id}`
-  const [isMobile,updateIsMobile] = useState(false);
-  useEffect(()=> {
-    updateIsMobile(window.innerWidth < 600);
-  },[])
 
   const clickCheck = (e) => {
     e.preventDefault(); 
@@ -30,7 +24,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
     if ((+new Date() - downTime) > 200) {
                 return ;
     }
-    redirect(url);
+    router.push(url);
   }
 
 
