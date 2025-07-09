@@ -40,7 +40,7 @@ const PinContainer = () => {
     //console.log(pins);
     //return ;
     return <>
-    {pinsFlat.map((p,i) => {
+    {pinsFlat.reverse().map((p,i) => {
         if(collapsedLayers.includes(p.layerId)) {
             return ; 
         }
