@@ -28,7 +28,7 @@ export default function ({appMap,width,height,className}) {
 
     },[])
    
-    const markerString = appMap.layerData.map(l => {
+    const markerString = appMap.layerData.reverse().map(l => {
       const color = l.color.replace("#","0x");
       
       return l.pins.map(p => {
