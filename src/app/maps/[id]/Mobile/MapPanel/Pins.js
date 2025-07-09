@@ -53,7 +53,7 @@ const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin,map}) =>
 
   return <>
 
-  {pinsFlat.filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={getLayer(pin)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={getLayer(pin)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
 
 
   </>
