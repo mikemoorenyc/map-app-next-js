@@ -13,7 +13,7 @@ const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   
-  const {layerData,pageTitle,layerDispatch,mapIcon} = useContext(DataContext);
+  const {layerData,pageTitle,layerDispatch,mapIcon,user} = useContext(DataContext);
   const mapData = layerData
  
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
@@ -44,7 +44,7 @@ const Legend = () => {
     <Button icon={<RiSettingsLine />} onClick={()=>{updateSettingsOpen(true)}} className={styles.settingsIcon} modifiers={['sm','secondary','round',"icon"]}/>
     <Button icon={<RiStackLine/>} modifiers={["sm"]} className={styles.layerAddButton} onClick={(e)=>{
       e.preventDefault();
-      layerDispatch({type:"ADDED_LAYER"})
+      layerDispatch({type:"ADDED_LAYER",user:user||null})
       legendScroll.current.scrollTop = legendScroll.current.scrollHeight + 500
       
       }} >Add a layer</Button>

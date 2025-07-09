@@ -39,13 +39,14 @@ const PinContainer = () => {
     //const pins = [{lat:0,lng:0},{lat:20,lng:20},{lat:30,lng:30}];
     //console.log(pins);
     //return ;
+ 
     return <>
     {pinsFlat.reverse().map((p,i) => {
         if(collapsedLayers.includes(p.layerId)) {
             return ; 
         }
       
-        return <PinMarker  key={p.id } pId={p.id} onMap={false}/>
+        return <PinMarker indexNum={i}  key={p.id } pId={p.id} onMap={false}/>
     })}
     
     </>

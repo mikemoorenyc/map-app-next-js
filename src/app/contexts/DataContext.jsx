@@ -6,8 +6,8 @@ import layerUpdater from "./layerUpdater";
 
 const DataContext = createContext()
 
-const DataContextProvider = ({children,mapData}) => {
-  console.log(mapData);
+const DataContextProvider = ({children,mapData,user}) => {
+  
   
   const initLayers =  mapData?.layerData || [];
 
@@ -25,7 +25,7 @@ const DataContextProvider = ({children,mapData}) => {
 
   const [layerData, layerDispatch] = useReducer(layerUpdater, initLayers);
   return (
-    <DataContext.Provider value={{mapIcon,updateMapIcon,mapId,updateMapId,pageTitle,updatePageTitle ,layerData, layerDispatch }}>
+    <DataContext.Provider value={{user,mapIcon,updateMapIcon,mapId,updateMapId,pageTitle,updatePageTitle ,layerData, layerDispatch }}>
       {children}
     </DataContext.Provider>
   );

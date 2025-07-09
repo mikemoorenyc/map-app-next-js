@@ -12,7 +12,7 @@ const MapIconMemo = memo(MapIcon);
 
 const Header = ({id}) => {
   
-  const {layerDispatch,mapIcon,updateMapIcon} = useContext(DataContext);
+  const {layerDispatch,mapIcon,updateMapIcon,user} = useContext(DataContext);
   
   
 
@@ -22,7 +22,7 @@ const Header = ({id}) => {
     <MapTitle />
    
          
-            <Button icon={<RiStackLine/>} onClick={(e)=>{e.preventDefault();layerDispatch({type:"ADDED_LAYER"})}}   modifiers={["sm","ghost"]}>
+            <Button icon={<RiStackLine/>} onClick={(e)=>{e.preventDefault();layerDispatch({type:"ADDED_LAYER",user:user||null})}}   modifiers={["sm","ghost"]}>
                     Add layer
             </Button>
    

@@ -9,7 +9,7 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import { findLayer, findPin, isHighlighted } from "./lib/finders";
 
-const PinMarker = ({pId, onMap}) => {
+const PinMarker = ({pId, onMap,indexNum}) => {
     
     const {infoWindowDispatch} = useContext(InfoWindowContext);
     const {activeDispatch, activeData} = useContext(ActiveContext)
@@ -56,10 +56,10 @@ const PinMarker = ({pId, onMap}) => {
 
     },[activeData.editingPin])
     
-    let zindex = pin?.favorited ? 2 : 1; 
+    let zindex = pin?.favorited ? 999 : indexNum; 
     const highlighted = isHighlighted(activeData,pin.id); 
     if(highlighted) {
-        zindex=999; 
+        zindex=9999; 
     }
     
     

@@ -14,7 +14,7 @@ export default (layers, action) => {
           id: Date.now(),
           lightOrDark: "light",
           pins: [],
-         
+          createdBy: action?.user
         }]
         
         return newA;

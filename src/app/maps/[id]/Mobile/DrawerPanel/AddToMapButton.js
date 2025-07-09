@@ -6,7 +6,7 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { RiMapPinAddLine } from "@remixicon/react";
 
 export default function AddToMapButton() {
-  const {layerData,layerDispatch} = useContext(DataContext)
+  const {layerData,layerDispatch,user} = useContext(DataContext)
   const {activeData} = useContext(MobileActiveContext)
   const {activeDispatch} = useContext(MobileActiveContext);
   const tempData = activeData.tempData;
@@ -18,6 +18,7 @@ export default function AddToMapButton() {
     e.preventDefault(); 
     const payload = {
       title: name,
+      createdBy: user||null,
       website: website,
       formatted_address:formatted_address,
       international_phone_number:international_phone_number,

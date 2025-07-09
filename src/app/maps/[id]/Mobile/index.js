@@ -10,11 +10,11 @@ import { ModalProvider } from "@/app/contexts/ModalContext";
 const MapPanelMemo = memo(MapPanel);
 
 
-const Mobile = ({mapData}) => {
+const Mobile = ({mapData,user}) => {
 
 return (<>
 <ModalProvider>
-<DataContextProvider mapData={mapData}>
+<DataContextProvider mapData={mapData} user={user}>
 <MobileActiveContextProvider mapData={mapData}>
 
 <MapPanelMemo />

@@ -3,6 +3,7 @@ import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
 import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { mapSort ,reindexMap} from "../lib/sortMaps";
+import { auth} from "../auth"
 /*
 import { sql } from '@vercel/postgres';
 
@@ -26,6 +27,8 @@ export async function getMapData(id) {
 */
 
 const addMap = async function(mapName) {
+  const session = await auth();
+  if(!session) return false; 
   const allMaps = await getAllMaps();
   if(!allMaps) return false; 
   const mapsSorted = mapSort(allMaps);
@@ -39,12 +42,14 @@ const addMap = async function(mapName) {
         sortOrder: mapsSorted.active.length,
         created_at : createddate,
         modified_at: createddate,
+        createdBy: session.user,
         title: mapName ,
         layerData: [
           {
             title: "Untitled Layer",
           color: "#f0f0f0",
           id: Date.now(),
+          createdBy: session.user,
           lightOrDark: "light",
           pins: [],
           }

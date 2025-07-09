@@ -14,9 +14,9 @@ const MapMemo = memo(MapPanel);
 const LayerPanelMemo = memo(LayerPanel);
 const ToastsMemo = memo(Toasts);
 const TopMenuMemo = memo(TopMenu); 
-const Composer = function({mapData}) {
+const Composer = function({mapData,user}) {
 
-  return <ModalProvider><ToastContextProvider><DataContextProvider mapData={mapData}>
+  return <ModalProvider><ToastContextProvider><DataContextProvider user={user} mapData={mapData}>
   <ActiveContextProvider mapData={mapData}>
     <LayerPanelMemo />
     <MapMemo />
