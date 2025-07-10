@@ -34,7 +34,7 @@ export default function PageClient({}){
   }
   const firstMaps = async () => {
     const maps = await getAllMaps(); 
-    updateMapList(mapSort(mapData));
+    updateMapList(mapSort(maps));
   }
   useEffect(()=> {
     firstMaps(); 
