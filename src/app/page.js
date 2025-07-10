@@ -1,20 +1,15 @@
 
 
-import { isMobile } from "./lib/isMobile";
-import { headers } from "next/headers";
 
 
 import PageClient from "./PageClient";
-import { getAllMaps } from "./actions/maps";
+
 
 const Page = async function() {
   
-  const h = await headers(); 
-  const userAgent = h.get("user-agent") || "";
-  const mobileCheck = isMobile(userAgent);
-  const mapData = await getAllMaps(); 
 
-  return <PageClient isMobile={mobileCheck} mapData={mapData} />
+
+  return <PageClient  />
 }
 
 export default Page 
