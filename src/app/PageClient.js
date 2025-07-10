@@ -20,7 +20,7 @@ export default function PageClient({}){
  
   const [deleteId,updateDeleteId] = useState(null)
 
-  const [mapList,updateMapList] = useState(null);
+  const [mapList,updateMapList] = useState({all:[],active:[],archived:[]});
  
 
   const updater = (map) => {
