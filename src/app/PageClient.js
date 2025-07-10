@@ -19,13 +19,16 @@ export default function PageClient({}){
 
  
   const [deleteId,updateDeleteId] = useState(null)
+  
 
-  const [mapList,updateMapList] = useState({all:[],active:[],archived:[]});
+  const [mapList,updateMapList] = useState( {all:[],active:[],archived:[]});
  
 
   const updater = (map) => {
-    console.log(map);
-     updateMapList(mapSort(map));
+
+    const newMap = mapSort(map)
+     updateMapList(newMap);
+     localStorage.setItem('map-list',JSON.stringify(newMap))
   }
   const actions = {
     archive: (mapId,toArchive) => { archiveMap(mapList.all,mapId,toArchive,updater)},
@@ -34,9 +37,25 @@ export default function PageClient({}){
   }
   const firstMaps = async () => {
     const maps = await getAllMaps(); 
-    updateMapList(mapSort(maps));
+    const theList = mapSort(maps);
+    updateMapList(theList);
+    localStorage.setItem("map-list",JSON.stringify(theList));
   }
   useEffect(()=> {
+    const lastViewed = localStorage.getItem("last-viewed");
+    console.log(lastViewed);
+
+
+
+    const listData = localStorage.getItem("map-list");
+
+    if(listData) {
+      updateMapList(JSON.parse(listData));
+    }
+  },[])
+  useEffect(()=> {
+
+    
     firstMaps(); 
 
 

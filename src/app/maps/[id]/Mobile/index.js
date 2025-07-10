@@ -3,14 +3,21 @@ import { DataContextProvider } from "@/app/contexts/DataContext"
 import { MobileActiveContextProvider } from "@/app/contexts/MobileActiveContext"
 import MapPanel from "./MapPanel"
 import "./styles.css";
+import { useEffect } from "react";
 
 import { memo} from "react";
 import { ModalProvider } from "@/app/contexts/ModalContext";
+
+
 
 const MapPanelMemo = memo(MapPanel);
 
 
 const Mobile = ({mapData,user}) => {
+useEffect(()=> {
+  localStorage.setItem("last-viewed",window.location.href.toLowerCase());
+},[])
+
 
 return (<>
 <ModalProvider>

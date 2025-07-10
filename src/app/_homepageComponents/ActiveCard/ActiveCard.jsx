@@ -15,7 +15,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
 
   const [downTime, updateDownTime] = useState(0); 
   const router = useRouter();
-  const pinLength = appMap.layerData.map(l => l.pins).flat().length; 
+  const pinLength = appMap.pinLength; 
   const url = `/maps/${appMap.id}`
 
   const clickCheck = (e) => {
@@ -33,7 +33,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
   return <>
   <div style={{position:"relative"}}> <div className={styles.activeCard} onMouseUp={clickCheck} onMouseDown={()=>{updateDownTime(+new Date())}}>
     <div  className={`${styles.imageContainer} flex-center-center ${!pinLength ? "stripes-text-on-bg":""}`}>
-      {!pinLength ? <RiMap2Line className={styles.mapIcon} />: <MapThumbnail className={styles.thumbnail} appMap={appMap} width={175} height={150} />}
+      {pinLength < 1 ? <RiMap2Line className={styles.mapIcon} />: <MapThumbnail className={styles.thumbnail} appMap={appMap} width={175} height={150} />}
     </div>
     <div className={styles.text}> 
       <h2 className={`${styles.mapName} overflow-ellipsis `}><Link className="flex-center" href={url}>
