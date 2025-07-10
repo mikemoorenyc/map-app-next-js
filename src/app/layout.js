@@ -6,7 +6,7 @@ import "./globalCSS/utilities.css"
 
 //import "./maps/[id]/Mobile/styles.css"
 import {Inter, Sofia_Sans} from "next/font/google"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 export const viewport = {
   width: 'device-width',
@@ -51,7 +51,7 @@ export default async function RootLayout({ children }) {
         <div id="emoji-picker-container"></div>
         
       </body>
-      <SpeedInsights/>
+
     </html>
   );
 }
