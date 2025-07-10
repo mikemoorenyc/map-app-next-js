@@ -13,14 +13,14 @@ import { ModalProvider } from "./contexts/ModalContext"
 import { getAllMaps } from "./actions/maps"
 
 
-export default function PageClient({mapData,isMobile}){
+export default function PageClient({}){
 
   
 
  
   const [deleteId,updateDeleteId] = useState(null)
 
-  const [mapList,updateMapList] = useState(mapSort(mapData));
+  const [mapList,updateMapList] = useState(null);
  
 
   const updater = (map) => {
