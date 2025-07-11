@@ -4,6 +4,7 @@ import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
 import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { mapSort ,reindexMap} from "../lib/sortMaps";
 import { auth} from "../auth"
+const table = process.env.TABLE_NAME
 /*
 import { sql } from '@vercel/postgres';
 
@@ -36,7 +37,7 @@ const addMap = async function(mapName) {
   const createddate = new Date().toLocaleString()
   const id = Date.now()
     const payload = {
-      TableName: "MapApp",
+      TableName: table,
       Item: {
         id: id,
         sortOrder: mapsSorted.active.length,
@@ -69,7 +70,7 @@ const addMap = async function(mapName) {
 }
 const getAllMaps = async function() {
   try {
-     const data = await ddbDocClient.send(new ScanCommand({ TableName: "MapApp" }));
+     const data = await ddbDocClient.send(new ScanCommand({ TableName: table }));
      
       return data.Items;
       
@@ -80,7 +81,7 @@ const getAllMaps = async function() {
 const getMap = async function(id) {
 
   const input = {
-    TableName : "MapApp",
+    TableName : table,
     Key: {
       id: id
     }
@@ -103,7 +104,7 @@ const archiveMap = async (id,toArchive) => {
   const mapsSorted = mapSort(allMaps);
   const orderSort = toArchive ? mapsSorted.archived.length - 1 : mapsSorted.active.length - 1
   const command = {
-    TableName: "MapApp",
+    TableName: table,
     Key: {
       id: id,
    
@@ -127,7 +128,7 @@ const archiveMap = async (id,toArchive) => {
 }
 const updateMap = async function(id,pageTitle,layerData,mapIcon) {
   const command = {
-    TableName:"MapApp",
+    TableName:table,
     Key : {
       id: id
     },
@@ -147,7 +148,7 @@ const updateMap = async function(id,pageTitle,layerData,mapIcon) {
 }
 const deleteMap = async function(id) {
   const command = {
-    TableName:"MapApp",
+    TableName:table,
     Key : {
       id: id
     }

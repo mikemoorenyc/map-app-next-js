@@ -3,7 +3,7 @@ import { PutCommand,ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../lib/dynamodb/ddbDocClient"
 import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
-
+const table = process.env.TABLE_NAME
 
 export const updateMapServer = async (mapId, payload={}) => {
   console.log(mapId);
@@ -20,7 +20,7 @@ export const updateMapServer = async (mapId, payload={}) => {
 
 
   const command = {
-    TableName: "MapApp",
+    TableName: table,
     Key: {
       id: mapId
     },
