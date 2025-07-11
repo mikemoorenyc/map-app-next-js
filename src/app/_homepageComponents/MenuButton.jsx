@@ -73,7 +73,7 @@ export default function MenuButton ({mapData,modifiers,containerClasses,top,bott
     </BottomSheet>}
   
 
-  {deletePending && <Modal header={"Delete Map"} closeEvent={()=>{updateDeletePending(false); updateDeleteId(null)}}>
+  {deletePending && <Modal header={`Delete ${mapData.title}?`} closeEvent={()=>{updateDeletePending(false); updateDeleteId(null)}}>
     <DeleteConfirmationModal 
       title={'Are you sure you want to delete this map? All data will be lost'}
       cancelClick={(e)=>{updateDeletePending(false); updateDeleteId(null)}}

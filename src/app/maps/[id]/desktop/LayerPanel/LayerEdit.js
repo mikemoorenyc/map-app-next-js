@@ -77,7 +77,7 @@ const LayerEdit = () => {
   },[])*/
   const inputer = (e) => {
         e.preventDefault(e);
-        console.log(tempLayerData.title); 
+     
         updateTempLayerData(prev => {
             const payload = {};
             const attr = e.target.getAttribute("name")
@@ -108,7 +108,7 @@ const LayerEdit = () => {
   //(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}
   //deleteLayer
   return <Modal header={"Edit Layer"} closeEvent={cancelEdit}>
-    {deleteConfirmation == "pending" && <DeleteConfirmationModal title={'Are you sure you want to delete this layer?'} cancelClick={(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}} deleteClick={deleteLayer}/>}
+    {deleteConfirmation == "pending" && <DeleteConfirmationModal title={`Are you sure you want to delete ${layer.title}?`} cancelClick={(e)=>{e.preventDefault(); updateDeleteConfirmation(false)}} deleteClick={deleteLayer}/>}
     {!deleteConfirmation && <div className="editing" style={{width: 350}}>
       <div>
             <div className={`${styles.layerEditSection} flex-center`} key={"title"}>
