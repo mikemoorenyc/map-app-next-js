@@ -15,11 +15,7 @@ import { getAllMaps } from "./actions/maps"
 
 export default function PageClient({}){
 
-  
-
- 
-  const [deleteId,updateDeleteId] = useState(null)
-  
+  const [loaded,updateLoaded] = useState(false);
 
   const [mapList,updateMapList] = useState( {all:[],active:[],archived:[]});
  
@@ -36,10 +32,13 @@ export default function PageClient({}){
     move: (mapId,direction) => {moveMap(mapList.all,mapId,updater,direction)}
   }
   const firstMaps = async () => {
+    
     const maps = await getAllMaps(); 
+
     const theList = mapSort(maps);
     updateMapList(theList);
     localStorage.setItem("map-list",JSON.stringify(theList));
+    
   }
   useEffect(()=> {
     const lastViewed = localStorage.getItem("last-viewed");
@@ -47,20 +46,28 @@ export default function PageClient({}){
 
 
 
+    
+  },[])
+  useEffect(()=> {
     const listData = localStorage.getItem("map-list");
 
     if(listData) {
+
       updateMapList(JSON.parse(listData));
     }
-  },[])
-  useEffect(()=> {
+    updateLoaded(true);
 
     
-    firstMaps(); 
+   
 
 
   },[])
- 
+
+
+  useEffect(()=> {
+    if(!loaded) return ; 
+    firstMaps(); 
+  },[loaded])
 
 
 /*

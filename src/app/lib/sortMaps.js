@@ -1,5 +1,9 @@
 const mapSort = (mapList) => {
+  /*
   const mapDataSmaller = (m) => {
+    if(m.pinLength) {
+      return m; 
+    }
     const pinLength = m.layerData.map(m => m.pins).flat().length; 
     const newData = {...m};
     delete newData.layerData;
@@ -17,8 +21,9 @@ const markerString = m.layerData.reverse().map(l => {
 
     
   }
-  const activeSort = mapList.filter(m => !m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder).map(mapDataSmaller);
-  const archiveSort = mapList.filter(m => m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder).map(mapDataSmaller);
+  */
+  const activeSort = mapList.filter(m => !m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder);
+  const archiveSort = mapList.filter(m => m.isArchived).sort((a,b)=> a.sortOrder - b.sortOrder);
   return {
     active: activeSort,
     archived: archiveSort,

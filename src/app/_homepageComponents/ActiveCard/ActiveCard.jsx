@@ -15,7 +15,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
 
   const [downTime, updateDownTime] = useState(0); 
   const router = useRouter();
-  const pinLength = appMap.pinLength; 
+  const pinLength = appMap.layerData.map(l => l.pins).flat().length; 
   const url = `/maps/${appMap.id}`
 
   const clickCheck = (e) => {

@@ -6,7 +6,7 @@ import Link from "next/link";
 import MenuButton from "../MenuButton";
 
 export default function ({appMap,actions}) {
-  const pinAmount = appMap.pinLength; 
+  const pinAmount =   appMap.layerData.map(l => l.pins).flat().length; 
   const url = `/maps/${appMap.id}`
   const imgUrl = `/api/glyph/w_${16}__icon_${appMap.mapIcon}__picker_true`
   return (
