@@ -13,7 +13,8 @@ import { ModalProvider } from "@/app/contexts/ModalContext";
 const MapPanelMemo = memo(MapPanel);
 
 
-const Mobile = ({mapData,user}) => {
+const Mobile = ({serverId,mapData,user}) => {
+  console.log(serverId);
 useEffect(()=> {
   localStorage.setItem("last-viewed",window.location.href.toLowerCase());
 },[])
@@ -21,7 +22,7 @@ useEffect(()=> {
 
 return (<>
 <ModalProvider>
-<DataContextProvider mapData={mapData} user={user}>
+<DataContextProvider serverId={serverId} user={user}>
 <MobileActiveContextProvider mapData={mapData}>
 
 <MapPanelMemo />

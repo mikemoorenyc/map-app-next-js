@@ -11,7 +11,7 @@ import { RiMapPinAddLine } from "@remixicon/react";
 export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick}) => {
   console.log("opens")
   const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {layerDispatch,user} = useContext(DataContext);
+  const {layerDispatch,user,layerData} = useContext(DataContext);
     const {infoWindowState,infoWindowContent,infoWindowDispatch } = useContext(InfoWindowContext);
     const {website,name,formatted_address,international_phone_number,url,geometry} = placeData
     const addItem = (e) => {
@@ -34,7 +34,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
                 location: geometry.location.toJSON(),
                 viewport: geometry.viewport.toJSON(),
                 test: "asdfasd",
-                layerId : activeData.activeLayer,
+                layerId : activeData.activeLayer|| layerData[0].id,
                 createdBy: user||null
             }
         })

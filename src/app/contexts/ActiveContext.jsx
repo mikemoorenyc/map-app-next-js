@@ -6,12 +6,12 @@ import activeUpdater from "./activeUpdater";
 
 const ActiveContext = createContext()
 
-const ActiveContextProvider = ({children, mapData}) => {
+const ActiveContextProvider = ({children}) => {
     
-  const initLayers = mapData?.layerData || [];
+
   const initActives = {
     editingLayer : null, 
-    activeLayer : initLayers.length ?  initLayers[0]?.id : null,
+    activeLayer : null,
     editingPin : null,
     pinRefs : [],
     collapsedLayers : [],

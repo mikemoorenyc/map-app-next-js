@@ -91,6 +91,12 @@ export default function DesktopSearch({clickEvent}) {
   }
 
   const updatePin = (placeDetails) => {
+    if(!activeData.activeLayer) {
+      activeDispatch({
+        type: "ACTIVE_LAYER",
+        id: layerData[0].id
+      })
+    }
     infoWindowDispatch({
       type: "UPDATE_TEMP_MARKER_POSITION",
       position: placeDetails.geometry.location.toJSON()

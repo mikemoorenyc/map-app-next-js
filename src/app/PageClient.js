@@ -11,6 +11,7 @@ import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 import { ModalProvider } from "./contexts/ModalContext"
 import { getAllMaps } from "./actions/maps"
+const localStore = process.env.NEXT_PUBLIC_LOCAL_MAP
 
 
 export default function PageClient({}){
@@ -24,7 +25,7 @@ export default function PageClient({}){
 
     const newMap = mapSort(map)
      updateMapList(newMap);
-     localStorage.setItem('map-list-7-11',JSON.stringify(newMap))
+     localStorage.setItem(localStore,JSON.stringify(newMap))
   }
   const actions = {
     archive: (mapId,toArchive) => { archiveMap(mapList.all,mapId,toArchive,updater)},
@@ -37,7 +38,7 @@ export default function PageClient({}){
 
     const theList = mapSort(maps);
     updateMapList(theList);
-    localStorage.setItem("map-list-7-11",JSON.stringify(theList));
+    localStorage.setItem(localStore,JSON.stringify(theList));
     
   }
   useEffect(()=> {
@@ -49,7 +50,7 @@ export default function PageClient({}){
     
   },[])
   useEffect(()=> {
-    const listData = localStorage.getItem("map-list-7-11");
+    const listData = localStorage.getItem(localStore);
 
     if(listData) {
 

@@ -15,9 +15,9 @@ const Page = async function({params}) {
   const userAgent = h.get("user-agent") || "";
   const mobileCheck = isMobile(userAgent);
   const {id} = await params; 
-  const map = await getMap(parseInt(id));
+
   return <>
-  {mobileCheck ? <Suspense fallback={<LoadingSkeleton/>}><Mobile user={session.user} mapData={map} /></Suspense>: <Suspense fallback={<LoadingSkeleton />}><Composer mapData={map} user={session.user} /></Suspense>}
+  {mobileCheck ? <Suspense fallback={<LoadingSkeleton/>}><Mobile user={session.user} serverId={id} /></Suspense>: <Suspense fallback={<LoadingSkeleton />}><Composer serverId={id} user={session.user} /></Suspense>}
   </>
 
   
