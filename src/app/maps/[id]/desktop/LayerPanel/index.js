@@ -25,6 +25,7 @@ const LayerPanel = ({id})=> {
     },[layerPanelEl])
 
     useEffect(()=> {
+
        setItems(layerData)
     },[layerData])
  
@@ -86,7 +87,7 @@ const handleDragEnd = (result) => {
    
 return ( 
   <div className={styles.layerPanel}>
-    <Header />
+    <Header layerRef={layerPanelEl} />
     <div className={styles.layerSectionContainer}>
       <DragDropContext onDragEnd={handleDragEnd}>
       <div ref={layerPanelEl} className='outer-scrollable-container' style={{overflowY:"auto", height: "100%",paddingTop:10}}>

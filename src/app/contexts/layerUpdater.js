@@ -11,7 +11,7 @@ export default (layers, action) => {
         const newA = [...layers, {
           title: "Untitled Layer",
           color: "#f0f0f0",
-          id: Date.now(),
+          id: action?.id || Date.now(),
           lightOrDark: "light",
           pins: [],
           createdBy: action?.user

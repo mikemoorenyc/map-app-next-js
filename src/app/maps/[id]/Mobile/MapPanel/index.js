@@ -66,7 +66,7 @@ const MapPanel = () => {
     >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
-  <div style={{position:"fixed",left:24,top:74}}>  <Updater /> </div>
+  <div style={{position:"fixed",left:24,top:74}}>   </div>
       <GeoLocation />
       <DirectionServicer />
          <Suspense><Legend /></Suspense>

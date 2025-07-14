@@ -11,7 +11,6 @@ const Updater = ({id})=> {
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState("uninit");
-  
   //Try to get local data first 
   useEffect(()=> {
     if(!mapId || firstRun !== "uninit") return ;
