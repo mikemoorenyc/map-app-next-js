@@ -1,10 +1,11 @@
 import FAButton from "@/app/components/FAButton/FAButton"
 import {RiMap2Line} from "@remixicon/react"
 import { addMap } from "@/app/actions/maps"
-import { redirect } from "next/navigation"
+import { useRouter } from 'next/navigation'
 
 
 export default function() {
+  const router = useRouter();
   const addClicked = async (e) => {
     e.preventDefault(0);
     console.log("Fab clicked")
@@ -13,7 +14,7 @@ export default function() {
       alert("couldn't make map");
       return ; 
     }
-    redirect(`/maps/${added.id}`)
+    router.push(`/maps/${added.id}`)
   }
   return <FAButton onClick={addClicked} icon={<RiMap2Line/>}>New map</FAButton>
 }
