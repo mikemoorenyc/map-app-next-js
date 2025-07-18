@@ -5,7 +5,7 @@ import Button from "@/app/components/Button";
 
 import { RiCompass3Line } from "@remixicon/react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-
+import DataContent from "@/app/contexts/DataContext"
 
 export default () => {
 
@@ -14,6 +14,7 @@ export default () => {
   const [centerInit, updateCenterInit] = useState(false);
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   const {geolocation} = activeData;
+  const {layerData} = useContext(DataContext); 
 
   useEffect(()=> {
    
@@ -67,7 +68,7 @@ export default () => {
   //Move to center
   useEffect(()=> {
     if(centerInit) return ; 
-    if(!map || geolocation == null) return ; 
+    if(!map || geolocation == null || layerData.length < 1) return ; 
  
    updateCenterInit(true);
    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(geolocation)})
@@ -78,7 +79,7 @@ export default () => {
 
     
 
-  },[map,geolocation])
+  },[map,geolocation,layerData])
   
   const dCheck = typeof DeviceOrientationEvent;
  
