@@ -5,7 +5,7 @@ import Button from "@/app/components/Button";
 
 import { RiCompass3Line } from "@remixicon/react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-import DataContent from "@/app/contexts/DataContext"
+import DataContext from "@/app/contexts/DataContext"
 
 export default () => {
 
