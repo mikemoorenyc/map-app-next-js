@@ -1,4 +1,4 @@
-import { useContext,useState,useEffect,useRef } from "react"
+import { useContext,useState,useRef } from "react"
 import DataContext from "@/app/contexts/DataContext"
 import ActiveContext from "@/app/contexts/ActiveContext"
 import lightOrDark from "@/app/lib/lightOrDark"
@@ -11,7 +11,7 @@ import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 import DropDown from "@/app/components/DropDown/DropDown"
 import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import { RiEmojiStickerLine } from "@remixicon/react"
-
+import svgImgUrl from "@/app/lib/svgImgUrl"
 
 const LayerEdit = () => {
   
@@ -147,7 +147,7 @@ const LayerEdit = () => {
                   <label className={styles.sectionLabel}>Icon</label>
                   <div className={'flex-center'} ref={iconPickerRef}>
                     <button onClick={(e)=>{e.preventDefault(); updateIconPickerOpen(!iconPickerOpen)}}>
-                        {tempLayerData.icon ? <img width={32} height={32} src={`/api/glyph?w=32&picker=true&icon=${tempLayerData.icon}`} />: <RiEmojiStickerLine width={32} height={32}/>}
+                        {tempLayerData.icon ? <img width={32} height={32} src={svgImgUrl({icon:tempLayerData.icon})} />: <RiEmojiStickerLine width={32} height={32}/>}
                     </button>
                     <Button style={{marginLeft: 8}} modifiers={["sm","ghost"]} onClick={()=>{updateIconPickerOpen(!iconPickerOpen)}}>Pick layer icon</Button>
                   </div>

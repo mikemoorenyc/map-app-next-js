@@ -36,7 +36,7 @@ export default function({results,itemClicked}) {
       {activePins.length ? (<div className={styles.pinContainer}>
         {activePins.map(p=> {
           const layer = layerData.find(l => l.id == p.layerId); 
-        const icon = <Pin onMap={true} layer={layer} interactiable={false} size={13} pin={p} />
+        const icon = <Pin onMap={true} layer={layer} interactiable={false} size={14} className={`${styles.searchDropDownPin} ${p.favorited? styles.favorited:""}`} pin={p} />
           return <SearchItem {...{itemClicked,icon}}  key={p.id} item={p} />
         })}
       

@@ -70,3 +70,11 @@
   border-color: var(--screen-text);
   border-style: dashed;
 }
+.searchDropDownPin {
+  width:25px;
+  height:25px;
+}
+.searchDropDownPin.favorited {
+  width:31px;
+  height:31px;
+}

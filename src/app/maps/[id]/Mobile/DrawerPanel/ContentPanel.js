@@ -11,7 +11,7 @@ import AddToMapButton from "./AddToMapButton";
 import {  RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 import Photos from "./Photos";
-
+import svgImgUrl from "@/app/lib/svgImgUrl";
 
 
 
@@ -33,7 +33,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
       <div className={`${styles.metadata} display-flex align-items-center`} >
         
         {layer && <div className={`${styles.layerTitle} flex-1  flex-center`}>
-         {layer.icon && <img style={{marginRight:4}} width={18} height={18} src={`/api/glyph?w=22&picker=true&icon=${layer.icon}`}/>} <span className="flex-1 overflow-ellipsis">{layer.title}</span>
+         {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>} <span className="flex-1 overflow-ellipsis">{layer.title}</span>
         </div>}
         {pinId == "temp" && <AddToMapButton />}
         {pinId != "temp" && <Button icon={<RiPencilLine />} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}} modifiers={["icon","round","secondary","sm"]}/>}

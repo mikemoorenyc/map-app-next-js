@@ -1,6 +1,6 @@
 import styles from "./LayerSelector.module.css"
 import {useContext} from "react"
-
+import svgImgUrl from "@/app/lib/svgImgUrl"
 import DataContext from "@/app/contexts/DataContext"
 
 import { RiArrowDownSLine } from "@remixicon/react"
@@ -20,7 +20,7 @@ export default function LayerSelector({updater,pinState}) {
 <div className={styles.container}>
   <div className={`${styles.mask} flex-center`} style={maskStyles}>
     <div className={`${styles.maskLabel} flex-1 flex-center`}>
-      {currentLayer.icon && <img style={{marginRight:4}} width={18} height={18} src={`/api/glyph?w=22&picker=true&icon=${currentLayer.icon}`}/>}
+      {currentLayer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:currentLayer.icon})}/>}
       <span className="flex-1 overflow-ellipsis">{currentLayer.title}</span>
     </div>
     <div className={styles.maskIcon}> <RiArrowDownSLine /> </div>

@@ -6,6 +6,7 @@ import { useState} from "react";
 import { useRouter } from 'next/navigation'
 import MapThumbnail from "./MapThumbnail";
 import {  RiMap2Line } from "@remixicon/react";
+import svgImgUrl from "@/app/lib/svgImgUrl";
 //import DropDown from "@/app/components/DropDown/DropDown";
 
 //import BottomSheet from "@/app/components/BottomSheet/BottomSheet";
@@ -29,7 +30,7 @@ export default function ({appMap,top=false,bottom=false, actions})  {
 
 
  //<img width={16} height={16} src={`/api/glyph?picker=true&w=16&icon=${appMap.mapIcon}`} style={{marginRight:4}}/>
-  const imgUrl = `/api/glyph/w_${16}__icon_${appMap.mapIcon}__picker_true`
+  const imgUrl = svgImgUrl({picker:true, icon:appMap.mapIcon})
   return <>
   <div style={{position:"relative"}}> <div className={styles.activeCard} onMouseUp={clickCheck} onMouseDown={()=>{updateDownTime(+new Date())}}>
     <div  className={`${styles.imageContainer} flex-center-center ${!pinLength ? "stripes-text-on-bg":""}`}>

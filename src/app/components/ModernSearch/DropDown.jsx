@@ -123,7 +123,7 @@ const DropDown = (props) =>{
 }
 const PredictionPin = memo(({layerData,p})=> {
   const layer = layerData.find(l => l.id == p.layerId); 
-  return <PinMemo className={styles.pinSmall} onMap={true} interactiable={false} size={10} pin={p} layer={layer}/>
+  return <PinMemo className={`${styles.pinSmall} ${p.favorited?styles.favorited:""}`} onMap={true} interactiable={false} size={16} pin={p} layer={layer}/>
 }) 
 
 const SearchMemo = memo(({icon,p,cIndex,active,itemActivated,updateCurrentHover,updateCurrentIndex,currentHover})=> {
@@ -152,3 +152,4 @@ const SearchMemo = memo(({icon,p,cIndex,active,itemActivated,updateCurrentHover,
 const DropdDownMemo = memo(DropDown)
 
 export default DropDownWrapper; 
+

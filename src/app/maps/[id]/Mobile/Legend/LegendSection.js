@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-
+import svgImgUrl from "@/app/lib/svgImgUrl"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 
 import Pin from "../../sharedComponents/Pin"
@@ -80,7 +80,7 @@ const LegendSection = (props) => {
         {isActive? <RiCheckboxCircleFill width={16} height={16} /> : <RiCheckboxCircleLine width={16} height={16}/>}
       </button>
       <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1 flex-center`}>
-        {layer.icon && <img width={22} height={22} src={`/api/glyph?w=22&picker=true&icon=${layer.icon}`}/>}
+        {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon,picker:true})}/>}
       <span className="flex-1 overflow-ellipsis">{layer.title}</span></div>
       <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine width={16} height={16} /></button>
     </div>
@@ -89,7 +89,7 @@ const LegendSection = (props) => {
           const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
           return <div className={`${classString } flex-center`} key={pin.id} onClick={()=>{activatePin(pin)}}  >
           <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""} flex-center-center`}> 
-            <Pin pin={pin} mobile={true} onMap={true} layer={layer} />
+            <Pin pin={pin} className={`${styles.legendPin} ${pin?.favorited?styles.favorited:""}`} mobile={true} onMap={true} layer={layer} size={14}/>
           </div>
           <div className={`${styles.pinName} ${pin.favorited?styles.favorited:""} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>
             {pin.title}

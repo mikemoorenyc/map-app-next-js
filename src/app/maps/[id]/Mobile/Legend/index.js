@@ -2,7 +2,7 @@ import  { useContext ,useRef,useState,Suspense,lazy} from "react"
 
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import LegendSection from "./LegendSection"
-
+import svgImgUrl from "@/app/lib/svgImgUrl"
 import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 import styles from "./styles.module.css";
@@ -31,7 +31,7 @@ const Legend = () => {
         activeDispatch({type:"BACK_STATE",state:"base"})
         }} icon={<RiArrowLeftFill />} />
       <div className={`${styles.legendTitle} overflow-ellipsis flex-1 flex-center`}>
-        {mapIcon && <img src={`/api/glyph?picker=true&w=20&icon=${mapIcon}`} width={24} height={24} style={{marginRight:8}}/>}
+        {mapIcon && <img src={svgImgUrl({icon:mapIcon,picker:true})} width={24} height={24} style={{marginRight:8}}/>}
         <span>{pageTitle}</span>
       </div>
     </div>

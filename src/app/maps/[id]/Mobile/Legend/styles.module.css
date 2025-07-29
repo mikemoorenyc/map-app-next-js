@@ -160,3 +160,12 @@ flex-direction:column;
   text-transform:uppercase; 
   margin-top:4px; 
 }
+.legendPin {
+  width: 19px;
+  height: 19px; 
+}
+.legendPin.favorited {
+  width: 23px;
+  height: 23px; 
+}
+

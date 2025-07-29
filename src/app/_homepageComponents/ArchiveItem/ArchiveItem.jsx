@@ -1,4 +1,4 @@
-import Button from "../../components/Button"
+import svgImgUrl from "@/app/lib/svgImgUrl";
 
 import styles from "./ArchiveItemStyles.module.css";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import MenuButton from "../MenuButton";
 export default function ({appMap,actions}) {
   const pinAmount =   appMap.layerData.map(l => l.pins).flat().length; 
   const url = `/maps/${appMap.id}`
-  const imgUrl = `/api/glyph/w_${16}__icon_${appMap.mapIcon}__picker_true`
+  const imgUrl = svgImgUrl({icon:appMap.mapIcon,picker:true})
   return (
     <div className={`${styles.archiveItem} flex-center`}>
       <Link className={`flex-center flex-1 ${styles.link}`} href={url}>

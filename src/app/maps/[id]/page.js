@@ -16,8 +16,14 @@ const Page = async function({params}) {
   const mobileCheck = isMobile(userAgent);
   const {id} = await params; 
 
+  const user = (process.env.NODE_ENV === "development") ? {
+    email: "fake@fake.com",
+    name: "Fake User",
+    image: "https://placehold.co/600x600"
+  }: session.user
+
   return <>
-  {mobileCheck ? <Suspense fallback={<LoadingSkeleton/>}><Mobile user={session.user} serverId={id} /></Suspense>: <Suspense fallback={<LoadingSkeleton />}><Composer serverId={id} user={session.user} /></Suspense>}
+  {mobileCheck ? <Suspense fallback={<LoadingSkeleton/>}><Mobile user={user} serverId={id} /></Suspense>: <Suspense fallback={<LoadingSkeleton />}><Composer serverId={id} user={user} /></Suspense>}
   </>
 
   

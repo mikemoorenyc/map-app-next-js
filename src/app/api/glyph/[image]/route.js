@@ -1,6 +1,7 @@
 
-import { ImageResponse } from 'next/og'
-export const contentType = 'image/png'
+import { ImageResponse } from 'next/og';
+
+
 export async function GET(request,{params}) {
 
 
@@ -56,6 +57,7 @@ export async function GET(request,{params}) {
     position:"absolute",
     left: 0,
     top: 0,
+
     width: favoritedSize,
     height: favoritedSize,
     textAlign:"center",
@@ -81,21 +83,21 @@ export async function GET(request,{params}) {
     (
       <div
         style={{
-          width: size||44,
-          height:size||40,
+          width: 64,
+          height:64,
           display:"flex",
           alignItems:"center",
           justifyContent:"center",
-          fontSize: `${size?size*.8:36}px`,
-          lineHeight: `${size?size*.8:36}px`
+          fontSize: `${size?size*.8:62}px`,
+          lineHeight: `${size?size*.8:56}px`
         }}
       >
         <span>{icon}</span>
       </div>
     ),
     {
-      width: size,
-      height: size
+      width: 64,
+      height: 64,
     }
   )
 
@@ -143,6 +145,7 @@ export async function GET(request,{params}) {
     )
   try {
     if(picker) {
+
       return PickerGlyph;
     }
     return favorited ? FavoritedIcon : PlainIcon

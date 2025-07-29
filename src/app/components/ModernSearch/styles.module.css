@@ -24,6 +24,10 @@
   margin-bottom: calc(var(--gutter) / 3); 
 }
 .pinSmall {
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
+}
+.pinSmall.favorited {
+  width:23px;
+  height: 23px; 
 }

@@ -40,8 +40,9 @@ const PinItem = (props) => {
         pin={p}
         layer={layer}
         interactable={false}
-        size={10}
+        size={16}
         onMap={true}
+        className={`${styles.layerPin} ${p.favorited?styles.favorited:""}`}
       />
       </div>
       <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1, textDecoration: p?.visited ? "line-through":""}}>

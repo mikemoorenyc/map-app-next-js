@@ -2,7 +2,7 @@ import { RiEmojiStickerLine, RiPencilLine } from "@remixicon/react"
 import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import styles from "./Header.module.css"
 import { useRef, useState } from "react"
-import Glyph from "@/app/components/Glyph/Glyph"
+import svgImgUrl from "@/app/lib/svgImgUrl"
 export default function({mapIcon,updateMapIcon}) {
 
   const [iconSelectorOpen,updateIconSelectorOpen] =useState(false)
@@ -17,7 +17,7 @@ export default function({mapIcon,updateMapIcon}) {
   return <div style={{marginRight:8}} ref={pickerAnchor}>
     <button className={styles.editMapIconButton} onClick={(e) => {updateIconSelectorOpen(true)}}>
       {!mapIcon && <RiEmojiStickerLine className={styles.mapIcon} width={w} height={w}/>}
-      {mapIcon && <img className={styles.mapIcon} width={w} height={w} src={`/api/glyph/w_${w}__picker_true__icon_${mapIcon}`} />}
+      {mapIcon && <img className={styles.mapIcon} width={w} height={w} src={svgImgUrl({icon:mapIcon})} />}
       {<RiPencilLine className={styles.editMapIcon} width={w} height={w} />}
       
     </button>
