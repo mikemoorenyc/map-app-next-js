@@ -4,7 +4,7 @@ import ToastContext from "@/app/contexts/ToastContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import LocationDetails from "@/app/components/LocationDetails";
-
+import svgImgUrl from "@/app/lib/svgImgUrl";
 import IconSelector from "./IconSelector";
 import InfoWindowHeader from "./InfoWindowHeader";
 import Button from "@/app/components/Button";
@@ -162,7 +162,7 @@ useEffect(()=> {
     {!editingText&&<div className={`${styles.controlsDefault} display-flex`}>
         <div className="flex-center">
         <div ref={pickerContainer} style={{position:"relative",cursor: "pointer"}} className={styles.controlContainer} onClick={(e)=>{updateIconSelectorOpen(true)}}>
-          {p.icon? <img src={`/api/glyph?icon=${p.icon}&picker=true`} width={22} height={20} />  :<RiEmojiStickerLine />}
+          {p.icon? <img src={svgImgUrl({icon:p.icon})} width={22} height={22} />  :<RiEmojiStickerLine />}
         </div>
         {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
         <button onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
