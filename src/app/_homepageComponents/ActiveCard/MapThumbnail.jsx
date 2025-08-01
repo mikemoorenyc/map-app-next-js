@@ -10,7 +10,7 @@ export default function ({appMap,width,height,className}) {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY
-  const [mapStyleId, updateMapStyleId] = useState(darkModeId);
+  const [mapStyleId, updateMapStyleId] = useState(null);
 
 
   
@@ -46,6 +46,7 @@ export default function ({appMap,width,height,className}) {
   /*const markerString = pins.map(p => {
     return `${p.location.lat},${p.location.lng}`
   }).join("|")*/
+  if(!mapStyleId) return ; 
 
   return <img className={className} 
   src={`https://maps.googleapis.com/maps/api/staticmap?size=${width}x${height}&key=${apiKey}&map_id=${mapStyleId}&${markerString}`}
