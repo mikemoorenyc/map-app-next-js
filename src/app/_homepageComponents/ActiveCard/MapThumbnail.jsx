@@ -10,7 +10,7 @@ export default function ({appMap,width,height,className}) {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY
-  const [mapStyleId, updateMapStyleId] = useState(null);
+  const [mapStyleId, updateMapStyleId] = useState(darkModeId);
 
 
   
