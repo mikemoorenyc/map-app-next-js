@@ -11,7 +11,10 @@
   font-size: 1.25em;
   cursor: pointer;
   margin-right: 12px;
+  border-bottom: 1px solid transparent; 
 }
+.title:hover {
+  border-bottom: 1px solid var(--screen-text);
 .sub {
   display: flex;
   align-items: center;
