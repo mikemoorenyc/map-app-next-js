@@ -15,6 +15,7 @@
 }
 .title:hover {
   border-bottom: 1px solid var(--screen-text);
+}
 .sub {
   display: flex;
   align-items: center;
