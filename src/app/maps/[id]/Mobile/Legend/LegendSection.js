@@ -13,7 +13,7 @@ import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
 
 const PinItem = ({activePin,pin,isActive,activatePin,activePin}) => {
-    const containerRef = useRef();
+    const containerRef = useRef(null);
     const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
 
     useLayoutEffect(()=> {
