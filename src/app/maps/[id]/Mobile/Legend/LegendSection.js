@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useRef } from "react"
 import svgImgUrl from "@/app/lib/svgImgUrl"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 
@@ -11,6 +11,33 @@ import { useCallback ,memo} from "react"
 import styles from "./styles.module.css";
 import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
+
+const PinItem = ({activePin,pin,isActive,activatePin,activePin}) => {
+    const containerRef = useRef();
+    const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
+
+    useLayoutEffect(()=> {
+        if(!containerRef.current || !isActive) return ; 
+        if(activePin === pin.id) {
+            containerRef.current.scrollIntoView({block: "center"})
+        }
+    },[containerRef,activePin])
+    return (
+        <div ref={containerRef} className={`${classString } flex-center`} onClick={()=>{activatePin(pin)}}>
+            <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""} flex-center-center`}> 
+                <Pin pin={pin} className={`${styles.legendPin} ${pin?.favorited?styles.favorited:""}`} mobile={true} onMap={true} layer={layer} size={14}/>
+            </div>
+            <div className={`${styles.pinName} ${pin.favorited?styles.favorited:""} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>
+                {pin.title}
+            </div>
+
+        </div>
+
+        
+    )
+    
+
+}
 
 
 const LegendSectionWrapper = ({layer}) => {
