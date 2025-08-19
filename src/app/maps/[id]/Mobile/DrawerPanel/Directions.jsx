@@ -18,7 +18,7 @@ export default function ({pin}) {
     {methods.map((m,i)=> {
       const r = routes[m];
       if(!r) return false; 
-      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://dir/?api=1&origin=${geolocation.lat},${geolocation.lng}&destination=${pin.location.lat},${pin.location.lng}&destination_place_id=${pinId}&travelmode=${m.toLowerCase()}`}> 
+      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${pin.location.lat},${pin.location.lng}&directionsmode=${m.toLowerCase()}`}> 
        
         <span className={`${styles.destinationIcon} flex-center-center`}>{icons[i]}</span>
 
