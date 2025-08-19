@@ -47,7 +47,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
       {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>}
-      {routes && <Directions />}
+      {routes && <Directions pin={pin} />}
       <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>

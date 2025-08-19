@@ -1,4 +1,4 @@
-import { act, useContext, useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
