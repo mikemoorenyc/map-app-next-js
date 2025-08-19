@@ -28,7 +28,7 @@ export default function ({pin}) {
       </a>
     })}
   
-  </div>
+  </div>  
   
 }
 
