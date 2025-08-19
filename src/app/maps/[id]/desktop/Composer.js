@@ -16,6 +16,7 @@ const ToastsMemo = memo(Toasts);
 
 const Composer = function({mapData,user,serverId}) {
 
+
   return <ModalProvider><ToastContextProvider><DataContextProvider user={user} serverId={serverId}>
   <ActiveContextProvider mapData={mapData}>
     <LayerPanelMemo />

@@ -13,6 +13,8 @@ const Updater = ({id,firstLoadFunction})=> {
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState("uninit");
   const mapMover = useMapMover(); 
+ 
+
   //Try to get local data first 
   useEffect(()=> {
     if(!mapId || firstRun !== "uninit") return ;
@@ -21,7 +23,14 @@ const Updater = ({id,firstLoadFunction})=> {
    
     if(listData && typeof JSON.parse(listData) == "object" && JSON.parse(listData).all.find(m=>m.id == mapId)) {
       const theMap = JSON.parse(listData).all.find(m=>m.id == mapId);
-      mapMover("contain",theMap.layerData.map(l => l.pins).flat());
+      const pins = theMap.layerData.map(l => l.pins).flat()
+      if(pins.length > 0) {
+        mapMover("contain",pins);
+      } else {
+        mapMover("move",null,[40.7484405,-73.9856644])
+      }
+      
+      
      
       layerDispatch({
           type: "REFRESH_LAYERS",
@@ -44,7 +53,13 @@ const Updater = ({id,firstLoadFunction})=> {
           type: "REFRESH_LAYERS",
           newLayers: theMap.layerData
         })
-        mapMover("contain",theMap.layerData.map(l => l.pins).flat());
+        const pins = theMap.layerData.map(l => l.pins).flat()
+    
+        if(pins.length > 0) {
+        mapMover("contain",pins);
+      } else {
+        mapMover("move",null,[40.7484405,-73.9856644])
+      }
         if(firstLoadFunction) {
           firstLoadFunction(); 
         }

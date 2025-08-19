@@ -29,7 +29,10 @@ export async function getMapData(id) {
 
 const addMap = async function(mapName) {
 
-
+const session = await auth();
+if(!session) {
+  return false; 
+}
   
   
   const allMaps = await getAllMaps();
@@ -46,7 +49,7 @@ const addMap = async function(mapName) {
         sortOrder: mapsSorted.active.length,
         created_at : createddate,
         modified_at: createddate,
-
+        createdBy:session.user,
         title: mapName ,
         layerData: [
           {

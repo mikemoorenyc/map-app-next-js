@@ -12,6 +12,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
   console.log("opens")
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {layerDispatch,user,layerData} = useContext(DataContext);
+  console.log(user);
     const {infoWindowState,infoWindowContent,infoWindowDispatch } = useContext(InfoWindowContext);
     const {website,name,formatted_address,international_phone_number,url,geometry} = placeData
     const addItem = (e) => {

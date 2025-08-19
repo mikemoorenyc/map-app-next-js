@@ -4,7 +4,7 @@ import { useCallback } from "react";
 export default function MapMover() {
 
   const map = useMap(); 
-  return useCallback((action,pinsFlat) => {
+  return useCallback((action,pinsFlat,moveCoord,zoom) => {
     if(!map) return ; 
     if(action == "contain") {
       var bounds = new google.maps.LatLngBounds();
@@ -13,6 +13,9 @@ export default function MapMover() {
       })
       map.fitBounds(bounds, 1);
       return ; 
+    }
+    if(action == "move") {
+      map.setCenter(new google.maps.LatLng(moveCoord[0],moveCoord[1]))
     }
 
   },[map])
