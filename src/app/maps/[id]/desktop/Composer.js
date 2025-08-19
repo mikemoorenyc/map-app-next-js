@@ -5,7 +5,7 @@ import { ActiveContextProvider } from "@/app/contexts/ActiveContext";
 import { ModalProvider } from "@/app/contexts/ModalContext";
 import { ToastContextProvider } from "@/app/contexts/ToastContext";
 import LayerPanel from "./LayerPanel";
-import TopMenu from "./TopMenu";
+
 import MapPanel from "./MapPanel";
 import Toasts from "@/app/components/Toasts";
 import { memo } from "react";
@@ -13,7 +13,7 @@ import { memo } from "react";
 const MapMemo = memo(MapPanel);
 const LayerPanelMemo = memo(LayerPanel);
 const ToastsMemo = memo(Toasts);
-const TopMenuMemo = memo(TopMenu); 
+
 const Composer = function({mapData,user,serverId}) {
 
   return <ModalProvider><ToastContextProvider><DataContextProvider user={user} serverId={serverId}>
@@ -21,7 +21,7 @@ const Composer = function({mapData,user,serverId}) {
     <LayerPanelMemo />
     <MapMemo />
    <ToastsMemo />
-  <TopMenuMemo />
+  
 
 </ActiveContextProvider>
 

@@ -2,7 +2,7 @@
 import { APIProvider , Map} from "@vis.gl/react-google-maps";
 import { memo, useEffect, useState } from "react"
 import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
-
+import TopMenu from "../TopMenu";
 import PinEditWindow from "./PinEditWindow";
 import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
@@ -10,6 +10,7 @@ import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
 
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
+const TopMenuMemo = memo(TopMenu)
 
 const MapPanel = () => {
   const [clickEvent,updateClickEvent] = useState(null);
@@ -48,6 +49,7 @@ const MapPanel = () => {
 <DesktopSearchMemo clickEvent={clickEvent} />
   <PinEditWindow clickEvent={clickEvent} />
   <ModernTempMarker />
+  <TopMenuMemo />
   </MapMemo>
   </InfoWindowContextProvider>
   

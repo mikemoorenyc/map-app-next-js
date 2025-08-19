@@ -14,6 +14,7 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     inBounds: false,
     geolocation: null,
     routes: null,
+    remoteLoad: false,
     colorMode: "light"
    
   }
@@ -21,6 +22,9 @@ const MobileActiveContextProvider = ({children,mapData}) => {
 
 
     switch(action.type) {
+      case "UPDATE_REMOTE_LOAD": {
+        return {...actives,...{remoteLoad: action.value}}
+      }
       case "UPDATE_COLOR_MODE": {
         return {...actives, ...{colorMode:action.colorMode}}
       }

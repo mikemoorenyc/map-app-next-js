@@ -1,16 +1,18 @@
 import { useState,useContext,useEffect,useRef } from "react";
 import DataContext from "@/app/contexts/DataContext";
+import useMapMover from "@/app/lib/useMapMover"
 
 import { updateMap,getMap } from "@/app/actions/maps";
 
 import styles from "./styles.module.css"
 import { RiUploadCloudLine } from "@remixicon/react";
 
-const Updater = ({id})=> {
+const Updater = ({id,firstLoadFunction})=> {
   const {layerData,pageTitle,mapId,layerDispatch,mapIcon,updateMapIcon,updatePageTitle} = useContext(DataContext);
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState("uninit");
+  const mapMover = useMapMover(); 
   //Try to get local data first 
   useEffect(()=> {
     if(!mapId || firstRun !== "uninit") return ;
@@ -19,6 +21,7 @@ const Updater = ({id})=> {
    
     if(listData && typeof JSON.parse(listData) == "object" && JSON.parse(listData).all.find(m=>m.id == mapId)) {
       const theMap = JSON.parse(listData).all.find(m=>m.id == mapId);
+      mapMover("contain",theMap.layerData.map(l => l.pins).flat());
      
       layerDispatch({
           type: "REFRESH_LAYERS",
@@ -41,6 +44,10 @@ const Updater = ({id})=> {
           type: "REFRESH_LAYERS",
           newLayers: theMap.layerData
         })
+        mapMover("contain",theMap.layerData.map(l => l.pins).flat());
+        if(firstLoadFunction) {
+          firstLoadFunction(); 
+        }
         if(theMap.mapIcon) {
           updateMapIcon(theMap.mapIcon)
         }
@@ -59,7 +66,6 @@ const Updater = ({id})=> {
   
   const sendData = async () => {
     let updated = await updateMap(parseInt(mapId),pageTitle,layerData,mapIcon);
-    console.log(updated);
     updateIsSaving(false);
     updateLastSaved(new Date())
   }

@@ -1,6 +1,6 @@
 import { auth } from "@/app/auth"
 import { Storage } from "@google-cloud/storage";
-const bucketName =  process.env.NEXT_PUBLIC_GCLOUD_BUCKET
+const bucketName =  process.env.NEXT_PUBLIC_GCLOUD_PHOTOS
 
 
 
@@ -47,10 +47,11 @@ export async function POST(request) {
     }) 
   }
   const [metadata] = await bucket.getMetadata();
+  console.log(metadata);
   
 
 
-  if(metadata.cors[0].origin.join(",") !== corsList) {
+  if(!metadata.cors || metadata.cors[0].origin.join(",") !== corsList) {
     try {
      const corSet = await bucket.setCorsConfiguration([
     {

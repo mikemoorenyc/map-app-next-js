@@ -28,11 +28,18 @@ export async function getMapData(id) {
 */
 
 const addMap = async function(mapName) {
-  const session = await auth();
-  if(!session) return false; 
+  if(process.env.NODE_ENV !== "development") {
+    const session = await auth();
+  if(!session) {
+     console.log("bad session"); return false; 
+  }
+
+  }
+  
   const allMaps = await getAllMaps();
   if(!allMaps) return false; 
   const mapsSorted = mapSort(allMaps);
+  const user = process.env.NODE_ENV === "development" ? "test account" : session?.user
 
   const createddate = new Date().toLocaleString()
   const id = Date.now()
@@ -43,14 +50,14 @@ const addMap = async function(mapName) {
         sortOrder: mapsSorted.active.length,
         created_at : createddate,
         modified_at: createddate,
-        createdBy: session.user,
+        createdBy: user,
         title: mapName ,
         layerData: [
           {
             title: "Untitled Layer",
           color: "#f0f0f0",
           id: Date.now(),
-          createdBy: session.user,
+          createdBy: user,
           lightOrDark: "light",
           pins: [],
           }

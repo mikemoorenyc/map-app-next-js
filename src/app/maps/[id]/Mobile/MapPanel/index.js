@@ -19,6 +19,7 @@ const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
   const {activeDispatch} = useContext(MobileActiveContext)
+
   const [mapStyleId,updateMapStyleId] = useState(darkModeId);
 
   useEffect(()=> {
@@ -66,7 +67,12 @@ const MapPanel = () => {
     >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
-  <div style={{position:"fixed",left:24,top:74}}> <Updater/>    </div>
+  <div style={{position:"fixed",left:24,top:74}}> <Updater firstLoadFunction={()=> {
+    activeDispatch({
+      type: "UPDATE_REMOTE_LOAD",
+      value: true
+    })
+  }}/>    </div>
       <GeoLocation />
       <DirectionServicer />
          <Suspense><Legend /></Suspense>

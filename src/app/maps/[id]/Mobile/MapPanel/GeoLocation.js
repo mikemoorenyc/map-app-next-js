@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { act, useContext, useEffect, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
@@ -15,8 +15,9 @@ export default () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   const {geolocation} = activeData;
   const {layerData} = useContext(DataContext); 
-
+  const {remoteLoad} = activeData;
   useEffect(()=> {
+    if(!remoteLoad) return ; 
    
     if(!navigator.geolocation) return ; 
 
@@ -41,7 +42,7 @@ export default () => {
       navigator.geolocation.clearWatch(watcher);
     }
     
-  },[])
+  },[remoteLoad])
   
 
   const setUpCompass = (e) => {
@@ -73,6 +74,7 @@ export default () => {
    updateCenterInit(true);
    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(geolocation)})
    if(!map.getBounds().contains(geolocation)) return ;
+   console.log("in bounds")
 
   map.setZoom(15)
   map.setCenter(geolocation);

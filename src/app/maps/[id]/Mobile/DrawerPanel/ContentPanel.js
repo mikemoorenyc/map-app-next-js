@@ -1,4 +1,4 @@
-import { useContext} from "react";
+import { useContext,useState} from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import Button from "@/app/components/Button";
@@ -16,6 +16,7 @@ import svgImgUrl from "@/app/lib/svgImgUrl";
 
 
 const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
+
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
   const {routes,inBounds} = activeData;
@@ -50,7 +51,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
       <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
-      {typeof (pin.id || pin.place_id) == "string"  && <Photos id={pin.id || pin.place_id} {...{drawerState}} />}
+      {typeof (pin.id || pin.place_id) == "string"  && <Photos temp={pinId=="temp"} id={pin.id || pin.place_id} {...{drawerState}} />}
         
       
     </div>

@@ -12,7 +12,7 @@ import styles from "./styles.module.css";
 import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
 
-const PinItem = ({activePin,pin,isActive,activatePin,activePin}) => {
+const PinItem = ({activePin,pin,isActive,activatePin,layer}) => {
     const containerRef = useRef(null);
     const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
 
@@ -113,15 +113,7 @@ const LegendSection = (props) => {
     </div>
     <div className={`${styles.pins}`}>
         {pins.map(pin=> {
-          const classString = `${styles.legendSectionPin} ${!isActive ? styles.disabled:""} ${activePin == pin.id?styles.active : ""}`
-          return <div className={`${classString } flex-center`} key={pin.id} onClick={()=>{activatePin(pin)}}  >
-          <div className={`${styles.pinIcon} ${pin.favorited? styles.favorited:""} flex-center-center`}> 
-            <Pin pin={pin} className={`${styles.legendPin} ${pin?.favorited?styles.favorited:""}`} mobile={true} onMap={true} layer={layer} size={14}/>
-          </div>
-          <div className={`${styles.pinName} ${pin.favorited?styles.favorited:""} overflow-ellipsis`} style={{textDecoration: pin?.visited?"line-through":""}}>
-            {pin.title}
-          </div>
-          </div>
+         return <PinItem key={pin.id} {...{layer,pin,activePin,isActive,activatePin}}/>
         })}
       {layer.pins.length > cutoff && !containsActivePin && (
         <div className={styles.expandButton} > 
