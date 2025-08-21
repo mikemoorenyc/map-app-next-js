@@ -17,14 +17,9 @@ export  async function GET(req, res) {
   console.log(title);
   console.log(coords);
   console.log(addr);
-  const url = `https://api.content.tripadvisor.com/api/v1/location/search?key=${key}&searchQuery=${encodeURIComponent(title)}&latLong=${encodeURIComponent(coords)}&radius=1&radiusUnit=m&language=en&address=${encodeURIComponent(addr.split(",")[0])}`
-  console.log(url);
-  const testData = await fetch(url);
-  const {data} = await testData.json();
-
-  if(data.length <1) {
+  const goodResponse = (photoArray) => {
     return new Response(
-       JSON.stringify({photos:[]})
+       JSON.stringify({photos:photoArray})
       ,{
       status:200,
       headers: {
@@ -33,24 +28,29 @@ export  async function GET(req, res) {
     }
     )
   }
+  const url = `https://api.content.tripadvisor.com/api/v1/location/search?key=${key}&searchQuery=${encodeURIComponent(title)}&latLong=${encodeURIComponent(coords)}&language=en`
+  console.log(url);
+  const testData = await fetch(url);
+  const {data} = await testData.json();
 
-  const location = data[0].location_id;
-  const locationQuery = await fetch(`https://api.content.tripadvisor.com/api/v1/location/${location}/photos?key=${key}&language=en`)
+  if(data.length <1) {
+    return goodResponse([]);
+  }
+  const location = data[0];
+  if(location.distance > .3) {
+    console.log("no close matches");
+    return goodResponse([]);
+  }
+
+  //const location = data[0].location_id;
+  const locationQuery = await fetch(`https://api.content.tripadvisor.com/api/v1/location/${location.location_id}/photos?key=${key}&language=en`)
   if(!locationQuery.ok) {
     return new Response({status:404})
   }
   let locationData = await locationQuery.json(); 
   locationData = locationData.data;
   if(locationData.length < 1) {
-    return new Response(
-       JSON.stringify({photos:[]})
-      ,{
-      status:200,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-    )
+    return goodResponse([]);
   }
   const photoList = locationData.map(p => {
     const {images} = p;
@@ -61,15 +61,7 @@ export  async function GET(req, res) {
     return large.url; 
   })
 
-  return new Response(
-       JSON.stringify({photos:photoList})
-      ,{
-      status:200,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-    )
+  return goodResponse(photoList);
 
 
 

@@ -1,12 +1,14 @@
-import { useMapsLibrary} from "@vis.gl/react-google-maps"
-import { useCallback, useEffect,useState,useRef, useContext } from "react"
+
+import { useCallback, useEffect,useState, useContext } from "react"
 import styles from "./styles.module.css";
 import Button from "@/app/components/Button";
-import { RiCameraLine } from "@remixicon/react";
+;
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
-
-
+import GMIcon from "./GMIcon";
+import TAIcon from "./TAIcon";
+import Image from "next/image";
+import makeNativeLink from "../lib/makeNativeLink";
 /*
 const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
   const photoUrls = []; 
@@ -56,16 +58,17 @@ const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
 }
 */
 
-export default function({id,temp}) {
+export default function({id,temp,pin}) {
   const [photos,updatePhotos] = useState([]);
-  const [photosShown,updatePhotosShown] = useState(false);
+ 
   const {activeDispatch} = useContext(MobileActiveContext);
   const {layerDispatch} = useContext(DataContext)
+  const [fetchStatus, updateFetchStatus] = useState("idle");
  
-  const places = useMapsLibrary('places');
+
  // const savedPhotos = JSON.parse(sessionStorage.getItem("saved_photos") || "[]");
 
-
+/*
 
   const findPhotos = useCallback(async (id)=> {
     if(!places) return ;
@@ -78,27 +81,53 @@ export default function({id,temp}) {
     if(!temp) {
      // uploadPhotos(photoArray,id,layerDispatch);
     }
-   /* const newSaved = [...savedPhotos, ...[{id:id,photos:photoArray}]];
-    sessionStorage.setItem("saved_photos",JSON.stringify(newSaved)); */
+
 
   },[places,updatePhotos])
+  */
+  const getPhotos = useCallback(async (pin) => {
+    const search = await fetch(`/api/tripadvisor?title=${pin.title}&coords=${pin.location.lat},${pin.location.lng}&addr=${pin.formatted_address}`);
+    updateFetchStatus("loaded")
+    if(!search.ok) {
+      return ; 
+    }
+    const {photos} = await search.json(); 
+    console.log(photos[0]);
+    updatePhotos(photos);
+    if(temp) {
+      return ; 
+    }
+    layerDispatch({
+      type: "UPDATED_PIN",
+      id: pin.id,
+      data : {
+        photos : photos,
+        photos_uploaded: new Date().toLocaleString()
+      }
+    })
+
+  },[updateFetchStatus,updatePhotos])
+
+useEffect(()=> {
+
+  updatePhotos([]);
+   updateFetchStatus("idle");
+  if(!pin.id||typeof id !== "string") return ; 
+  if(pin.photos) {
+    updateFetchStatus("loaded");
+    updatePhotos(pin.photos);
+  }
+},[pin])
 
 
-
-
-
+/*
   useEffect(()=> {
  
     //CLEAR PHOTOS ON ID CHANGE
     updatePhotos([]);
     updatePhotosShown(false);
    
-    /*const saved = savedPhotos.find(p=>p.id==id);
-    if(saved) {
-      updatePhotos(saved.photos);
-      return ; 
-    }*/
-   // findPhotos(id) 
+
   },[id])
 
   const showPhotos = () => {
@@ -108,13 +137,22 @@ export default function({id,temp}) {
       state:"maximized"
     })
     findPhotos(id);
-  }
+  }*/
  
  // if(photos.length < 1) return ;
+ const showPhotos = () => {
+  updateFetchStatus("loading");
+  activeDispatch({
+      type:"DRAWER_STATE",
+      state:"maximized"
+  })
+  getPhotos(pin);
+
+ }
  if(!id || typeof id !== "string" ) return ; 
 
-  if(!photosShown ) {
-    return <Button onClick={showPhotos} icon={<RiCameraLine />}>See photos</Button>
+  if(fetchStatus == "idle" ) {
+    return <Button icon={<TAIcon />} onClick={showPhotos} >Find photos on Tripadvisor</Button>
   }
 
 
@@ -122,8 +160,26 @@ export default function({id,temp}) {
 return <div className={styles.containerFlex}>
 <div className={`${styles.spacer} ${styles.front}`} />
    {photos.map(p => 
-    <img key={p.uri}  src={`${p.uri}&maxWidthPx=700`}  className={styles.imgFlex}/>
+    <img key={p}  src={`${p}`}  className={styles.imgFlex}/>
  )}
+ <a target="_blank" href={makeNativeLink(pin.url)} className={`${styles.imgFlex} ${styles.imgPlaceHolder}`}>
+  <Image src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500"/>
+  <div className={`${styles.placeholderText } flex-center-center`}>
+    <div className={styles.placeholderTextInner}>
+      {fetchStatus == "loaded" && <span className={`${styles.phicon} flex-center-center`}>
+        <GMIcon />
+      </span>} 
+      <span className={styles.phText}>
+        {fetchStatus == "loading" && <>Finding photos</>}
+        {fetchStatus=="loaded" && <>
+          {photos.length < 1 && <>No photos<br/></>}
+          Check Google for more photos
+        </>}
+      </span>
+    
+    </div>
+  </div>
+ </a>
 <div className={styles.spacer} />
 </div>
 

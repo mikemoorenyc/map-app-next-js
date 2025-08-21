@@ -214,7 +214,7 @@ flex-direction: column;
   
 }
 .placeholderTextInner {
-  width: 200px;
+  width: 180px;
   
 
 }
@@ -229,12 +229,15 @@ flex-direction: column;
   display:block;
 }
 .phicon {
-  border: 1px solid;
+  border: 1px solid var(--screen-bg);
+  background: var(--screen-text);
+  box-shadow: 1px 1px 0 var(--screen-text);
   border-radius: 50%;
   width: 48px;
   height: 48px;
   margin: 0 auto; 
    margin-bottom: 8px; 
+
 }
 .phicon svg{
   width:24px;
