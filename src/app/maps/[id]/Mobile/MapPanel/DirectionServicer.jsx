@@ -46,7 +46,7 @@ export default function ()  {
       reset: true
     })
     if(!activePin) return ; 
-    ["DRIVING","TRANSIT","BICYCLING","WALKING"].forEach((e)=> {
+    ["TRANSIT"].forEach((e)=> {
       updateData(e)
     })
   },[activePin])

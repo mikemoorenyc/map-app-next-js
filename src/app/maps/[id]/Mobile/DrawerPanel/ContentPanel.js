@@ -51,7 +51,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
       <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
-      {typeof (pin.id || pin.place_id) == "string"  && <Photos temp={pinId=="temp"} id={pin.id || pin.place_id} {...{drawerState}} />}
+      {typeof (pin.id || pin.place_id) == "string"  && <Photos pin={pin} temp={pinId=="temp"} id={pin.id || pin.place_id} {...{drawerState}} />}
         
       
     </div>

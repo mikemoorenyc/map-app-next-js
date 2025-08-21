@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev   --hostname 192.168.1.5",
+    "dev": "next dev   --hostname 192.168.1.5 --experimental-https",
     "devlocal": "next dev",
     "build": "next build",
     "start": "next start",
@@ -36,3 +36,4 @@
     "sass": "^1.80.6"
   }
 }
+
