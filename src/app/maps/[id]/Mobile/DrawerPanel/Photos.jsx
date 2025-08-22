@@ -155,12 +155,21 @@ useEffect(()=> {
     return <Button icon={<TAIcon />} onClick={showPhotos} >Find photos on Tripadvisor</Button>
   }
 
-
+const photoFallback = photos.map(p=>{
+  if(typeof p !== "string") {
+    return p;
+  }
+  return {
+    url: p,
+    width: null,
+    height: null
+  }
+})
 
 return <div className={styles.containerFlex}>
 <div className={`${styles.spacer} ${styles.front}`} />
-   {photos.map(p => 
-    <img key={p}  src={`${p}`}  className={styles.imgFlex}/>
+   {photoFallback.map(p => 
+    <img key={p.url} width={p.width} height={p.height}  src={`${p.url}`}  className={styles.imgFlex}/>
  )}
  <a target="_blank" href={makeNativeLink(pin.url)} className={`${styles.imgFlex} ${styles.imgPlaceHolder}`}>
   <Image src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500"/>
@@ -176,6 +185,9 @@ return <div className={styles.containerFlex}>
           Check Google for more photos
         </>}
       </span>
+      {fetchStatus == "loading" && <div className={styles.loaderHolder}>
+        <span className={styles.photoLoader}></span>
+      </div>}
     
     </div>
   </div>

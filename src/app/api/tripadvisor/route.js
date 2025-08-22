@@ -12,11 +12,7 @@ export  async function GET(req, res) {
   const {searchParams} = req.nextUrl
   const title = searchParams.get("title");
   const coords = searchParams.get("coords");
-  const addr= searchParams.get('addr');
   const key = process.env.NEXT_PUBLIC_TRIPADVISOR_KEY;
-  console.log(title);
-  console.log(coords);
-  console.log(addr);
   const goodResponse = (photoArray) => {
     return new Response(
        JSON.stringify({photos:photoArray})
@@ -29,7 +25,6 @@ export  async function GET(req, res) {
     )
   }
   const url = `https://api.content.tripadvisor.com/api/v1/location/search?key=${key}&searchQuery=${encodeURIComponent(title)}&latLong=${encodeURIComponent(coords)}&language=en`
-  console.log(url);
   const testData = await fetch(url);
   const {data} = await testData.json();
 
@@ -56,9 +51,9 @@ export  async function GET(req, res) {
     const {images} = p;
     const {large,original} = images;
     if(original.width < 2000 && original.height < 2000) {
-      return original.url
+      return original
     } 
-    return large.url; 
+    return large; 
   })
 
   return goodResponse(photoList);
