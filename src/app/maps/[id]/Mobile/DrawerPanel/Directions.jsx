@@ -49,13 +49,14 @@ export default function ({pin}) {
     {[...["TRANSIT"],...methods].map((m,i)=> {
       const r = rMerged[m];
       const mode = m == "cycling"?"bicycling":m.toLowerCase(); 
-      if(!r) return false; 
+      const time = r ? (r.value <= 3600 ? r.text: Math.floor(r.value/3600) + " hr"+(Math.floor(r.value/3600)>1?"s":"")): "Una"
+   
       return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${encodeURIComponent(pin.formatted_address)}&directionsmode=${mode}`}> 
        
         <span className={`${styles.destinationIcon} flex-center-center`}>{icons[i]}</span>
 
         
-        <span className={styles.destinationTime} >{r.value <= 3600 ? r.text: Math.floor(r.value/3600) + " hr"+(Math.floor(r.value/3600)>1?"s":"")}</span>
+        <span className={styles.destinationTime} style={{visibility:!r?"hidden":undefined}}>{time}</span>
 
       </a>
     })}
