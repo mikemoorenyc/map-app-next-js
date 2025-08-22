@@ -49,7 +49,7 @@ export default function ({pin}) {
     {[...["TRANSIT"],...methods].map((m,i)=> {
       const r = rMerged[m];
       if(!r) return false; 
-      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${pin.formatted_address},${pin.location.lng}&directionsmode=${m.toLowerCase()}`}> 
+      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${encodeURIComponent(pin.formatted_address)}&directionsmode=${m.toLowerCase()}`}> 
        
         <span className={`${styles.destinationIcon} flex-center-center`}>{icons[i]}</span>
 
