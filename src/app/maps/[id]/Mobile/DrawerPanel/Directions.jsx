@@ -17,7 +17,7 @@ export default function ({pin}) {
     updateRouteData(null);
     const array = {};
     for(const method of methods) {
-      const time = await fetch(`https://api.mapbox.com/directions/v5/mapbox/${method}/${geolocation.lng},${geolocation.lat};${pin.location.lng},${pin.location.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`);
+      const time = await fetch(`https://api.mapbox.com/directions/v5/mapbox/${method}/${geolocation.lng},${geolocation.lat};${pin.location.lng},${pin.location.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}${method=="walking"?`&walking_speed=${encodeURIComponent(`1.3`)}`:""}`);
       if(!time.ok) {continue;}
       const data = await time.json();
       if(data.code != "Ok") {
