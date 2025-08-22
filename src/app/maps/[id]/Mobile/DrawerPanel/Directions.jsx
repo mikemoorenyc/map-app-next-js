@@ -48,8 +48,9 @@ export default function ({pin}) {
 
     {[...["TRANSIT"],...methods].map((m,i)=> {
       const r = rMerged[m];
+      const mode = m == "cycling"?"bicycling":m.toLowerCase(); 
       if(!r) return false; 
-      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${encodeURIComponent(pin.formatted_address)}&directionsmode=${m.toLowerCase()}`}> 
+      return <a key={m} className={styles.dirButton} target="_blank" href={`comgooglemaps://?daddr=${encodeURIComponent(pin.formatted_address)}&directionsmode=${mode}`}> 
        
         <span className={`${styles.destinationIcon} flex-center-center`}>{icons[i]}</span>
 
