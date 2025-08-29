@@ -1,16 +1,16 @@
 import styles from "./styles.module.css"
 
 import { useEffect,useState } from "react"
-import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import { useMap } from "@vis.gl/react-google-maps";
 import { RiTimeLine } from "@remixicon/react";
 
 const confirmOpenTime = (openData,id) => {
   //Test if still open
   const rn = new Date(); 
-  if(openData.nextCloseTime) {
+  if(openData?.nextCloseTime) {
     if(rn > openData.nextCloseTime) return false; 
   }
-  if(openData.nextOpenTime) {
+  if(openData?.nextOpenTime) {
     if(rn > openData.nextOpenTime) return true; 
   }
   return false; 
@@ -73,8 +73,8 @@ export default function({placeData,itemRow}) {
     if(!currentOpeningHours) return ; 
     sessionStorage.setItem("open_status_"+id,JSON.stringify({
         openNow: currentOpeningHours.openNow,
-        nextCloseTime: currentOpeningHours.nextCloseTime||null,
-        nextOpenTime: currentOpeningHours.nextOpenTime||null
+        nextCloseTime: currentOpeningHours?.nextCloseTime||null,
+        nextOpenTime: currentOpeningHours?.nextOpenTime||null
       }))
 
     console.log(currentOpeningHours);
@@ -82,6 +82,8 @@ export default function({placeData,itemRow}) {
       
       updateOpeningInfo({text:"Open now",alert:false});
       return ; 
+    } else {
+      updateOpeningInfo(getRelativeOpeningTime(currentOpeningHours?.nextOpenTime))
     }
     
 
@@ -117,7 +119,7 @@ export default function({placeData,itemRow}) {
       updateOpeningInfo({text:"Open now",alert:false});
       return ; 
     } 
-    if(seshData.nextOpenTime) {
+    if(seshData?.nextOpenTime) {
       updateOpeningInfo(getRelativeOpeningTime(seshData.nextOpenTime))
       return; 
     }

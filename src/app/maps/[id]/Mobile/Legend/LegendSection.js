@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef,useLayoutEffect } from "react"
+import React, { useContext, useState, useRef,useLayoutEffect,Suspense,lazy} from "react"
 import svgImgUrl from "@/app/lib/svgImgUrl"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 
@@ -9,8 +9,9 @@ import Button from "@/app/components/Button"
 import { useCallback ,memo} from "react"
 
 import styles from "./styles.module.css";
-import LegendSectionEditingPanel from "./LegendSectionEditingPanel"
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
+
+const LegendSectionEditingPanel = lazy(()=>import("./LegendSectionEditingPanel"))
 
 const PinItem = ({activePin,pin,isActive,activatePin,layer}) => {
     const containerRef = useRef(null);
@@ -130,7 +131,7 @@ const LegendSection = (props) => {
         </div>
       )}
       </div>
-      {isEditing && <LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} />}
+      {isEditing && <Suspense fallback={<div style={{background:"var(--screen-bg)",position:"fixed",inset:0, zIndex:9999}} />}><LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} /></Suspense>}
   </div>
   <hr className={styles.sectionDivider} />
   </> 
