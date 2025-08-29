@@ -1,4 +1,4 @@
-import {  useCallback, useContext, useEffect, useState } from "react";
+import {  useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
@@ -17,10 +17,48 @@ export default () => {
   const {layerData} = useContext(DataContext); 
   const {remoteLoad} = activeData;
 
-  const setInbounds = useCallback((coords)=> {
-    if(!map || !activeDispatch) return ; 
-    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(coords)})
-  },[map,activeDispatch])
+
+  useEffect(()=> {
+    if(!layerData||!geolocation) return ; 
+    console.log(geolocation);
+    const points = layerData.map(l => l.pins).flat().map(p=>p.location);
+    const mb = new google.maps.LatLngBounds();
+    points.forEach(p => {
+      mb.extend(p);
+    });
+    if(mb.contains(geolocation)) {
+      activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
+    }
+    
+
+  },[layerData,geolocation,activeDispatch])
+
+
+
+
+  const updatePos = (coords) => {
+   
+    const geolocation = {
+      lat:coords.latitude,
+      lng:coords.longitude
+    }
+    activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
+    /*
+    if(!mapBounds) return; 
+    const points = layerData.map(l => l.pins).flat().map(p=>p.location);
+    const mb = new google.maps.LatLngBounds();
+    points.forEach(p => {
+      console.log(p);
+      mb.extend(p);
+    })
+    console.log(geolocation);
+    const isInbounds = mb.contains(geolocation,true);
+    console.log(isInbounds);
+    
+    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:isInbounds})*/
+
+
+  }
 
 
   useEffect(()=> {
@@ -33,6 +71,7 @@ export default () => {
        timeout: 5000,
         maximumAge: 0,
       }
+    /*
     const updatePOS = (e) => {
       const geolocation  = {
         lat: e.coords.latitude,
@@ -41,10 +80,10 @@ export default () => {
       activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
       setInbounds(geolocation);
 
-    }
-    navigator.geolocation.getCurrentPosition(updatePOS, ()=>{}, options);
+    }*/
+    navigator.geolocation.getCurrentPosition((e)=>{updatePos(e.coords)}, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
-      updatePOS(e);
+      updatePos(e.coords)
     },5000),()=>{},options);
 
     return () => {
@@ -61,14 +100,14 @@ export default () => {
     if(!map || geolocation == null || layerData.length < 1) return ; 
  
    updateCenterInit(true);
-   setInbounds(geolocation);
+
    if(!map.getBounds().contains(geolocation)) return ;
    console.log("in bounds")
 
   map.setZoom(15)
   map.setCenter(geolocation);
 
-    
+    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
 
   },[map,geolocation,layerData])
   
