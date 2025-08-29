@@ -9,6 +9,7 @@ import DrawerPanelHeader from "./DrawerPanelHeader";
 import { useSwipeable } from "react-swipeable";
 import styles from "./styles.module.css";
 import EditPanel from "./EditPanel";
+import CenterButton from "./CenterButton";
 import { RiListUnordered } from "@remixicon/react";
 
 const DrawerPanel = () => {
@@ -70,6 +71,7 @@ const DrawerPanel = () => {
   
   return (
   <div {...handlers} id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`}   style={transformPosition}>
+    {drawerState !== "maximized" && <CenterButton />}
     {isEditing && <EditPanel />}
     {(!activePin && isEditing == false)&& <DrawerPanelHeader mapIcon={mapIcon} title={pageTitle} after={<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
     {(activePin && isEditing == false )&& <ContentPanel {...{drawerTopSpace}}  $transform={transform} pinId={activePin}/>}

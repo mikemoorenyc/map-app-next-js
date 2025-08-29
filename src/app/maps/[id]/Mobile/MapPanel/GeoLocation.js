@@ -1,4 +1,4 @@
-import {  useContext, useEffect, useState } from "react";
+import {  useCallback, useContext, useEffect, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import Button from "@/app/components/Button";
@@ -9,13 +9,20 @@ import DataContext from "@/app/contexts/DataContext"
 
 export default () => {
 
-  const [heading,updateHeading] = useState(0);
+
   const map = useMap()
   const [centerInit, updateCenterInit] = useState(false);
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   const {geolocation} = activeData;
   const {layerData} = useContext(DataContext); 
   const {remoteLoad} = activeData;
+
+  const setInbounds = useCallback((coords)=> {
+    if(!map || !activeDispatch) return ; 
+    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(coords)})
+  },[map,activeDispatch])
+
+
   useEffect(()=> {
     if(!remoteLoad) return ; 
    
@@ -27,16 +34,18 @@ export default () => {
         maximumAge: 0,
       }
     const updatePOS = (e) => {
-      activeDispatch({type:"UPDATE_GEOLOCATION",geolocation:{
+      const geolocation  = {
         lat: e.coords.latitude,
         lng: e.coords.longitude
-      } })
+      }
+      activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
+      setInbounds(geolocation);
 
     }
     navigator.geolocation.getCurrentPosition(updatePOS, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
       updatePOS(e);
-    },10000),()=>{},options);
+    },5000),()=>{},options);
 
     return () => {
       navigator.geolocation.clearWatch(watcher);
@@ -45,26 +54,6 @@ export default () => {
   },[remoteLoad])
   
 
-  const setUpCompass = (e) => {
-    e.preventDefault(); 
-    DeviceOrientationEvent.requestPermission()
-      .then(
-        (response) => {
-            if(response == "granted") {
-              console.log("granted");
-              window.addEventListener("deviceorientation",throttle((e) => {
-                let compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
-            
-                   updateHeading(compass);
-               
-              },5000) , true);
-            } else {
-              alert("has to be allowed!");
-          }
-            
-        }
-      )
-  }
 
   //Move to center
   useEffect(()=> {
@@ -72,7 +61,7 @@ export default () => {
     if(!map || geolocation == null || layerData.length < 1) return ; 
  
    updateCenterInit(true);
-   activeDispatch({type:"UPDATE_INBOUNDS",inBounds:map.getBounds().contains(geolocation)})
+   setInbounds(geolocation);
    if(!map.getBounds().contains(geolocation)) return ;
    console.log("in bounds")
 
@@ -83,17 +72,15 @@ export default () => {
 
   },[map,geolocation,layerData])
   
-  const dCheck = typeof DeviceOrientationEvent;
+
  
 
  //
 
   return <>
-  { (dCheck !== "undefined" && heading === 0) &&<Button className={"compass-icon"} onClick={setUpCompass} style={{position:"fixed", right: 24, top: 78} } modifiers={["sm","icon","secondary","round"]}>
-  <RiCompass3Line/>
-  </Button>}
-  {geolocation && <AdvancedMarker position={geolocation}>
-    <span className="GeoTag" style={{pointerEvents:"none", transform: `rotate(${heading}deg)`}}>💏</span>
+
+  {geolocation && <AdvancedMarker zIndex={3} position={geolocation}>
+    <span className="GeoTag" style={{pointerEvents:"none"}}>💏</span>
   
   </AdvancedMarker>}
   

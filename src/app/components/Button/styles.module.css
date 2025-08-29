@@ -111,6 +111,10 @@ border-radius: 500px;
   width:24px;
   height:24px;
 }
+.button.sm.icon svg {
+  width: 16px;
+  height: 16px;
+}
 
 .disabledFill {
   position:absolute;

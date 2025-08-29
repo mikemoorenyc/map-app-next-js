@@ -1,7 +1,7 @@
 import { useMap } from "@vis.gl/react-google-maps";
 import { useCallback } from "react";
 
-export default function MapMover() {
+export default function useMapMover() {
 
   const map = useMap(); 
   return useCallback((action,pinsFlat,moveCoord,zoom) => {
