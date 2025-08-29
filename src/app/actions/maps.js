@@ -74,11 +74,25 @@ if(!session) {
       console.log("Error", err);
   }
 }
+const homepageMap = (item) => {
+  const newItem = {...item}; 
+  const pinCount = newItem.layerData.map(l => l.pins).flat().length; 
+  const markerString = newItem.layerData.reverse().map(l => {
+      const color = l.color.replace("#","0x");
+      
+      return l.pins.map(p => {
+        return `markers=size:tiny|color:${color}|${p.location.lat},${p.location.lng}`
+      }).join("&");
+    
+  }).join("&");
+  delete newItem.layerData;
+  return {...newItem,...{pinCount,markerString}}
+}
 const getAllMaps = async function() {
   try {
      const data = await ddbDocClient.send(new ScanCommand({ TableName: table }));
      
-      return data.Items;
+      return data.Items.map(homepageMap);
       
     } catch (err) {
       console.log("Error", err);

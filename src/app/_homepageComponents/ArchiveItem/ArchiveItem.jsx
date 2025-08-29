@@ -6,7 +6,7 @@ import Link from "next/link";
 import MenuButton from "../MenuButton";
 
 export default function ({appMap,actions}) {
-  const pinAmount =   appMap.layerData.map(l => l.pins).flat().length; 
+  
   const url = `/maps/${appMap.id}`
   const imgUrl = svgImgUrl({icon:appMap.mapIcon,picker:true})
   return (
@@ -16,7 +16,7 @@ export default function ({appMap,actions}) {
           {appMap.mapIcon && <img src={imgUrl} width={16} height={16} style={{marginRight:4}}/>}
           <span className="flex-1 overflow-ellipsis">{appMap.title}</span>
         </span>
-        <span className={styles.count}>{pinAmount} pins</span>
+        <span className={styles.count}>{appMap.pinCount} pins</span>
     </Link>
     <MenuButton actions={actions} mapData={appMap} archived={true} modifiers={["secondary","ghost","icon","sm"]}/>
   </div>

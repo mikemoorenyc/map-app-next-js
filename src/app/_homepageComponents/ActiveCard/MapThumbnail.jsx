@@ -34,14 +34,7 @@ export default function ({appMap,width,height,className}) {
     }
 
     },[])
-    const markerString = appMap.layerData.reverse().map(l => {
-      const color = l.color.replace("#","0x");
-      
-      return l.pins.map(p => {
-        return `markers=size:tiny|color:${color}|${p.location.lat},${p.location.lng}`
-      }).join("&");
     
-    }).join("&");
     
   /*const markerString = pins.map(p => {
     return `${p.location.lat},${p.location.lng}`
@@ -49,7 +42,7 @@ export default function ({appMap,width,height,className}) {
   if(!mapStyleId) return ; 
 
   return <img className={className} 
-  src={`https://maps.googleapis.com/maps/api/staticmap?size=${width}x${height}&key=${apiKey}&map_id=${mapStyleId}&${markerString}`}
+  src={`https://maps.googleapis.com/maps/api/staticmap?size=${width}x${height}&key=${apiKey}&map_id=${mapStyleId}&${appMap.markerString}`}
   
   />
   

@@ -49,6 +49,7 @@ export default function PageClient({}){
 
     
   },[])
+  
   useEffect(()=> {
     const listData = localStorage.getItem(localStore);
 
@@ -56,6 +57,7 @@ export default function PageClient({}){
 
       updateMapList(JSON.parse(listData));
     }
+    
     updateLoaded(true);
 
     
@@ -63,7 +65,7 @@ export default function PageClient({}){
 
 
   },[])
-
+  
 
   useEffect(()=> {
     if(!loaded) return ; 

@@ -18,11 +18,11 @@ const Updater = ({id,firstLoadFunction})=> {
   //Try to get local data first 
   useEffect(()=> {
     if(!mapId || firstRun !== "uninit") return ;
-    const localStore = process.env.NEXT_PUBLIC_LOCAL_MAP;
-    const listData = localStorage.getItem(localStore);
-   
-    if(listData && typeof JSON.parse(listData) == "object" && JSON.parse(listData).all.find(m=>m.id == mapId)) {
-      const theMap = JSON.parse(listData).all.find(m=>m.id == mapId);
+   // const localStore = process.env.NEXT_PUBLIC_LOCAL_MAP;
+   // const listData = localStorage.getItem(localStore);
+   const listData = localStorage.getItem('map-'+mapId); 
+    if(listData && typeof JSON.parse(listData) == "object" ) {
+      const theMap = JSON.parse(listData);
       const pins = theMap.layerData.map(l => l.pins).flat()
       if(pins.length > 0) {
         mapMover("contain",pins);
@@ -39,7 +39,7 @@ const Updater = ({id,firstLoadFunction})=> {
       if(theMap.mapIcon) {
         updateMapIcon(theMap.mapIcon)
       }
-      updatePageTitle(theMap.title);
+      updatePageTitle(theMap.pageTitle);
 
     }
     updateFirstRun("local");
@@ -82,6 +82,7 @@ const Updater = ({id,firstLoadFunction})=> {
   const sendData = async () => {
     let updated = await updateMap(parseInt(mapId),pageTitle,layerData,mapIcon);
     updateIsSaving(false);
+    localStorage.setItem('map-'+mapId, JSON.stringify({layerData:layerData,mapIcon:mapIcon,pageTitle:pageTitle}));
     updateLastSaved(new Date())
   }
   /*

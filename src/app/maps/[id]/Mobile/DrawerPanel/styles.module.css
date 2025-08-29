@@ -85,7 +85,7 @@ flex-direction: column;
   flex-direction:column;
   justify-content: center; 
   align-items:center; 
-  margin-right: 8px; 
+
   padding: 8px;
   font-size: 10px;
   color: var(--screen-text);
