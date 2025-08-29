@@ -109,13 +109,30 @@ export default function({placeData,itemRow}) {
     if(!map ) return ; 
     const id = placeData?.id||placeData?.place_id;
 
-
+    const oldData = (date) => {
+      
+       const targetDate = new Date(date).getTime(); // Example date
+      const now = new Date().getTime();
+      const oneDayInMilliseconds = 12 * 60 * 60 * 1000;
+      return targetDate + oneDayInMilliseconds < now
+    }
 
     if(!sessionStorage.getItem('open_status_'+id)) {
       getData(); 
     }
     const seshData = JSON.parse(sessionStorage.getItem("open_status_"+id))
+    if(seshData?.nextOpenTime && oldData(seshData?.nextOpenTime)) {
+      console.log("old")
+      getData(); 
+      return ; 
+    }
+    if(seshData?.nextCloseTime && oldData(seshData?.nextCloseTime)) {
+      console.log("old")
+      getData();
+      return; 
+    }
     if(confirmOpenTime(seshData)) {
+      
       updateOpeningInfo({text:"Open now",alert:false});
       return ; 
     } 
