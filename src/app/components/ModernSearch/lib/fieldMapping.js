@@ -4,7 +4,6 @@ export const fieldMapping = [
   ["displayName","name"],
   ["formattedAddress","formatted_address"],
   ["websiteURI","website"],
-  ["internationalPhoneNumber","international_phone_number"],
   ["googleMapsURI","url"],
   ["location","geometry",true],
   ["viewport","viewport",true],

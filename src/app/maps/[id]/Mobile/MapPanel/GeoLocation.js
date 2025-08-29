@@ -17,21 +17,24 @@ export default () => {
   const {layerData} = useContext(DataContext); 
   const {remoteLoad} = activeData;
 
-
-  useEffect(()=> {
-    if(!layerData||!geolocation) return ; 
-    console.log(geolocation);
+  const latBounds = useMemo(()=> {
     const points = layerData.map(l => l.pins).flat().map(p=>p.location);
     const mb = new google.maps.LatLngBounds();
     points.forEach(p => {
       mb.extend(p);
-    });
-    if(mb.contains(geolocation)) {
+    })
+    return mb;
+  },[layerData])
+
+  useEffect(()=> {
+    if(!layerData||!geolocation) return ; 
+    
+    if(latBounds.contains(geolocation)) {
       activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
     }
     
 
-  },[layerData,geolocation,activeDispatch])
+  },[latBounds,geolocation,activeDispatch])
 
 
 

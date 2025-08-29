@@ -21,7 +21,7 @@ export default function AddToMapButton() {
       createdBy: user||null,
       website: website,
       formatted_address:formatted_address,
-      international_phone_number:international_phone_number,
+     /* international_phone_number:international_phone_number, */
       url:url,
       description:null,
       icon: null  ,

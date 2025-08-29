@@ -27,7 +27,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
                 title: name,
                 website: website,
                 formatted_address:formatted_address,
-                international_phone_number:international_phone_number,
+              /*  international_phone_number:international_phone_number,*/
                 url:url,
                 description:null,
                 icon: null  ,

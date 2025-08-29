@@ -4,6 +4,18 @@ import { useEffect,useState } from "react"
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { RiTimeLine } from "@remixicon/react";
 
+const confirmOpenTime = (openData,id) => {
+  //Test if still open
+  const rn = new Date(); 
+  if(openData.nextCloseTime) {
+    if(rn > openData.nextCloseTime) return false; 
+  }
+  if(openData.nextOpenTime) {
+    if(rn > openData.nextOpenTime) return true; 
+  }
+  return false; 
+}
+
 function getRelativeOpeningTime(openingTime) {
   const now = new Date();
   const openingDate = new Date(openingTime);
@@ -39,16 +51,42 @@ export default function({placeData,itemRow}) {
 
   const [openingInfo,updateOpeningInfo] = useState(null);
   const map = useMap(); 
-  const placesLib = useMapsLibrary('places');
+
 
   const getData = async () => {
+
+    
+
     updateOpeningInfo(null);
     if(placeData?.id && typeof placeData.id !== "string") return ; 
-    const place = new placesLib.Place({
-        id: placeData?.id || placeData?.place_id,
-        requestedLanguage: 'en', // optional
-    });
-    await place.fetchFields({ fields: ['regularOpeningHours'] });
+    const id = placeData?.id||placeData?.place_id
+    
+    const openingUrl =`https://places.googleapis.com/v1/places/${id}?fields=currentOpeningHours,utcOffsetMinutes&key=${process.env.NEXT_PUBLIC_MAP_API_KEY}`;
+
+    const currentHours = await fetch(openingUrl);
+    if(!currentHours.ok) {
+      return ; 
+    }
+    
+    const {currentOpeningHours,utcOffsetMinutes} = await currentHours.json(); 
+    console.log(utcOffsetMinutes);
+    if(!currentOpeningHours) return ; 
+    sessionStorage.setItem("open_status_"+id,JSON.stringify({
+        openNow: currentOpeningHours.openNow,
+        nextCloseTime: currentOpeningHours.nextCloseTime||null,
+        nextOpenTime: currentOpeningHours.nextOpenTime||null
+      }))
+
+    console.log(currentOpeningHours);
+    if(currentOpeningHours.openNow) {
+      
+      updateOpeningInfo({text:"Open now",alert:false});
+      return ; 
+    }
+    
+
+    /*
+
     const open =await place.isOpen();
     if(open) {
       updateOpeningInfo({text:"Open now",alert:false});
@@ -60,16 +98,34 @@ export default function({placeData,itemRow}) {
       updateOpeningInfo(getRelativeOpeningTime(nextOpening))
     }
 
+    */
+
 
   }
 
   useEffect(()=> {
-    if(!placesLib || !map ) return ; 
+    if(!map ) return ; 
+    const id = placeData?.id||placeData?.place_id;
+
+
+
+    if(!sessionStorage.getItem('open_status_'+id)) {
+      getData(); 
+    }
+    const seshData = JSON.parse(sessionStorage.getItem("open_status_"+id))
+    if(confirmOpenTime(seshData)) {
+      updateOpeningInfo({text:"Open now",alert:false});
+      return ; 
+    } 
+    if(seshData.nextOpenTime) {
+      updateOpeningInfo(getRelativeOpeningTime(seshData.nextOpenTime))
+      return; 
+    }
+    
+    updateOpeningInfo({text:"Closed",alert:true}); 
     
     
-    
-    getData(); 
-  },[placesLib,map,placeData])
+  },[map,placeData])
 
 
   if(!openingInfo) return ; 
