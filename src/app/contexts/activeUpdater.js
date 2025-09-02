@@ -1,5 +1,8 @@
 export default (actives, action) => {
     switch (action.type) {
+        case "CAN_EDIT": {
+            return {...actives,...{canEdit:action.canEdit}}
+        }
         case "EDITING_LAYER": {
             const updated = {
                 editingLayer : action.id

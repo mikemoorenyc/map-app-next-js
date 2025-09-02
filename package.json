@@ -16,6 +16,8 @@
     "@emoji-mart/react": "^1.1.1",
     "@google-cloud/storage": "^7.16.0",
     "@hello-pangea/dnd": "^17.0.0",
+    "@liveblocks/client": "^3.5.1",
+    "@liveblocks/react": "^3.5.1",
     "@remixicon/react": "^4.6.0",
     "@vercel/postgres": "^0.10.0",
     "@vercel/speed-insights": "^1.2.0",
@@ -36,4 +38,3 @@
     "sass": "^1.80.6"
   }
 }
-

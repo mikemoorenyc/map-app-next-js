@@ -4,19 +4,24 @@ import DataContext from "@/app/contexts/DataContext";
 import styles from "./Header.module.css";
 
 import TextInput from "@/app/components/TextInput";
+import { useMyPresence } from "@liveblocks/react/suspense";
+import useLiveEditing from "@/app/lib/useLiveEditing";
 
 
 const TitleEditForm = ({currentTitle,updateEditing}) => {
-  const {updatePageTitle,mapId} = useContext(DataContext);
 
+  const dispatchEvent = useLiveEditing(); 
   const activeInput = useRef(null);
   const [tempData,updateTempData] = useState(currentTitle);
   const cancelEdit = () => {
     updateEditing(false);
   }
   const sendNewTitle = () => {
-    updatePageTitle(tempData);
-
+ 
+    dispatchEvent({
+      type: "UPDATE_TITLE",
+      data: tempData
+    })
     updateEditing(false);
   }
 
@@ -52,15 +57,15 @@ const TitleEditForm = ({currentTitle,updateEditing}) => {
   </form>
 }
 
-const MapTitle = ()=> {
-
+const MapTitle = ({canEdit})=> {
+  const [myPresence,updateMyPrescence] = useMyPresence(); 
   const [editing, updateEditing] = useState(false)
   const {pageTitle,mapIcon} = useContext(DataContext)
     
   return <>
-  {!editing ? <div onClick={(e)=>{e.preventDefault(); updateEditing(true)}} className={`${styles.title} ${styles.start} overflow-ellipsis flex-1`}>
+  {!editing ? <div onClick={(e)=>{if(!canEdit) return false; e.preventDefault(); updateEditing(true); updateMyPrescence({isEditing:true})}} className={`${styles.title} ${styles.start} ${!canEdit?styles.disabled:""} overflow-ellipsis flex-1`}>
         {pageTitle}
-    </div> : <TitleEditForm currentTitle={pageTitle} updateEditing={updateEditing} /> }
+    </div> : <TitleEditForm currentTitle={pageTitle} updateEditing={()=>{updateEditing(false);updateMyPrescence({isEditing:false})}} /> }
   </>
 }
 

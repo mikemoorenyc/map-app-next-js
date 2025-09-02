@@ -1,10 +1,11 @@
-
+'use client'
 
 import { DataContextProvider } from "@/app/contexts/DataContext";
 import { ActiveContextProvider } from "@/app/contexts/ActiveContext";
 import { ModalProvider } from "@/app/contexts/ModalContext";
 import { ToastContextProvider } from "@/app/contexts/ToastContext";
 import LayerPanel from "./LayerPanel";
+import {  LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 
 import MapPanel from "./MapPanel";
 import Toasts from "@/app/components/Toasts";
@@ -17,16 +18,26 @@ const ToastsMemo = memo(Toasts);
 const Composer = function({mapData,user,serverId}) {
 
 
-  return <ModalProvider><ToastContextProvider><DataContextProvider user={user} serverId={serverId}>
-  <ActiveContextProvider mapData={mapData}>
-    <LayerPanelMemo />
-    <MapMemo />
-   <ToastsMemo />
-  
+  return(
+    <LiveblocksProvider publicApiKey={process.env.NEXT_PUBLIC_LIVEBLOCKS_KEY}>
+    <RoomProvider id={serverId}>
+    <ModalProvider>
+    <ToastContextProvider>
+    <DataContextProvider user={user} serverId={serverId}>
+    <ActiveContextProvider mapData={mapData}>
 
-</ActiveContextProvider>
+        <LayerPanelMemo />
+        <MapMemo />
+        <ToastsMemo />
+ 
+    </ActiveContextProvider>
+    </DataContextProvider>
+    </ToastContextProvider>
+    </ModalProvider>
+    </RoomProvider>
+    </LiveblocksProvider>
 
-  </DataContextProvider></ToastContextProvider></ModalProvider>
+  ) 
 }
 
 export default Composer;  

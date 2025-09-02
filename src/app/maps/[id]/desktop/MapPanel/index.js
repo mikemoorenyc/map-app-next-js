@@ -7,6 +7,8 @@ import PinEditWindow from "./PinEditWindow";
 import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
 import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
+import Prescence from "./Prescence";
+import { ClientSideSuspense } from "@liveblocks/react";
 
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
@@ -51,6 +53,7 @@ const MapPanel = () => {
   <ModernTempMarker />
   <TopMenuMemo />
   </MapMemo>
+  <ClientSideSuspense><Prescence /></ClientSideSuspense>
   </InfoWindowContextProvider>
   
   </APIProvider>

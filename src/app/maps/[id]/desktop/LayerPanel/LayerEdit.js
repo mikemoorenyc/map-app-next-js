@@ -1,4 +1,4 @@
-import { useContext,useState,useRef } from "react"
+import { useContext,useState,useRef, useEffect } from "react"
 import DataContext from "@/app/contexts/DataContext"
 import ActiveContext from "@/app/contexts/ActiveContext"
 import lightOrDark from "@/app/lib/lightOrDark"
@@ -12,9 +12,12 @@ import DropDown from "@/app/components/DropDown/DropDown"
 import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import { RiEmojiStickerLine } from "@remixicon/react"
 import svgImgUrl from "@/app/lib/svgImgUrl"
+import { ClientSideSuspense } from "@liveblocks/react"
+import { useMyPresence } from "@liveblocks/react"
+import useLiveEditing from "@/app/lib/useLiveEditing"
 
 const LayerEdit = () => {
-  
+  const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {layerData, layerDispatch} = useContext(DataContext)
   const editingLayer = activeData.editingLayer
@@ -27,9 +30,17 @@ const LayerEdit = () => {
   const [iconPickerOpen,updateIconPickerOpen] = useState(false)
 
   const colorPickerButtonRef = useRef(null)
+  const [myPresence,updateMyPresence] = useMyPresence(); 
+  useEffect(()=> {
+    updateMyPresence({isEditing:true})
+    return ()=> {
+      updateMyPresence({isEditing:false})
+    }
+  },[])
+
   const saveData = (e) => {
     console.log(tempLayerData)
-        layerDispatch({
+        dispatchEvent({
             type: "UPDATED_LAYER",
             id: layer.id,
             updatedData: tempLayerData
@@ -47,7 +58,7 @@ const LayerEdit = () => {
   }
   const deleteLayer = (e) => {
     e.preventDefault(); 
-    layerDispatch({
+    dispatchEvent({
         type: "DELETED_LAYER",
         id : layer.id
     })
@@ -195,7 +206,7 @@ const LayerEdit = () => {
     
 
 }
-export default LayerEdit
+export default ()=><ClientSideSuspense><LayerEdit /></ClientSideSuspense>
 
 
 /*

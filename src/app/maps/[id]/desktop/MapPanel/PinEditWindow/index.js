@@ -2,10 +2,11 @@
 import  { useEffect, useContext,  } from "react";
 
 import { InfoWindow } from "@vis.gl/react-google-maps";
-import DataContext from "@/app/contexts/DataContext";
+
 import ActiveContext from "@/app/contexts/ActiveContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import styles from "./styles.module.css";
+import { ClientSideSuspense } from "@liveblocks/react";
 
 const PinEditWindow = ({clickEvent, placeData,state,anchor,closeFunction,outsideClick}) => {
 
@@ -16,7 +17,7 @@ const PinEditWindow = ({clickEvent, placeData,state,anchor,closeFunction,outside
     const {infoWindowContent} = infoWindowState
     //console.log(infoWindowState);
     const {activeData,activeDispatch} = useContext(ActiveContext)
-    const {layerData, layerDispatch} = useContext(DataContext)
+
     const handleClose = () => {
         infoWindowDispatch({type:"CLOSE_WINDOW"});
         activeDispatch({type:"EDITING_PIN",id:null})
@@ -44,4 +45,4 @@ const PinEditWindow = ({clickEvent, placeData,state,anchor,closeFunction,outside
 
     </InfoWindow>}</>
 }
-export default PinEditWindow; 
+export default (props) => <ClientSideSuspense><PinEditWindow {...props} /></ClientSideSuspense>

@@ -9,8 +9,9 @@ import IconSelector from "./IconSelector";
 import InfoWindowHeader from "./InfoWindowHeader";
 import Button from "@/app/components/Button";
 import Linkify from 'linkify-react';
-
+import { useMyPresence } from "@liveblocks/react/suspense";
 import styles from "./styles.module.css";
+import useLiveEditing from "@/app/lib/useLiveEditing";
 
 
 
@@ -18,6 +19,7 @@ import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiDeleteBinLine, RiEmojiSti
 
 export default ({pinsFlat, pId,lId}) => {
   const {layerData,layerDispatch} = useContext(DataContext);
+  const dispatchEvent = useLiveEditing(); 
  
   const [iconSelectorOpen,updateIconSelectorOpen] = useState(false)
   const {activeData,activeDispatch} = useContext(ActiveContext);
@@ -25,7 +27,8 @@ export default ({pinsFlat, pId,lId}) => {
   const [editingText, updateEditingText] = useState(false);
   const {toastDispatch} = useContext(ToastContext)
   const [tempDeletedPin,updateTempDeletedPin] = useState(null);
-
+  const [myPresence,updateMyPrescence] = useMyPresence(); 
+  const {canEdit} = activeData;
 
 const p = layerData.map(l => l.pins).flat().find(p=>p.id == activeData.editingPin);
 if(!p) return ; 
@@ -60,7 +63,7 @@ useEffect(()=> {
 
   const saveEditing = () => {
 
-    layerDispatch({
+    dispatchEvent({
       type: "UPDATED_PIN",
       id: p.id,
       data : {
@@ -77,7 +80,7 @@ useEffect(()=> {
   const updateValue = (value,key) => {
     const payload = {};
     payload[key] = value 
-    layerDispatch({
+    dispatchEvent({
       type: "UPDATED_PIN",
       id: p.id,
       data: payload
@@ -89,7 +92,7 @@ useEffect(()=> {
 
   const undoPinDelete = () => {
     console.log("click");
-    layerDispatch({
+    dispatchEvent({
       type: "SPLICED_PIN",
       pin: p,
       spliceIndex: pinIndex
@@ -117,7 +120,7 @@ useEffect(()=> {
       type: "EDITING_PIN",
       id: null
     })
-    layerDispatch({
+    dispatchEvent({
       type: "DELETED_PIN",
       id: p.id,
       layerId: layerData.filter(layer => layer.id == p.layerId)[0].id
@@ -140,6 +143,15 @@ useEffect(()=> {
     saveEditing(); 
   }
 
+  useEffect(()=> {
+   updateMyPrescence({isEditing: (editingText || iconSelectorOpen)});
+
+   return () => {
+    updateMyPrescence({isEditing:false})
+   }
+
+  },[editingText,iconSelectorOpen])
+
   return  <>
 
   
@@ -158,24 +170,24 @@ useEffect(()=> {
     <LocationDetails placeData={p} />
 
   </div>
-  <div className={styles.controls}>
+  <div className={styles.controls} style={{visibility: !canEdit?"hidden":"visible"}}>
     {!editingText&&<div className={`${styles.controlsDefault} display-flex`}>
         <div className="flex-center">
         <div ref={pickerContainer} style={{position:"relative",cursor: "pointer"}} className={styles.controlContainer} onClick={(e)=>{updateIconSelectorOpen(true)}}>
           {p.icon? <img src={svgImgUrl({icon:p.icon})} width={22} height={22} />  :<RiEmojiStickerLine />}
         </div>
-        {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false)}}  />}
-        <button onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
+        {iconSelectorOpen && <IconSelector id={p.id} updateValue={updateValue} pickerAnchor={pickerContainer.current} updateIconSelectorOpen={()=>{updateIconSelectorOpen(false);updateMyPrescence({isEditing:false})}}  />}
+        <button disabled={!canEdit} onClick={()=>{updateValue(p?.favorited ? false : true,"favorited")}} style={{marginRight:6}}>
             {p.favorited ? <RiStarFill /> : <RiStarLine />}
           </button>
-          <button onClick={()=>{updateValue(p?.visited ? false : true,"visited")}}>{!p?.visited ? <RiCheckboxCircleLine />:<RiCheckboxCircleFill/>}</button>
+          <button disabled={!canEdit} onClick={()=>{updateValue(p?.visited ? false : true,"visited")}}>{!p?.visited ? <RiCheckboxCircleLine />:<RiCheckboxCircleFill/>}</button>
 
 
 
         </div>
         <div className="flex-center">
-            <button style={{marginRight:4}} onClick={(e)=>{e.preventDefault();updateEditingText(true)}}><RiPencilLine /></button><br/>
-            <button onClick={(e)=>{deletePin()}}><RiDeleteBinLine/></button>
+            <button disabled={!canEdit} style={{marginRight:4}} onClick={(e)=>{e.preventDefault();updateEditingText(true)}}><RiPencilLine /></button><br/>
+            <button disabled={!canEdit} onClick={(e)=>{deletePin()}}><RiDeleteBinLine/></button>
 
         </div>
     </div>

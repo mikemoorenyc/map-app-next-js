@@ -47,6 +47,9 @@ export default async function RootLayout({ children }) {
       <body >
       
         {children}
+        <div id="prescence-container">
+        
+        </div>
         <div id="menu-container"></div>
         <div id="portal-container"></div>
         <div id="emoji-picker-container"></div>

@@ -18,7 +18,8 @@ const ActiveContextProvider = ({children}) => {
     layerPanelRef : null,
     pinItemsRef : [],
     hoveringPin: null,
-    activeModal: [] 
+    activeModal: [] ,
+    canEdit: true
   }
   
   const [activeData, activeDispatch] = useReducer(activeUpdater, initActives);

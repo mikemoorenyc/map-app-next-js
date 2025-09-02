@@ -13,19 +13,26 @@
   margin-right: 12px;
   border-bottom: 1px solid transparent; 
 }
-.title.start:hover {
+.title.disabled {
+  cursor:default;
+}
+.title.start:not(.disabled):hover {
   border-bottom: 1px solid var(--screen-text);
 }
 .sub {
   display: flex;
   align-items: center;
 }
-.editMapIconButton:hover .mapIcon{
+.editMapIconButton:hover:not(:disabled) .mapIcon{
   display: none
 }
+
 .editMapIcon {
   display:none; 
 }
-.editMapIconButton:hover .editMapIcon {
+.editMapIconButton:hover:not(:disabled) .editMapIcon {
   display:block;
+}
+.editMapIconButton:disabled {
+  cursor:default;
 }

@@ -7,19 +7,21 @@ import Button from "@/app/components/Button";
 import InfoWindowHeader from "./InfoWindowHeader";
 import ActionBar from "../../../sharedComponents/ActionBar";
 import { RiMapPinAddLine } from "@remixicon/react";
+import useLiveEditing from "@/app/lib/useLiveEditing";
 
 export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick}) => {
-  console.log("opens")
+
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {layerDispatch,user,layerData} = useContext(DataContext);
-  console.log(user);
+  const dispatchEvent = useLiveEditing(); 
+
     const {infoWindowState,infoWindowContent,infoWindowDispatch } = useContext(InfoWindowContext);
     const {website,name,formatted_address,international_phone_number,url,geometry} = placeData
     const addItem = (e) => {
         const tempID = placeData.place_id
         e.preventDefault(); 
         console.log("clicked")
-        layerDispatch({
+        dispatchEvent({
             type: "ADDED_PIN",
             
             layerToAdd: activeData.activeLayer,
@@ -52,7 +54,7 @@ export default ({clickEvent, placeData,state,anchor,closeFunction,outsideClick})
     </InfoWindowHeader>
     <div className="description-placeholder"  style={{height: "var(--edit-description-height)"}}  />
     <LocationDetails placeData={placeData} />
-    <ActionBar  primaryButtons={<Button modifiers={["sm"]} onClick={addItem} icon={<RiMapPinAddLine />}>
+    <ActionBar  primaryButtons={<Button modifiers={["sm", !activeData.canEdit?"disabled":""]} onClick={addItem} icon={<RiMapPinAddLine />}>
     
     <span className={"Button-text"}>Add to map</span>
 </Button>} />

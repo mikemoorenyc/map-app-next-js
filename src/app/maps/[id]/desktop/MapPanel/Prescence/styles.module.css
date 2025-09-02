@@ -1,0 +1,19 @@
+
+.prescenceContainer {
+  position:fixed;
+  right: var(--gutter);
+  bottom: calc(var(--gutter) * 1.5); 
+  background:var(--screen-bg);
+  padding:4px 6px;
+  font-size: 10px;
+  text-transform:uppercase;
+  border: 1px solid var(--screen-text);
+  border-radius: 9999px;
+}
+.prescenceContainer.isEditing {
+  transform: scale(1.15);
+  color:var(--screen-bg);
+  border-color:var(--screen-bg);
+  background:var(--screen-text);
+  transform-origin:bottom right; 
+}

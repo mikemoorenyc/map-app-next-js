@@ -66,7 +66,7 @@ const LayerSection = ({children,layerId,activeId}) => {
         </button>
         {layer.icon && <img style={{marginRight:4}}width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>}
         <div className={`flex-1 overflow-ellipsis cursor-default`}>{layer.title}</div>
-        <button className={styles.gear} onClick={(e) => {
+        {activeData.canEdit && <button className={styles.gear} onClick={(e) => {
                                 e.preventDefault();
                                 activeDispatch({
                                     type: "EDITING_LAYER",
@@ -74,7 +74,7 @@ const LayerSection = ({children,layerId,activeId}) => {
                                 });
                   }}>
           <RiSettingsLine />
-        </button>
+        </button>}
       </div>
       {!isCollapsed && <div className={styles.pinContainer}style={{
       height: !hasPins ? "3em":null,  

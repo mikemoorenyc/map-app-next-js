@@ -1,6 +1,6 @@
 'use client'
 import { useContext,useState,useRef,useEffect } from "react";
-
+import useLiveEditing from "@/app/lib/useLiveEditing";
 import DataContext from "@/app/contexts/DataContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import Header from "./Header";
@@ -10,7 +10,7 @@ import LayerSection from "./LayerSection";
 import PinItem from "./PinItem";
 import LayerEdit from "./LayerEdit";
 const LayerPanel = ({id})=> {
-  
+  const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext);
     const {layerData, layerDispatch} = useContext(DataContext);
    
@@ -46,7 +46,7 @@ const handleDragEnd = (result) => {
       newParentItems.splice(destination.index, 0, removed);
 
       setItems(newParentItems);
-      layerDispatch({type: "FULL_REFRESH",newData: newParentItems})
+      dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
     }
 
     
@@ -65,7 +65,7 @@ const handleDragEnd = (result) => {
         sourceParent.pins.splice(destination.index, 0, removed);
 
         setItems(newParentItems);
-        layerDispatch({type: "FULL_REFRESH",newData: newParentItems})
+        dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
       } else {
         const newParentItems = Array.from(items);
         const sourceParent = newParentItems[sourceParentIndex];
@@ -74,8 +74,8 @@ const handleDragEnd = (result) => {
         destinationParent.pins.splice(destination.index, 0, removed);
 
         setItems(newParentItems);
-        layerDispatch({type: "FULL_REFRESH",newData: newParentItems})
-        layerDispatch({type: "UPDATED_PIN",id: draggableId, data: {
+        dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
+        dispatchEvent({type: "UPDATED_PIN",id: draggableId, data: {
           layerId: parseInt(destination.droppableId)
         }})
 
