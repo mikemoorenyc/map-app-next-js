@@ -3,21 +3,39 @@ import TextField from "../DrawerPanel/EditPanel/TextField";
 import ChangeIcon from "../DrawerPanel/EditPanel/ChangeIcon";
 import EditingModalHeader from "../_components/EditingModalHeader";
 import styles from "./styles.module.css"
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
+import { useMyPresence,ClientSideSuspense } from "@liveblocks/react";
+import useLiveEditing from "@/app/lib/useLiveEditing";
+import ModalLoading from "../_components/ModalLoading";
 
-export default function ({closeFunction})  {
-  const {pageTitle,mapIcon,updatePageTitle,updateMapIcon} = useContext(DataContext)
+function MapEditingPanel({closeFunction})  {
+  const {pageTitle,mapIcon} = useContext(DataContext)
   const [tempTitle,updateTempTitle] = useState(pageTitle)
   const [tempIcon,updateTempIcon] = useState(mapIcon);
   const [saveDisabled,updateSavedDisabled] = useState(false)
+  const dispatchEvent = useLiveEditing(); 
 
   const saveData = () => {
-    updatePageTitle(tempTitle);
-    updateMapIcon(tempIcon);
+    dispatchEvent({
+      type:"UPDATE_TITLE",
+      data: tempTitle
+    })
+    dispatchEvent({
+      type:"UPDATE_MAP_ICON",
+      data: tempIcon
+    })
+
     closeFunction(); 
   }
+  const [myPresence,updateMyPresence] = useMyPresence(); 
+  useEffect(()=> {
+    updateMyPresence({isEditing:true})
+    return () => {
+      updateMyPresence({isEditing:false})
+    }
+  },[]) 
 
   return <>
   {createPortal(
@@ -63,3 +81,4 @@ export default function ({closeFunction})  {
   </>
 
 }
+export default (props) => <ClientSideSuspense fallback={<ModalLoading/>}><MapEditingPanel {...props}/></ClientSideSuspense>

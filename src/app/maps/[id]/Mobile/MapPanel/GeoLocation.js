@@ -1,9 +1,7 @@
 import {  useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
-import Button from "@/app/components/Button";
-
-import { RiCompass3Line } from "@remixicon/react";
+import LiveMarker from "./LiveMarker";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import DataContext from "@/app/contexts/DataContext"
 
@@ -99,6 +97,7 @@ export default () => {
 
   //Move to center
   useEffect(()=> {
+  
     if(centerInit) return ; 
     if(!map || geolocation == null || layerData.length < 1) return ; 
  
@@ -121,10 +120,7 @@ export default () => {
 
   return <>
 
-  {geolocation && <AdvancedMarker zIndex={3} position={geolocation}>
-    <span className="GeoTag" style={{pointerEvents:"none"}}>💏</span>
-  
-  </AdvancedMarker>}
+  {geolocation && <LiveMarker/>}
   
   </>
 }

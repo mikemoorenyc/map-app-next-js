@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import { memo} from "react";
 import { ModalProvider } from "@/app/contexts/ModalContext";
-
+import {  LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 
 
 const MapPanelMemo = memo(MapPanel);
@@ -21,6 +21,8 @@ useEffect(()=> {
 
 
 return (<>
+<LiveblocksProvider publicApiKey={process.env.NEXT_PUBLIC_LIVEBLOCKS_KEY}>
+    <RoomProvider id={serverId}>
 <ModalProvider>
 <DataContextProvider serverId={serverId} user={user}>
 <MobileActiveContextProvider mapData={mapData}>
@@ -32,6 +34,8 @@ return (<>
 </MobileActiveContextProvider>
 </DataContextProvider>
 </ModalProvider>
+</RoomProvider>
+</LiveblocksProvider>
 <style jsx global>{`
 
 .GeoTag {

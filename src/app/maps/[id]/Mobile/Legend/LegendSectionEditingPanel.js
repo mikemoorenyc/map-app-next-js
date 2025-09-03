@@ -1,4 +1,4 @@
-import { useContext, useState,useCallback } from "react"
+import { useContext, useState,useCallback, useEffect } from "react"
 import { createPortal } from "react-dom"
 import styles from "./styles.module.css"
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
@@ -15,16 +15,27 @@ import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 import { RiDeleteBinLine, RiPaintFill } from "@remixicon/react"
 import BottomSheet from "@/app/components/BottomSheet/BottomSheet"
-export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
-
+import { ClientSideSuspense,useMyPresence } from "@liveblocks/react/suspense"
+import useLiveEditing from "@/app/lib/useLiveEditing"
+import ModalLoading from "../_components/ModalLoading"
+const LegendSectionEditingPanel = ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
+  const dispatchEvent = useLiveEditing(); 
   const [tempData,updateTempData] = useState(layerData);
   const {activeDispatch} = useContext(MobileActiveContext);
   const [deletePending,updateDeletePending] = useState(false);
   const dataC = useContext(DataContext)
-  const {layerDispatch} = dataC;
+  
   const [colorPickerOpen,updateColorPickerOpen]= useState(false);
   const [deleteId,updateDeleteId] = useState(false)
   const [saveDisabled,updateSavedDisabled] = useState(false)
+  const [myPresence, updateMyPresence] = useMyPresence(); 
+
+  useEffect(()=> {
+    updateMyPresence({isEditing:true})
+    return () => {
+      updateMyPresence({isEditing:false})
+    }
+  },[])
   
 
   const valueChanger = (value,key) => {
@@ -35,7 +46,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
     })
   }
   const saveData = () => {
-    layerDispatch({
+    dispatchEvent({
       type:"UPDATED_LAYER",
       id: layerData.id,
       updatedData: tempData
@@ -61,7 +72,7 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
       id:layerData.id
     })
     cancelFunction(); 
-    layerDispatch({
+    dispatchEvent({
       type: "DELETED_LAYER",
       id: layerData.id
     })
@@ -175,3 +186,5 @@ export default ({layerData,deleteFunction,cancelFunction,saveFunction}) => {
 
   </>
 }
+
+export default (props)=><ClientSideSuspense fallback={<ModalLoading />}><LegendSectionEditingPanel {...props}/></ClientSideSuspense>

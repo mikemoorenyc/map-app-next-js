@@ -113,17 +113,18 @@ const UpdaterLive = ({id,firstLoadFunction,checkDeleted})=> {
   //LISTEN FOR DATA UPDATES
   useEventListener(({event})=> {
     if(event.type !== "UPDATE_DATA") return ; 
-    const {layerData,pageTitle,mapIcon} = event.data;
+    const ldTemp = event.data.layerData
+    const {pageTitle,mapIcon} = event.data;
     //DEACTIVATE ANY DELETED ITEMS
-    checkDeleted(layerData); 
+    checkDeleted(ldTemp,layerData); 
 
     layerDispatch({
       type:"REFRESH_LAYERS",
-      newLayers: layerData
+      newLayers: ldTemp
     })
     updatePageTitle(pageTitle);
     updateMapIcon(mapIcon); 
-    localStorage.setItem('map-'+mapId, JSON.stringify({layerData:layerData,mapIcon:mapIcon,pageTitle:pageTitle}));
+    localStorage.setItem('map-'+mapId, JSON.stringify({layerData:ldTemp,mapIcon:mapIcon,pageTitle:pageTitle}));
   })
 
   useEffect(()=> {

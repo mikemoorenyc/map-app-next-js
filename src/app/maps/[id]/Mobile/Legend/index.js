@@ -7,6 +7,7 @@ import Button from "@/app/components/Button"
 import DataContext from "@/app/contexts/DataContext"
 import styles from "./styles.module.css";
 import { RiArrowLeftFill,  RiSettingsLine,  RiStackLine } from "@remixicon/react"
+import AddLayerButton from "./AddLayerButton"
 
 const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 
@@ -15,7 +16,7 @@ const Legend = () => {
   
   const {layerData,pageTitle,layerDispatch,mapIcon,user} = useContext(DataContext);
   const mapData = layerData
- 
+ const {canEdit} = activeData
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
   const legendScroll = useRef(null);
   const [settingsOpen,updateSettingsOpen] = useState(false);
@@ -41,13 +42,8 @@ const Legend = () => {
       return <LegendSection key={l.id} layer={l} />;
     })}
     <div className={styles.addSection}>
-    <Button icon={<RiSettingsLine />} onClick={()=>{updateSettingsOpen(true)}} className={styles.settingsIcon} modifiers={['sm','secondary','round',"icon"]}/>
-    <Button icon={<RiStackLine/>} modifiers={["sm"]} className={styles.layerAddButton} onClick={(e)=>{
-      e.preventDefault();
-      layerDispatch({type:"ADDED_LAYER",user:user||null})
-      legendScroll.current.scrollTop = legendScroll.current.scrollHeight + 500
-      
-      }} >Add a layer</Button>
+    <Button icon={<RiSettingsLine />} onClick={()=>{updateSettingsOpen(true)}} className={styles.settingsIcon} modifiers={['sm','secondary','round',"icon",!canEdit?"disabled":""]}/>
+    <AddLayerButton {...{legendScroll}}/>
     </div>
     </div>
     

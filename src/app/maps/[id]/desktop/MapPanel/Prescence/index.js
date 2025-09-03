@@ -4,13 +4,14 @@ import styles from "./styles.module.css"
 import { useContext, useEffect } from "react";
 import { useOthers ,useMyPresence, shallow} from "@liveblocks/react/suspense";
 import DataContext from "@/app/contexts/DataContext";
-import ActiveContext from "@/app/contexts/ActiveContext";
+import lightOrDark from "@/app/lib/lightOrDark";
 
 
-export default function Prescence() {
+
+export default function Prescence({activeDispatch,overrideStyles={},hideOnEditing}) {
   const {user} = useContext(DataContext);
- const {activeData,activeDispatch} = useContext(ActiveContext);
- const {canEdit}= activeData
+
+ 
   const others = useOthers(
   (others) => others.filter(other =>other.presence.name )
 
@@ -30,6 +31,7 @@ useEffect(()=> {
   if(!user ) return ; 
   updateMyPrescence({
     name: user.name,
+    email:user.email,
     isEditing:false,
     color: getRandomColor()
   })
@@ -48,16 +50,31 @@ useEffect(()=> {
   })
 },[someoneEditing])
 
+
+
 if(others.length < 1) {
   return false; 
+}
+if(myPresence.isEditing && hideOnEditing) {
+  return false
+}
+
+let oColor = undefined; 
+if(someoneEditing) {
+  oColor = lightOrDark(editingUsers[0].presence.color) == "light"?"black":"white"
+}
+
+const editingStyles = {
+  background:someoneEditing?editingUsers[0].presence.color:undefined,
+  color: oColor,
+  borderColor:  oColor
 }
 
 
 
 
-
 return createPortal(<>
-  <div className={`${styles.prescenceContainer} ${someoneEditing?styles.isEditing:""}`}>
+  <div style={{...editingStyles, ...overrideStyles}} className={`${styles.prescenceContainer} ${someoneEditing?styles.isEditing:""}`}>
     {someoneEditing? <>{editingUsers[0].presence.name.split(" ")[0]} is editing the map  </>: <>{others.length} other {others.length>1 ? "people":"person's"} in here</> }
   </div>
 

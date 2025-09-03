@@ -1,6 +1,6 @@
 'use client'
 import { APIProvider , Map} from "@vis.gl/react-google-maps";
-import { memo, useEffect, useState } from "react"
+import { memo, useEffect, useState ,useContext} from "react"
 import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
 import TopMenu from "../TopMenu";
 import PinEditWindow from "./PinEditWindow";
@@ -9,12 +9,14 @@ import PinContainer from "./PinContainer";
 import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
 import Prescence from "./Prescence";
 import { ClientSideSuspense } from "@liveblocks/react";
+import ActiveContext from "@/app/contexts/ActiveContext";
 
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
 const TopMenuMemo = memo(TopMenu)
 
 const MapPanel = () => {
+  const {activeDispatch} = useContext(ActiveContext)
   const [clickEvent,updateClickEvent] = useState(null);
   const [mapStyleId, updateMapStyleId] = useState(process.env.NEXT_PUBLIC_MAP_EDITOR_ID)
   useEffect(()=> {
@@ -53,7 +55,7 @@ const MapPanel = () => {
   <ModernTempMarker />
   <TopMenuMemo />
   </MapMemo>
-  <ClientSideSuspense><Prescence /></ClientSideSuspense>
+  <ClientSideSuspense><Prescence {...{activeDispatch}} /></ClientSideSuspense>
   </InfoWindowContextProvider>
   
   </APIProvider>

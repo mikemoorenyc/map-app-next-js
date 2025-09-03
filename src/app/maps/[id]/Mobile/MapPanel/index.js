@@ -4,10 +4,13 @@ import { APIProvider, Map } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import GeoLocation from "./GeoLocation"
-import Updater from "../../desktop/TopMenu/Updater"
+import UpdaterLive from "../../desktop/TopMenu/UpdaterLive"
 import DrawerPanel from "../DrawerPanel"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
+import Prescence from "../../desktop/MapPanel/Prescence"
+import { ClientSideSuspense } from "@liveblocks/react"
+
 
 const MobileSearch = lazy(()=>import("./MobileSearch"));
 const Legend = lazy(()=> import("../Legend"))
@@ -18,7 +21,9 @@ const DrawerPanelMemo = memo(DrawerPanel);
 const MapPanel = () => {
   const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
   const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
-  const {activeDispatch} = useContext(MobileActiveContext)
+  const {activeDispatch,activeData} = useContext(MobileActiveContext);
+  
+  
 
   const [mapStyleId,updateMapStyleId] = useState(darkModeId);
 
@@ -50,8 +55,32 @@ const MapPanel = () => {
     }
   },[activeDispatch])
 
+  const {activePin} = activeData; 
+  const checkDeleted = (layerDataTemp,layerData) => {
+   
+    const pinIds = layerDataTemp.map(l => l.pins).flat().map(p=>p.id);
+    const layerIds = layerDataTemp.map(l=>l.id)
+    const currentPin = layerData.map(l=>l.pins).flat().find((p) => p.id == activePin);
+    if(activePin == "temp") return ; 
+    //LAYER IN WHICH ACTIVE PIN IS A PART
+    if(currentPin && !layerIds.includes(currentPin.layerId) ) {
+      activeDispatch({
+        type:"SET_ACTIVE_PIN",
+        id: null
+      })
+      activeDispatch({type: "DRAWER_STATE", state: "minimized"});
+    
+    }
+    //ACTIVE PIN GOT DELETED
+    if(currentPin && !pinIds.includes(currentPin.id)) {
+      activeDispatch({
+        type:"SET_ACTIVE_PIN",
+        id: null
+      })
+      activeDispatch({type: "DRAWER_STATE", state: "minimized"});
+    }
 
-  
+  }
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider version="beta" apiKey={process.env.NEXT_PUBLIC_MAP_API_KEY}>
       <MapMemo
       onClick={closeActive}
@@ -67,7 +96,7 @@ const MapPanel = () => {
     >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
-  <div style={{position:"fixed",left:24,top:74}}> <Updater firstLoadFunction={()=> {
+  <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={()=> {
     activeDispatch({
       type: "UPDATE_REMOTE_LOAD",
       value: true
@@ -77,6 +106,12 @@ const MapPanel = () => {
       <DirectionServicer />
          <Suspense><Legend /></Suspense>
          <DrawerPanelMemo />
+         <ClientSideSuspense><Prescence {...{activeDispatch}} hideOnEditing={true} overrideStyles={{
+          bottom: "auto",
+          transformOrigin: "top right",
+          top: 82,
+          display:activeData?.legendOpen?"none":undefined
+         }}/></ClientSideSuspense>
     </MapMemo>
     
    

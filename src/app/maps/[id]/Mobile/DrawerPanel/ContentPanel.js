@@ -20,7 +20,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {layerData} = useContext(DataContext);
   const {routes,inBounds} = activeData;
-  const {drawerState} = activeData
+  const {drawerState,canEdit} = activeData
 
   const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
   const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
@@ -37,7 +37,7 @@ const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
          {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>} <span className="flex-1 overflow-ellipsis">{layer.title}</span>
         </div>}
         {pinId == "temp" && <AddToMapButton />}
-        {pinId != "temp" && <Button icon={<RiPencilLine />} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}} modifiers={["icon","round","secondary","sm"]}/>}
+        {pinId != "temp" && <Button icon={<RiPencilLine />} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}} modifiers={["icon","round","secondary","sm",!canEdit?"disabled":""]}/>}
         <Button icon={<RiListUnordered />} modifiers={["icon","round","secondary","sm"]} style={{marginLeft:8}} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}} />
         {pin?.url &&<Button style={{marginLeft:8}} modifiers={["bigger", "round","icon"]} target={"_blank"} href={makeNativeLink(pin.url)} icon={  <GMIcon />}/>}
       </div>

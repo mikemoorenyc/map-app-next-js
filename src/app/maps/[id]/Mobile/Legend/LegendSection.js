@@ -10,6 +10,7 @@ import { useCallback ,memo} from "react"
 
 import styles from "./styles.module.css";
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
+import ModalLoading from "../_components/ModalLoading"
 
 const LegendSectionEditingPanel = lazy(()=>import("./LegendSectionEditingPanel"))
 
@@ -44,17 +45,17 @@ const PinItem = ({activePin,pin,isActive,activatePin,layer}) => {
 const LegendSectionWrapper = ({layer}) => {
     const {activeDispatch, activeData} = useContext(MobileActiveContext)
     if(!activeData) return ;
-    const {disabledLayers, activePin,expandedLayers} = activeData
+    const {disabledLayers, activePin,expandedLayers, canEdit} = activeData
     const isActive = !disabledLayers.includes(layer.id);
     const map = useMap();
-    const props = {layer,isActive,map,activeDispatch,expandedLayers,activePin}
+    const props = {layer,isActive,map,activeDispatch,expandedLayers,activePin,canEdit}
     return <LegendSectionMemo {...props} />
 }
 
 
 
 const LegendSection = (props) => {
-  const  {layer,isActive,map,activeDispatch,expandedLayers,activePin} = props
+  const  {layer,isActive,map,activeDispatch,expandedLayers,activePin,canEdit} = props
 
   const [isEditing,updateIsEditing] = useState(false)
  
@@ -110,7 +111,7 @@ const LegendSection = (props) => {
       <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1 flex-center`}>
         {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon,picker:true})}/>}
       <span className="flex-1 overflow-ellipsis">{layer.title}</span></div>
-      <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine width={16} height={16} /></button>
+      {canEdit && <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine width={16} height={16} /></button>}
     </div>
     <div className={`${styles.pins}`}>
         {pins.map(pin=> {
@@ -131,7 +132,7 @@ const LegendSection = (props) => {
         </div>
       )}
       </div>
-      {isEditing && <Suspense fallback={<div style={{background:"var(--screen-bg)",position:"fixed",inset:0, zIndex:9999}} />}><LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} /></Suspense>}
+      {isEditing && <Suspense fallback={<ModalLoading />}><LegendSectionEditingPanel cancelFunction={()=>{updateIsEditing(false)}} layerData={layer} /></Suspense>}
   </div>
   <hr className={styles.sectionDivider} />
   </> 

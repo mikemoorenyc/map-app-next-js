@@ -15,13 +15,16 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     geolocation: null,
     routes: null,
     remoteLoad: false,
-    colorMode: "light"
-   
+    colorMode: "light",
+    canEdit: true
   }
   const activeUpdater = (actives,action) => {
 
 
     switch(action.type) {
+      case "CAN_EDIT": {
+        return {...actives,...{canEdit:action.canEdit}}
+      }
       case "UPDATE_REMOTE_LOAD": {
         return {...actives,...{remoteLoad: action.value}}
       }

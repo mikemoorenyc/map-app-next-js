@@ -78,10 +78,11 @@ export default function ChangeIcon({pinState,layer,type="pin",valueChanger,curre
     updateIconSelectorOpen(false);
     valueChanger(e.native,"icon")
   }
+  const buttonClick = (e)=>{e.preventDefault(); setTimeout(()=>{updateIconSelectorOpen(true)},0)}
   return(
     <div className={`flex-center`}>
-      <Button style={{marginRight:8}} onClick={(e)=>{e.preventDefault(); setTimeout(()=>{updateIconSelectorOpen(true)},0)}} modifiers={["secondary"]}>Change icon</Button>
-      <div style={{width:48,height:48}} className="flex-center-center">
+      <Button style={{marginRight:8}} onClick={buttonClick} modifiers={["secondary"]}>Change icon</Button>
+      <button onClick={buttonClick} style={{width:48,height:48}} className="flex-center-center">
         {type=="pin"&&<Pin 
         pin={pinState}
         layer={layer}
@@ -91,7 +92,7 @@ export default function ChangeIcon({pinState,layer,type="pin",valueChanger,curre
       />}
       {type !== "pin"&& !currentIcon && <RiEmojiStickerLine width={46} height={46} />}
       {type !== "pin" && currentIcon && <img src={`/api/glyph?icon=${currentIcon}&picker=true&w=46`} width={46} height={46}/>}
-      </div>
+      </button>
       {iconSelectorOpen &&createPortal(<EmojiContainer isOpen={iconSelectorOpen} updateOpen={updateIconSelectorOpen} emojiClicked={emojiClicked}/>, document.getElementById('emoji-picker-container'))}
     </div>
   )

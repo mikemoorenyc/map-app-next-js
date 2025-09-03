@@ -1,7 +1,7 @@
 
 import styles from "./EditPanel.module.css"
 
-import { useContext,useState,useMemo,useCallback} from "react"
+import { useContext,useState,useMemo,useCallback, useEffect} from "react"
 import DataContext from "@/app/contexts/DataContext"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import TextField from "./TextField"
@@ -15,12 +15,24 @@ import EditingModalHeader from "../../_components/EditingModalHeader"
 import Mover from "../../_components/Mover"
 import Button from "@/app/components/Button"
 import { RiDeleteBinLine } from "@remixicon/react"
+import { ClientSideSuspense,useMyPresence } from "@liveblocks/react"
+import useLiveEditing from "@/app/lib/useLiveEditing"
+import ModalLoading from "../../_components/ModalLoading"
 
-export default function EditPanel() {
-  const {layerData, layerDispatch} = useContext(DataContext);
+ function EditPanel() {
+  const dispatchEvent = useLiveEditing() ; 
+  const {layerData,} = useContext(DataContext);
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {activePin} = activeData;
   const pinData = useMemo(()=>layerData.map(l => l.pins).flat().find(p => p.id == activePin),[layerData,activePin]);
+  const [myPresence,updateMyPrescence] = useMyPresence();
+
+  useEffect(()=> {
+    updateMyPrescence({isEditing:true});
+    return () => {
+      updateMyPrescence({isEditing:false});
+    }
+  },[])
   
   
 
@@ -60,7 +72,7 @@ export default function EditPanel() {
         return l;
       })
     }
-    layerDispatch({type: "FULL_REFRESH",newData: newLayerData})
+    dispatchEvent({type: "FULL_REFRESH",newData: newLayerData})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
   },[pinState,layerData,pinData,pinLayer])
   
@@ -118,7 +130,7 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
     <DeleteModal questionText={'Are you sure you want to delete this pin?'} 
     confirmFunction={(e)=> {
       e.preventDefault(); 
-      layerDispatch({
+      dispatchEvent({
         type: "DELETED_PIN",
         id: pinData.id,
         layerId: pinData.layerId
@@ -135,3 +147,4 @@ deleteFunction={e=>{e.preventDefault(); updateDeletePending(true)}}
 
   )
 }
+export default ()=><ClientSideSuspense fallback={<ModalLoading/>}><EditPanel/></ClientSideSuspense>
