@@ -12,6 +12,7 @@ import Linkify from 'linkify-react';
 import { useMyPresence } from "@liveblocks/react/suspense";
 import styles from "./styles.module.css";
 import useLiveEditing from "@/app/lib/useLiveEditing";
+import useLayerData from "@/app/lib/useLayerData";
 
 
 
@@ -20,7 +21,8 @@ import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiDeleteBinLine, RiEmojiSti
 export default ({pinsFlat, pId,lId}) => {
   const {layerData,layerDispatch} = useContext(DataContext);
   const dispatchEvent = useLiveEditing(); 
- 
+  const {findPin} = useLayerData(); 
+
   const [iconSelectorOpen,updateIconSelectorOpen] = useState(false)
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {infoWindowDispatch} = useContext(InfoWindowContext)
@@ -30,7 +32,7 @@ export default ({pinsFlat, pId,lId}) => {
   const [myPresence,updateMyPrescence] = useMyPresence(); 
   const {canEdit} = activeData;
 
-const p = layerData.map(l => l.pins).flat().find(p=>p.id == activeData.editingPin);
+const p = findPin(activeData.editingPin);
 if(!p) return ; 
 const [tempData, updateTempData] = useState(p);
 useEffect(()=> {

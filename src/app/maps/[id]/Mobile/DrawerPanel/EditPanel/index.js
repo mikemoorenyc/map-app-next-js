@@ -7,7 +7,7 @@ import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import TextField from "./TextField"
 import LayerSelector from "./LayerSelector"
 import ChangeIcon from "./ChangeIcon"
-import { findLayer } from "../../../desktop/MapPanel/lib/finders"
+
 import Switch from "./Switch"
 import { createPortal } from "react-dom"
 import DeleteModal from "../../_components/DeleteModal"
@@ -18,13 +18,16 @@ import { RiDeleteBinLine } from "@remixicon/react"
 import { ClientSideSuspense,useMyPresence } from "@liveblocks/react"
 import useLiveEditing from "@/app/lib/useLiveEditing"
 import ModalLoading from "../../_components/ModalLoading"
+import useLayerData from "@/app/lib/useLayerData"
 
  function EditPanel() {
   const dispatchEvent = useLiveEditing() ; 
   const {layerData,} = useContext(DataContext);
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {activePin} = activeData;
-  const pinData = useMemo(()=>layerData.map(l => l.pins).flat().find(p => p.id == activePin),[layerData,activePin]);
+  const {findPin,findLayer} = useLayerData(); 
+  const pinData = findPin(activePin);
+  //const pinData = useMemo(()=>layerData.map(l => l.pins).flat().find(p => p.id == activePin),[layerData,activePin]);
   const [myPresence,updateMyPrescence] = useMyPresence();
 
   useEffect(()=> {
@@ -39,14 +42,14 @@ import ModalLoading from "../../_components/ModalLoading"
   const [pinState,updatePinState] = useState(pinData);
   const [deletePending, updateDeletePending] = useState(false)
  
-  const pinLayer = useMemo(()=>layerData.find(l => l.id == pinData.layerId),[layerData,pinData]);
-  const saveData = useCallback((e) => {
+  const pinLayer = findLayer(pinData.layerId)
+  const saveData = (e) => {
     e.preventDefault();
     let newLayerData = [...layerData]; 
     if(pinState.layerId != pinData.layerId) {
       
       
-      const newLayer = layerData.find(l => l.id == pinState.layerId); 
+      const newLayer = findLayer(pinState.layerId); 
       newLayerData = newLayerData.map(l => {
         if(l.id == pinLayer.id) {
           const newPinSet = l.pins.filter(p => p.id != pinState.id);
@@ -74,7 +77,7 @@ import ModalLoading from "../../_components/ModalLoading"
     }
     dispatchEvent({type: "FULL_REFRESH",newData: newLayerData})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
-  },[pinState,layerData,pinData,pinLayer])
+  }
   
 
   const valueChanger =(value,key) => {
@@ -85,7 +88,7 @@ import ModalLoading from "../../_components/ModalLoading"
      return {...s, ...updater}
     })
   }
-  const layer = findLayer(layerData,pinState.layerId)
+  const layer = findLayer(pinState.layerId)
   return (
 <div className={styles.editPanelContainer}>
 <EditingModalHeader 

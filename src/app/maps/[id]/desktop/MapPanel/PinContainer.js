@@ -1,18 +1,17 @@
 import * as React from "react";
 
-
-import DataContext from "@/app/contexts/DataContext";
 import { useContext } from "react";
 import PinMarker from "./PinMarker";
 import ActiveContext from "@/app/contexts/ActiveContext";
+import useLayerData from "@/app/lib/useLayerData";
 
 const PinContainer = () => {
  
     
-    const {layerData} = useContext(DataContext);
+    const {pinsFlat} = useLayerData(); 
     const {collapsedLayers} = useContext(ActiveContext).activeData; 
 
-    const pinsFlat = layerData.map(l => l.pins).flat() 
+ 
 
        
     if(!pinsFlat.length) {

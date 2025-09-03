@@ -12,19 +12,20 @@ import {  RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 import Photos from "./Photos";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-
+import useLayerData from "@/app/lib/useLayerData";
 
 
 const ContentPanel = ({pinId, $transform,drawerTopSpace})=> {
 
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
-  const {layerData} = useContext(DataContext);
   const {routes,inBounds} = activeData;
   const {drawerState,canEdit} = activeData
+  const {findLayer,findPin} = useLayerData(); 
 
-  const pin = pinId == "temp" ? activeData.tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == pinId);
-  const layer = pinId == "temp" ? null : layerData.find(l => l.id == pin.layerId);
+  const pin = pinId == "temp" ? activeData.tempData : findPin(pinId)
   if(!pin) return;
+  const layer = pinId == "temp" ? null : findLayer(pin.layerId);
+  
 
 
   return <div className={styles.contentPanel} style={{height:`calc(100% - ${drawerTopSpace}px)`}}>

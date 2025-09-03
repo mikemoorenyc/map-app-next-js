@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useState} from "react"
+import React, {useContext, useEffect, } from "react"
 import {  AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 
 import Pin from "../../sharedComponents/Pin";
@@ -6,17 +6,18 @@ import PinDisplay from "./PinEditWindow/PinDisplay";
 import mapMover from "./lib/mapMover";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
-import DataContext from "@/app/contexts/DataContext";
-import { findLayer, findPin, isHighlighted } from "./lib/finders";
+
+
+import useLayerData from "@/app/lib/useLayerData";
 
 const PinMarker = ({pId, onMap,indexNum}) => {
-    
+    const layerD = useLayerData();  
     const {infoWindowDispatch} = useContext(InfoWindowContext);
     const {activeDispatch, activeData} = useContext(ActiveContext)
-    const {layerData} = useContext(DataContext);
-    const pin = findPin(layerData,pId);
+
+    const pin = layerD.findPin(pId);
     if(!pin) return ; 
-    const layer = findLayer(layerData, pin.layerId);
+    const layer = layerD.findLayer(pin.layerId);
     const {location,viewport} = pin;
     const {editingPin} = activeData;
     
@@ -57,7 +58,7 @@ const PinMarker = ({pId, onMap,indexNum}) => {
     },[activeData.editingPin])
     
     let zindex = pin?.favorited ? 999 : indexNum; 
-    const highlighted = isHighlighted(activeData,pin.id); 
+    const highlighted = layerD.isHighlighted(activeData,pin.id); 
     if(highlighted) {
         zindex=9999; 
     }

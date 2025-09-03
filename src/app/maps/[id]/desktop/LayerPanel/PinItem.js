@@ -1,7 +1,7 @@
 import Pin from '../../sharedComponents/Pin';
 import { useEffect,useRef,useContext } from 'react';
 import ActiveContext from '@/app/contexts/ActiveContext';
-import { isHighlighted } from '../MapPanel/lib/finders';
+
 
 import styles from "./PinItem.module.css"
 const PinItem = (props) => {

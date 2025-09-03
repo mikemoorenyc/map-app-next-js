@@ -14,4 +14,5 @@ const isHighlighted = (activeData, pinId) => {
   return activeData.editingPin == pinId || activeData.hoveringPin == pinId
 }
 
+
 export {findPin,findLayer,isHighlighted};

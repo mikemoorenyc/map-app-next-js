@@ -1,19 +1,18 @@
-import { useContext,  useMemo,memo,useCallback } from "react";
-import DataContext from "@/app/contexts/DataContext";
+import { useContext,memo,useCallback } from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
 import mapCenterer from "../lib/mapCenterer";
-import { findLayer } from "../../desktop/MapPanel/lib/finders";
+
+import useLayerData from "@/app/lib/useLayerData";
 
 
 const PinsWrapper = () => {
     const map = useMap(); 
     const {disabledLayers, activePin,backState} = useContext(MobileActiveContext).activeData 
     const {activeDispatch} = useContext(MobileActiveContext)
-    const {layerData} = useContext(DataContext);
-
-    const pinsFlat = useMemo(()=>layerData.map(l => l.pins).flat(),[layerData])
+    const {pinsFlat,findLayer} = useLayerData(); 
+  
       const markerClicked = useCallback((pin,active) => {
     if(active) {
       
@@ -27,20 +26,18 @@ const PinsWrapper = () => {
   
 
 
-  const getLayer = useCallback((pin)=> {
-    return findLayer(layerData,pin.layerId)
-  },[layerData])
-  const p = {pinsFlat,getLayer,disabledLayers,markerClicked,activePin,map}
+
+  const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
   return <PinsMemo {...p} />
 
 }
 
-const Pins = ({pinsFlat,disabledLayers,getLayer,markerClicked,activePin,map}) => {
+const Pins = ({pinsFlat,disabledLayers,findLayer,markerClicked,activePin,map}) => {
 
 
   return <>
 
-  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={getLayer(pin)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={findLayer(pin.layerId)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
 
 
   </>
