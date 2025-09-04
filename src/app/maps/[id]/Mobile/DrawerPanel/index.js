@@ -15,7 +15,7 @@ import { RiListUnordered } from "@remixicon/react";
 const DrawerPanel = () => {
   const {pageTitle,mapIcon} = useContext(DataContext)
    const {activeData,activeDispatch} = useContext(MobileActiveContext);
-  const {activePin,legendOpen,drawerState} = activeData; 
+  const {activePin,legendOpen,drawerState,geolocation, inBounds} = activeData; 
   let transform  = 100;
   const drawerTopSpace = 32
 
@@ -71,7 +71,7 @@ const DrawerPanel = () => {
   
   return (
   <div {...handlers} id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`}   style={transformPosition}>
-    {drawerState !== "maximized" && <CenterButton />}
+    {(drawerState !== "maximized" && geolocation && inBounds) && <CenterButton />}
     {isEditing && <EditPanel />}
     {(!activePin && isEditing == false)&& <DrawerPanelHeader mapIcon={mapIcon} title={pageTitle} after={<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
     {(activePin && isEditing == false )&& <ContentPanel {...{drawerTopSpace}}  $transform={transform} pinId={activePin}/>}
