@@ -66,7 +66,7 @@ const MobileActiveContextProvider = ({children,mapData}) => {
     {type:"DRAWER_STATE";state:DrawerStates}|
     {type:"BACK_STATE";state:"back"}
 
-  const activeUpdater = (actives:MobileActiveData,action:MobileActiveUserActions) => {
+  const activeUpdater = (actives:MobileActiveData,action:MobileActiveUserActions) : MobileActiveData => {
     
     switch(action.type) {
       case "CAN_EDIT": {
