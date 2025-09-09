@@ -10,7 +10,7 @@ type ImageAttributes = {
 }
 
 
-export async function GET(request:NextRequest,context: { params: { image: string } }) {
+export async function GET(request:NextRequest,context:  { params: Record<string, string> }) {
 
 
   const {image} = context.params; 
