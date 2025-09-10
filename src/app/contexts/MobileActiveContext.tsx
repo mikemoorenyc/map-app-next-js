@@ -18,16 +18,16 @@ type TActiveData = {
   backState: "base"|"back"|"back_to_base"|"back_to_legend",
   inBounds:boolean,
   geolocation: null | TGeolocation,
-  remoteLoad:boolean,
   routes: null| {
         TRANSIT: TRoute
     },
   colorMode:"light"|"dark",
-  canEdit:boolean
+  canEdit:boolean,
+  firstLoad:false|"local"|"server"
 }
 type MobileActiveUserActions = |
     {type:"CAN_EDIT";canEdit:boolean}|
-    {type:"UPDATE_REMOTE_LOAD";value:boolean}|
+    {type:"UPDATE_FIRST_LOAD";value:false|"local"|"server"}|
     {type:"UPDATE_COLOR_MODE";colorMode:"light"|"dark"}|
     {type:"UPDATE_GEOLOCATION";geolocation:TGeolocation}|
     {type:"SET_ROUTES"; reset?:boolean;updatedRoute?: {TRANSIT:TRoute}}|
@@ -52,7 +52,7 @@ const initActives :TActiveData = {
     inBounds: false,
     geolocation: null,
     routes: null,
-    remoteLoad: false,
+    firstLoad:false,
     colorMode: "light",
     canEdit: true
   }
@@ -64,11 +64,12 @@ const MobileActiveContextProvider = ({children}:{children:ReactNode}) => {
 
 
     switch(action.type) {
+      
       case "CAN_EDIT": {
         return {...actives,...{canEdit:action.canEdit}}
       }
-      case "UPDATE_REMOTE_LOAD": {
-        return {...actives,...{remoteLoad: action.value}}
+      case "UPDATE_FIRST_LOAD": {
+        return {...actives,...{firstLoad: action.value}}
       }
       case "UPDATE_COLOR_MODE": {
         return {...actives, ...{colorMode:action.colorMode}}

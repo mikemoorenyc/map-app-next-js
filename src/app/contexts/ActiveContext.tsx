@@ -14,7 +14,7 @@ export type TActiveData = {
   pinItemsRef:{ref:HTMLDivElement,id:string|number}[],
   hoveringPin:null|string|number,
   activeModal:string[],
-  canEdit:boolean
+  canEdit:boolean,
 }
 type ActiveContextLiveData = {
   activeData: TActiveData,

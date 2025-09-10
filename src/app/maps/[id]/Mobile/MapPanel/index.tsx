@@ -101,10 +101,10 @@ const MapPanel = () => {
     >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
-  <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={()=> {
+  <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={(value:"local"|"server"|false)=> {
     activeDispatch({
-      type: "UPDATE_REMOTE_LOAD",
-      value: true
+      type: "UPDATE_FIRST_LOAD",
+      value
     })
   }}/>    </div>
       <GeoLocation />

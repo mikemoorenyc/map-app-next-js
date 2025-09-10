@@ -1,13 +1,15 @@
 'use client'
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import UpdaterLive from "./UpdaterLive";
-import { useContext, useEffect,useState } from "react";
+import { useCallback, useContext, useEffect,useState } from "react";
 import styles from "./styles.module.css";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import Button from "@/app/components/Button";
 import { RiMap2Line } from "@remixicon/react";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import { TLayer } from "@/projectTypes";
+import useMapMover from "@/app/lib/useMapMover";
+import useLayerData from "@/app/lib/useLayerData";
 
 
 
@@ -52,11 +54,20 @@ const TopMenu = () => {
       infoWindowDispatch({type:"CLOSE_WINDOW"});
     }
   }
+  const mapMover = useMapMover(); 
+  const layerData = useLayerData();
+  
+  const moveToCenter = (value:string,layerData:TLayer[])=> {
+    if(!layerData.length) return ; 
+    
+    mapMover("contain",layerData.map(l=>l.pins).flat());
+    
+  }
 
   return isMounted && <PortalContainer containerId="menu-container">
   
   <div className={`${styles.topMenu} `}>
-    <UpdaterLive checkDeleted={checkDeleted}/>
+    <UpdaterLive checkDeleted={checkDeleted} firstLoadFunction={moveToCenter}/>
     <Button
     icon={<RiMap2Line />}
     href={"/"}

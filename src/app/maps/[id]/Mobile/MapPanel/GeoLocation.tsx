@@ -12,9 +12,10 @@ export default () => {
   const map = useMap()
   const [centerInit, updateCenterInit] = useState(false);
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
-  const {geolocation} = activeData;
+  const {geolocation,firstLoad,inBounds} = activeData;
   const {layerData} = useContext(DataContext); 
-  const {remoteLoad} = activeData;
+
+ 
 
   const latBounds = useMemo(()=> {
     const points = layerData.map(l => l.pins).flat().map(p=>p.location);
@@ -22,11 +23,11 @@ export default () => {
     points.forEach(p => {
       mb.extend(p);
     })
-    return mb;
+    return mb
   },[layerData])
 
   useEffect(()=> {
-    if(!layerData||!geolocation) return ; 
+    if(!layerData||!geolocation||!latBounds) return ; 
     
     if(latBounds.contains(geolocation)) {
       activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
@@ -34,6 +35,34 @@ export default () => {
     
 
   },[latBounds,geolocation,activeDispatch])
+
+  
+  //DO INIT SHIT
+  useEffect(()=> {
+    //Move to center
+    if(map&&geolocation&&!centerInit&&latBounds) {
+      //ONLY CHECK ONCE
+      console.log("checked");
+      updateCenterInit(true);
+      if(latBounds.contains(geolocation)) {
+        console.log("move to center");
+        map.setZoom(15);
+        map.setCenter(geolocation);
+      } else {
+
+      }
+    }
+    //ONLY RUN IF CenterInit
+    if((firstLoad == "local"||firstLoad=="server")&&centerInit&&map) {
+   
+      if((geolocation&& latBounds&& !latBounds.contains(geolocation))||!geolocation) {
+         map?.fitBounds(latBounds);
+      }
+      
+     
+    }
+
+  },[geolocation,map,latBounds,centerInit,firstLoad])
 
 
 
@@ -64,7 +93,7 @@ export default () => {
 
 
   useEffect(()=> {
-    if(!remoteLoad) return ; 
+    //if(!remoteLoad) return ; 
    
     if(!navigator.geolocation) return ; 
 
@@ -92,11 +121,12 @@ export default () => {
       navigator.geolocation.clearWatch(watcher);
     }
     
-  },[remoteLoad])
+  },[])
   
 
 
   //Move to center
+  /*
   useEffect(()=> {
     if(centerInit||!map||!latBounds||layerData.length<1||geolocation==null)return;
     updateCenterInit(true);
@@ -107,6 +137,7 @@ export default () => {
       
     }
   },[map,geolocation,layerData,latBounds])
+  */
   
 
  
