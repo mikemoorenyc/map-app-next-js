@@ -143,7 +143,7 @@ export default function PageClient({}){
     {mapList.archived.length ? <div>
     <h4 className={`headline-style ${styles.archiveHeader}`} >Archived Maps</h4>
     <ul className={`${styles.archiveList} list-style-none`}>
-    {mapList.archived.map(m=> {
+    {mapList.archived.sort((a, b) => a.title.localeCompare(b.title)).map(m=> {
       return <li key={m.id}><ArchiveItem actions={actions} appMap={m} /></li>
     })}
     </ul>
