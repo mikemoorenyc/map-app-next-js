@@ -7,7 +7,8 @@
     "devlocal": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.687.0",
@@ -38,9 +39,11 @@
     "sass": "^1.80.6"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.5.2",
     "@types/lodash": "^4.17.20",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "cross-env": "^10.0.0",
     "typescript": "^5.9.2"
   }
 }

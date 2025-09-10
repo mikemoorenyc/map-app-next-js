@@ -1,4 +1,4 @@
-import { useContext,memo,useCallback } from "react";
+import { useContext,memo,useCallback ,useMemo} from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
@@ -43,11 +43,24 @@ const PinsWrapper = () => {
 }
 
 const Pins = ({pinsFlat,disabledLayers,findLayer,markerClicked,activePin,map}:Props) => {
+  const layerMap= useMemo(()=> {
+    const layerMap : {
+      [key:string|number]:TLayer
+    } = {}
+    pinsFlat.forEach(p => {
+      layerMap[p.id] = findLayer(p.layerId);
+    });
+    return layerMap
+
+  },[pinsFlat,findLayer])
+  
+ 
+
 
 
   return <>
 
-  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={findLayer(pin.layerId)} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
+  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={layerMap[pin.id]} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
 
 
   </>
