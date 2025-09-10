@@ -10,7 +10,7 @@ export default () => {
 
 
   const map = useMap()
-  const [centerInit, updateCenterInit] = useState(false);
+  const [centerInit, updateCenterInit] = useState<"center"|"contain"|false>(false);
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   const {geolocation,firstLoad,inBounds} = activeData;
   const {layerData} = useContext(DataContext); 
@@ -27,23 +27,24 @@ export default () => {
   },[layerData])
 
   useEffect(()=> {
-    if(!layerData||!geolocation||!latBounds) return ; 
+    if(!geolocation||!latBounds) return ; 
     
     if(latBounds.contains(geolocation)) {
       activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
     }
     
 
-  },[latBounds,geolocation,activeDispatch])
+  },[geolocation,activeDispatch])
 
   
   //DO INIT SHIT
   useEffect(()=> {
     //Move to center
+    if(centerInit === "contain") return ; 
     if(map&&geolocation&&!centerInit&&latBounds) {
       //ONLY CHECK ONCE
       console.log("checked");
-      updateCenterInit(true);
+      updateCenterInit("center");
       if(latBounds.contains(geolocation)) {
         console.log("move to center");
         map.setZoom(15);
@@ -53,12 +54,12 @@ export default () => {
       }
     }
     //ONLY RUN IF CenterInit
-    if((firstLoad == "local"||firstLoad=="server")&&centerInit&&map) {
-   
+    if((firstLoad == "local"||firstLoad=="server")&&centerInit == "center"&&map) {
+      console.log("firing")
       if((geolocation&& latBounds&& !latBounds.contains(geolocation))||!geolocation) {
          map?.fitBounds(latBounds);
       }
-      
+      updateCenterInit("contain");
      
     }
 
