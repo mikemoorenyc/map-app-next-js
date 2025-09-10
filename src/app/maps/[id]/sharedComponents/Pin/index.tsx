@@ -1,8 +1,7 @@
 
 import { TLayer, TPin } from "@/projectTypes";
 import styles from "./styles.module.css"
-import { Pin } from "@vis.gl/react-google-maps";
-import svgImgUrl from "@/app/lib/svgImgUrl";
+
 type TProps = {
   size?:number, 
   interactable?:boolean,
@@ -46,11 +45,6 @@ export default (props:TProps) => {
     textShadow: textShadowStyles,
     filter: pin?.visited ? "grayscale(1)" : ""
   }
-  return <Pin 
-    glyph={new URL('http://localhost:3000'+svgImgUrl({picker:true, icon:icon}))}
-    scale={.8}
-    background={color}
-    borderColor="b" />
 
   if(onMap ) {
     /*
