@@ -1,7 +1,7 @@
 
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server';
-export const contentType = 'image/png'
+
 export async function GET(request:NextRequest,) {
 
  
