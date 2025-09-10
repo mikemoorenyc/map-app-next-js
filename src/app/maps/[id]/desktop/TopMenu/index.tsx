@@ -8,8 +8,7 @@ import Button from "@/app/components/Button";
 import { RiMap2Line } from "@remixicon/react";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import { TLayer } from "@/projectTypes";
-import useMapMover from "@/app/lib/useMapMover";
-import useLayerData from "@/app/lib/useLayerData";
+import { useMap } from "@vis.gl/react-google-maps";
 
 
 
@@ -18,6 +17,7 @@ const TopMenu = () => {
   const {activeDispatch,activeData} = useContext(ActiveContext)
   const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
   const [isMounted,updateIsMounted] = useState(false)
+  const map = useMap(); 
   useEffect(()=> {
     updateIsMounted(true);
 
@@ -54,13 +54,15 @@ const TopMenu = () => {
       infoWindowDispatch({type:"CLOSE_WINDOW"});
     }
   }
-  const mapMover = useMapMover(); 
-  const layerData = useLayerData();
+
   
   const moveToCenter = (value:string,layerData:TLayer[])=> {
-    if(!layerData.length) return ; 
-    
-    mapMover("contain",layerData.map(l=>l.pins).flat());
+    activeDispatch({
+      type:"UPDATE_FIRST_LOAD",
+      value: value
+    })
+
+  
     
   }
 
