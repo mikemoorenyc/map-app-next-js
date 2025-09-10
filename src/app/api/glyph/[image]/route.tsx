@@ -10,10 +10,11 @@ type ImageAttributes = {
 }
 
 
-export async function GET(request:NextRequest,context:  { params: Record<string, string> }) {
+export async function GET(request:NextRequest,  { params }: { params: { image: string } }
+) {
 
 
-  const {image} = context.params; 
+  const {image} = params; 
 
 
   const imgAttr:Partial<ImageAttributes> = {}
