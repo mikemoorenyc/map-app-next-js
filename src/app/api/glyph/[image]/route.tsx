@@ -16,7 +16,7 @@ export async function GET(
 ) {
 
 
-  const { image } = context.params as { image: string };
+  const { image } = await context.params as { image: string };
 
 
 

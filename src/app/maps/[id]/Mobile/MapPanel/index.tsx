@@ -59,7 +59,7 @@ const MapPanel = () => {
             e.stop(); 
     }
   },[activeDispatch])
-  console.log(activeData);
+
   const {activePin} = activeData; 
   const checkDeleted = (layerDataTemp:TLayer[],layerData:TLayer[]) => {
 
