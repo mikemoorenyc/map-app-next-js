@@ -15,7 +15,7 @@ const AMMemo = memo(AdvancedMarker);
 const PinMemo = memo(Pin); 
 
 export default  ({pin, activePin,onClick,layer,map}:Props) => {
-  const [showing,updateShowing] = useState(true);
+
   
   const active = activePin == pin.id; 
   const location = useMemo(()=>pin.location,[pin])
@@ -29,22 +29,7 @@ export default  ({pin, activePin,onClick,layer,map}:Props) => {
     zindex = 9999;
   }
 
-  useEffect(()=> {
-    if(!map|| !map.getBounds()) return ;
-  
-   
-   
-    const check = () => {
-      const bounds = map.getBounds(); 
-      if(bounds) {
-        updateShowing(bounds.contains(pin.location))
-      }
-    }
-    const listener: google.maps.MapsEventListener = map.addListener("bounds_changed", check)
-    return () => {
-      listener.remove();
-    }
-  },[map])
+
   
   /*
   useEffect(()=>{
@@ -81,7 +66,7 @@ export default  ({pin, activePin,onClick,layer,map}:Props) => {
 
   
   return <AMMemo onClick={markerClick} position={location} zIndex={zindex}>
-  <div style={{contentVisibility:showing?"visible":"hidden"}}>
+  <div>
       <PinMemo  onMap={true} interactable={true} size={14} layer={layer} pin={pin} highlighted={active} />
     </div>
     

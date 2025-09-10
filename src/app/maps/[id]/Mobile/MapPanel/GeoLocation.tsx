@@ -1,9 +1,10 @@
-import {  useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {  memo, useContext, useEffect, useMemo, useState } from "react";
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import LiveMarker from "./LiveMarker";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import DataContext from "@/app/contexts/DataContext"
+
 
 export default () => {
 
@@ -114,7 +115,7 @@ export default () => {
 
   return <>
 
-  {geolocation && <LiveMarker/>}
+  {geolocation && <LiveMarker geolocation={geolocation}/>}
   
   </>
 }

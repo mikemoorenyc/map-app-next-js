@@ -1,4 +1,4 @@
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
@@ -58,7 +58,7 @@ export default async function RootLayout({ children  }:Props) {
         <div id="menu-container"></div>
         <div id="portal-container"></div>
         <div id="emoji-picker-container"></div>
-        
+        <SpeedInsights />
       </body>
 
     </html>

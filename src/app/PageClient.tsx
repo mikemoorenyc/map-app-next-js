@@ -89,35 +89,6 @@ export default function PageClient({}){
   },[loaded])
 
 
-/*
-  const MapItem = ({m}) => {
-    const activeClass = m.isArchived ? "":styles.active
- 
-    return (
-      <li className={`${styles.mapItem} ${activeClass}`}>
-        <div className={styles.cardText}>
-          <Link className={`${styles.mapLink} ${activeClass} ${activeClass ? "headline-style":""}`} href={`maps/${m.id}`}>{m.title}</Link>
-        <div className={styles.cardCount}>{m.layerData.map(l => l.pins).flat().length} places</div>
-        </div>
-        <div className={`${styles.mapActions} ${activeClass} flex-center`}>
-          
-          
-          <Button modifiers={['sm','ghost',"caution"]} icon={<Trash />} className={styles.actionButton} onClick={(e)=>{
-          e.preventDefault(); 
-          updateDeleteConfirmationOpen(true);
-          updateDeleteId(m.id)
-          }}>Delete map</Button>
-          <Button modifiers={['sm','ghost']} icon={<Archive/>} className={styles.actionButton} onClick={(e)=>{
-          e.preventDefault(); 
-          archiver(m.id,!m.isArchived)
-          }}>{`${m.isArchived?"Un":""}`}Archive map</Button>
-          
-        </div>
-
-      </li>
-    )
-  } 
- */
 
   return<ModalProvider><div className={styles.container}>
 

@@ -20,16 +20,12 @@ const StaticMarker = ({color,glyph,geolocation,scale=.7,zIndex=3}:Props) => {
 }
 
 
-const LiveMarker = () => {
+const LiveMarker = ({geolocation}:{geolocation:TGeolocation}) => {
   const [myPresence,updateMyPrescence] = useMyPresence(); 
   const others = useOthers(
     (others) => others.filter(other =>other.presence.geolocation )
 
   );
-
-
-  const {activeData} = useContext(MobileActiveContext)
-  const {geolocation} = activeData;
 
   if(!geolocation) return false; 
 
@@ -58,4 +54,4 @@ const LiveMarker = () => {
  
 }
 
-export default () => <ClientSideSuspense fallback={<></>}><LiveMarker /></ClientSideSuspense>
+export default (props:{geolocation:TGeolocation}) => <ClientSideSuspense fallback={<></>}><LiveMarker {...props} /></ClientSideSuspense>
