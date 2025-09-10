@@ -12,11 +12,15 @@ type ImageAttributes = {
 
 export async function GET(
   request:NextRequest,  
-  context: { params: { image: string } }
+  { params }: { params: Record<string, string | string[]> }
 ) {
 
 
-  const { image } = context.params;
+  const image = params.image; // type: string | string[]
+
+  if (Array.isArray(image)) {
+    return new Response("Invalid image param", { status: 400 });
+  }
 
 
   const imgAttr:Partial<ImageAttributes> = {}
