@@ -3,7 +3,7 @@ import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 
 //import "./maps/[id]/Mobile/styles.css"
 import {Inter, Sofia_Sans} from "next/font/google"
@@ -39,7 +39,7 @@ export const metadata = {
 };
 
 type Props = {
-  children: ReactElement
+  children: ReactNode
 }
 
 

@@ -1,6 +1,6 @@
 import { getMap } from "@/app/actions/maps";
 import { auth } from "@/app/auth";
-import { ReactElement } from "react";
+import { ReactElement,ReactNode } from "react";
 
 
 
@@ -18,7 +18,7 @@ export async function generateMetadata({params}:{params:Promise<{id:string}>}) {
   }
   }
 }
-export default async function({children}:{children:ReactElement}) {
+export default async function({children}:{children:ReactNode}) {
   
   return <>
  
