@@ -1,11 +1,17 @@
 import { Liveblocks } from "@liveblocks/node";
 import { auth } from "../auth"
 
-const liveblocks = new Liveblocks({
-  secret: process.env.LIVEBLOCKS_SECRET,
-});
+
 
 export async function POST(request: Request) {
+  const secret = process.env.LIVEBLOCKS_SECRET
+  if(!secret) {
+    return new Response('No secret key',{status:500});
+  }
+
+  const liveblocks = new Liveblocks({
+    secret: secret,
+  });
 
   const authjsSession = await auth(); 
   if(!authjsSession?.user) {
