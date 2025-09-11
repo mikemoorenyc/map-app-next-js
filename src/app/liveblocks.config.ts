@@ -5,8 +5,8 @@ declare global {
     // Presence type
     UserMeta : {
       id:string,
-      name:string,
-      emali:string
+      info: {name:string,
+      emali:string}
     }
     Presence: {
       name:string, 
