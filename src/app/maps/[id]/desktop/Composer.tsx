@@ -24,8 +24,8 @@ const Composer = function({user,serverId}:{user:TUser,serverId:string}) {
 
 
   return(
-    <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-    <RoomProvider initialPresence={{ email:"",name:"",color:"",isEditing:false}} id={'map-'+serverId}>
+    <LiveblocksProvider publicApiKey={liveBlocksKey}>
+    <RoomProvider initialPresence={{ email:"",name:"",color:"",isEditing:false}} id={serverId}>
     <ModalProvider>
     <ToastContextProvider>
     <DataContextProvider user={user} serverId={serverId}>
