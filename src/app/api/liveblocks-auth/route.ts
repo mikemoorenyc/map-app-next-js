@@ -3,18 +3,21 @@ import { NextRequest} from "next/server";
 
 export async function POST(request:NextRequest) {
   // Get the current user from your database
-  const data = await request.json();
+  let data:any; 
+  try {
+    data = await request.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
   if(!data.user||!data.user.email) {
-    return new Response("No user in post data")
+    return Response.json({ error: "No user in post data" }, { status: 400 });
   }
   
  
    const secret = process.env.LIVEBLOCKS_SECRET_KEY
    if(!secret) {
-    return new Response(
-      "no secret key",{status:500}
-    )
+    return Response.json({ error: "No secret key configured" }, { status: 500 });
    }
 
   const liveblocks = new Liveblocks({
