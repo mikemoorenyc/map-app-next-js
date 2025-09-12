@@ -1,6 +1,4 @@
-import { auth } from "@/app/auth";
 import { Liveblocks } from "@liveblocks/node";
- import { NextApiRequest, NextApiResponse } from "next"
 import { NextRequest} from "next/server";
 
 export async function POST(request:NextRequest) {
@@ -38,5 +36,8 @@ export async function POST(request:NextRequest) {
 
   // Authorize the user and return the result
   const { status, body } = await liveblocksSession.authorize();
-  return new Response(body, { status });
+  return new Response(body, {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
 }
