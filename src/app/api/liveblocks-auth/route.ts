@@ -1,9 +1,9 @@
 import { auth } from "@/app/auth";
 import { Liveblocks } from "@liveblocks/node";
  import { NextApiRequest, NextApiResponse } from "next"
-import { NextRequest } from "next/server";
+import { NextRequest} from "next/server";
 
-export async function POST(request:NextRequest,res:NextApiResponse) {
+export async function POST(request:NextRequest) {
   // Get the current user from your database
   const data = await request.json();
 
