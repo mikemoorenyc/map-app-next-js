@@ -39,6 +39,7 @@ export async function POST(request:NextRequest) {
 
   // Authorize the user and return the result
   const { status, body } = await liveblocksSession.authorize();
+  console.log(status,body);
   return new Response(body, {
     status,
     headers: { "Content-Type": "application/json" },

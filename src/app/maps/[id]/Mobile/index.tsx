@@ -9,6 +9,7 @@ import { memo} from "react";
 import { ModalProvider } from "@/app/contexts/ModalContext";
 import {  LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 import { TUser } from "@/projectTypes";
+import LiveBlocksContainer from "@/app/components/LiveBlocksContainer/LiveBlocksContainer";
 
 type TProps = {
   serverId:string,
@@ -18,16 +19,16 @@ const MapPanelMemo = memo(MapPanel);
 
 
 const Mobile = ({serverId,user}:TProps) => {
-  if(!process.env.NEXT_PUBLIC_LIVEBLOCKS_KEY) return false; 
-  console.log(serverId);
+  if(!serverId||!user) return false; 
+
 useEffect(()=> {
   localStorage.setItem("last-viewed",window.location.href.toLowerCase());
 },[])
 
 
 return (<>
-<LiveblocksProvider publicApiKey={process.env.NEXT_PUBLIC_LIVEBLOCKS_KEY}>
-    <RoomProvider initialPresence={{ email:"",name:"",color:"",isEditing:false}}  id={serverId}>
+<LiveBlocksContainer {...{serverId,user}}>
+
 <ModalProvider>
 <DataContextProvider serverId={serverId} user={user}>
 <MobileActiveContextProvider>
@@ -39,8 +40,8 @@ return (<>
 </MobileActiveContextProvider>
 </DataContextProvider>
 </ModalProvider>
-</RoomProvider>
-</LiveblocksProvider>
+
+</LiveBlocksContainer>
 <style jsx global>{`
 
 .GeoTag {

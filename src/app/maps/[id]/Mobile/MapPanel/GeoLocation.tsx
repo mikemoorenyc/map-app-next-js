@@ -30,7 +30,7 @@ export default () => {
 
   useEffect(()=> {
     if(!geolocation||!latBounds) return ; 
-    console.log(latBounds);
+    
     if(latBounds.contains(geolocation)) {
       activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
     }
