@@ -1,6 +1,6 @@
 'use client'
 import {Suspense, useContext ,useEffect,useState,lazy} from "react"
-import { APIProvider, Map, MapMouseEvent } from "@vis.gl/react-google-maps"
+import { APIProvider, Map, MapMouseEvent, useMapsLibrary } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import GeoLocation from "./GeoLocation"
@@ -20,37 +20,18 @@ const MapMemo = memo(Map)
 const DrawerPanelMemo = memo(DrawerPanel);
 
 const MapPanel = () => {
-  const darkModeId = process.env.NEXT_PUBLIC_MAP_MOBILE_ID;
-  const lightModeId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
+
+  const mapId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID;
+  
   const apiKey =process.env.NEXT_PUBLIC_MAP_API_KEY;
-  if(!apiKey||!darkModeId||!lightModeId) {
+  if(!apiKey) {
     throw new Error("missing env variables");
   }
   const {activeDispatch,activeData} = useContext(MobileActiveContext);
   
   
 
-  const [mapStyleId,updateMapStyleId] = useState(darkModeId);
-
-  useEffect(()=> {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    updateMapStyleId(darkModeId);
-    } else {
-      updateMapStyleId(lightModeId);
-    }
-    const changeMode = (event:MediaQueryListEvent) => {
-      if(event.matches) {
-        updateMapStyleId(darkModeId);
-      } else {
-        updateMapStyleId(lightModeId);
-      }
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeMode);
-    return () => {
-      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', changeMode);
-    }
-
-  },[])
+  
   const closeActive = useCallback((e:MapMouseEvent) => {
     activeDispatch({type: "SET_ACTIVE_PIN",id:null})
     activeDispatch({type: "DRAWER_STATE", state: "minimized"});
@@ -89,10 +70,12 @@ const MapPanel = () => {
   return <div className="mobile-app" style={{position:"fixed", inset: 0, overflow:"hidden"}}><APIProvider version="beta" apiKey={apiKey}>
       <MapMemo
       onClick={closeActive}
-      mapId={mapStyleId}
+      mapId={mapId}
       defaultZoom={3}
+      colorScheme="FOLLOW_SYSTEM"
+      
     
-
+      
       defaultCenter={{lat: 22.54992, lng: 0}}
       gestureHandling={'greedy'}
       disableDefaultUI={true}

@@ -9,7 +9,9 @@ export default () => {
     <form className={`${styles.buttonContainer} flex-center-center`}
       action={async () => {
         "use server"
-        await signOut()
+        await signOut({
+      redirectTo: "/login", // 👈 force redirect after sign out
+    })
       }}
     >
       <Button type={"submit"}>Sign out</Button>

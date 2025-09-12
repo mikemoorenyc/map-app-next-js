@@ -3,11 +3,7 @@ import { TGeolocation, TLayer } from "@/projectTypes";
 declare global {
   interface Liveblocks {
     // Presence type
-    UserMeta : {
-      id:string,
-      info: {name:string,
-      emali:string}
-    }
+ 
     Presence: {
       name:string, 
       email:string, 

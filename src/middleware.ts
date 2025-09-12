@@ -1,30 +1,32 @@
-
+// middleware.ts
+import { auth } from "./app/auth";// <-- from your Auth.js setup
 import { NextAuthRequest } from "next-auth/lib";
-import { auth } from "./app/auth"
+import { NextResponse } from "next/server";
 
 export default auth((req:NextAuthRequest) => {
-  const userList = process.env.ALLOWED_USERS||""
-const allowedUsers = userList.split(',');
+  const { pathname } = req.nextUrl;
 
-  if(!req?.auth?.user || !req?.auth?.user.email) {
-    return Response.redirect("/login")
+  // Protect all routes under /dashboard and /api/protected
+  const isProtected =
+    !pathname.includes("/login")&&!pathname.includes("/baduser")
+
+  if (isProtected && !req.auth) {
+    // If it's an API request, return 401 instead of redirect
+    if (pathname.startsWith("/api")) {
+      return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Otherwise redirect to login
+    return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
   }
-  
-  if( req?.auth && req.nextUrl.pathname !== "/baduser" && req.nextUrl.pathname !== "/login" && !allowedUsers.includes(req?.auth?.user?.email)) {
-    const newUrl = new URL("/baduser", req.nextUrl.origin)
-    return Response.redirect(newUrl)
-  }
 
+  return NextResponse.next();
+});
 
-  
-
-  if ( (!req.auth && req.nextUrl.pathname !== "/login") ) {
-    const newUrl = new URL("/login", req.nextUrl.origin)
-    return Response.redirect(newUrl)
-  }
-
-})
-
+// Specify which paths should run middleware (optional optimization)
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|manifest.webmanifest).*)"],

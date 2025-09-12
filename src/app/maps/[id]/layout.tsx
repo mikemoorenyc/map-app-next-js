@@ -1,10 +1,15 @@
 import { getMap } from "@/app/actions/maps";
 import { auth } from "@/app/auth";
+import { redirect } from "next/navigation";
 import { ReactElement,ReactNode } from "react";
 
 
 
 export async function generateMetadata({params}:{params:Promise<{id:string}>}) {
+  const session = await auth();
+  if(!session) {
+    redirect("/login");
+  }
   const {id} = await params; 
   if(!id) return false; 
  let mapData = await getMap(parseInt(id));

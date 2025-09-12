@@ -6,7 +6,7 @@ import { ModalProvider } from "@/app/contexts/ModalContext";
 import { ToastContextProvider } from "@/app/contexts/ToastContext";
 import LayerPanel from "./LayerPanel";
 import {  LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
-import ActiveContext19 from "@/app/contexts/ActiveContext19";
+
 
 import MapPanel from "./MapPanel";
 import Toasts from "@/app/components/Toasts";
@@ -24,8 +24,18 @@ const Composer = function({user,serverId}:{user:TUser,serverId:string}) {
 
 
   return(
-    <LiveblocksProvider publicApiKey={liveBlocksKey}>
-    <RoomProvider initialPresence={{ email:"",name:"",color:"",isEditing:false}} id={serverId}>
+    <LiveblocksProvider authEndpoint={async ()=> {
+      const response = await fetch("/api/liveblocks-auth",{
+        method:"POST",
+        headers: {
+           "Content-Type": "application/json",
+        },
+        body: JSON.stringify({user})
+      });
+      return await response.json(); 
+
+    }}>
+    <RoomProvider initialPresence={{ email:"",name:"",color:"",isEditing:false}} id={`maps:${serverId}`}>
     <ModalProvider>
     <ToastContextProvider>
     <DataContextProvider user={user} serverId={serverId}>

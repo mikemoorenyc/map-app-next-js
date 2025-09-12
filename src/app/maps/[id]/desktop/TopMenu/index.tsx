@@ -55,21 +55,24 @@ const TopMenu = () => {
     }
   }
 
+  const containMap = useCallback((type:string,layerData:TLayer[])=> {
+    if(!map) return false; 
+    console.log(layerData);
+    const pinsFlat = layerData.map(l=>l.pins).flat();
+    var bounds = new google.maps.LatLngBounds();
+    pinsFlat.forEach(p => {
+       bounds.extend(p.location);
+      })
+    map.fitBounds(bounds,1);
   
-  const moveToCenter = (value:string,layerData:TLayer[])=> {
-    activeDispatch({
-      type:"UPDATE_FIRST_LOAD",
-      value: value
-    })
 
-  
-    
-  }
+  },[map])
+
 
   return isMounted && <PortalContainer containerId="menu-container">
   
   <div className={`${styles.topMenu} `}>
-    <UpdaterLive checkDeleted={checkDeleted} firstLoadFunction={moveToCenter}/>
+    <UpdaterLive checkDeleted={checkDeleted} firstLoadFunction={containMap}/>
     <Button
     icon={<RiMap2Line />}
     href={"/"}
