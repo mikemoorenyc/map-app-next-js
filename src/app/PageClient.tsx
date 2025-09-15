@@ -23,10 +23,10 @@ export type THomepageMapActions = {
 
 export default function PageClient({}){
 
-    const dm = localStorage? localStorage.getItem("darkMode") : null; 
+    const dm = localStorage? localStorage.getItem("darkMode") : ""; 
 
   const [loaded,updateLoaded] = useState(false);
-    const [darkMode,updateDarkMode] = useState<null|"dark"|"light">(dm); 
+    const [darkMode,updateDarkMode] = useState<null|"dark"|"light"|"">(dm); 
 
   const [mapList,updateMapList] = useState<{all:THomepageMap[],active:THomepageMap[],archived:THomepageMap[]}>( {all:[],active:[],archived:[]});
  
