@@ -5,10 +5,11 @@ type TMapThumbnailProps = {
   appMap: THomepageMap,
   width: number,
   height: number, 
-  className: string
+  className: string,
+  darkMode: "light"|"dark"|null
 }
 
-export default function ({appMap,width,height,className}:TMapThumbnailProps) {
+export default function ({appMap,width,height,className,darkMode}:TMapThumbnailProps) {
  
   
   
@@ -23,28 +24,7 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
     darkModeKey = mapId;
   }
 
-  const [mode,updateMode] = useState(mapId);
-  
-  useEffect(()=> {
-
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    updateMode(darkModeKey);
-    } else {
-      updateMode(mapId);
-    }
-    const changeMode = (event:MediaQueryListEvent) => {
-      if(event.matches) {
-        updateMode(darkModeKey);
-      } else {
-        updateMode(mapId);
-      }
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeMode);
-    return () => {
-      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', changeMode);
-    }
-
-    },[])
+  const mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
     
     
   /*const markerString = pins.map(p => {
