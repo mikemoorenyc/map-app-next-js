@@ -8,7 +8,7 @@ import UpdaterLive from "../../desktop/TopMenu/UpdaterLive"
 import DrawerPanel from "../DrawerPanel"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
-import Prescence from "../../desktop/MapPanel/Prescence"
+import Prescence from "../../../../components/Prescence"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { TLayer } from "@/projectTypes"
 

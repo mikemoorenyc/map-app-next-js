@@ -9,6 +9,7 @@
   text-transform:uppercase;
   border: 1px solid var(--screen-text);
   border-radius: 9999px;
+  cursor:pointer
 }
 .prescenceContainer.isEditing {
   transform: scale(1.15);
@@ -16,4 +17,20 @@
   border-color:var(--screen-bg);
   background:var(--screen-text);
   transform-origin:bottom right; 
+}
+.peopleList {
+  background:none;
+  border: 0;
+  padding: 0;
+}
+.peoplePill {
+  padding: 4px 6px;
+  border-radius: 9999px;
+  background:black;
+  color:white;
+  border: 1px solid white; 
+  cursor:pointer
+}
+.peoplePill:not(:last-child) {
+  margin-bottom:6px;
 }

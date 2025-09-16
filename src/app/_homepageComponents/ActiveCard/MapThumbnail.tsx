@@ -1,3 +1,4 @@
+import useDarkMode from "@/app/lib/useDarkMode";
 import { THomepageMap } from "@/projectTypes";
 import { useState ,useEffect} from "react";
 
@@ -6,10 +7,10 @@ type TMapThumbnailProps = {
   width: number,
   height: number, 
   className: string,
-  darkMode: "light"|"dark"|null
+
 }
 
-export default function ({appMap,width,height,className,darkMode}:TMapThumbnailProps) {
+export default function ({appMap,width,height,className}:TMapThumbnailProps) {
  
   
   
@@ -23,6 +24,7 @@ export default function ({appMap,width,height,className,darkMode}:TMapThumbnailP
   if(!darkModeKey) {
     darkModeKey = mapId;
   }
+  const darkMode = useDarkMode(); 
 
   const mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
     

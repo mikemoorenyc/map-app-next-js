@@ -7,7 +7,7 @@ import PinEditWindow from "./PinEditWindow";
 import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
 import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
-import Prescence from "./Prescence";
+import Prescence from "../../../../components/Prescence";
 import { ClientSideSuspense } from "@liveblocks/react";
 import ActiveContext from "@/app/contexts/ActiveContext";
 
@@ -55,7 +55,7 @@ const MapPanel = () => {
   <ModernTempMarker />
   <TopMenuMemo />
   </MapMemo>
-  <ClientSideSuspense fallback={<></>}><Prescence {...{activeDispatch}} /></ClientSideSuspense>
+  <ClientSideSuspense fallback={<></>}><Prescence {...{activeDispatch}} openDirection="bottom" /></ClientSideSuspense>
   </InfoWindowContextProvider>
   
   </APIProvider>

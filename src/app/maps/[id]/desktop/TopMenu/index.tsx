@@ -16,7 +16,7 @@ const TopMenu = () => {
   const {infoWindowState,infoWindowDispatch } = useContext(InfoWindowContext);
   const {activeDispatch,activeData} = useContext(ActiveContext)
   const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
-  const [isMounted,updateIsMounted] = useState(false)
+  const [isMounted,updateIsMounted] = useState(false);
   const map = useMap(); 
   useEffect(()=> {
     updateIsMounted(true);
@@ -63,7 +63,7 @@ const TopMenu = () => {
     pinsFlat.forEach(p => {
        bounds.extend(p.location);
       })
-    map.fitBounds(bounds,1);
+    map.fitBounds(bounds,0);
   
 
   },[map])

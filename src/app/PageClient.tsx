@@ -23,10 +23,10 @@ export type THomepageMapActions = {
 
 export default function PageClient({}){
 
-    const dm = localStorage? localStorage.getItem("darkMode") : ""; 
+
 
   const [loaded,updateLoaded] = useState(false);
-    const [darkMode,updateDarkMode] = useState<null|"dark"|"light"|"">(dm); 
+
 
   const [mapList,updateMapList] = useState<{all:THomepageMap[],active:THomepageMap[],archived:THomepageMap[]}>( {all:[],active:[],archived:[]});
  
@@ -60,26 +60,7 @@ export default function PageClient({}){
     const lastViewed = localStorage.getItem("last-viewed");
     console.log(lastViewed);
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        updateDarkMode("dark");
-        localStorage.setItem("darkMode","dark"); 
-    } else {
-      updateDarkMode("light"); 
-        localStorage.setItem("darkMode","light"); 
-    }
-    const changeMode = (event:MediaQueryListEvent) => {
-      if(event.matches) {
-         localStorage.setItem("darkMode","dark"); 
-      } else {
-        localStorage.setItem("darkMode","light"); 
-      }
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeMode);
-    return () => {
-      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', changeMode);
-    }
-
-
+   
 
 
     
@@ -128,7 +109,7 @@ export default function PageClient({}){
 
       <ul className={`${styles.activeMapList} list-style-none`}>
         {mapList.active.map((m,i)=>(
-         <li key={m.id}> <ActiveCard darkMode={darkMode} actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
+         <li key={m.id}> <ActiveCard  actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
 
         ))}
       </ul>
