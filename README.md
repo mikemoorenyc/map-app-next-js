@@ -1,3 +1,12 @@
+##Todo
+- Switch it up so data loads on page load
+- Updater changes:
+- Storage state
+- On first effect (check bounds)
+- On storage change, if no storage first run, (check bounds again, update storage state to first run)
+- On starage change, update local state / check deleted (this replaces the broadcast event)
+- Replace broadcast event with updating storage
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
