@@ -1,8 +1,17 @@
 import { TGeolocation, TLayer } from "@/projectTypes";
+import { LiveObject } from "@liveblocks/client";
 
 declare global {
   interface Liveblocks {
     // Presence type
+
+    Storage: {
+      map: LiveObject<{
+        pageTitle:string,
+        mapIcon?:string,
+        layerData:TLayer[]
+      }>
+    }
  
     Presence: {
       name:string, 
