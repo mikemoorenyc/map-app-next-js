@@ -1,11 +1,17 @@
-##Todo
-- Switch it up so data loads on page load
-- Updater changes:
-- Storage state
-- On first effect (check bounds)
-- On storage change, if no storage first run, (check bounds again, update storage state to first run)
-- On starage change, update local state / check deleted (this replaces the broadcast event)
-- Replace broadcast event with updating storage
+## Todo
+- On client
+- - load local host instantly and check bounds
+  - load from server then check bounds then send "server loaded" to updater
+  - on mobile firstLoad function checks bounds after storage
+
+- on updater
+- state storage loaded
+- on storage update effect
+- if !storage loaded, set storage state to loaded
+- updater for server loaded and storage loaded
+- if both equeal loaded, run first run function
+
+  
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
