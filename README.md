@@ -1,18 +1,24 @@
-## Todo
-- On client
-- - load local host instantly and check bounds
-  - load from server then check bounds then send "server loaded" to updater
-  - on mobile firstLoad function checks bounds after storage
+## Scrap everything and just use liveblocks datastore
+- on load, check bounds on local
+- check amount of users
+- if none (set to loader) and
+- pull data from server then
+- checkbounds
+- then set to first run
+- then update database
+- another user is present
+- set up database listener
+- on database info load
+- set to first run
+- check bounds
 
-- on updater
-- state storage loaded
-- on storage update effect
-- if !storage loaded, set storage state to loaded
-- updater for server loaded and storage loaded
-- if both equeal loaded, run first run function
+- database update listener
+- if first run already run (don't check bounds)
+- if you are the saver, start timer
+- same concept for changing
 
-- figure out cancel functionality
-
+- set up others length listener
+- if length is zero, you are set to saver
   
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
