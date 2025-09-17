@@ -36,7 +36,13 @@ const DataContext = createContext<TDataContext>({
 const DataContextProvider = ({children,serverId,user}:{children:ReactElement,serverId:string,user:TUser}) => {
 
   /*
-  let localMapData = localStorage.getItem(localStore);
+  let ls = localStorage.getItem(`map-${string}`) ;
+  let initDm;
+  if(ls&ls!== null) {
+    initDM = JSON.parse(ls) as {layerData:TLayer[],mapIcon?:string,pageTitle:string}
+  }
+  if(
+  
   if(localMapData) {
     localMapData = JSON.parse(localMapData);
   }
