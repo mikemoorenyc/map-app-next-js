@@ -1,5 +1,6 @@
 ## Scrap everything and just use liveblocks datastore
 - on load, check bounds on local
+- use local if no data is available
 - check amount of users
 - if none (set to loader) and
 - pull data from server then
