@@ -1,6 +1,6 @@
 'use client'
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
-import UpdaterLive from "./UpdaterLive";
+import UpdaterLive from "@/app/components/UpdaterLive/UpdaterLive";
 import { useCallback, useContext, useEffect,useState } from "react";
 import styles from "./styles.module.css";
 import ActiveContext from "@/app/contexts/ActiveContext";
@@ -9,19 +9,29 @@ import { RiMap2Line } from "@remixicon/react";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import { TLayer } from "@/projectTypes";
 import { useMap } from "@vis.gl/react-google-maps";
+import DataContext from "@/app/contexts/DataContext";
 
 
 
 const TopMenu = () => {
   const {infoWindowState,infoWindowDispatch } = useContext(InfoWindowContext);
   const {activeDispatch,activeData} = useContext(ActiveContext)
+  const {layerData} = useContext(DataContext)
   const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
   const [isMounted,updateIsMounted] = useState(false);
+  const [serverLoaded,updateServerLoaded] = useState(false);
   const map = useMap(); 
   useEffect(()=> {
     updateIsMounted(true);
 
   },[])
+
+  useEffect(()=> {
+    if(serverLoaded) return ; 
+    containMap("",layerData);
+  },[layerData])
+
+  
 
   const checkDeleted = (layerData:TLayer[]) => {
     if(!editingLayer && !activeLayer && !editingPin && !hoveringPin) return; 
@@ -56,8 +66,11 @@ const TopMenu = () => {
   }
 
   const containMap = useCallback((type:string,layerData:TLayer[])=> {
+    if(type == "server") {
+      updateServerLoaded(true);
+    }
     if(!map) return false; 
-    console.log(layerData);
+
     const pinsFlat = layerData.map(l=>l.pins).flat();
     var bounds = new google.maps.LatLngBounds();
     pinsFlat.forEach(p => {

@@ -4,7 +4,7 @@ import { APIProvider, Map, MapMouseEvent, useMapsLibrary } from "@vis.gl/react-g
 import Pins from "./Pins"
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import GeoLocation from "./GeoLocation"
-import UpdaterLive from "../../desktop/TopMenu/UpdaterLive"
+import UpdaterLive from "@/app/components/UpdaterLive/UpdaterLive"
 import DrawerPanel from "../DrawerPanel"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"

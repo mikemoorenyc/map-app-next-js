@@ -35,20 +35,7 @@ const DataContext = createContext<TDataContext>({
 
 const DataContextProvider = ({children,serverId,user}:{children:ReactElement,serverId:string,user:TUser}) => {
 
-  /*
-  let ls = localStorage.getItem(`map-${string}`) ;
-  let initDm;
-  if(ls&ls!== null) {
-    initDM = JSON.parse(ls) as {layerData:TLayer[],mapIcon?:string,pageTitle:string}
-  }
-  if(
-  
-  if(localMapData) {
-    localMapData = JSON.parse(localMapData);
-  }
 
-  localMapData = localMapData.all.find(m => m.id == serverId);
-  */
   const initLayers : TLayer[] =  [];
 
   const [pageTitle,updatePageTitle] = useReducer((oldTitle:string,newTitle:string) => {
@@ -66,7 +53,29 @@ const DataContextProvider = ({children,serverId,user}:{children:ReactElement,ser
     return newIcon
   },"")
 
-  const [layerData, layerDispatch] = useReducer(layerUpdater, initLayers);
+  const [layerData, layerDispatch] = useReducer(layerUpdater, []);
+
+  useEffect(()=> {
+    if(!window) return ; 
+    if(!localStorage) return ;
+    const data = localStorage.getItem("map-"+window.location.pathname.split("/")[2]);
+    if(!data) return ; 
+    const ls = JSON.parse(data) as {
+      layerData: TLayer[],
+      pageTitle: string,
+      mapIcon?: string
+    }
+    console.log(ls);
+    layerDispatch({
+      type:"REFRESH_LAYERS",
+      newLayers: ls.layerData
+    })
+    updatePageTitle(pageTitle);
+    if(mapIcon) {
+      updateMapIcon(mapIcon);
+    }
+  },[])
+
   return (
     <DataContext.Provider value={{user,mapIcon,updateMapIcon,mapId,updateMapId,pageTitle,updatePageTitle ,layerData, layerDispatch }}>
       {children}

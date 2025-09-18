@@ -11,9 +11,9 @@ export default () => {
 
 
   const map = useMap()
-  const [centerInit, updateCenterInit] = useState<"center"|"contain"|"over"|false>(false);
+
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
-  const {geolocation,firstLoad,inBounds} = activeData;
+  const {geolocation,firstLoad} = activeData;
   const {layerData} = useContext(DataContext); 
 
  
@@ -29,14 +29,17 @@ export default () => {
   },[layerData])
 
   useEffect(()=> {
-    if(!geolocation||!latBounds) return ; 
+    if(!geolocation||!latBounds||firstLoad === "server"||!map) return ; 
     
     if(latBounds.contains(geolocation)) {
-      activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
+      activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true});
+      centerMap(geolocation);
+      return 
     }
+    map.fitBounds(latBounds);
     
 
-  },[geolocation,activeDispatch])
+  },[geolocation,activeDispatch,firstLoad,latBounds,map])
 
   const centerMap=useCallback((geolocation:TGeolocation)=> {
     if(!map)return ; 
@@ -47,24 +50,6 @@ export default () => {
 
   //Center if out of bounds twice 
   
-  useEffect(()=> {
-    if(!map||centerInit === "over") return ; 
-    if(geolocation) {
-      centerMap(geolocation);
-    }
-    if(!latBounds) return ; 
-    if(!geolocation || !latBounds.contains(geolocation)) {
-      map.fitBounds(latBounds);
-    }
-    if(firstLoad == "server") {
-      updateCenterInit("over");
-    }
-    
-    
-
-    
-
-  },[centerInit,latBounds,map,inBounds,geolocation,firstLoad])
 
 
 
@@ -76,21 +61,6 @@ export default () => {
       lng:coords.longitude
     }
     activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
-    /*
-    if(!mapBounds) return; 
-    const points = layerData.map(l => l.pins).flat().map(p=>p.location);
-    const mb = new google.maps.LatLngBounds();
-    points.forEach(p => {
-      console.log(p);
-      mb.extend(p);
-    })
-    console.log(geolocation);
-    const isInbounds = mb.contains(geolocation,true);
-    console.log(isInbounds);
-    
-    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:isInbounds})*/
-
-
   }
 
 
@@ -104,17 +74,9 @@ export default () => {
        timeout: 5000,
         maximumAge: 0,
       }
-    /*
-    const updatePOS = (e) => {
-      const geolocation  = {
-        lat: e.coords.latitude,
-        lng: e.coords.longitude
-      }
-      activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
-      setInbounds(geolocation);
-
-    }*/
-    navigator.geolocation.getCurrentPosition((e)=>{updatePos(e.coords)}, ()=>{}, options);
+    navigator.geolocation.getCurrentPosition((e)=>{
+      updatePos(e.coords)
+    }, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
       updatePos(e.coords)
     },5000),()=>{},options);
@@ -127,24 +89,6 @@ export default () => {
   
 
 
-  //Move to center
-  /*
-  useEffect(()=> {
-    if(centerInit||!map||!latBounds||layerData.length<1||geolocation==null)return;
-    updateCenterInit(true);
-    if(latBounds.contains(geolocation)) {
-      map.setZoom(15);
-      map.setCenter(geolocation);
-      activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true})
-      
-    }
-  },[map,geolocation,layerData,latBounds])
-  */
-  
-
- 
-
- //
 
   return <>
 

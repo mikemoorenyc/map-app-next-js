@@ -33,7 +33,7 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
     return `${p.location.lat},${p.location.lng}`
   }).join("|")*/
 
-  console.log(mode);
+
   return <img className={className} 
   src={`https://maps.googleapis.com/maps/api/staticmap?size=${width}x${height}&key=${apiKey}&map_id=${mode}&${appMap.markerString}`}
   

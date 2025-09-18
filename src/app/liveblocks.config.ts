@@ -5,13 +5,6 @@ declare global {
   interface Liveblocks {
     // Presence type
 
-    Storage: {
-      map: LiveObject<{
-        pageTitle:string,
-        mapIcon?:string,
-        layerData:TLayer[]
-      }>
-    }
  
     Presence: {
       name:string, 
@@ -19,7 +12,9 @@ declare global {
       color:string,
       isEditing:boolean,
       savePending?:boolean,
-      geolocation?:TGeolocation
+      geolocation?:TGeolocation,
+      savingDuties:boolean,
+      isVisible:boolean
     };
     RoomEvent: {
       type: "UPDATE_DATA",

@@ -17,7 +17,7 @@ const PinContainer = () => {
     if(!pinsFlat.length) {
         return ; 
     }
-    
+   
     
     
     //Set initial viewport

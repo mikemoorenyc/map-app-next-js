@@ -49,6 +49,12 @@ export default () => {
   const {toastDispatch} = useContext(ToastContext)
 
   const [myPresence,updateMyPrescence] = useMyPresence(); 
+  useEffect(()=> {
+    if(editingText) return ; 
+    const newPinData = findPin(p.id);
+    updateTempData(newPinData);
+
+  },[layerData])
 
   useEffect(()=> {
     updateTempData(p);
