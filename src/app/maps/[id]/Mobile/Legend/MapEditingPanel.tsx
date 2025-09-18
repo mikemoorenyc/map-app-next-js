@@ -6,13 +6,15 @@ import styles from "./styles.module.css"
 import { useState, useContext, useEffect, SyntheticEvent } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
-import { useMyPresence,ClientSideSuspense } from "@liveblocks/react";
+import { useMyPresence,ClientSideSuspense, useStorage } from "@liveblocks/react/suspense";
 import useLiveEditing from "@/app/lib/useLiveEditing";
 import ModalLoading from "../_components/ModalLoading";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 type Props = {closeFunction:()=>void}
 function MapEditingPanel({closeFunction}:Props)  {
-  const {pageTitle,mapIcon} = useContext(DataContext)
+  //const {pageTitle,mapIcon} = useContext(DataContext);
+  const {pageTitle,mapIcon} = useStorage(root=>root.map)
+  
   const [tempTitle,updateTempTitle] = useState(pageTitle)
   const [tempIcon,updateTempIcon] = useState(mapIcon);
   const [saveDisabled,updateSavedDisabled] = useState(false)

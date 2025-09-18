@@ -17,7 +17,15 @@ export default function LiveBlocksContainer({user,serverId,children}:{user:TUser
       return await response.json(); 
 
     }}>
-      <RoomProvider  initialPresence={{isVisible:true, email:"",name:"",color:"",isEditing:false,savingDuties:false}} id={`maps:${serverId}`}>
+      <RoomProvider initialStorage={{
+        map : new LiveObject({
+          pageTitle:"",
+          layerData:[],
+          mapIcon:""
+        })
+      }
+        
+      }  initialPresence={{isVisible:true, email:"",name:"",color:"",isEditing:false,savingDuties:false}} id={`maps:${serverId}`}>
         {children}
       </RoomProvider>
     

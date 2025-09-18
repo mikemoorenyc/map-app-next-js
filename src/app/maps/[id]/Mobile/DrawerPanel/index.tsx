@@ -11,9 +11,10 @@ import styles from "./styles.module.css";
 import EditPanel from "./EditPanel";
 import CenterButton from "./CenterButton";
 import { RiListUnordered } from "@remixicon/react";
+import { useStorage } from "@liveblocks/react";
 
 const DrawerPanel = () => {
-  const {pageTitle,mapIcon} = useContext(DataContext)
+  let {pageTitle,mapIcon} = useContext(DataContext)
    const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {activePin,legendOpen,drawerState,geolocation, inBounds} = activeData; 
   let transform  = 100;
@@ -67,13 +68,20 @@ const DrawerPanel = () => {
   const transformPosition = {
     transform: `translateY(calc(100% - ${transform}px))`
   }
-
+  const storageMapPageTitle = useStorage(root=>root.map.pageTitle);
+  const storageMapMapIcon = useStorage(root=>root.map.mapIcon)
   
+  mapIcon = storageMapMapIcon||mapIcon;
+  pageTitle = storageMapPageTitle||pageTitle;
+
+  const headerProps = {pageTitle,mapIcon,contentOpen:false,after:<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>}
   return (
   <div {...handlers} id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`}   style={transformPosition}>
+
     {(drawerState !== "maximized" && geolocation && inBounds) && <CenterButton />}
-    {isEditing && <EditPanel />}
-    {(!activePin && isEditing == false)&& <DrawerPanelHeader contentOpen={false} mapIcon={mapIcon} title={pageTitle} after={<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>} />}
+    {isEditing && <EditPanel />} 
+    {(!activePin && isEditing == false)&& <DrawerPanelHeader {...headerProps} />
+     }
     {(activePin && isEditing == false )&& <ContentPanel {...{drawerTopSpace}}   pinId={activePin}/>}
   </div>
   

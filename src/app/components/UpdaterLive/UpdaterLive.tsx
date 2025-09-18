@@ -7,7 +7,7 @@ import { updateMap,getMap } from "@/app/actions/maps";
 import styles from "./styles.module.css"
 import { RiUploadCloudLine } from "@remixicon/react";
 import { ClientSideSuspense } from "@liveblocks/react/suspense";
-import { useMyPresence,useBroadcastEvent,useEventListener,useOthers,useSelf,shallow} from "@liveblocks/react/suspense";
+import { useMyPresence,useBroadcastEvent,useEventListener,useOthers,useSelf,shallow,useMutation,useStorage} from "@liveblocks/react/suspense";
 import { TLayer } from "@/projectTypes";
 import { useOthersMapped } from "@liveblocks/react";
 
@@ -19,7 +19,7 @@ type TProps = {
 
 const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
 
-  const {layerData,pageTitle,mapId,layerDispatch,mapIcon,updateMapIcon,updatePageTitle} = useContext(DataContext);
+  const {mapId,layerDispatch,updateMapIcon,updatePageTitle} = useContext(DataContext);
   
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
@@ -65,52 +65,62 @@ const othersMapped = useOthersMapped(
  
 
   //Try to get local data first 
-  useEffect(()=> {
-    if(!mapId || firstRun !== "uninit") return ;
-    
-    updateFirstRun("local");
-    if(firstLoadFunction) firstLoadFunction("local",layerData)
-  },[mapId,firstRun]);
-
-
+  
+  const storage = useStorage((root)=>root.map);
+  const {pageTitle,layerData,mapIcon} = storage; 
+ const update =  useMutation(
+  // Mutation context is passed as the first argument
+  ({ storage },map:{layerData:TLayer[],pageTitle:string,mapIcon?:string}) => {
+    // Mutate Storage
+    storage.get("map").set("layerData",map.layerData)
+    storage.get("map").set("pageTitle",map.pageTitle)
+    if(map.mapIcon) {
+      storage.get("map").set("mapIcon",map.mapIcon);
+    }
+  },
+  []
+);
 
   //FirstFetch 
   useEffect(()=> {
-    
-    if(firstRun !=="local") return; 
-    console.log("server fetch");
-    
-    const firstFetch = async() => {
- 
-      const theMap = await getMap(mapId);
-      let layerData:TLayer[] =[];
-      if(theMap) {
-        layerData=theMap.layerData; 
-        layerDispatch({
-          type: "REFRESH_LAYERS",
-          newLayers: theMap.layerData
-        })
-        
-      
-        
-        
-        if(theMap.mapIcon) {
-          updateMapIcon(theMap.mapIcon)
-        }
-        updatePageTitle(theMap.title);
 
+    if(pageTitle||layerData.length) {
+      if(firstLoadFunction)firstLoadFunction("server",layerData)
+       updateFirstRun("server");
+      return ;     
+    }
+
+    const firstFetch = async() => {
+      
+      const theMap = await getMap(mapId);
+      
+      if(!theMap)return ; 
+      const{title,layerData,mapIcon} = theMap;
+      update({layerData,mapIcon,pageTitle:title})
+      localStorage.setItem('map-'+mapId,JSON.stringify({
+        pageTitle:title,
+        mapIcon,layerData
+      }))
+
+
+      console.log("babies")
+
+      if(firstLoadFunction){
+        firstLoadFunction("server",layerData)
       }
-      if(firstLoadFunction)firstLoadFunction("server",layerData);
      
       setTimeout(()=> {
+        console.log("update to server");
         updateFirstRun("server");
       },1000)
+      
     }
+    
     
     firstFetch(); 
     
     
-  },[firstRun,mapId])
+  },[])
   
   const sendData = async () => {
     console.log('send to server');
@@ -139,52 +149,22 @@ const othersMapped = useOthersMapped(
     if(mapIcon) updateMapIcon(mapIcon); 
     localStorage.setItem('map-'+mapId, JSON.stringify({layerData:ldTemp,mapIcon:mapIcon,pageTitle:pageTitle}));
   })
-  const someoneSavePending = useOthers((others) =>
-      others.some((other) => other.presence.savePending)
-  );
-  const someoneSaving = someoneSavePending || myPresence.savePending; 
+
+  
+
 
   useEffect(()=> {
+    console.log(firstRun,myPresence.savingDuties,layerData,pageTitle,mapIcon)
     if(!mapId) return; 
     if(firstRun !== "server") return ; 
     
- 
-    //MY JOB TO SAVE, anything changed. I have to save it
-    if(myPresence.savingDuties&& someoneSaving) {
-      console.log('timeout started');
+    if(myPresence.savingDuties) {
       updateLocal.current = window.setTimeout(()=> {
-      updateIsSaving(true);
-      sendData();
-    },3* 1000)
-
-    } else {
-      if(updateLocal.current !== null) {
-        clearTimeout(updateLocal.current);
-      }
+        updateIsSaving(true);
+        sendData();
+       },3* 1000)
     }
-    
-    //CHECK IF I HAVE TO BROADCAST UPDATE
-    
-    //SOMEONE ELSE HAS A SAVE PENDING, don't broadcast
-    if(someoneSavePending) {
-      updateMyPresence({savePending:false});
-      
-    }
-    
-    //I have a save pending, send broadcast
-    //SEND UPDATED DATA
-    
-    if(myPresence.savePending && !someoneSavePending) {
-      console.log("broadcast");
-       broadcast({
-        type:"UPDATE_DATA",
-        data: {layerData,pageTitle,mapIcon}
-      })
-      updateMyPresence({savePending:false})
-
-    }
-    
-
+ 
    return () => {
     if(updateLocal.current !== null) {
       clearTimeout(updateLocal.current);
@@ -201,6 +181,7 @@ const othersMapped = useOthersMapped(
   },[mapIcon,pageTitle])
 
   //VISIBILITY UPDATE
+  /*
   const grabFreshContent = async () => {
     const state = document.visibilityState;
     console.log(document.visibilityState);
@@ -232,6 +213,7 @@ const othersMapped = useOthersMapped(
     }
 
   },[])
+  */
   
 
   return <div

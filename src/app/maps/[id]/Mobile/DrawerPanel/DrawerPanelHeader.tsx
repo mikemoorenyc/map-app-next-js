@@ -1,23 +1,25 @@
 import { ReactNode } from "react";
 import styles from "./styles.module.css";
 import svgImgUrl from "@/app/lib/svgImgUrl";
+import { useStorage } from "@liveblocks/react";
 
 type Props = {
   mapIcon?:string, 
   contentOpen:boolean,
-  title:string, 
+  pageTitle:string, 
   before?:ReactNode,
   after?:ReactNode
 }
 
-const DrawerPanelHeader = ({mapIcon,contentOpen, title, before,after}:Props) => {
+const DrawerPanelHeader = ({mapIcon,contentOpen, pageTitle, before,after}:Props) => {
+  
   const openClass = contentOpen ? styles.contentOpen : "";
   return <div className={`${styles.drawerPanelHeader} ${openClass} flex-center`}>
 
   {before}
   <div className={`${styles.title} ${openClass} flex-1 overflow-ellipsis flex-center`}>
     {mapIcon && <img src={svgImgUrl({icon:mapIcon,picker:true})} width={28} height={28} style={{marginRight:8}}/> }
-    <span>{title}</span>
+    <span>{pageTitle}</span>
   </div>
   {after}
   </div>

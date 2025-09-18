@@ -43,6 +43,7 @@ const DataContextProvider = ({children,serverId,user}:{children:ReactElement,ser
       document.title = document.title.replace(oldTitle,newTitle);
     }*/
     
+    
     return newTitle; 
   }, "")
   const [mapId,updateMapId] = useReducer((oldId:number,newId:number) => {
@@ -50,6 +51,7 @@ const DataContextProvider = ({children,serverId,user}:{children:ReactElement,ser
   },parseInt(serverId))
   const [mapIcon,updateMapIcon] = useReducer((oldIcon:string|null,newIcon:string) => {
     /*document.title = `${newIcon}${oldIcon?document.title.replace(oldIcon,""):""}`*/
+    
     return newIcon
   },"")
 
@@ -59,20 +61,21 @@ const DataContextProvider = ({children,serverId,user}:{children:ReactElement,ser
     if(!window) return ; 
     if(!localStorage) return ;
     const data = localStorage.getItem("map-"+window.location.pathname.split("/")[2]);
+ 
     if(!data) return ; 
     const ls = JSON.parse(data) as {
       layerData: TLayer[],
       pageTitle: string,
       mapIcon?: string
     }
-    console.log(ls);
+
     layerDispatch({
       type:"REFRESH_LAYERS",
       newLayers: ls.layerData
     })
-    updatePageTitle(pageTitle);
-    if(mapIcon) {
-      updateMapIcon(mapIcon);
+    updatePageTitle(ls.pageTitle);
+    if(ls.mapIcon) {
+      updateMapIcon(ls.mapIcon);
     }
   },[])
 

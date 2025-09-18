@@ -73,6 +73,7 @@ transform: translateX(-100%);
 transition: transform .15s;
 display: flex;
 flex-direction:column;
+padding-bottom:48px; 
 }
 .legend.open {
   transform: translateX(0%);
