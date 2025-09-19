@@ -36,11 +36,11 @@ function AddToMapButton() {
   
       layerId : layerData[0].id
     }
-    dispatchEvent({
+    dispatchEvent([{
       type: "ADDED_PIN",
       layerToAdd: layerData[0].id,
       pinData : payload,
-    })
+    }])
     activeDispatch({type:"SET_ACTIVE_PIN",id:tempID})
     activeDispatch({type:"DRAWER_STATE",state:"open"})
   }

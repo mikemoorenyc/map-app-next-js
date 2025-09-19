@@ -9,6 +9,7 @@ import TAIcon from "./TAIcon";
 import Image from "next/image";
 import makeNativeLink from "../lib/makeNativeLink";
 import { TPin,TPhoto } from "@/projectTypes";
+import useLiveEditing from "@/app/lib/useLiveEditing";
 
 /*
 const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
@@ -63,8 +64,9 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
   const [photos,updatePhotos] = useState<TPhoto[]>([]);
  
   const {activeDispatch} = useContext(MobileActiveContext);
-  const {layerDispatch} = useContext(DataContext)
+
   const [fetchStatus, updateFetchStatus] = useState("idle");
+  const dispatchEvent = useLiveEditing(); 
  
 
  // const savedPhotos = JSON.parse(sessionStorage.getItem("saved_photos") || "[]");
@@ -98,14 +100,14 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
     if(temp) {
       return ; 
     }
-    layerDispatch({
+    dispatchEvent([{
       type: "UPDATED_PIN",
       id: pin.id,
       data : {
         photos : photos,
         photos_uploaded: new Date().toLocaleString()
       }
-    })
+    }])
 
   },[updateFetchStatus,updatePhotos])
 

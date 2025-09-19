@@ -6,7 +6,7 @@ import { useContext,useEffect,useState,useCallback } from "react"
 export default function ()  {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {tempData,activePin,geolocation,inBounds} = activeData;
-  const {layerData} = useContext(DataContext);
+  let {layerData} = useContext(DataContext);
   const map = useMap(); 
   const routesLibrary = useMapsLibrary('routes');
   const [dirService,updateDirService] = useState<google.maps.DirectionsService|null>(null); 

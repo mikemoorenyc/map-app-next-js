@@ -14,17 +14,18 @@ import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
 import { RiDeleteBinLine, RiPaintFill } from "@remixicon/react"
 import BottomSheet from "@/app/components/BottomSheet/BottomSheet"
-import { ClientSideSuspense,useMyPresence } from "@liveblocks/react/suspense"
-import useLiveEditing from "@/app/lib/useLiveEditing"
+import { ClientSideSuspense,useMyPresence, useStorage } from "@liveblocks/react/suspense"
+import useLiveEditing, { DispatchActions } from "@/app/lib/useLiveEditing"
 import ModalLoading from "../_components/ModalLoading"
 import { TLayer } from "@/projectTypes"
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
-import useLayerData from "@/app/lib/useLayerData"
+import { findLayer } from "@/app/lib/finders"
 
 type Props = {layerId:number,cancelFunction:()=>void}
 const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
-  const {findLayer,layers} = useLayerData();
-  const layerData = findLayer(layerId);
+  
+  const storageData =  useStorage(root=>root.map.layerData);
+  const layerData = findLayer(storageData,layerId);
   const dispatchEvent = useLiveEditing(); 
   const [tempData,updateTempData] = useState(layerData);
   const {activeDispatch} = useContext(MobileActiveContext);
@@ -33,7 +34,7 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
   const [deleteId,updateDeleteId] = useState<number|null>(null)
   const [saveDisabled,updateSavedDisabled] = useState(false)
   const [myPresence, updateMyPresence] = useMyPresence(); 
-  const [layerIndex,updateLayerIndex] = useState<number>(layers.findIndex(l=>l.id == layerId));
+  const [layerIndex,updateLayerIndex] = useState<number>(storageData.findIndex(l=>l.id == layerId));
 
   useEffect(()=> {
     updateMyPresence({isEditing:true})
@@ -51,16 +52,20 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
     })
   }
   const saveData = () => {
-    dispatchEvent({
+    const dispatchers: DispatchActions[] = [
+      {
       type:"UPDATED_LAYER",
       id: layerData.id,
       updatedData: tempData
-    })
-    dispatchEvent({
+    },
+    {
       type:"MOVE_LAYER",
       layerId:layerData.id,
       layerIndex
-    })
+    }
+    ]
+    dispatchEvent(dispatchers);
+ 
     cancelFunction(); 
   }
   const deleteLayer = useCallback(() => {
@@ -68,7 +73,7 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
     
 
 
-    if(layers.length < 2) {
+    if(storageData.length < 2) {
       alert("Must have at least one layer");
       updateDeletePending(false);
       return false; 
@@ -82,11 +87,11 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
       id:layerData.id
     })*/
     cancelFunction(); 
-    dispatchEvent({
+    dispatchEvent([{
       type: "DELETED_LAYER",
       id: layerData.id
-    })
-  },[layers])
+    }])
+  },[layerData,storageData])
 
 
   return <>
@@ -154,14 +159,14 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
             <ChangeIcon layer={layerData} currentIcon={tempData.icon} valueChanger={valueChanger} type={"layer"}/>
           </TextField>
           <TextField name={"position"}>
-            <Mover itemIndex={layerIndex} itemArrayLength={layers.length} updateIndex={(i:number)=> {
+            <Mover itemIndex={layerIndex} itemArrayLength={storageData.length} updateIndex={(i:number)=> {
               updateLayerIndex(prev => {
                 return prev+i; 
               })
             }} />
           </TextField>
           
-          {layers.length > 1 && <div  className={`${styles.legendEditDelete} flex-center-center`}>
+          {storageData.length > 1 && <div  className={`${styles.legendEditDelete} flex-center-center`}>
             <Button modifiers={["caution","secondary","sm"]} icon={<RiDeleteBinLine/>} onClick={(e) => {
       
               e.preventDefault(); 

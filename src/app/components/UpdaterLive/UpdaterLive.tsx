@@ -26,7 +26,7 @@ const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
   const [firstRun,updateFirstRun] = useState("uninit");
   const updateLocal = useRef<number|null>(null);
   const [myPresence,updateMyPresence] = useMyPresence(); 
-  const broadcast = useBroadcastEvent() 
+  
 const someoneHasSavingDuties = useOthers((others) =>
   others.some((other) => other.presence.savingDuties)
 ) || myPresence.savingDuties;
@@ -85,8 +85,13 @@ const othersMapped = useOthersMapped(
   useEffect(()=> {
 
     if(pageTitle||layerData.length) {
+      console.log("already data",pageTitle);
       if(firstLoadFunction)firstLoadFunction("server",layerData)
        updateFirstRun("server");
+       localStorage.setItem('map-'+mapId,JSON.stringify({
+        pageTitle:pageTitle,
+        mapIcon,layerData
+      }))
       return ;     
     }
 

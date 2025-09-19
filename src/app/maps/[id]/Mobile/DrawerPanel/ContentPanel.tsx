@@ -1,6 +1,5 @@
 import { useContext,useState} from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import DataContext from "@/app/contexts/DataContext";
 import Button from "@/app/components/Button";
 import LocationDetails from "@/app/components/LocationDetails";
 import Linkify from "linkify-react";

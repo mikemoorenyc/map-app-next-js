@@ -38,7 +38,9 @@ export type TPin = {
   favorited?:boolean,
   visited?:boolean,
   icon?:string,
-  layerId:number
+  layerId:number,
+  photos?: string[],
+  photos_uploaded?:string
 } & TPlaceDetails
 
 export type TPinTemp = Omit<TPin & {
@@ -62,7 +64,9 @@ export type TPinValues = {
   website?:string, 
   favorited?:boolean,
   visited?:boolean,
-  icon?:string 
+  icon?:string ,
+  photos?:string[],
+  photos_uploaded?:string
 }
 export type TLayer = {
   id:number,

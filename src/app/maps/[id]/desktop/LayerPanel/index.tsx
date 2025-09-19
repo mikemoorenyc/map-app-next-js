@@ -9,6 +9,7 @@ import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from '@hell
 import LayerSection from "./LayerSection";
 import PinItem from "./PinItem";
 import LayerEdit from "./LayerEdit";
+import useLayerData from "@/app/lib/useLayerData";
 
 
 type TDraggableObject = {
@@ -22,7 +23,7 @@ const LayerPanel = ()=> {
   
   const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext);
-    const {layerData} = useContext(DataContext);
+    const layerData = useLayerData().layers;
    
     const [items,setItems] = useState([...layerData]);
     const [activeId, setActiveId] = useState<number|null>(null);
@@ -57,7 +58,7 @@ const handleDragEnd = (result:any) => {
       newParentItems.splice(destination.index, 0, removed);
 
       setItems(newParentItems);
-      dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
+      dispatchEvent([{type: "FULL_REFRESH",newData: newParentItems}])
     }
 
     
@@ -76,7 +77,7 @@ const handleDragEnd = (result:any) => {
         sourceParent.pins.splice(destination.index, 0, removed);
 
         setItems(newParentItems);
-        dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
+        dispatchEvent([{type: "FULL_REFRESH",newData: newParentItems}])
       } else {
         const newParentItems = Array.from(items);
         const sourceParent = newParentItems[sourceParentIndex];
@@ -85,10 +86,10 @@ const handleDragEnd = (result:any) => {
         destinationParent.pins.splice(destination.index, 0, removed);
 
         setItems(newParentItems);
-        dispatchEvent({type: "FULL_REFRESH",newData: newParentItems})
-        dispatchEvent({type: "UPDATED_PIN",id: draggableId, data: {
+        dispatchEvent([{type: "FULL_REFRESH",newData: newParentItems}])
+        dispatchEvent([{type: "UPDATED_PIN",id: draggableId, data: {
           layerId: parseInt(destination.droppableId)
-        }})
+        }}])
 
       }
     }

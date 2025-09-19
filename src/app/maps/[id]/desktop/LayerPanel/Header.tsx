@@ -11,6 +11,7 @@ import ActiveContext from "@/app/contexts/ActiveContext"
 import { RiStackLine } from "@remixicon/react"
 import useLiveEditing from "@/app/lib/useLiveEditing"
 import addDisabledMod from "@/app/lib/addDisabledMod"
+import useLayerData from "@/app/lib/useLayerData"
 
 type TProps = {
   layerRef: RefObject<HTMLDivElement|null>
@@ -23,10 +24,11 @@ const Header = ({layerRef}:TProps) => {
   
   const dispatchEvent = useLiveEditing()
   const [newId,updateNewId] = useState<null|number>(null);
-  const {layerDispatch,mapIcon,updateMapIcon,user,layerData,pageTitle} = useContext(DataContext);
+  const {layerDispatch,user} = useContext(DataContext);
   const {activeDispatch,activeData} = useContext(ActiveContext);
   const {canEdit} = activeData
-  
+  const {pageTitle,layers,mapIcon} = useLayerData()
+  const layerData = layers;
   useEffect(()=> {
     if(!layerRef||!layerRef?.current) return ;
     if(!layerData.length) return ; 
@@ -48,7 +50,7 @@ const Header = ({layerRef}:TProps) => {
 
   return <div className={`${styles.header} flex-center`}>
   
-  <MapIconMemo {...{canEdit,mapIcon,updateMapIcon}} />
+  <MapIconMemo {...{canEdit,mapIcon}} />
     <MapTitle {...{canEdit}} />
    
          
@@ -56,7 +58,7 @@ const Header = ({layerRef}:TProps) => {
               e.preventDefault();
               const id = Date.now();
               updateNewId(id)
-              dispatchEvent({type:"ADDED_LAYER",user:user||null,id:id})
+              dispatchEvent([{type:"ADDED_LAYER",user:user||null,id:id}])
           
               }}   modifiers={mods}>
                     Add layer

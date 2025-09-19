@@ -1,10 +1,19 @@
+'use client'
+
 import { useCallback, useContext, useMemo,useEffect,useState } from "react";
 import DataContext from "../contexts/DataContext";
 import { TActiveData } from "../contexts/ActiveContext";
 import { TLayer,TPin } from "@/projectTypes";
+import { useStorage } from "@liveblocks/react";
 
 export default function useLayerData() {
-  const {layerData,pageTitle,mapIcon} = useContext(DataContext)
+  let {layerData,pageTitle,mapIcon} = useContext(DataContext);
+  const storageLayerData = useStorage(root => root.map.layerData);
+  const storagePageTitle = useStorage(root => root.map.pageTitle);
+  const storageMapIcon = useStorage(root=>root.map.mapIcon);
+  layerData = storageLayerData||layerData;
+  pageTitle = storagePageTitle||pageTitle;
+  mapIcon = storageMapIcon||mapIcon;
   
 
 

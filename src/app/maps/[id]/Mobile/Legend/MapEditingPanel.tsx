@@ -7,7 +7,7 @@ import { useState, useContext, useEffect, SyntheticEvent } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
 import { useMyPresence,ClientSideSuspense, useStorage } from "@liveblocks/react/suspense";
-import useLiveEditing from "@/app/lib/useLiveEditing";
+import useLiveEditing, { DispatchActions } from "@/app/lib/useLiveEditing";
 import ModalLoading from "../_components/ModalLoading";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 type Props = {closeFunction:()=>void}
@@ -21,16 +21,19 @@ function MapEditingPanel({closeFunction}:Props)  {
   const dispatchEvent = useLiveEditing(); 
 
   const saveData = (e:SyntheticEvent) => {
-    dispatchEvent({
+    const de : DispatchActions[] = [{
       type:"UPDATE_TITLE",
       data: tempTitle
-    })
+    }]
+    
+    
     if(tempIcon) {
-      dispatchEvent({
+      de.push({
       type:"UPDATE_MAP_ICON",
       data: tempIcon
     })
     }
+    dispatchEvent(de)
 
     closeFunction(); 
   }

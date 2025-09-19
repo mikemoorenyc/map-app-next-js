@@ -11,11 +11,13 @@ import useLiveEditing from "@/app/lib/useLiveEditing";
 import {  TPinTemp, TPin } from "@/projectTypes";
 import addDisabledMod from "@/app/lib/addDisabledMod";
 import { TSearchPin } from "@/app/components/ModernSearch/lib/fieldMapping";
+import useLayerData from "@/app/lib/useLayerData";
 
 export default ({ placeData}:{placeData:TSearchPin}) => {
 
   const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {user,layerData} = useContext(DataContext);
+  const {user} = useContext(DataContext);
+  const layerData = useLayerData().layers;
   const dispatchEvent = useLiveEditing(); 
 
     const {infoWindowDispatch } = useContext(InfoWindowContext);
@@ -53,12 +55,12 @@ export default ({ placeData}:{placeData:TSearchPin}) => {
         
         e.preventDefault(); 
         console.log("clicked")
-        dispatchEvent({
+        dispatchEvent([{
             type: "ADDED_PIN",
             
             layerToAdd: activeData.activeLayer,
             pinData : formattedPinData
-        })
+        }])
         infoWindowDispatch({type:"CLOSE_WINDOW"});
         activeDispatch({
             type: "EDITING_PIN", 

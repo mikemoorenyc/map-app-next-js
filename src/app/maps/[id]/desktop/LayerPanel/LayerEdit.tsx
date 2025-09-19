@@ -15,6 +15,7 @@ import svgImgUrl from "@/app/lib/svgImgUrl"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { useMyPresence } from "@liveblocks/react"
 import useLiveEditing from "@/app/lib/useLiveEditing"
+import useLayerData from "@/app/lib/useLayerData"
 
 type TInputValues = {
   icon?:string, 
@@ -26,7 +27,7 @@ type TInputValues = {
 const LayerEdit = () => {
   const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext)
-  const {layerData} = useContext(DataContext)
+  const layerData = useLayerData().layers;
   const editingLayer = activeData.editingLayer
   const layer = layerData.find(layer => layer.id == editingLayer);
   if(!layer)return ; 
@@ -47,11 +48,11 @@ const LayerEdit = () => {
 
   const saveData = () => {
     console.log(tempLayerData)
-        dispatchEvent({
+        dispatchEvent([{
             type: "UPDATED_LAYER",
             id: layer.id,
             updatedData: tempLayerData
-        });
+        }]);
         activeDispatch({
             type: "EDITING_LAYER",
             id:null
@@ -65,10 +66,10 @@ const LayerEdit = () => {
   }
   const deleteLayer = (e:SyntheticEvent) => {
     e.preventDefault(); 
-    dispatchEvent({
+    dispatchEvent([{
         type: "DELETED_LAYER",
         id : layer.id
-    })
+    }])
     activeDispatch({
         type: "EDITING_LAYER",
         id:null

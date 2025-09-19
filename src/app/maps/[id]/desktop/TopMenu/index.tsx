@@ -9,14 +9,15 @@ import { RiMap2Line } from "@remixicon/react";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import { TLayer } from "@/projectTypes";
 import { useMap } from "@vis.gl/react-google-maps";
-import DataContext from "@/app/contexts/DataContext";
+import useLayerData from "@/app/lib/useLayerData";
+
 
 
 
 const TopMenu = () => {
   const {infoWindowState,infoWindowDispatch } = useContext(InfoWindowContext);
   const {activeDispatch,activeData} = useContext(ActiveContext)
-  const {layerData} = useContext(DataContext)
+  const layerData = useLayerData().layers;
   const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
   const [isMounted,updateIsMounted] = useState(false);
   const [serverLoaded,updateServerLoaded] = useState(false);

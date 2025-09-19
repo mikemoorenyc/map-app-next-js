@@ -11,10 +11,13 @@ import { memo, useCallback } from "react"
 import Prescence from "../../../../components/Prescence"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { TLayer } from "@/projectTypes"
+import DataContext from "@/app/contexts/DataContext"
 
 
 const MobileSearch = lazy(()=>import("./MobileSearch"));
 const Legend = lazy(()=> import("../Legend"))
+
+
 
 const MapMemo = memo(Map) 
 const DrawerPanelMemo = memo(DrawerPanel);
@@ -28,6 +31,13 @@ const MapPanel = () => {
     throw new Error("missing env variables");
   }
   const {activeDispatch,activeData} = useContext(MobileActiveContext);
+  const {layerData} = useContext(DataContext);
+  const [checkerData,updateCheckerData] = useState<TLayer[]|null>(null)
+  useEffect(()=> {
+    if(!layerData.length) return ; 
+    updateCheckerData(layerData);
+  },[layerData])
+
   
   
 
@@ -84,13 +94,14 @@ const MapPanel = () => {
     >
   <Pins  />
   <Suspense><MobileSearch/></Suspense>
-  <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={(value:"local"|"server"|false)=> {
+  <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={(value:"local"|"server"|false,data:TLayer[])=> {
     activeDispatch({
       type: "UPDATE_FIRST_LOAD",
       value
     })
+    updateCheckerData(data);
   }}/>    </div>
-      <GeoLocation />
+      <GeoLocation {...{checkerData}}/>
       <DirectionServicer />
          <Suspense><Legend /></Suspense>
          <DrawerPanelMemo />

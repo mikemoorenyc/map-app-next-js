@@ -9,24 +9,21 @@ import styles from "./styles.module.css";
 import { RiArrowLeftFill,  RiSettingsLine,  } from "@remixicon/react"
 import AddLayerButton from "./AddLayerButton"
 import addDisabledMod from "@/app/lib/addDisabledMod"
-import { useStorage } from "@liveblocks/react"
+
+import useLayerData from "@/app/lib/useLayerData"
 
 const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 
 const Legend = () => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   
-  let {layerData,pageTitle,mapIcon,} = useContext(DataContext);
-  const mapData = layerData
+
+  //const mapData = layerData
   const {canEdit} = activeData
   const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
   const legendScroll = useRef(null);
   const [settingsOpen,updateSettingsOpen] = useState(false);
-  const storage = useStorage(root=>root.map);
-
-  layerData = storage?.layerData||layerData;
-  mapIcon=storage?.mapIcon||mapIcon;
-  pageTitle=storage?.pageTitle||pageTitle;
+  const {mapIcon,pageTitle,layers} = useLayerData();
   
   return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>
   {legendIsOpen && (<>
@@ -44,7 +41,7 @@ const Legend = () => {
       </div>
     </div>
     <div className={`${styles.legendSections} flex-1`} ref={legendScroll}>
-    {mapData.map(l => {
+    {layers.map(l => {
 
       return <LegendSection key={l.id} layer={l} />;
     })}

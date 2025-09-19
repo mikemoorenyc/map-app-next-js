@@ -11,8 +11,7 @@ type TProps={
 }
 
 export default function Mover({itemIndex,itemArrayLength,updateIndex}:TProps)  {
-  console.log(itemIndex);
-  console.log(itemArrayLength);
+
 
   const btnMods =(disabledCheck:boolean) : TModOptions[] => {
     const mods :TModOptions[]= ["secondary"];

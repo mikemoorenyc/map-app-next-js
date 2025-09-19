@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import { memo} from "react";
 import { ModalProvider } from "@/app/contexts/ModalContext";
-import {  LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
+
 import { TUser } from "@/projectTypes";
 import LiveBlocksContainer from "@/app/components/LiveBlocksContainer/LiveBlocksContainer";
 

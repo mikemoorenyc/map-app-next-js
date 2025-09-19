@@ -15,6 +15,7 @@ import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
 import { TSearchPin } from "@/app/components/ModernSearch/lib/fieldMapping";
 import { TGeolocation } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
+import useLayerData from "@/app/lib/useLayerData";
 
 
 export default () => {
@@ -32,7 +33,7 @@ export default () => {
   const [focused,updateFocused] = useState(false);
   const [predictionChoice,updatePredictionChoice] = useState("")
   const [viewPortHeight, updateViewPortHeight] = useState<string|number>("100%")
-  const {layerData} = useContext(DataContext)
+  //const {layerData} = useContext(DataContext)
   const reset = ()=> {
     updateInputVal("")
     updateIncrement(0)
@@ -41,6 +42,7 @@ export default () => {
     updatePredictionResults([])
    
   }
+  const layerData = useLayerData().layers;
 
 
 
@@ -71,10 +73,7 @@ export default () => {
     activeDispatch({type:"SET_ACTIVE_PIN",id:null})
     if(!p.new) {
   
-      if(activePin == p.id) {
-        reset();
-        return ; 
-      }
+    
       activeDispatch({type:"SET_ACTIVE_PIN",id:p.id})
       activeDispatch({type:"DRAWER_STATE",state:"open"})
       activeDispatch({type:"BACK_STATE",state:"back_to_base"})

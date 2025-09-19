@@ -14,10 +14,10 @@ export default function({mapIcon,canEdit}:{mapIcon?:string,canEdit:boolean}) {
   const iconSelected = (value:string) => {
     updateIconSelectorOpen(false);
     //updateMapIcon(value);
-    dispatchEvent({
+    dispatchEvent([{
       type: "UPDATE_MAP_ICON",
       data: value
-    })
+    }])
     updateMyPresence({isEditing:false})
   }
 

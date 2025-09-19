@@ -4,11 +4,12 @@ import { CSSProperties, ReactNode, useContext} from "react";
 import svgImgUrl from "@/app/lib/svgImgUrl";
 import styles from "./LayerSection.module.css";  
 import { RiCheckLine, RiSettingsLine } from "@remixicon/react";
+import useLayerData from "@/app/lib/useLayerData";
 
 const LayerSection = ({children,layerId,activeId}:{children:ReactNode,layerId:number,activeId:number|null}) => {
   
-  const {layerData} = useContext(DataContext)
-  const layer = layerData.find((layer) => layer.id == layerId);
+
+  const layer = useLayerData().findLayer(layerId)
   if(!layer) return ; 
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {activeLayer, collapsedLayers} = activeData;

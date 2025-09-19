@@ -73,7 +73,7 @@ transform: translateX(-100%);
 transition: transform .15s;
 display: flex;
 flex-direction:column;
-padding-bottom:48px; 
+
 }
 .legend.open {
   transform: translateX(0%);
@@ -95,7 +95,7 @@ padding-bottom:48px;
   line-height: 1;
 }
 .legendSections {
-  padding-bottom: 20px;
+  padding-bottom: 48px;
   padding-top: 20px;
     overflow: auto; 
 }

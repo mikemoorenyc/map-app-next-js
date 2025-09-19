@@ -4,10 +4,10 @@ import throttle from "lodash/throttle"
 import LiveMarker from "./LiveMarker";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import DataContext from "@/app/contexts/DataContext"
-import { TGeolocation } from "@/projectTypes";
+import { TGeolocation, TLayer } from "@/projectTypes";
 
 
-export default () => {
+export default ({checkerData}:{checkerData:TLayer[]|null}) => {
 
 
   const map = useMap()
@@ -16,40 +16,31 @@ export default () => {
   const {geolocation,firstLoad} = activeData;
   const {layerData} = useContext(DataContext); 
 
- 
-
-  const latBounds = useMemo(()=> {
+  useEffect(()=> {
+    boundChecker(checkerData);
+  },[checkerData]);
+  useEffect(()=> {
+    if(firstLoad =="server")return; 
+    boundChecker(checkerData);
+  },[layerData])
+  
+  const boundChecker = useCallback((layerData:TLayer[]|null,geo?:{lat:number,lng:number})=> {
+    if(!layerData||!map) return null; 
+    let g = geo || geolocation
     const points = layerData.map(l => l.pins).flat().map(p=>p.location);
     if(!points||!points.length) return null; 
     const mb = new google.maps.LatLngBounds();
     points.forEach(p => {
       mb.extend(p);
     })
-    return mb
-  },[layerData])
-
-  useEffect(()=> {
-    if(!geolocation||!latBounds||firstLoad === "server"||!map) return ; 
-    
-    if(latBounds.contains(geolocation)) {
-      activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true});
-      centerMap(geolocation);
-      return 
+    map.fitBounds(mb); 
+    if(g&& mb.contains(g)) {
+     map.setCenter(g);
+     map.setZoom(15);
     }
-    map.fitBounds(latBounds);
     
+  },[map,geolocation,activeDispatch]);
 
-  },[geolocation,activeDispatch,firstLoad,latBounds,map])
-
-  const centerMap=useCallback((geolocation:TGeolocation)=> {
-    if(!map)return ; 
-    map.setZoom(15);
-    map.setCenter(geolocation);
-  },[map])
- 
-
-  //Center if out of bounds twice 
-  
 
 
 
@@ -64,6 +55,7 @@ export default () => {
   }
 
 
+
   useEffect(()=> {
     //if(!remoteLoad) return ; 
    
@@ -75,7 +67,29 @@ export default () => {
         maximumAge: 0,
       }
     navigator.geolocation.getCurrentPosition((e)=>{
-      updatePos(e.coords)
+      updatePos(e.coords);
+      if(firstLoad === "server") {
+        boundChecker(layerData,{
+          lat:e.coords.latitude,
+          lng:e.coords.longitude
+        })
+      }
+      /*const latLng = {
+        lat:e.coords.latitude,
+        lng:e.coords.longitude
+      }
+      if(firstLoad !=="server") return ; 
+      if(!latBounds )return ; 
+      if(latBounds.contains(latLng)) {
+        activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true});
+         centerMap(latLng);
+      } else {
+        fitter(latBounds)
+      }
+      */
+        
+      return 
+      
     }, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
       updatePos(e.coords)

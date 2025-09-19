@@ -13,24 +13,24 @@ import EditingModalHeader from "../../_components/EditingModalHeader"
 import Mover from "../../_components/Mover"
 import Button from "@/app/components/Button"
 import { RiDeleteBinLine } from "@remixicon/react"
-import { ClientSideSuspense,useMyPresence } from "@liveblocks/react"
+import { ClientSideSuspense,useMyPresence,useStorage } from "@liveblocks/react/suspense"
 import useLiveEditing from "@/app/lib/useLiveEditing"
 import ModalLoading from "../../_components/ModalLoading"
-import useLayerData from "@/app/lib/useLayerData"
+import { findLayer,findPin } from "@/app/lib/finders"
 import { TPin } from "@/projectTypes"
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
 
  function EditPanel() {
   const dispatchEvent = useLiveEditing() ; 
-  const {layerData,} = useContext(DataContext);
+  const layerData =  useStorage(root=>root.map.layerData);
   const {activeData,activeDispatch} = useContext(MobileActiveContext);
   const {activePin} = activeData;
-  const {findPin,findLayer} = useLayerData(); 
+
   if(!activePin) {
     throw new Error("NO ACTIVE PIN");
   }
-  const pinData = findPin(activePin);
-  const pinLayer = findLayer(pinData.layerId);
+  const pinData = findPin(layerData,activePin);
+  const pinLayer = findLayer(layerData,pinData.layerId);
   const initIndex = pinLayer.pins.findIndex(p=>p.id == pinData.id);
  
   //const pinData = useMemo(()=>layerData.map(l => l.pins).flat().find(p => p.id == activePin),[layerData,activePin]);
@@ -63,7 +63,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
 
     //PIN DIDN"T MOVE LAYERS 
     if(pinState.layerId === pinData.layerId) {
-      layerToUpdate = findLayer(pinState.layerId);
+      layerToUpdate = findLayer(layerData,pinState.layerId);
       //REPLACE OLD DATA W/NEW DATA
       const {pins} = layerToUpdate
       //Find CurrentPin
@@ -85,7 +85,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
       }
       return l;
     })
-    const layerToAdd = findLayer(pinState.layerId);
+    const layerToAdd = findLayer(layerData,pinState.layerId);
     const {pins} = layerToAdd; 
       pins.splice(pinIndex,0,pinState);
     newLayerData = newLayerData.map(l=> {
@@ -98,7 +98,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
     }
     
  
-    dispatchEvent({type: "FULL_REFRESH",newData: newLayerData})
+    dispatchEvent([{type: "FULL_REFRESH",newData: newLayerData}])
     activeDispatch({type:"DRAWER_STATE",state:"open"})
   }
 
@@ -113,7 +113,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
      return {...s, ...updater}
     })
     if(key == "layerId") {
-      const newLayer = findLayer(value);
+      const newLayer = findLayer(layerData,value);
       if(newLayer.id == pinLayer.id) {
         updatePinIndex(initIndex); 
       } else {
@@ -122,7 +122,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
     }
  
   }
-  const currentLayer = findLayer(pinState.layerId);
+  const currentLayer = findLayer(layerData,pinState.layerId);
   const itemArrayLength = pinData.layerId == pinState.layerId?currentLayer.pins.length:currentLayer.pins.length+1; 
 
   return (
@@ -167,11 +167,11 @@ cancelFunction={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",st
     <DeleteModal questionText={'Are you sure you want to delete this pin?'} 
     confirmFunction={(e)=> {
       e.preventDefault(); 
-      dispatchEvent({
+      dispatchEvent([{
         type: "DELETED_PIN",
         id: pinData.id,
         layerId: pinData.layerId
-      })
+      }])
       activeDispatch({type: "SET_ACTIVE_PIN",id:null})
       activeDispatch({type: "DRAWER_STATE", state: "minimized"});
     }}

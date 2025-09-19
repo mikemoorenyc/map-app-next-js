@@ -31,7 +31,7 @@ type PayloadEntry =
 
 
 export default () => {
-  const {layerData} = useContext(DataContext);
+  const layerData = useLayerData().layers; 
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {findPin,findLayer} = useLayerData(); 
   if(!activeData.editingPin) return ; 
@@ -80,14 +80,14 @@ export default () => {
 
   const saveEditing = () => {
 
-    dispatchEvent({
+    dispatchEvent([{
       type: "UPDATED_PIN",
       id: p.id,
       data : {
         title : tempData.title,
         description: tempData.description
       }
-    })
+    }])
     updateEditingText(false)
 
   }
@@ -98,11 +98,11 @@ export default () => {
 
     const payload: TPayloadValues = { [key]: value } as TPayloadValues;
 
-    dispatchEvent({
+    dispatchEvent([{
       type: "UPDATED_PIN",
       id: p.id,
       data: payload
-    })
+    }])
   }
 
   //DELETING THINGS
@@ -110,11 +110,11 @@ export default () => {
 
   const undoPinDelete = () => {
     console.log("click");
-    dispatchEvent({
+    dispatchEvent([{
       type: "SPLICED_PIN",
       pin: p,
       spliceIndex: pinIndex
-    })
+    }])
     toastDispatch({
       type: "REMOVE_TOAST",
       id: p.id
@@ -135,11 +135,11 @@ export default () => {
       type: "EDITING_PIN",
       id: null
     })
-    dispatchEvent({
+    dispatchEvent([{
       type: "DELETED_PIN",
       id: p.id,
       layerId: layerData.filter(layer => layer.id == p.layerId)[0].id
-    })
+    }])
     
   }
 
