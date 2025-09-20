@@ -7,7 +7,7 @@ import { updateMap,getMap } from "@/app/actions/maps";
 import styles from "./styles.module.css"
 import { RiUploadCloudLine } from "@remixicon/react";
 import { ClientSideSuspense } from "@liveblocks/react/suspense";
-import { useMyPresence,useBroadcastEvent,useEventListener,useOthers,useSelf,shallow,useMutation,useStorage} from "@liveblocks/react/suspense";
+import { useMyPresence,useEventListener,useOthers,useSelf,shallow,useMutation,useStorage} from "@liveblocks/react/suspense";
 import { TLayer } from "@/projectTypes";
 import { useOthersMapped } from "@liveblocks/react";
 
@@ -19,7 +19,7 @@ type TProps = {
 
 const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
 
-  const {mapId,layerDispatch,updateMapIcon,updatePageTitle} = useContext(DataContext);
+  const {mapId} = useContext(DataContext);
   
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
@@ -137,23 +137,6 @@ const othersMapped = useOthersMapped(
     localStorage.setItem('map-'+mapId, JSON.stringify({layerData:layerData,mapIcon:mapIcon,pageTitle:pageTitle}));
     updateLastSaved(new Date())
   }
-
-  useEventListener(({event})=> {
-    if(!event) return ; 
-    if(event.type !== "UPDATE_DATA") return ; 
-    const ldTemp = event.data.layerData
-    const {pageTitle,mapIcon} = event.data;
-    //DEACTIVATE ANY DELETED ITEMS
-    checkDeleted(ldTemp,layerData); 
-
-    layerDispatch({
-      type:"REFRESH_LAYERS",
-      newLayers: ldTemp
-    })
-    updatePageTitle(pageTitle);
-    if(mapIcon) updateMapIcon(mapIcon); 
-    localStorage.setItem('map-'+mapId, JSON.stringify({layerData:ldTemp,mapIcon:mapIcon,pageTitle:pageTitle}));
-  })
 
   
 

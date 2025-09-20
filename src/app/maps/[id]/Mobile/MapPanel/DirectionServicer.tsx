@@ -2,11 +2,12 @@ import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps"
 import MobileActiveContext, { TRoute } from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import { useContext,useEffect,useState,useCallback } from "react"
+import useLayerData from "@/app/lib/useLayerData";
 
 export default function ()  {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {tempData,activePin,geolocation,inBounds} = activeData;
-  let {layerData} = useContext(DataContext);
+  const layerData = useLayerData().layers
   const map = useMap(); 
   const routesLibrary = useMapsLibrary('routes');
   const [dirService,updateDirService] = useState<google.maps.DirectionsService|null>(null); 

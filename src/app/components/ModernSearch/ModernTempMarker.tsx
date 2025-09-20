@@ -4,11 +4,12 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 
 import { AdvancedMarker} from "@vis.gl/react-google-maps";
+import useLayerData from "@/app/lib/useLayerData";
 
 export default function ModernTempMarker() {
   const {infoWindowState} = useContext(InfoWindowContext)
   const {activeData} = useContext(ActiveContext); 
-  const {layerData} = useContext(DataContext); 
+  const layerData = useLayerData().layers
   const position = infoWindowState.tempMarkerPosition
   const currentLayer = layerData.find(l => l.id == activeData.activeLayer)
     let activeColor  = "#ffffff"

@@ -51,7 +51,7 @@ const MapPanel = () => {
     }
   },[activeDispatch])
 
-  const {activePin} = activeData; 
+  const {activePin,legendOpen} = activeData; 
   const checkDeleted = (layerDataTemp:TLayer[],layerData:TLayer[]) => {
 
     const pinIds = layerDataTemp.map(l => l.pins).flat().map(p=>p.id);
@@ -92,8 +92,8 @@ const MapPanel = () => {
       style={{inset:0,position:"absolute"}}
       id={"mobile-map"}
     >
-  <Pins  />
-  <Suspense><MobileSearch/></Suspense>
+ {!legendOpen && <> <Pins  />
+  <Suspense><MobileSearch/></Suspense> </>}
   <div style={{position:"fixed",left:24,top:74}}> <UpdaterLive {...{checkDeleted}}firstLoadFunction={(value:"local"|"server"|false,data:TLayer[])=> {
     activeDispatch({
       type: "UPDATE_FIRST_LOAD",

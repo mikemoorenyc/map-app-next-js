@@ -2,7 +2,6 @@ import TextInput from "../TextInput";
 import DropDown from "./DropDown";
 import { useRef,useEffect, useMemo,useState,useCallback, useContext, SyntheticEvent, ChangeEvent } from "react";
 import ActiveContext from "@/app/contexts/ActiveContext";
-import DataContext from "@/app/contexts/DataContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import SearchLogic, { BasicResults } from "./SearchLogic";
 import POICheck from "@/app/maps/[id]/desktop/MapPanel/POICheck";
@@ -12,6 +11,7 @@ import mapMover from "@/app/maps/[id]/desktop/MapPanel/lib/mapMover";
 import AddWindowScreen from "@/app/maps/[id]/desktop/MapPanel/PinEditWindow/AddWindowScreen";
 
 import { TSearchPin } from "./lib/fieldMapping";
+import useLayerData from "@/app/lib/useLayerData";
 
 
 export default function DesktopSearch({clickEvent}:{clickEvent:MapMouseEvent|null}) {
@@ -21,7 +21,7 @@ export default function DesktopSearch({clickEvent}:{clickEvent:MapMouseEvent|nul
   const [increment,updateIncrement] = useState(0)
   const [predictionResults,updatePredictionResults] = useState<BasicResults[]>([]);
   const [predictionChoice,updatePredictionChoice] = useState<string|number>("");
-  const {layerData} = useContext(DataContext)
+  const layerData = useLayerData().layers
   const map = useMap();
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {infoWindowDispatch} = useContext(InfoWindowContext);

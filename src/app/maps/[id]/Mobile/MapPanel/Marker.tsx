@@ -28,41 +28,28 @@ export default  ({pin, activePin,onClick,layer,map}:Props) => {
   if(active) {
     zindex = 9999;
   }
+  const [showing,updateShowing] = useState(true)
 
 
   
-  /*
+  
   useEffect(()=>{
     if(!map) return ; 
-   
-   let zooming = false; 
-   let intTest ; 
-    const setZoom = () => {
-    
-      if(zooming) return ; 
-      intTest = setInterval(()=> {
-        updateShowing(prev => {
-          return !prev
-        })
-      },50)
-      zooming = true; 
-      console.log("zoom");
-    }
-  
-    map.addListener("zoom_changed",setZoom);
-    map.addListener("idle",()=> {
-      clearInterval(intTest)
-      zooming = false; 
-      console.log("idle");
-      updateShowing(true);
 
-    })
+    const boundsCheck = () => {
+      updateShowing(map.getBounds()?.contains(pin.location)||false)
+    }
+   
+   const boundsListener = map.addListener("bounds_changed",boundsCheck);
+   return () => {
+    boundsListener.remove(); 
+   }
 
   },[map])
- */
+ 
  
 
-  
+  if(!showing) return ; 
 
   
   return <AMMemo onClick={markerClick} position={location} zIndex={zindex}>
