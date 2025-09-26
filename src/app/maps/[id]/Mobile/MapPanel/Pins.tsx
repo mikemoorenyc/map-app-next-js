@@ -38,6 +38,7 @@ const PinsWrapper = () => {
   useEffect(()=> {
     if(!map) return ; 
     const updater= () => {
+      if(pinsFlat.length < 75) return ; 
       const updatedIds: (string|number)[] = [];
       const mapBounds = map.getBounds(); 
       pinsFlat.forEach(p => {
@@ -55,9 +56,9 @@ const PinsWrapper = () => {
     }
   },[map])
 
-  pinsFlat = pinsFlat.filter(p => {
-    return inViewIds.includes(p.id);
-  })
+  pinsFlat = useMemo(()=> {
+   return pinsFlat.length <75?pinsFlat:pinsFlat.filter(p=>inViewIds.includes(p.id))
+  },[pinsFlat,inViewIds])
 
   const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
   return <PinsMemo {...p} />
