@@ -18,6 +18,9 @@ a,.a {
     text-decoration: underline;
    }
 }
+a.no-underline:hover {
+    text-decoration:none; 
+}
 *,*:before,*:after {
     box-sizing:border-box;
 }

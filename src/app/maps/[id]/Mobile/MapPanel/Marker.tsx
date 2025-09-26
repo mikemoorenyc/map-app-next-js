@@ -28,28 +28,13 @@ export default  ({pin, activePin,onClick,layer,map}:Props) => {
   if(active) {
     zindex = 9999;
   }
-  const [showing,updateShowing] = useState(true)
+
 
 
   
   
-  useEffect(()=>{
-    if(!map) return ; 
 
-    const boundsCheck = () => {
-      updateShowing(map.getBounds()?.contains(pin.location)||false)
-    }
-   
-   const boundsListener = map.addListener("bounds_changed",boundsCheck);
-   return () => {
-    boundsListener.remove(); 
-   }
-
-  },[map])
  
- 
-
-  if(!showing) return ; 
 
   
   return <AMMemo onClick={markerClick} position={location} zIndex={zindex}>

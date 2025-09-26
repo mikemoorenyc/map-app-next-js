@@ -2,8 +2,15 @@
 
 
 
-import Button from "./components/Button";
-import PageClient from "./PageClient";
+import Button from "../components/Button";
+import PageClient from "../PageClient";
+
+
+export async function generateMetadata() {
+  return {
+    title:"Archived Maps - Map App"
+  }
+}
 
 
 const Page = async function() {
@@ -11,7 +18,7 @@ const Page = async function() {
 
 
   return <>
-  <PageClient list="active"  button={<Button modifiers={["secondary"]} href="/archive">Archived maps</Button>}/>
+  <PageClient list="archived"  button={<Button modifiers={["secondary"]} href="/">Active maps</Button>}/>
 
   
   </>

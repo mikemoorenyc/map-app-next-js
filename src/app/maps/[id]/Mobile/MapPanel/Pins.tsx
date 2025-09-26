@@ -1,4 +1,4 @@
-import { useContext,memo,useCallback ,useMemo} from "react";
+import { useContext,memo,useCallback ,useMemo,useState, useEffect} from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
@@ -20,7 +20,8 @@ const PinsWrapper = () => {
     const map = useMap(); 
     const {disabledLayers, activePin,backState} = useContext(MobileActiveContext).activeData 
     const {activeDispatch} = useContext(MobileActiveContext)
-    const {pinsFlat,findLayer} = useLayerData(); 
+    let {pinsFlat,findLayer} = useLayerData(); 
+    const [inViewIds,updateInViewIds] = useState(pinsFlat.map(p=>p.id));
 
 
   const markerClicked = useCallback((pin:TPin,active:boolean) => {
@@ -34,8 +35,29 @@ const PinsWrapper = () => {
     mapCenterer(map, pin.location);
   },[mapCenterer,map,activeDispatch])
   
+  useEffect(()=> {
+    if(!map) return ; 
+    const updater= () => {
+      const updatedIds: (string|number)[] = [];
+      const mapBounds = map.getBounds(); 
+      pinsFlat.forEach(p => {
+       if(mapBounds?.contains(p.location) && p.id) {
+        updatedIds.push(p.id);
+       } 
+      })
+      updateInViewIds(updatedIds);
+    }
+    const updateCheck = google.maps.event.addListener(map,"idle",updater)
+    
+   
+    return () => {
+      updateCheck.remove(); 
+    }
+  },[map])
 
-  
+  pinsFlat = pinsFlat.filter(p => {
+    return inViewIds.includes(p.id);
+  })
 
   const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
   return <PinsMemo {...p} />

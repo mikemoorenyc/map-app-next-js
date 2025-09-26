@@ -15,6 +15,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
   const {activeData, activeDispatch} = useContext(MobileActiveContext)
   const {geolocation,firstLoad} = activeData;
   const {layerData} = useContext(DataContext); 
+  const [mapMoved,updateMapMoved] = useState(false);
 
   useEffect(()=> {
     boundChecker(checkerData);
@@ -23,9 +24,19 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
     if(firstLoad =="server")return; 
     boundChecker(checkerData);
   },[layerData])
+
+  useEffect(()=> {
+    if(!map) return ; 
+    google.maps.event.addListenerOnce(map,"drag",()=> {
+      console.log("move");
+      updateMapMoved(true);
+    })
+  },[map])
   
   const boundChecker = useCallback((layerData:TLayer[]|null,geo?:{lat:number,lng:number})=> {
+    if(mapMoved) return ;
     if(!layerData||!map) return null; 
+
     let g = geo || geolocation
     const points = layerData.map(l => l.pins).flat().map(p=>p.location);
     if(!points||!points.length) return null; 
@@ -39,7 +50,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
      map.setZoom(15);
     }
     
-  },[map,geolocation,activeDispatch]);
+  },[map,geolocation,activeDispatch,mapMoved]);
 
 
 

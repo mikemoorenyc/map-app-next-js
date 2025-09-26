@@ -5,6 +5,7 @@ color:var(--screen-bg);
 background: var(--screen-text);
 border:1px solid var(--screen-text);
 border-radius: var(--border-radius-md);
+display:inline-flex;
 padding: 11px 12px 12px 12px;
 line-height: 1em;
 position: relative;

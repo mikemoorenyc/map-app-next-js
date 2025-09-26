@@ -2,7 +2,7 @@
 import styles from "./page.module.css"
 import { THomepageMap } from "@/projectTypes"
 
-import { useState,useEffect} from "react"
+import { useState,useEffect, ReactNode} from "react"
 
 import { mapSort } from "./lib/sortMaps"
 
@@ -21,7 +21,7 @@ export type THomepageMapActions = {
   }
 
 
-export default function PageClient({}){
+export default function PageClient({list,header,button}:{list:"archived"|"active",header?:string,button?:ReactNode}){
 
 
 
@@ -92,14 +92,14 @@ export default function PageClient({}){
     firstMaps(); 
   },[loaded])
 
-
+  const theList = mapList[list];
 
   return<ModalProvider><div className={styles.container}>
 
-  <h1 className={`${styles.title} headline-style`}>
+  <h1 className={`${styles.title} headline-style`}><a className="no-underline" href="/">
     <span className={styles.headlineIcon}>💏</span>
     Mike & Danielle&rsquo;s <br/>
-    Map App
+    Map App</a>
   </h1>
 
 
@@ -107,23 +107,21 @@ export default function PageClient({}){
     
     <div className={styles.activeMapContainer}>
 
+      
+
       <ul className={`${styles.activeMapList} list-style-none`}>
-        {mapList.active.map((m,i)=>(
+      {(!theList.length) && <li>No maps</li>}
+        {theList.map((m,i)=>(
          <li key={m.id}> <ActiveCard  actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
 
         ))}
       </ul>
+      {button && <div className={styles.buttonContainer}>
+        {button}
+      </div>}
         
     </div>
-    {mapList.archived.length ? <div>
-    <h4 className={`headline-style ${styles.archiveHeader}`} >Archived Maps</h4>
-    <ul className={`${styles.archiveList} list-style-none`}>
-    {mapList.archived.sort((a, b) => a.title.localeCompare(b.title)).map(m=> {
-      return <li key={m.id}><ArchiveItem actions={actions} appMap={m} /></li>
-    })}
-    </ul>
-  
-  </div>:""}
+    
   
   </div>
   <AddMapButton />

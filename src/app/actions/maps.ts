@@ -161,10 +161,19 @@ const archiveMap = async (id:number,toArchive:boolean): Promise<TMap|false> => {
     
   }
 }
-const updateMap = async function(id:number,pageTitle:string,layerData:TLayer[]|null=null,mapIcon:string="") : Promise<TMap|false>{
+const updateMap = async function(id:number,pageTitle:string,layerData:TLayer[]|null=null,mapIcon?:string) : Promise<TMap|false>{
   if(!table) return false; 
   if(!ddbDocClient) {
     throw new Error('ddb client broekn');
+  }
+  const attrs = {
+      ":title" : pageTitle,
+      ":modified_at" : new Date().toLocaleString(),
+      ":layerData" : layerData || null,
+      ":mapIcon" : mapIcon||undefined
+    }
+  if(!mapIcon) {
+    delete attrs[":mapIcon"];
   }
   const command = {
     TableName:table,
@@ -172,12 +181,7 @@ const updateMap = async function(id:number,pageTitle:string,layerData:TLayer[]|n
       id: id
     },
     UpdateExpression: `set title = :title, modified_at = :modified_at ${layerData ? ", layerData = :layerData" : ""} ${mapIcon? ", mapIcon=:mapIcon":""}`,
-    ExpressionAttributeValues: {
-      ":title" : pageTitle,
-      ":modified_at" : new Date().toLocaleString(),
-      ":layerData" : layerData || null,
-      ":mapIcon" : mapIcon
-    },
+    ExpressionAttributeValues: attrs,
     ReturnValues: "ALL_NEW" as ReturnValue
   }
   const update = await ddbDocClient.send(new UpdateCommand(command));

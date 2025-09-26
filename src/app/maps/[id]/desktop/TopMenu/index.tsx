@@ -78,6 +78,13 @@ const TopMenu = () => {
        bounds.extend(p.location);
       })
     map.fitBounds(bounds,0);
+    if(!pinsFlat.length) {
+      map.setZoom(14);
+      map.setCenter({
+        lat:40.728504,
+        lng: -73.9573446
+      })
+    }
   
 
   },[map])

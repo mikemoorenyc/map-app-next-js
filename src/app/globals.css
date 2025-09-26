@@ -36,6 +36,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+a.no-underline:hover {
+  text-decoration:none; 
+}
 
 @media (prefers-color-scheme: dark) {
   html {
