@@ -56,14 +56,21 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
 
 
 
-  const updatePos = (coords:{latitude:number,longitude:number}) => {
-   
+
+  const updatePos = useCallback((coords:{latitude:number,longitude:number}) => {
+   if(!map) return ; 
     const geolocation = {
       lat:coords.latitude,
       lng:coords.longitude
     }
     activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
-  }
+    const mb = new google.maps.LatLngBounds(); 
+    layerData.map(l=>l.pins).flat().forEach(p=> {
+      mb.extend(p.location);
+    })
+    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:mb.contains(geolocation)})
+    
+  },[map,layerData,activeDispatch])
 
 
 
