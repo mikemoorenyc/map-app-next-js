@@ -17,11 +17,12 @@ type TActiveCardProps = {
   appMap: THomepageMap,
   top:boolean,
   bottom:boolean,
-  actions: THomepageMapActions
+  actions: THomepageMapActions,
+  type?: "archived"|"active"
 }
 
 
-export default function ({appMap,top=false,bottom=false, actions}:TActiveCardProps)  {
+export default function ({appMap,top=false,bottom=false, actions, type="active"}:TActiveCardProps)  {
 
   const [downTime, updateDownTime] = useState(0); 
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function ({appMap,top=false,bottom=false, actions}:TActiveCardPro
     
   
   </div>
-  <MenuButton actions={actions} mapData={appMap} top={top} bottom={bottom} modifiers={["secondary","icon","sm"]} containerClasses={styles.moreButton}/>
+  <MenuButton actions={actions} archived={type=="archived"}mapData={appMap} top={top} bottom={bottom} modifiers={["secondary","icon","sm"]} containerClasses={styles.moreButton}/>
 
 
   </div>

@@ -112,7 +112,7 @@ export default function PageClient({list,header,button}:{list:"archived"|"active
       <ul className={`${styles.activeMapList} list-style-none`}>
       {(!theList.length) && <li>No maps</li>}
         {theList.map((m,i)=>(
-         <li key={m.id}> <ActiveCard  actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
+         <li key={m.id}> <ActiveCard type={list} actions={actions} top={i===0} bottom={i == mapList.active.length - 1} appMap={m} /></li>
 
         ))}
       </ul>
