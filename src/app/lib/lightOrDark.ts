@@ -1,4 +1,4 @@
-function lightOrDark(color:any) {
+function lightOrDark(color:string) : "light"|"dark"{
 
     // Variables for red, green, blue values
     var r, g, b, hsp;
