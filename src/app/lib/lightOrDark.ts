@@ -1,45 +1,47 @@
 function lightOrDark(color:string) : "light"|"dark"{
 
     // Variables for red, green, blue values
-    var r, g, b, hsp;
+    let r = 0, g = 0, b = 0;
     
     // Check the format of the color, HEX or RGB?
-    if (color.match(/^rgb/)) {
+    if (color.startsWith("rgb")) {
 
         // If RGB --> store the red, green, blue values in separate variables
-        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+        const match = color.match(
+      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/
+             );
+
+    if (!match) throw new Error("Invalid RGB color format");
         
-        r = color[1];
-        g = color[2];
-        b = color[3];
+        r = parseInt(match[1], 10);
+        g = parseInt(match[2], 10);
+        b = parseInt(match[3], 10);
     } 
     else {
         
-        // If hex --> Convert it to RGB: http://gist.github.com/983661
-        color = +("0x" + color.slice(1).replace( 
-        color.length < 5 && /./g, '$&$&'));
+        let hex = color.replace(/^#/, "");
+        if (hex.length === 3) {
+             hex = hex
+            .split("")
+            .map((char) => char + char)
+            .join("");
+        
+        const num = parseInt(hex, 16);
+        r = (num >> 16) & 255;
+        g = (num >> 8) & 255;
+        b = num & 255;}
 
-        r = color >> 16;
-        g = color >> 8 & 255;
-        b = color & 255;
     }
     
     // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
-    hsp = Math.sqrt(
+    const hsp = Math.sqrt(
     0.299 * (r * r) +
-    0.587 * (g * g) +
-    0.114 * (b * b)
+      0.587 * (g * g) +
+      0.114 * (b * b)
     );
 
     // Using the HSP value, determine whether the color is light or dark
-    if (hsp>127.5) {
-
-        return 'light';
-    } 
-    else {
-
-        return 'dark';
-    }
+     return hsp > 127.5 ? "light" : "dark";
 }
 
 export default lightOrDark
