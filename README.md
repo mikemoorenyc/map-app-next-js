@@ -1,3 +1,12 @@
+##HOURS SCRAPING
+- add country code, hours and hours savedAt as fields on Pin
+- On pin load, check if data if hours are on pin
+- Check if saved date is more than five days ago
+- If not, use that data
+- If so, query places for currentHours and country code
+- get and save hours, get and save country code
+- 
+
 ## Scrap everything and just use liveblocks datastore
 - on load, check bounds on local
 - use local if no data is available
