@@ -1,7 +1,7 @@
 const openOrClosedLegacy = () => {
 
   const [isOpen,updateIsOpen] = useState(false); 
-  const [hoursToday,updateHoursToday] = useState(null);
+  const [hoursToday,updateHoursToday] = useState("");
   const [holiday,updateHoliday] = useState("");
   
   const dateDiff(today,checkDate) => {
@@ -26,10 +26,41 @@ const openOrClosedLegacy = () => {
     }
     return `${hour - 12}:${minute}pm`;
   }
+  const getHolidays = async (code) => {
+
+    let savedHolidays = localStorage.getItem(`holidays-${code}`);
+    if(savedHolidays) {
+      savedHolidays = JSON.parse(savedHolidays);
+      if(savedHolidays.year == new Date().getFullYear() && savedHolidays.holidays) {
+        setHoliday(savedHolidays.holidays); 
+        return ; 
+      }
+    }
+    
+    let holidays = await fetch(`https://date.nager.at/api/v3/publicholidays/${new Date().getFullYear()}/${code}`);
+    if(!holidays.ok) return ; 
+    holidays = holidays.json().map(h => {
+      const {date,localName,name} = h;
+      return {date,localName,name}; 
+    }); 
+    localStorage.setItem(`holidays-${code}`,JSON.stringify({
+      year: new Date().getFullYear(),holidays
+    })); 
+  }
+  const setHoliday = (holidays) => {
+    const today = new Date(); 
+    const todayHoliday = holidays.find(h => {
+      const hDate = new Date(`${h.date}T00:00:00:`);
+      return today.getFullYear() == hDate.getFullYear() && today.getDate() == hDate.getDate() && today.getMonth() == hDate.getMonth(); 
+    }); 
+    if(!todayHoliday) return ; 
+    updateHoliday(todayHoliday.name||todayHoliday.localName); 
+
+  }
 
 
   useEffect(()=> {
-    updateHoursToday(null); 
+    updateHoursToday(""); 
     let hoursSaved = localStorage.getItem("hours"); 
     if(!hoursSaved) return ; 
     const {hours} = JSON.parse(hoursSaved); 
