@@ -1,5 +1,29 @@
 import { TPhoto } from "@/projectTypes";
 import { NextRequest } from "next/server";
+import countryCodes from "@/app/lib/countryCodes";
+
+
+type THoursResponse = {
+  timezone:string, 
+
+    periods: {
+      open: {
+        day:number,
+        time: string
+      }, 
+      close: {
+        day: number,
+        time: string, 
+      }
+    }[],
+
+  holidays?: {
+    date:string,
+    name:string,
+    localName?:string
+  }[]
+}
+
 
 export  async function GET(req:NextRequest) {
   // Set CORS headers
@@ -15,6 +39,8 @@ export  async function GET(req:NextRequest) {
   const {searchParams} = req.nextUrl
   const title = searchParams.get("title");
   const coords = searchParams.get("coords");
+  const type = searchParams.get("type");
+
   if(!title||!coords) {
     return new Response(null,{status:404})
   }
@@ -44,6 +70,57 @@ export  async function GET(req:NextRequest) {
   if(location.distance > .3) {
     console.log("no close matches");
     return goodResponse([]);
+  }
+  if(type && type == "hours") {
+    console.log(location);
+    const detailsQuery = await fetch(`https://api.content.tripadvisor.com/api/v1/location/${location.location_id}/details?language=en&currency=USD&key=${key}`);
+    if(!detailsQuery.ok) {
+      return new Response(null,{status:404})
+    }
+    let data = await detailsQuery.json(); 
+    console.log(data);
+    const response: Partial<THoursResponse> = {}; 
+    let timezone = data?.timezone; 
+    let hours = data?.hours?.periods; 
+    console.log(timezone,hours);
+    if(!timezone || !hours) {
+      return new Response(null,{status:404})
+    } else {
+      response.timezone = timezone; 
+      response.periods= hours;
+    }
+    //GET COUNTRY CODE; 
+    let code = "";
+    let holidays :{date:string,name:string,localName?:string}[] = []; 
+    if(data.address_obj && data.address_obj.country) {
+      
+      countryCodes.forEach(c => {
+        if(c.name == data.address_obj.country) {
+          code = c.code;
+          return false; 
+        }
+      })
+    }
+    //GET HOLIDAYS
+    if(code.length) {
+      let holidayData = await fetch(`https://date.nager.at/api/v3/PublicHolidays/2025/${code}`);
+      if(holidayData.ok) {
+        holidays = await holidayData.json(); 
+        response.holidays = holidays;
+      }
+    }
+    return new Response(
+       JSON.stringify({hours:response})
+      ,{
+      status:200,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+    )
+    
+
+
   }
 
   //const location = data[0].location_id;

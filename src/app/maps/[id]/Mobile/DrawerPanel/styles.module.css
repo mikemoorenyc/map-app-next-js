@@ -83,28 +83,32 @@ flex-direction: column;
 }
 .dirButton {
   display:flex;
-  flex-direction:column;
-  justify-content: center; 
+ 
   align-items:center; 
 
-  padding: 8px;
+  padding: 6px 8px;
   font-size: 10px;
   color: var(--screen-text);
   text-transform:uppercase; 
+  border-width:1px; 
+  width: 76px;
+
+  border-radius: 9999px; 
+  line-height:1;
+
 }
+
 .destinationIcon {
-  border: 1px solid;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%; 
-  margin-bottom: 6px;
+
 }
 .destinationTime {
     color:var(--screen-text);
+    padding-top:2px;
+    padding-left: 2px; 
 }
 .dirButton svg {
-  width: 18px;
-  height: 18px; 
+  width: 16px;
+  height: 16px; 
 }
 .contentPanel {
   max-height:100%; 

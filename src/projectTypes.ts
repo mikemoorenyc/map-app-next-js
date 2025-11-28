@@ -25,9 +25,11 @@ export type TPlaceDetails = {
     formatted_address?:string, 
     photos?:TPhoto[]
     international_phone_number?:string,
-    url?:string 
-      id: string|number,
-        title: string, 
+    url?:string ,
+    id: string|number,
+    title: string, 
+    countryCode?:string, 
+    hours?: THour[]
 }
 export type TPin = {
   createdBy: TUser,
@@ -40,7 +42,8 @@ export type TPin = {
   icon?:string,
   layerId:number,
   photos?: string[],
-  photos_uploaded?:string
+  photos_uploaded?:string,
+  
 } & TPlaceDetails
 
 export type TPinTemp = Omit<TPin & {
@@ -116,4 +119,27 @@ export type TSvgImgUrl = {
   hasIcon?: boolean,
   color?:string
 }
+
+export type THour = {
+      "open": {
+        "day": number,
+        "hour": number,
+        "minute": number,
+        "date": {
+          "year": number,
+          "month": number,
+          "day": number
+        }
+      },
+      "close"?: {
+        "day": number,
+        "hour": number,
+        "minute": number,
+        "date": {
+          "year": number,
+          "month": number,
+          "day": number
+        }
+      }
+    }
 

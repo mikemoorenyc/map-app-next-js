@@ -84,7 +84,9 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
        timeout: 5000,
         maximumAge: 0,
       }
+      console.log(navigator.geolocation);
     navigator.geolocation.getCurrentPosition((e)=>{
+  
       updatePos(e.coords);
       if(firstLoad === "server") {
         boundChecker(layerData,{
@@ -110,6 +112,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
       
     }, ()=>{}, options);
     const watcher = navigator.geolocation.watchPosition(throttle((e) => {
+      console.log("move");
       updatePos(e.coords)
     },5000),()=>{},options);
 

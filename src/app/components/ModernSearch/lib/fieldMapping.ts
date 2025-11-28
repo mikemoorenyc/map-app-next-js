@@ -15,6 +15,9 @@ export type FieldMap = {
   skip?:boolean
 };
 
+
+
+
 export const fieldMapping: FieldMap[] = [
   { source: "id", target: "id" },
   { source: "displayName", target: "title"},
@@ -22,7 +25,8 @@ export const fieldMapping: FieldMap[] = [
   { source: "websiteURI", target: "website" },
   { source: "googleMapsURI", target: "url" },
   {source:"location",target:"location",transform:(v)=>v?.toJSON()},
-  {source:"viewport",target:"viewport",transform:(v)=>v?.toJSON()}
+  {source:"viewport",target:"viewport",transform:(v)=>v?.toJSON()},
+
 
 ];
 

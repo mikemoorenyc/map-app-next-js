@@ -5,13 +5,16 @@ import { RiPhoneLine, RiSafariLine, } from "@remixicon/react";
 import { Suspense,lazy ,ReactNode} from "react";
 import ItemRow from "./ItemRow";
 import { TPin, TPlaceDetails } from "@/projectTypes";
+import { TempData } from "@/app/contexts/MobileActiveContext";
 
 const OpenOrClosed = lazy(()=>import("./OpenOrClosed"))
 
 type TProps = {
-    placeData:TPlaceDetails,
+    placeData:TPin|TempData,
     isMobile?:boolean,
-    inBounds?:boolean
+    inBounds?:boolean,
+    lat?:number,
+    lng?:number
 }
 
 
@@ -20,8 +23,8 @@ const LocationDetails =  ({placeData,isMobile,inBounds}:TProps) => {
   
 
     return <div className={styles.locationDetails}>
-        {inBounds && process.env.NODE_ENV !== "development" && <Suspense><OpenOrClosed  placeData={placeData} /></Suspense>}
         
+        {inBounds  && <Suspense><OpenOrClosed placeData={placeData} /></Suspense>}
         {formatted_address && <ItemRow>{formatted_address}</ItemRow>}
         {international_phone_number && <ItemRow>
             <div className="LocationDetails-item-icon"><RiPhoneLine className={styles.svg} /></div> <a href={`tel:${international_phone_number}`}>{international_phone_number}</a>

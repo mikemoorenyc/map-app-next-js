@@ -65,15 +65,16 @@ export default function ({pin,geolocation}:{pin:DirectionNeeds,geolocation:TGeol
 
     {[...["TRANSIT"],...methods].map((m,i)=> {
       const r = rMerged[m as keyof DirectionOptions];
+
   
       const mode = m == "cycling"?"bicycling":m.toLowerCase(); 
-      if(!r?.value||!r?.text) return ; 
-      const time = r ? (r.value <= 3600 ? r.text: Math.floor(r.value/3600) + " hr"+(Math.floor(r.value/3600)>1?"s":"")): "Una"
+  
+      const time = r ? (r.value <= 3600 ? r.text: Math.floor(r.value/3600) + " hr"+(Math.floor(r.value/3600)>1?"s":"")): "-"
 
       const inside = <> <span className={`${styles.destinationIcon} flex-center-center`}>{icons[i]}</span>
 
         
-        <span className={styles.destinationTime} style={{visibility:!r?"hidden":undefined}}>{time}</span>
+        <span className={styles.destinationTime} >{time.replace("mins","min").replace("hrs","hr")}</span>
       </>
       const containsLink = pin?.formatted_address; 
 

@@ -1,54 +1,20 @@
 import styles from "./styles.module.css"
 import ItemRow from "./ItemRow";
-import { useEffect,useState } from "react"
+import { useContext, useEffect,useState } from "react"
 import { useMap } from "@vis.gl/react-google-maps";
 import { RiTimeLine } from "@remixicon/react";
 import { TPin, TPinTemp, TPlaceDetails } from "@/projectTypes";
-
-const confirmOpenTime = (openData:google.maps.places.OpeningHours) => {
-  //Test if still open
-  const rn = new Date(); 
-  if(openData?.nextCloseTime) {
-    if(rn > openData.nextCloseTime) return false; 
-  }
-  if(openData?.nextOpenTime) {
-    if(rn > openData.nextOpenTime) return true; 
-  }
-  return false; 
-}
-
-function getRelativeOpeningTime(openingTime:string|Date) {
-  const now = new Date().getTime();
-  const openingDate = new Date(openingTime);
-  const openingDatems = new Date(openingTime).getTime();
-
-  const diffMs = openingDatems - now;
-
-  if (diffMs <= 0) return {text:"Open now"}; // or "Now open"
-
-  const diffMinutes = Math.round(diffMs / 60000);
-  const diffHours = Math.floor(diffMinutes / 60);
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  const date = `Opens ${openingDate.toLocaleString('en-us', {  weekday: 'short'})} at ${openingDate.toLocaleTimeString("en-US",{
-  hour: 'numeric',
-  minute: '2-digit',
-  hour12: true,
-})}`
+import { TempData } from "@/app/contexts/MobileActiveContext";
+import testData from "./testData";
 
 
-  if (diffMinutes < 60) {
-    return {text:`Opens in ${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""}`,alert:false};
-  } else if (diffHours < 12) {
-    return {text:date,alert:true};
-  } else if (diffDays === 1) {
-    return {text:date,alert:true};;
-  } else {
-    return {text:date,alert:true};;
-  }
-}
 
-export default function({placeData}:{placeData:TPlaceDetails}) {
+
+
+
+
+export default function({placeData}:{placeData:TPin|TempData}) {
+
   
   let id;
   if(placeData?.id) {
@@ -113,52 +79,57 @@ export default function({placeData}:{placeData:TPlaceDetails}) {
 
 
   }
+  const getHoursData = async (pin:TPin|TempData) => {
+    console.log("data");
+    const hoursCheck = await fetch(`/api/tripadvisor?type=hours&title=${pin.title}&coords=${pin.location.lat},${pin.location.lng}&addr=${pin.formatted_address}`);
+    if(!hoursCheck.ok) {
+      console.log( hoursCheck.status);
+      return false; 
+    }
+    console.log(await hoursCheck.json());
 
+
+  }
+  const checker = () => {
+    const {timezone,periods,holidays} = testData.hours;
+    const today = new Date(); 
+    const todayHours = ""; 
+    let weekday = today.getDay();
+    if(weekday === 0) {
+      weekday = 7; 
+    }
+    periods.forEach(p => {
+      if(p.open.day !== weekday) {
+        return ; 
+      }
+      const todayHours = today.getHours() * 100  + today.getMinutes();
+      if(todayHours >= parseInt(p.open.time) && todayHours <= parseInt(p.close.time)) {
+        console.log("open");
+        return false; 
+      } else {
+        
+      }
+   
+    })
+    //CheckHoliday
+    holidays.forEach(h => {
+      const date = new Date(h.date+"T08:00:00");
+      console.log(date.getFullYear(),date.getDate(),date.getMonth()+1,h.name);
+      console.log(today.getFullYear(),today.getDate(),today.getMonth()+1);
+      if(date.getFullYear() ===today.getFullYear() && date.getDate() === today.getDate() && date.getMonth() === today.getMonth() ) {
+        console.log("no work today");
+        return false; 
+      }
+    })
+
+  }
   useEffect(()=> {
     if(!map ) return ; 
-    const id = placeData?.id;
-
-    const oldData = (date:Date) => {
-      
-       const targetDate = new Date(date).getTime(); // Example date
-      const now = new Date().getTime();
-      const oneDayInMilliseconds = 12 * 60 * 60 * 1000;
-      return targetDate + oneDayInMilliseconds < now
-    }
-
-    if(!sessionStorage.getItem('open_status_'+id)) {
-      getData(); 
-    }
-    let seshData : google.maps.places.OpeningHours | string = ""
-    const savedData = sessionStorage.getItem("open_status_"+id)
-    if(savedData) {
-       seshData  = JSON.parse(savedData)
-    }
-    if(typeof seshData === "string") {
-      return ;
-    }
-    if(seshData?.nextOpenTime && oldData(seshData?.nextOpenTime)) {
-      console.log("old")
-      getData(); 
-      return ; 
-    }
-    if(seshData?.nextCloseTime && oldData(seshData?.nextCloseTime)) {
-      console.log("old")
-      getData();
-      return; 
-    }
-    if(confirmOpenTime(seshData)) {
-      
-      updateOpeningInfo({text:"Open now",alert:false});
-      return ; 
-    } 
-    if(seshData?.nextOpenTime) {
-      updateOpeningInfo(getRelativeOpeningTime(seshData.nextOpenTime))
-      return; 
-    }
+    console.log(placeData);
+    //getHoursData(placeData);
+    checker(); 
     
-    updateOpeningInfo({text:"Closed",alert:true}); 
-    
+  
     
   },[map,placeData])
 
