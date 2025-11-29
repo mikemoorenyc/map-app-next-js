@@ -32,7 +32,12 @@ import useLiveEditing from "@/app/lib/useLiveEditing";
       hString = hour < 10 ? "0"+hour :hour; 
     }
     if(hour > 12) {
-      hString = "0"+(hour-12);
+      if(hour - 12 < 10) {
+        hString = "0"+(hour-12);
+      } else {
+        hString=hour-12;
+      }
+      
     }
     mString = minute < 10 ? "0"+minute : minute;
     return `${hString}:${mString}${ampm}`
@@ -47,6 +52,7 @@ import useLiveEditing from "@/app/lib/useLiveEditing";
   }
  
 export default function OpenOrClosed({pin}:{pin:TPin|TempData}) {
+
   const [isOpen,updateIsOpen] = useState<null|boolean>(null);
   const [hoursToday,updateHoursToday] = useState("");
   const [holiday,updateHoliday] = useState("");
@@ -99,12 +105,14 @@ export default function OpenOrClosed({pin}:{pin:TPin|TempData}) {
        url = `https://places.googleapis.com/v1/places/${pin.id}?fields=currentOpeningHours,addressComponents&key=${process.env.NEXT_PUBLIC_MAP_API_KEY}`
     }
     let dataResponse = await fetch(url);
+
     if(!dataResponse.ok) {
       return; 
     }
     const data = await dataResponse.json() ; 
     const countryCode = getCountryCode(data.addressComponents); 
     console.log(countryCode);
+    if(!data.currentOpeningHours) return ; 
     const hours = data.currentOpeningHours.periods; 
     console.log(tooOldCheck(hours));
     hoursCheck(hours);
@@ -156,10 +164,15 @@ export default function OpenOrClosed({pin}:{pin:TPin|TempData}) {
 
   
   useEffect(()=> {
+    updateHoursToday("");
+    updateHoliday("");
+    updateIsOpen(null);
    if(!pin) return ;
 
     pinGet();
   },[pin])
+
+  if(!hoursToday) return null; 
   
   return<ItemRow className={!isOpen ? styles.openOrNotClosed:""}>
     <RiTimeLine className={styles.svg}/>
