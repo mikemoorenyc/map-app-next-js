@@ -11,9 +11,9 @@ export default function useLayerData() {
   const storageLayerData = useStorage(root => root.map.layerData);
   const storagePageTitle = useStorage(root => root.map.pageTitle);
   const storageMapIcon = useStorage(root=>root.map.mapIcon);
-  layerData = storageLayerData||layerData;
-  pageTitle = storagePageTitle||pageTitle;
-  mapIcon = storageMapIcon||mapIcon;
+  layerData = storageLayerData||[];
+  pageTitle = storagePageTitle||"";
+  mapIcon = storageMapIcon||"";
   
 
 
@@ -32,6 +32,7 @@ const pinsFlat = layerData.map(l=>l.pins).flat()
 const layers = layerData
 
 const findLayer = useCallback((id:number):TLayer => {
+
   const theLayer = layerData.find(l => l.id == id);
   if(!theLayer) {
     throw new Error("Can't find layer"+id);

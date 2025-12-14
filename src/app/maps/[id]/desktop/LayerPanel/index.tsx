@@ -30,14 +30,16 @@ const LayerPanel = ()=> {
     const layerPanelEl = useRef<HTMLDivElement>(null);
 
     useEffect(()=> {
-      console.log(layerPanelEl);
+
       if(!layerPanelEl) return ; 
       activeDispatch({type: "SET_LAYER_PANEL_REF", layerPanelRef:layerPanelEl.current})
 
     },[layerPanelEl])
 
     useEffect(()=> {
-
+      console.log(layerData);
+      if(!layerData.length) return ;
+    
        setItems(layerData)
     },[layerData])
  
@@ -118,7 +120,7 @@ return (
                   >
                     <LayerSection
                     key={l.id}
-                    layerId={l.id}
+                    layer={l}
                   
                     activeId={activeId}
                     >
