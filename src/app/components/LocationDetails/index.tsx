@@ -7,7 +7,7 @@ import ItemRow from "./ItemRow";
 import { TPin, TPlaceDetails } from "@/projectTypes";
 import { TempData } from "@/app/contexts/MobileActiveContext";
 
-const OpenOrClosed = lazy(()=>import("./OpenOrClosed"))
+const OpenOrClosed = lazy(()=>import("./OpenOrClosed/OpenOrClosed"))
 
 type TProps = {
     placeData:TPin|TempData,
@@ -24,7 +24,7 @@ const LocationDetails =  ({placeData,isMobile,inBounds}:TProps) => {
 
     return <div className={styles.locationDetails}>
         
-        {inBounds  && <Suspense><OpenOrClosed placeData={placeData} /></Suspense>}
+        {inBounds  && <Suspense><OpenOrClosed pin={placeData} /></Suspense>}
         {formatted_address && <ItemRow>{formatted_address}</ItemRow>}
         {international_phone_number && <ItemRow>
             <div className="LocationDetails-item-icon"><RiPhoneLine className={styles.svg} /></div> <a href={`tel:${international_phone_number}`}>{international_phone_number}</a>
