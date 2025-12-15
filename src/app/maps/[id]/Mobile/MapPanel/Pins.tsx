@@ -1,4 +1,4 @@
-import { useContext,memo,useCallback ,useMemo,useState, useEffect} from "react";
+import { useRef,useContext,memo,useCallback ,useMemo,useState, useEffect} from "react";
 import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
@@ -24,6 +24,11 @@ const PinsWrapper = () => {
     const [inViewIds,updateInViewIds] = useState(pinsFlat.map(p=>p.id));
 
 
+
+    useEffect(() => {
+
+      pinsRef.current = pinsFlat;
+    }, [pinsFlat]);
   const markerClicked = useCallback((pin:TPin,active:boolean) => {
     if(active||!map) {
       
@@ -33,22 +38,40 @@ const PinsWrapper = () => {
     activeDispatch({type:"DRAWER_STATE",state:"open"})
     activeDispatch({type:"BACK_STATE",state:backState == "back_to_legend"? "back_to_legend":"back_to_base"})
     mapCenterer(map, pin.location);
-  },[mapCenterer,map,activeDispatch])
-  
-  useEffect(()=> {
+  },[mapCenterer,map,activeDispatch]);
+
+
+
+   const pinsRef = useRef<typeof pinsFlat>(pinsFlat);
+
+    useEffect(() => {
+      pinsRef.current = pinsFlat;
+    }, [pinsFlat]);
+
+
+
+  const updater = useCallback(()=> {
     if(!map) return ; 
-    const updater= () => {
-      if(pinsFlat.length < 75) return ; 
+    const pins = pinsFlat; 
+
+      if(pins.length < 75) return ; 
+      console.log("pin check")
       const updatedIds: (string|number)[] = [];
       const mapBounds = map.getBounds(); 
-      pinsFlat.forEach(p => {
+      pins.forEach(p => {
        if(mapBounds?.contains(p.location) && p.id) {
         updatedIds.push(p.id);
        } 
       })
       updateInViewIds(updatedIds);
-    }
-    const updateCheck = google.maps.event.addListener(map,"idle",updater)
+
+  },[map,pinsFlat]);
+
+  useEffect(()=> {
+    if(!map) return ; 
+ 
+    const updateCheck = google.maps.event.addListener(map,"idle",updater);
+    updater(); 
     
    
     return () => {
@@ -61,6 +84,7 @@ const PinsWrapper = () => {
   },[pinsFlat,inViewIds])
 
   const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
+ 
   return <PinsMemo {...p} />
 
 }

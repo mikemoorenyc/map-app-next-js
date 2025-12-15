@@ -11,9 +11,9 @@ export default function useLayerData() {
   const storageLayerData = useStorage(root => root.map.layerData);
   const storagePageTitle = useStorage(root => root.map.pageTitle);
   const storageMapIcon = useStorage(root=>root.map.mapIcon);
-  layerData = storageLayerData||[];
-  pageTitle = storagePageTitle||"";
-  mapIcon = storageMapIcon||"";
+  layerData = storageLayerData||layerData;
+  pageTitle = storagePageTitle||pageTitle;
+  mapIcon = storageMapIcon||mapIcon;
   
 
 
