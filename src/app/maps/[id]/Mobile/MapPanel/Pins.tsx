@@ -12,7 +12,8 @@ import { TLayer, TPin } from "@/projectTypes";
       findLayer:(number:number)=>TLayer,
       markerClicked: (p:TPin,active:boolean)=>void,
       activePin: string|number|null, 
-      map:google.maps.Map|null
+      map:google.maps.Map|null,
+
     }
   
 
@@ -21,14 +22,10 @@ const PinsWrapper = () => {
     const {disabledLayers, activePin,backState} = useContext(MobileActiveContext).activeData 
     const {activeDispatch} = useContext(MobileActiveContext)
     let {pinsFlat,findLayer} = useLayerData(); 
-    const [inViewIds,updateInViewIds] = useState(pinsFlat.map(p=>p.id));
+    const [mapBounds,updateMapBounds] = useState<google.maps.LatLngBounds|null>(null)
+  
 
 
-
-    useEffect(() => {
-
-      pinsRef.current = pinsFlat;
-    }, [pinsFlat]);
   const markerClicked = useCallback((pin:TPin,active:boolean) => {
     if(active||!map) {
       
@@ -42,50 +39,44 @@ const PinsWrapper = () => {
 
 
 
-   const pinsRef = useRef<typeof pinsFlat>(pinsFlat);
-
-    useEffect(() => {
-      pinsRef.current = pinsFlat;
-    }, [pinsFlat]);
 
 
 
-  const updater = useCallback(()=> {
+
+  const updater = useCallback(() => {
     if(!map) return ; 
-    const pins = pinsFlat; 
+    const bounds = map.getBounds()
+    if(!bounds) return ;
+    updateMapBounds(bounds);
 
-      if(pins.length < 75) return ; 
-      console.log("pin check")
-      const updatedIds: (string|number)[] = [];
-      const mapBounds = map.getBounds(); 
-      pins.forEach(p => {
-       if(mapBounds?.contains(p.location) && p.id) {
-        updatedIds.push(p.id);
-       } 
-      })
-      updateInViewIds(updatedIds);
+  }, [map]);
 
-  },[map,pinsFlat]);
 
-  useEffect(()=> {
-    if(!map) return ; 
- 
-    const updateCheck = google.maps.event.addListener(map,"idle",updater);
-    updater(); 
-    
-   
-    return () => {
-      updateCheck.remove(); 
-    }
-  },[map])
+
+useEffect(() => {
+    if (!map) return;
+
+    const listener = google.maps.event.addListener(map, "idle", updater);
+    updater(); // initial run
+    return () => listener.remove();
+  }, [map, updater]);
+
+  // Also update whenever pins change (async data)
 
   pinsFlat = useMemo(()=> {
-   return pinsFlat.length <75?pinsFlat:pinsFlat.filter(p=>inViewIds.includes(p.id))
-  },[pinsFlat,inViewIds])
+    if(pinsFlat.length < 75) return pinsFlat;
+    if(!mapBounds) return pinsFlat;
+
+    return pinsFlat.filter(p => mapBounds.contains(p.location));
+
+  },[pinsFlat,mapBounds])
+
+
+  
 
   const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
  
-  return <PinsMemo {...p} />
+  return <PinsMemo {...p}  />
 
 }
 
@@ -107,7 +98,7 @@ const Pins = ({pinsFlat,disabledLayers,findLayer,markerClicked,activePin,map}:Pr
 
   return <>
 
-  {pinsFlat.reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={layerMap[pin.id]} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
+  {[...pinsFlat].reverse().filter(p => !disabledLayers.includes(p.layerId)).map((pin)=><TheMarker map={map} layer={layerMap[pin.id]} onClick={markerClicked} activePin={activePin} pin={pin}  key={pin.id}/>)}
 
 
   </>

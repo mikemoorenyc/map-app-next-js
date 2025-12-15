@@ -28,8 +28,10 @@ const pinIds = useMemo(()=> {
  return layerData.map(l => l.pins).flat().map(p=>p.id);
 },[layerData])
 const layerIds = useMemo(()=> layerData.map(l=>l.id),[layerData]);
-const pinsFlat = layerData.map(l=>l.pins).flat()
-const layers = layerData
+const pinsFlat = useStorage(root =>
+  root.map.layerData.flatMap(l => l.pins)
+)||[];
+const layers = useMemo(()=>layerData,[layerData]);
 
 const findLayer = useCallback((id:number):TLayer => {
 
