@@ -107,11 +107,13 @@ const LayerEdit = () => {
   }
 
   const updateColor = (color:string) => {
+    console.log(color,lightOrDark(color));
     updateTempLayerData(prev => {
       const payload = {
         color: color,
         lightOrDark: lightOrDark(color)
       };
+   
       return {...prev,...payload};
 
     })
