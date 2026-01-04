@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 export default function LiveBlocksContainer({user,serverId,children}:{user:TUser,serverId:string,children:ReactNode}) {
   
   return(
-    <LiveblocksProvider throttle={500} authEndpoint={async ()=> {
+    <LiveblocksProvider throttle={1000} authEndpoint={async ()=> {
       const response = await fetch("/api/liveblocks-auth",{
         method:"POST",
         headers: {

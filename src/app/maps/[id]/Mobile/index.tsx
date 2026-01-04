@@ -22,6 +22,7 @@ const Mobile = ({serverId,user}:TProps) => {
   if(!serverId||!user) return false; 
 
 useEffect(()=> {
+  sessionStorage.setItem("sessionStarted","yes");
   localStorage.setItem("last-viewed",window.location.href.toLowerCase());
 },[])
 

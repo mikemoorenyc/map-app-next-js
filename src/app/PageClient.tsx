@@ -12,6 +12,7 @@ import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
 import { ModalProvider } from "./contexts/ModalContext"
 import { getAllMaps } from "./actions/maps"
+import { useRouter } from "next/navigation"
 const localStore : string|undefined = process.env.NEXT_PUBLIC_LOCAL_MAP
 
 export type THomepageMapActions = {
@@ -22,7 +23,7 @@ export type THomepageMapActions = {
 
 
 export default function PageClient({list,header,button}:{list:"archived"|"active",header?:string,button?:ReactNode}){
-
+  const router = useRouter(); 
 
 
   const [loaded,updateLoaded] = useState(false);
@@ -57,7 +58,18 @@ export default function PageClient({list,header,button}:{list:"archived"|"active
     
   }
   useEffect(()=> {
+    const current = window.location.href;
+    const newSesh = sessionStorage.getItem("sessionStarted");
     const lastViewed = localStorage.getItem("last-viewed");
+    console.log(newSesh );
+    if(!newSesh ) {
+      sessionStorage.setItem("sessionStarted","yes");
+      if(lastViewed && lastViewed != current) {
+        router.replace(lastViewed); 
+      }
+    }
+    localStorage.setItem("last-viewed",current);
+    
     console.log(lastViewed);
 
    
