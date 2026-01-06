@@ -1,10 +1,11 @@
 
-
+import { getAllMaps } from "../actions/maps";
 
 
 import Button from "../components/Button";
 import PageClient from "../PageClient";
 
+export const revalidate = 3600 * 2 // invalidate every hour
 
 export async function generateMetadata() {
   return {
@@ -15,10 +16,11 @@ export async function generateMetadata() {
 
 const Page = async function() {
   
-
+const maps = await getAllMaps(); 
+    if(!maps) return ; 
 
   return <>
-  <PageClient list="archived"  button={<Button modifiers={["secondary"]} href="/">Active maps</Button>}/>
+  <PageClient startData={maps}  list="archived"  button={<Button modifiers={["secondary"]} href="/">Active maps</Button>}/>
 
   
   </>

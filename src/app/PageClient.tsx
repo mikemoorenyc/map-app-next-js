@@ -15,6 +15,8 @@ import { getAllMaps } from "./actions/maps"
 import { useRouter } from "next/navigation"
 const localStore : string|undefined = process.env.NEXT_PUBLIC_LOCAL_MAP
 
+type TMapList = {all:THomepageMap[],active:THomepageMap[],archived:THomepageMap[]}
+
 export type THomepageMapActions = {
     archive: (id:number,archived:boolean)=>void,
     move:(id:number,move:boolean)=>void,
@@ -22,14 +24,14 @@ export type THomepageMapActions = {
   }
 
 
-export default function PageClient({list,header,button}:{list:"archived"|"active",header?:string,button?:ReactNode}){
+export default function PageClient({list,header,button,startData}:{list:"archived"|"active",header?:string,button?:ReactNode,startData:THomepageMap[]}){
   const router = useRouter(); 
 
 
   const [loaded,updateLoaded] = useState(false);
 
 
-  const [mapList,updateMapList] = useState<{all:THomepageMap[],active:THomepageMap[],archived:THomepageMap[]}>( {all:[],active:[],archived:[]});
+  const [mapList,updateMapList] = useState<TMapList>( mapSort(startData,"first maps"));
  
 
   const updater = (map: THomepageMap[]) => {

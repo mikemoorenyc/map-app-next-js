@@ -1,3 +1,4 @@
+"use client"
 import useDarkMode from "@/app/lib/useDarkMode";
 import { THomepageMap } from "@/projectTypes";
 import { useState ,useEffect} from "react";
