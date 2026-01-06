@@ -8,7 +8,7 @@ import { Session ,User} from "next-auth";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 import { TMap,THomepageMap,TMapUpdateValues,TLayer,TUser } from "@/projectTypes";
 import safeUser from "../lib/safeUser";
-
+import { revalidatePath } from "next/cache";
 
 
 const table = process.env.TABLE_NAME
@@ -62,6 +62,7 @@ if(!session || !session?.user) {
     }
     try {
       const data = await ddbDocClient.send(new PutCommand(payload));
+      revalidatePath('/')
       const map = await getMap(id)
       return map; 
    
@@ -154,6 +155,7 @@ const archiveMap = async (id:number,toArchive:boolean): Promise<TMap|false> => {
     }
     const setArchived = await ddbDocClient.send(new UpdateCommand(command));
     console.log(setArchived); 
+    revalidatePath('/')
     return await getMap(id); 
   } catch(err) {
     console.log("error",err); 
@@ -185,6 +187,7 @@ const updateMap = async function(id:number,pageTitle:string,layerData:TLayer[]|n
     ReturnValues: "ALL_NEW" as ReturnValue
   }
   const update = await ddbDocClient.send(new UpdateCommand(command));
+  revalidatePath('/')
   const mapData = await getMap(id)  
   return mapData; 
 
@@ -202,6 +205,7 @@ const deleteMap = async function(id:number):Promise<THomepageMap[]|false >{
   const deleteItem = await ddbDocClient.send(new DeleteCommand(command));
   console.log(deleteItem);
   //return deleteItem; 
+  revalidatePath('/')
   
   return getAllMaps(); 
 
