@@ -5,7 +5,7 @@ import { getAllMaps } from "../actions/maps";
 import Button from "../components/Button";
 import PageClient from "../PageClient";
 
-export const revalidate = 3600 * 2 // invalidate every hour
+export const revalidate = 7200 // invalidate every hour
 
 export async function generateMetadata() {
   return {
