@@ -33,6 +33,7 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
   /*const markerString = pins.map(p => {
     return `${p.location.lat},${p.location.lng}`
   }).join("|")*/
+  if(darkMode === null) return ;
 
 
   return <img className={className} 
