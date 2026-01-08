@@ -28,7 +28,7 @@ export default function PageClient({list,header,button,startData}:{list:"archive
   const router = useRouter(); 
 
 
-  const [loaded,updateLoaded] = useState(false);
+ 
 
 
   const [mapList,updateMapList] = useState<TMapList>( mapSort(startData,"first maps"));
@@ -58,6 +58,7 @@ export default function PageClient({list,header,button,startData}:{list:"archive
       localStorage.setItem(localStore,JSON.stringify(theList));
     }
     
+    
   }
   useEffect(()=> {
     const current = window.location.href;
@@ -80,31 +81,13 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     
   },[])
   
-  useEffect(()=> {
-    let listData;
-    if(localStore) {
-      listData = localStorage.getItem(localStore);
-    }
-    
 
-    if(listData) {
-
-      updateMapList(JSON.parse(listData));
-    }
-    
-    updateLoaded(true);
-
-    
-   
-
-
-  },[])
   
 
   useEffect(()=> {
-    if(!loaded) return ; 
+
     firstMaps(); 
-  },[loaded])
+  },[])
 
   const theList = mapList[list];
 
