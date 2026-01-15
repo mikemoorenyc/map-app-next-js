@@ -1,7 +1,7 @@
 import styles from "./LayerSelector.module.css"
 
-import svgImgUrl from "@/app/lib/svgImgUrl"
-import useLayerData from "@/app/lib/useLayerData"
+import svgImgUrl from "@/_lib/svgImgUrl"
+import useLayerData from "@/_lib/useLayerData"
 import { TPin } from "@/projectTypes";
 import { RiArrowDownSLine } from "@remixicon/react"
 

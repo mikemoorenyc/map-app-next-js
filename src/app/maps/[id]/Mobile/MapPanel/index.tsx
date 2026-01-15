@@ -2,16 +2,16 @@
 import {Suspense, useContext ,useEffect,useState,lazy} from "react"
 import { APIProvider, Map, MapMouseEvent, useMapsLibrary } from "@vis.gl/react-google-maps"
 import Pins from "./Pins"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+import MobileActiveContext from "@/_contexts/MobileActiveContext"
 import GeoLocation from "./GeoLocation"
-import UpdaterLive from "@/app/components/UpdaterLive/UpdaterLive"
+import UpdaterLive from "@/_components/UpdaterLive/UpdaterLive"
 import DrawerPanel from "../DrawerPanel"
 import DirectionServicer from "./DirectionServicer"
 import { memo, useCallback } from "react"
-import Prescence from "../../../../components/Prescence"
+import Prescence from "@/_components/Prescence"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { TLayer } from "@/projectTypes"
-import DataContext from "@/app/contexts/DataContext"
+import DataContext from "@/_contexts/DataContext"
 
 
 const MobileSearch = lazy(()=>import("./MobileSearch"));

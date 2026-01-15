@@ -1,10 +1,10 @@
 import { RiFocus3Line } from "@remixicon/react";
 import styles from "./styles.module.css";
-import Button from "@/app/components/Button";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import Button from "@/_components/Button";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 import { SyntheticEvent, useCallback, useContext } from "react";
-import useMapMover from "@/app/lib/useMapMover";
-import useLayerData from "@/app/lib/useLayerData";
+import useMapMover from "@/_lib/useMapMover";
+import useLayerData from "@/_lib/useLayerData";
 import { useMap } from "@vis.gl/react-google-maps";
 
 export default function ()  {

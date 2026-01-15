@@ -1,6 +1,6 @@
-import Pin from '../../sharedComponents/Pin';
+import Pin from '../../../../../_components/Pin';
 import { useEffect,useRef,useContext, SyntheticEvent } from 'react';
-import ActiveContext from '@/app/contexts/ActiveContext';
+
 
 type TProps = {
   p:TPin,
@@ -10,36 +10,59 @@ type TProps = {
 
 import styles from "./PinItem.module.css"
 import { TLayer, TPin } from '@/projectTypes';
+import useActiveStore from '@/_contexts/useActiveStore';
+
 const PinItem = (props:TProps) => {
   const {p,isDragging,layer} = props;
-  const {activeData,activeDispatch} = useContext(ActiveContext)
+  const editingPin = useActiveStore(s=>s.editingPin)
+  const addPinItemRef = useActiveStore(s=>s.addPinItemRefs);
+  const updateEditingPin = useActiveStore(s=>s.updateEditingPin)
+  const hoveringPin = useActiveStore(s=>s.hovering)
+  const updateHoveringPin = useActiveStore(s=>s.updateHovering)
 
-  const isActive = p.id == activeData.editingPin;
-  const pinEl = useRef(null);
+  const isActive = p.id == editingPin;
+  const pinEl = useRef<null|HTMLDivElement>(null);
   useEffect(()=> {
-        if(!pinEl) return ; 
-        activeDispatch({type: "ADD_PIN_ITEM_REF", pinItemRef: {
-            ref: pinEl.current, 
-            id: p.id
-        }})
+    if(!pinEl || !pinEl.current) return ; 
+    addPinItemRef({
+      ref: pinEl.current, 
+      id: p.id
+    })
+
+    const listenEvent = (event:CustomEvent) => {
+      const {id} = event.detail
+      if(id !== p.id) return ;
+      if(!pinEl || !pinEl.current) return ; 
+      pinEl.current.scrollIntoView({block:"center"});
+
+    }
+    window.addEventListener("pinClicked",listenEvent);
+    return () => {
+      window.removeEventListener("pinClicked",listenEvent)
+    }
+ 
   },[pinEl])
+  
   const handleClick = (e:SyntheticEvent) => {
     e.preventDefault();
-    if(activeData.editingPin == p.id) return ; 
-      activeDispatch({
-        type: "EDITING_PIN", 
-        id: p.id,
-        noViewScroll: true
-    })
+    if(editingPin == p.id) return ; 
+      updateEditingPin(p.id);
+
   }
   return <div
-    onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:p.id})}}
-    onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}}
+    onMouseEnter={()=>{
+   
+      updateHoveringPin(p.id)
+    }}
+    onMouseLeave={()=>{
+  
+      updateHoveringPin(null)
+    }}
     ref={pinEl}
     onClick={handleClick}
     key={p.id}
     
-    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
+    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
   >
     <div style={{marginRight: p.favorited?1: 4}}>
       <Pin 

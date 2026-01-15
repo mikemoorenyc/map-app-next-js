@@ -1,6 +1,6 @@
-import Button from "@/app/components/Button";
+import Button from "@/_components/Button";
 
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 import { useContext } from "react";
 import { RiArrowLeftFill } from "@remixicon/react";
 

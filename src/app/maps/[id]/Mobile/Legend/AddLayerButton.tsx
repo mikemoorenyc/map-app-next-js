@@ -1,13 +1,13 @@
 import { ClientSideSuspense } from "@liveblocks/react/suspense"
 import styles from "./styles.module.css"
 import { RiStackLine } from "@remixicon/react"
-import DataContext from "@/app/contexts/DataContext"
-import Button from "@/app/components/Button"
+import DataContext from "@/_contexts/DataContext"
+import Button from "@/_components/Button"
 import { RefObject, useContext } from "react"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+import MobileActiveContext from "@/_contexts/MobileActiveContext"
 
-import useLiveEditing from "@/app/lib/useLiveEditing"
-import addDisabledMod from "@/app/lib/addDisabledMod"
+import useLiveEditing from "@/_lib/useLiveEditing"
+import addDisabledMod from "@/_lib/addDisabledMod"
 
 type Props = {
   legendScroll:RefObject<HTMLDivElement|null>

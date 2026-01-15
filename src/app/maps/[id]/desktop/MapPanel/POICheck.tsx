@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import { MapMouseEvent, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { FieldMap } from "@/app/components/ModernSearch/lib/fieldMapping";
-import { formatter,fieldMapping } from "@/app/components/ModernSearch/lib/fieldMapping";
+import { FieldMap } from "@/_components/ModernSearch/lib/fieldMapping";
+import { formatter,fieldMapping } from "@/_components/ModernSearch/lib/fieldMapping";
 
 export default ({clickEvent, updatePin}:{clickEvent:MapMouseEvent|null,updatePin:Function}) => {
 

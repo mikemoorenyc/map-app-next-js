@@ -1,10 +1,10 @@
-import Button, { TModOptions } from "../components/Button";
-import DropDown from "../components/DropDown/DropDown";
-import BottomSheet from "../components/BottomSheet/BottomSheet";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
-import Modal from "../maps/[id]/sharedComponents/Modal";
+import Button, { TModOptions } from "@/_components/Button";
+import DropDown from "@/_components/DropDown/DropDown";
+import BottomSheet from "@/_components/BottomSheet/BottomSheet";
+import DeleteConfirmationModal from "@/_components/DeleteConfirmationModal";
+import Modal from "../../_components/Modal";
 import { useState,useRef,useEffect } from "react";
-import DropDownItem from "../components/DropDown/DropDownItem";
+import DropDownItem from "@/_components/DropDown/DropDownItem";
 import { RiArchiveLine,RiDeleteBinLine,RiArrowUpCircleLine,RiArrowDownCircleLine,RiMore2Fill } from "@remixicon/react";
 import { THomepageMap } from "@/projectTypes";
 import { THomepageMapActions } from "../PageClient";

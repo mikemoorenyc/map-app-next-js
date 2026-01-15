@@ -1,5 +1,5 @@
 "use client"
-import useDarkMode from "@/app/lib/useDarkMode";
+import useDarkMode from "@/_lib/useDarkMode";
 import { THomepageMap } from "@/projectTypes";
 import { useState ,useEffect} from "react";
 
@@ -27,13 +27,15 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
   }
   const darkMode = useDarkMode(); 
 
-  const mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
+  let mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
     
     
   /*const markerString = pins.map(p => {
     return `${p.location.lat},${p.location.lng}`
   }).join("|")*/
-  if(darkMode === null) return ;
+  if(darkMode === null) {
+    mode = mapId
+  }
 
 
   return <img className={className} 

@@ -4,14 +4,14 @@ import { THomepageMap } from "@/projectTypes"
 
 import { useState,useEffect, ReactNode} from "react"
 
-import { mapSort } from "./lib/sortMaps"
+import { mapSort } from "@/_lib/sortMaps"
 
 import ActiveCard from "./_homepageComponents/ActiveCard/ActiveCard"
 import ArchiveItem from "./_homepageComponents/ArchiveItem/ArchiveItem"
 import AddMapButton from "./_homepageComponents/AddMapButton/AddMapButton";
 import { archiveMap,deleteMap,moveMap } from "./_homepageComponents/actionLogic"
-import { ModalProvider } from "./contexts/ModalContext"
-import { getAllMaps } from "./actions/maps"
+import { ModalProvider } from "../_contexts/ModalContext"
+import { getAllMaps } from "@/_actions/maps"
 import { useRouter } from "next/navigation"
 const localStore : string|undefined = process.env.NEXT_PUBLIC_LOCAL_MAP
 
@@ -72,6 +72,7 @@ export default function PageClient({list,header,button,startData}:{list:"archive
       }
     }
     localStorage.setItem("last-viewed",current);
+    firstMaps(); 
     
     console.log(lastViewed);
 
@@ -81,13 +82,6 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     
   },[])
   
-
-  
-
-  useEffect(()=> {
-
-    firstMaps(); 
-  },[])
 
   const theList = mapList[list];
 

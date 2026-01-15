@@ -6,7 +6,7 @@ import { SyntheticEvent, useState} from "react";
 import { useRouter } from 'next/navigation'
 import MapThumbnail from "./MapThumbnail";
 import {  RiMap2Line } from "@remixicon/react";
-import svgImgUrl from "@/app/lib/svgImgUrl";
+import svgImgUrl from "@/_lib/svgImgUrl";
 import { THomepageMap, TMap } from "@/projectTypes";
 import { THomepageMapActions } from "@/app/PageClient";
 //import DropDown from "@/app/components/DropDown/DropDown";

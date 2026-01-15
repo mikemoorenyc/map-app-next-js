@@ -1,7 +1,9 @@
 // middleware.ts
-import { auth } from "./app/auth";// <-- from your Auth.js setup
+import { auth } from "./auth";// <-- from your Auth.js setup
 import { NextAuthRequest } from "next-auth/lib";
 import { NextResponse } from "next/server";
+
+import { isMobile } from "@/_lib/isMobile";
 
 export default auth((req:NextAuthRequest) => {
   const { pathname } = req.nextUrl;
@@ -22,12 +24,36 @@ export default auth((req:NextAuthRequest) => {
     // Otherwise redirect to login
     return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
   }
+  //NOT A MAP PAGE
+  if(!pathname.includes("/maps/")) {
+    return NextResponse.next();
+  }
+  const userAgent = req.headers.get("user-agent") || "";
+  const mobileCheck = isMobile(userAgent);
+  const mobileSite = pathname.includes("/mobilesite");
+  //MOBILE PHONE ON MOBILE SITE OR DT ON DT SITE
+  if((mobileCheck && mobileSite)|| (!mobileCheck&&!mobileSite)) {
+    return NextResponse.next();
+  }
+  //MOBILE NOT ON MOBILE SITE
+  if(mobileCheck && !mobileSite) {
+    return NextResponse.redirect(new URL(pathname+"/mobilesite",req.nextUrl))
+  } 
+  if(!mobileCheck && mobileSite) {
+    return NextResponse.redirect(new URL(pathname.replace("/mobilesite",""),req.nextUrl))
+  }
+  
+  
+
 
   return NextResponse.next();
+
+ 
+  
 });
 
 // Specify which paths should run middleware (optional optimization)
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|manifest.webmanifest).*)"],
+  matcher: ["/((?!favicon.ico|_next/static|_next/image|manifest.webmanifest).*)"],
 }

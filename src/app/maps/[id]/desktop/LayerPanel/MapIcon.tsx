@@ -2,11 +2,12 @@ import { RiEmojiStickerLine, RiPencilLine } from "@remixicon/react"
 import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import styles from "./Header.module.css"
 import { useRef, useState } from "react"
-import svgImgUrl from "@/app/lib/svgImgUrl"
+import svgImgUrl from "@/_lib/svgImgUrl"
 import { useMyPresence } from "@liveblocks/react/suspense"
-import useLiveEditing from "@/app/lib/useLiveEditing"
-export default function({mapIcon,canEdit}:{mapIcon?:string,canEdit:boolean}) {
-
+import useLiveEditing from "@/_lib/useLiveEditing"
+import { useMapIcon } from "@/_lib/dataHooks"
+export default function({canEdit}:{mapIcon?:string,canEdit:boolean}) {
+  const mapIcon = useMapIcon(); 
   const [iconSelectorOpen,updateIconSelectorOpen] =useState(false)
   const pickerAnchor = useRef(null)
   const [myPresence,updateMyPresence] = useMyPresence(); 
@@ -20,7 +21,7 @@ export default function({mapIcon,canEdit}:{mapIcon?:string,canEdit:boolean}) {
     }])
     updateMyPresence({isEditing:false})
   }
-
+  console.log("icon render");
   const w = 24
   return <div style={{marginRight:8}} ref={pickerAnchor}>
     <button disabled={!canEdit} className={`${styles.editMapIconButton}`} onClick={(e) => {

@@ -143,3 +143,11 @@ export type THour = {
       }
     }
 
+export type TCustomPayload = {
+    id: string|number
+}
+declare global {
+  interface WindowEventMap {
+    pinClicked: CustomEvent<TCustomPayload>;
+  }
+}

@@ -1,4 +1,4 @@
-import Button, { TModOptions } from "@/app/components/Button";
+import Button, { TModOptions } from "@/_components/Button";
 import styles from "../../Mobile/DrawerPanel/EditPanel/EditPanel.module.css"
 
 import { RiCloseLine,  RiSave3Line } from "@remixicon/react";

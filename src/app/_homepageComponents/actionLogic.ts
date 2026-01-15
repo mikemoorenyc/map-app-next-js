@@ -1,6 +1,6 @@
-import { archiveMap as archiveMapsServer,deleteMap as deleteMapServer,getAllMaps } from "../actions/maps";
-import { reindexMap,mapSort } from "../lib/sortMaps";
-import { updateMapServer } from "../actions/updateMapServer";
+import { archiveMap as archiveMapsServer,deleteMap as deleteMapServer,getAllMaps } from "@/_actions/maps";
+import { reindexMap,mapSort } from "@/_lib/sortMaps";
+import { updateMapServer } from "@/_actions/updateMapServer";
 import { THomepageMap,TMapUpdateValues } from "@/projectTypes";
 
 type THomepageLists = {

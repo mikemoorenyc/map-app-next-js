@@ -2,14 +2,17 @@ import * as React from "react";
 
 import { useContext } from "react";
 import PinMarker from "./PinMarker";
-import ActiveContext from "@/app/contexts/ActiveContext";
-import useLayerData from "@/app/lib/useLayerData";
+import ActiveContext from "@/_contexts/ActiveContext";
+import useLayerData from "@/_lib/useLayerData";
+import useActiveStore from "@/_contexts/useActiveStore";
+import { usePinIds } from "@/_lib/dataHooks";
+
 
 const PinContainer = () => {
  
     
-    const {pinsFlat} = useLayerData(); 
-    const {collapsedLayers} = useContext(ActiveContext).activeData; 
+ 
+    const pinsFlat = usePinIds(); 
 
  
 
@@ -30,11 +33,9 @@ const PinContainer = () => {
  
     return <>
     {pinsFlat.reverse().map((p,i) => {
-        if(collapsedLayers.includes(p.layerId)) {
-            return ; 
-        }
+   
       
-        return <PinMarker indexNum={i}  key={p.id } pId={p.id} />
+        return <PinMarker indexNum={i}  key={p } pId={p} />
     })}
     
     </>

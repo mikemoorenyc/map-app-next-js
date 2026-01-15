@@ -1,4 +1,4 @@
-import Button, { TModOptions } from "@/app/components/Button";
+import Button, { TModOptions } from "@/_components/Button";
 import styles from "./MoverStyles.module.css"
 import { } from "@/projectTypes";
 import { RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"

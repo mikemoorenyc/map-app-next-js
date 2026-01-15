@@ -1,13 +1,13 @@
 
 import styles from "./MobileSearchStyles.module.css"
 
-import Pin from "../../sharedComponents/Pin";
+import Pin from "../../../../../_components/Pin";
 
 import { RiMapPinLine } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+import useLayerData from "@/_lib/useLayerData";
 
 
-import { TPredictionResult } from "@/app/components/ModernSearch/lib/resultFormatter";
+import { TPredictionResult } from "@/_components/ModernSearch/lib/resultFormatter";
 import { ReactNode } from "react";
 type PredictionClick = (i:TPredictionResult) => void
 type ItemProps = {

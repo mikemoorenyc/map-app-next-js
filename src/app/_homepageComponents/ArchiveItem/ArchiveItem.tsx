@@ -1,4 +1,4 @@
-import svgImgUrl from "@/app/lib/svgImgUrl";
+import svgImgUrl from "@/_lib/svgImgUrl";
 
 import styles from "./ArchiveItemStyles.module.css";
 import Link from "next/link";

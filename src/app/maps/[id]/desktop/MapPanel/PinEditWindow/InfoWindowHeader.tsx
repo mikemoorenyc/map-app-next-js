@@ -1,7 +1,7 @@
 import  { ReactNode, useContext } from "react" 
 
-import InfoWindowContext from "@/app/contexts/InfoWindowContext";
-import ActiveContext from "@/app/contexts/ActiveContext";
+import InfoWindowContext from "@/_contexts/InfoWindowContext";
+import ActiveContext from "@/_contexts/ActiveContext";
 import styles from "./styles.module.css";
 import { RiCloseLine } from "@remixicon/react";
 

@@ -1,13 +1,13 @@
 import styles from "./ChangeIcon.module.css"
-import Button from "@/app/components/Button"
-import Pin from "../../../sharedComponents/Pin"
+import Button from "@/_components/Button"
+import Pin from "@/_components/Pin"
 import {useState,useEffect, useCallback, useRef, SyntheticEvent} from "react";
 import Picker from "@emoji-mart/react";
 import { createPortal } from "react-dom";
 import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
-import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
-import svgImgUrl from "@/app/lib/svgImgUrl";
+import PortalContainer from "@/_components/PortalContainer/PortalContainer";
+import svgImgUrl from "@/_lib/svgImgUrl";
 
 
 type TContainerProps = {

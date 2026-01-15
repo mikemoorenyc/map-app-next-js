@@ -1,25 +1,26 @@
 'use client'
-import { DataContextProvider } from "@/app/contexts/DataContext"
-import { MobileActiveContextProvider } from "@/app/contexts/MobileActiveContext"
+import { DataContextProvider } from "@/_contexts/DataContext"
+import { MobileActiveContextProvider } from "@/_contexts/MobileActiveContext"
 import MapPanel from "./MapPanel"
 import "./styles.css";
 import { useEffect } from "react";
 
 import { memo} from "react";
-import { ModalProvider } from "@/app/contexts/ModalContext";
+import { ModalProvider } from "@/_contexts/ModalContext";
 
-import { TUser } from "@/projectTypes";
-import LiveBlocksContainer from "@/app/components/LiveBlocksContainer/LiveBlocksContainer";
+import { TMap, TUser } from "@/projectTypes";
+import LiveBlocksContainer from "@/_components/LiveBlocksContainer/LiveBlocksContainer";
 
 type TProps = {
   serverId:string,
-  user:TUser,
+  map:TMap
+
 }
 const MapPanelMemo = memo(MapPanel);
 
 
-const Mobile = ({serverId,user}:TProps) => {
-  if(!serverId||!user) return false; 
+const Mobile = ({serverId,map}:TProps) => {
+  if(!serverId) return false; 
 
 useEffect(()=> {
   sessionStorage.setItem("sessionStarted","yes");
@@ -28,10 +29,10 @@ useEffect(()=> {
 
 
 return (<>
-<LiveBlocksContainer {...{serverId,user}}>
+<LiveBlocksContainer {...{serverId}}>
 
 <ModalProvider>
-<DataContextProvider serverId={serverId} user={user}>
+<DataContextProvider {...{map,serverId}}>
 <MobileActiveContextProvider>
 
 <MapPanelMemo />

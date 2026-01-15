@@ -1,6 +1,6 @@
 import { TPhoto } from "@/projectTypes";
 import { NextRequest } from "next/server";
-import countryCodes from "@/app/lib/countryCodes";
+import countryCodes from "@/_lib/countryCodes";
 
 
 type THoursResponse = {

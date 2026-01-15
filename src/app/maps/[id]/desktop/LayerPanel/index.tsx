@@ -1,15 +1,17 @@
 'use client'
 import { useContext,useState,useRef,useEffect } from "react";
-import useLiveEditing from "@/app/lib/useLiveEditing";
-import DataContext from "@/app/contexts/DataContext";
-import ActiveContext from "@/app/contexts/ActiveContext";
+import useLiveEditing from "@/_lib/useLiveEditing";
+import DataContext from "@/_contexts/DataContext";
+
 import Header from "./Header";
 import styles from "./LayerPanel.module.css"
 import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from '@hello-pangea/dnd';
 import LayerSection from "./LayerSection";
 import PinItem from "./PinItem";
 import LayerEdit from "./LayerEdit";
-import useLayerData from "@/app/lib/useLayerData";
+
+import useActiveStore from "@/_contexts/useActiveStore";
+import { useLayers } from "@/_lib/dataHooks";
 
 
 type TDraggableObject = {
@@ -20,10 +22,13 @@ type TDraggableObject = {
 }
 
 const LayerPanel = ()=> {
+  const setLayerPanelRef = useActiveStore(set => set.setLayerPanelRef);
+  const layerPanelRef = useActiveStore(set => set.layerPanelRef);
+  const editingLayer = useActiveStore(set =>set.editingLayer);
   
   const dispatchEvent = useLiveEditing(); 
-  const {activeData,activeDispatch} = useContext(ActiveContext);
-    const layerData = useLayerData().layers;
+  
+    const layerData = useLayers();
    
     const [items,setItems] = useState([...layerData]);
     const [activeId, setActiveId] = useState<number|null>(null);
@@ -31,20 +36,23 @@ const LayerPanel = ()=> {
 
     useEffect(()=> {
 
-      if(!layerPanelEl) return ; 
-      activeDispatch({type: "SET_LAYER_PANEL_REF", layerPanelRef:layerPanelEl.current})
+      if(layerPanelEl.current===null) return ; 
+      setLayerPanelRef(layerPanelEl.current);
+    
 
     },[layerPanelEl])
 
     useEffect(()=> {
-      console.log(layerData);
+ 
       if(!layerData.length) return ;
     
        setItems(layerData)
     },[layerData])
- 
   
+ 
+
     
+
 const handleDragEnd = (result:any) => {
     const { source, destination, draggableId, type } = result;
     console.log(result);
@@ -161,7 +169,7 @@ return (
       </div>
     </DragDropContext>  
     </div>  
-    {(activeData.editingLayer!==null ) &&<LayerEdit   /> }
+    {(editingLayer!==null ) &&<LayerEdit   /> }
   </div>)
 }    
 

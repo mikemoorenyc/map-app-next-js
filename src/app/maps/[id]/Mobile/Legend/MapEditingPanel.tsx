@@ -4,12 +4,12 @@ import ChangeIcon from "../DrawerPanel/EditPanel/ChangeIcon";
 import EditingModalHeader from "../_components/EditingModalHeader";
 import styles from "./styles.module.css"
 import { useState, useContext, useEffect, SyntheticEvent } from "react";
-import DataContext from "@/app/contexts/DataContext";
+import DataContext from "@/_contexts/DataContext";
 import editorStyles from "../DrawerPanel/EditPanel/EditPanel.module.css"
 import { useMyPresence,ClientSideSuspense, useStorage } from "@liveblocks/react/suspense";
-import useLiveEditing, { DispatchActions } from "@/app/lib/useLiveEditing";
+import useLiveEditing, { DispatchActions } from "@/_lib/useLiveEditing";
 import ModalLoading from "../_components/ModalLoading";
-import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
+import PortalContainer from "@/_components/PortalContainer/PortalContainer";
 type Props = {closeFunction:()=>void}
 function MapEditingPanel({closeFunction}:Props)  {
   //const {pageTitle,mapIcon} = useContext(DataContext);

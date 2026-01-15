@@ -3,28 +3,30 @@ import  { useEffect, useContext,  } from "react";
 
 import { InfoWindow, MapMouseEvent } from "@vis.gl/react-google-maps";
 
-import ActiveContext from "@/app/contexts/ActiveContext";
-import InfoWindowContext from "@/app/contexts/InfoWindowContext";
+
+import InfoWindowContext from "@/_contexts/InfoWindowContext";
 import styles from "./styles.module.css";
 import { ClientSideSuspense } from "@liveblocks/react";
+import useActiveStore from "@/_contexts/useActiveStore";
 
 type TProps = {
-    clickEvent: MapMouseEvent|null
+    clickEvent: MapMouseEvent|null,
+
 }
 
-const PinEditWindow = ({clickEvent, }:TProps) => {
-
+const PinEditWindow = ({clickEvent}:TProps) => {
+    const updateEditingPin = useActiveStore(s=>s.updateEditingPin)
   
     //console.log("window Render");
     const {infoWindowState,infoWindowDispatch } = useContext(InfoWindowContext);
 
     const {infoWindowContent} = infoWindowState
     //console.log(infoWindowState);
-    const {activeData,activeDispatch} = useContext(ActiveContext)
+
 
     const handleClose = () => {
         infoWindowDispatch({type:"CLOSE_WINDOW"});
-        activeDispatch({type:"EDITING_PIN",id:null})
+        updateEditingPin(null);
     }
     
    

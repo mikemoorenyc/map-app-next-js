@@ -1,15 +1,15 @@
 
 import { useCallback, useEffect,useState, useContext } from "react"
 import styles from "./styles.module.css";
-import Button from "@/app/components/Button";
-import MobileActiveContext, { TempData } from "@/app/contexts/MobileActiveContext";
-import DataContext from "@/app/contexts/DataContext";
+import Button from "@/_components/Button";
+import MobileActiveContext, { TempData } from "@/_contexts/MobileActiveContext";
+import DataContext from "@/_contexts/DataContext";
 import GMIcon from "./GMIcon";
 import TAIcon from "./TAIcon";
 import Image from "next/image";
 import makeNativeLink from "../lib/makeNativeLink";
 import { TPin,TPhoto } from "@/projectTypes";
-import useLiveEditing from "@/app/lib/useLiveEditing";
+import useLiveEditing from "@/_lib/useLiveEditing";
 
 /*
 const uploadPhotos = async (photoArray,pinId,layerDispatch) => {

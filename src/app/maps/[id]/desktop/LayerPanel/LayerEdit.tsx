@@ -1,21 +1,23 @@
 import { useContext,useState,useRef, useEffect, SyntheticEvent, ChangeEvent } from "react"
-import DataContext from "@/app/contexts/DataContext"
-import ActiveContext from "@/app/contexts/ActiveContext"
-import lightOrDark from "@/app/lib/lightOrDark"
-import Modal from "../../sharedComponents/Modal"
-import Button from "@/app/components/Button"
+import DataContext from "@/_contexts/DataContext"
+import ActiveContext from "@/_contexts/ActiveContext"
+import lightOrDark from "@/_lib/lightOrDark"
+import Modal from "../../../../../_components/Modal"
+import Button from "@/_components/Button"
 import styles from "./LayerEdit.module.css"
-import ActionBar from "../../sharedComponents/ActionBar"
-import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
-import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
-import DropDown from "@/app/components/DropDown/DropDown"
+import ActionBar from "../../../../../_components/ActionBar"
+import DeleteConfirmationModal from "@/_components/DeleteConfirmationModal"
+import ColorPicker from "@/_components/AddMapForm/ColorPicker"
+import DropDown from "@/_components/DropDown/DropDown"
 import IconSelector from "../MapPanel/PinEditWindow/IconSelector"
 import { RiEmojiStickerLine } from "@remixicon/react"
-import svgImgUrl from "@/app/lib/svgImgUrl"
+import svgImgUrl from "@/_lib/svgImgUrl"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { useMyPresence } from "@liveblocks/react"
-import useLiveEditing from "@/app/lib/useLiveEditing"
-import useLayerData from "@/app/lib/useLayerData"
+import useLiveEditing from "@/_lib/useLiveEditing"
+
+import { useLayers } from "@/_lib/dataHooks"
+import useActiveStore from "@/_contexts/useActiveStore"
 
 type TInputValues = {
   icon?:string, 
@@ -26,9 +28,11 @@ type TInputValues = {
 
 const LayerEdit = () => {
   const dispatchEvent = useLiveEditing(); 
-  const {activeData,activeDispatch} = useContext(ActiveContext)
-  const layerData = useLayerData().layers;
-  const editingLayer = activeData.editingLayer
+
+  const layerData = useLayers(); 
+  const editingLayer = useActiveStore(state => state.editingLayer);
+  const updateEditingLayer = useActiveStore(s=>s.updateEditingLayer);
+  const updateActiveLayer = useActiveStore(s=>s.updateActiveLayer);
   const layer = layerData.find(layer => layer.id == editingLayer);
   if(!layer)return ; 
   const [tempLayerData, updateTempLayerData] = useState({icon:layer.icon, title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
@@ -53,16 +57,10 @@ const LayerEdit = () => {
             id: layer.id,
             updatedData: tempLayerData
         }]);
-        activeDispatch({
-            type: "EDITING_LAYER",
-            id:null
-        })
+        updateEditingLayer(null);
   }
   const cancelEdit = () => {
-    activeDispatch({
-        type: "EDITING_LAYER",
-        id:null
-    })
+    updateEditingLayer(null); 
   }
   const deleteLayer = (e:SyntheticEvent) => {
     e.preventDefault(); 
@@ -70,14 +68,8 @@ const LayerEdit = () => {
         type: "DELETED_LAYER",
         id : layer.id
     }])
-    activeDispatch({
-        type: "EDITING_LAYER",
-        id:null
-    })
-    activeDispatch({
-        type: "ACTIVE_LAYER",
-        id: null
-    })
+    updateEditingLayer(null)
+    updateActiveLayer(null)
   }
 
   /*

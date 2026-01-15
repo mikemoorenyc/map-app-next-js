@@ -1,10 +1,10 @@
 import { useRef,useContext,memo,useCallback ,useMemo,useState, useEffect} from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
 import mapCenterer from "../lib/mapCenterer";
 
-import useLayerData from "@/app/lib/useLayerData";
+import useLayerData from "@/_lib/useLayerData";
 import { TLayer, TPin } from "@/projectTypes";
     type Props ={
       pinsFlat:TPin[],

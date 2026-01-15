@@ -1,8 +1,8 @@
 'use client'
 import { useContext } from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import DataContext from "@/app/contexts/DataContext";
-import Button from "@/app/components/Button";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
+import DataContext from "@/_contexts/DataContext";
+import Button from "@/_components/Button";
 
 import ContentPanel from "./ContentPanel";
 import DrawerPanelHeader from "./DrawerPanelHeader";
@@ -11,7 +11,7 @@ import styles from "./styles.module.css";
 import EditPanel from "./EditPanel";
 import CenterButton from "./CenterButton";
 import { RiListUnordered } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+import useLayerData from "@/_lib/useLayerData";
 
 const DrawerPanel = () => {
 

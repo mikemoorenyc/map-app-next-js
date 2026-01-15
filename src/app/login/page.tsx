@@ -1,5 +1,5 @@
-import { auth,signIn,signOut } from "../auth"
-import Button from "../components/Button";
+import { auth,signIn,signOut } from "../../auth"
+import Button from "../../components/Button";
 import styles from "./page.module.css"
 import { RiGoogleLine } from "@remixicon/react";
 

@@ -1,24 +1,39 @@
 'use client'
-import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
-import UpdaterLive from "@/app/components/UpdaterLive/UpdaterLive";
+import PortalContainer from "@/_components/PortalContainer/PortalContainer";
+import UpdaterLive from "@/_components/UpdaterLive/UpdaterLive";
 import { useCallback, useContext, useEffect,useState } from "react";
 import styles from "./styles.module.css";
-import ActiveContext from "@/app/contexts/ActiveContext";
-import Button from "@/app/components/Button";
+import ActiveContext from "@/_contexts/ActiveContext";
+import Button from "@/_components/Button";
 import { RiMap2Line } from "@remixicon/react";
-import InfoWindowContext from "@/app/contexts/InfoWindowContext";
+import InfoWindowContext from "@/_contexts/InfoWindowContext";
 import { TLayer } from "@/projectTypes";
 import { useMap } from "@vis.gl/react-google-maps";
-import useLayerData from "@/app/lib/useLayerData";
+import { useLayers } from "@/_lib/dataHooks";
+import useActiveStore from "@/_contexts/useActiveStore";
+//import useLayerData from "@/_lib/useLayerData";
 
 
+const MapContainer = ({containMap}:{containMap:Function}) => {
+  const layers = useLayers(); 
+  console.log(layers);
+ 
+  useEffect(()=> {
 
+    containMap("",layers)
+  },[layers])
+  return <></>
+}
 
 const TopMenu = () => {
   const {infoWindowState,infoWindowDispatch } = useContext(InfoWindowContext);
-  const {activeDispatch,activeData} = useContext(ActiveContext)
-  const layerData = useLayerData().layers;
-  const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
+  const {activeDispatch} = useContext(ActiveContext)
+ 
+
+  const editingLayer = useActiveStore(s=>s.editingLayer),
+        activeLayer = useActiveStore(s=>s.activeLayer),
+        editingPin = useActiveStore(s=>s.editingPin),
+        hoveringPin = useActiveStore(s=>s.hovering);
   const [isMounted,updateIsMounted] = useState(false);
   const [serverLoaded,updateServerLoaded] = useState(false);
   const map = useMap(); 
@@ -27,10 +42,7 @@ const TopMenu = () => {
 
   },[])
 
-  useEffect(()=> {
-    if(serverLoaded) return ; 
-    containMap("",layerData);
-  },[layerData])
+ 
 
   
 
@@ -67,6 +79,7 @@ const TopMenu = () => {
   }
 
   const containMap = useCallback((type:string,layerData:TLayer[])=> {
+    console.log("fired");
     if(type == "server") {
       updateServerLoaded(true);
     }
@@ -90,9 +103,15 @@ const TopMenu = () => {
   },[map])
 
 
-  return isMounted && <PortalContainer containerId="menu-container">
+  if(!isMounted) return ; 
+  
+  
+
+  return <PortalContainer containerId="menu-container">
+   
   
   <div className={`${styles.topMenu} `}>
+    {!serverLoaded && <MapContainer {...{containMap}} />}
     <UpdaterLive checkDeleted={checkDeleted} firstLoadFunction={containMap}/>
     <Button
     icon={<RiMap2Line />}

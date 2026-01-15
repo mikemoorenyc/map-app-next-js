@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import styles from "./styles.module.css";
-import svgImgUrl from "@/app/lib/svgImgUrl";
+import svgImgUrl from "@/_lib/svgImgUrl";
 
 
 type Props = {

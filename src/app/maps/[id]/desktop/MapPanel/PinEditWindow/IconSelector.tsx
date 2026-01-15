@@ -2,8 +2,8 @@
 import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
 
-import useModalCloser from "@/app/lib/useModalCloser";
-import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
+import useModalCloser from "@/_lib/useModalCloser";
+import PortalContainer from "@/_components/PortalContainer/PortalContainer";
 import { CSSProperties, RefObject } from "react";
 
 type TProps = {

@@ -1,7 +1,7 @@
 import { useContext,useState} from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import Button from "@/app/components/Button";
-import LocationDetails from "@/app/components/LocationDetails";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
+import Button from "@/_components/Button";
+import LocationDetails from "@/_components/LocationDetails";
 import Linkify from "linkify-react";
 import GMIcon from "./GMIcon";
 import makeNativeLink from "../lib/makeNativeLink";
@@ -10,9 +10,9 @@ import AddToMapButton from "./AddToMapButton";
 import {  RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 import Photos from "./Photos";
-import svgImgUrl from "@/app/lib/svgImgUrl";
-import useLayerData from "@/app/lib/useLayerData";
-import addDisabledMod from "@/app/lib/addDisabledMod";
+import svgImgUrl from "@/_lib/svgImgUrl";
+import useLayerData from "@/_lib/useLayerData";
+import addDisabledMod from "@/_lib/addDisabledMod";
 
 
 type Props = {

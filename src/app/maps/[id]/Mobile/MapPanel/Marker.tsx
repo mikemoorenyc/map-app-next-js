@@ -1,6 +1,6 @@
 
 import { AdvancedMarker, MapMouseEvent } from "@vis.gl/react-google-maps";
-import Pin from "../../sharedComponents/Pin";
+import Pin from "../../../../../_components/Pin";
 import { memo,useCallback,useMemo ,useState,useEffect} from "react";
 import { TLayer, TPin } from "@/projectTypes";
 type Props ={

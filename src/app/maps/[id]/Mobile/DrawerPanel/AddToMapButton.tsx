@@ -1,13 +1,13 @@
-import Button from "@/app/components/Button";
+import Button from "@/_components/Button";
 import { SyntheticEvent, useContext } from "react";
-import DataContext from "@/app/contexts/DataContext";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import DataContext from "@/_contexts/DataContext";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 
 import { RiMapPinAddLine } from "@remixicon/react";
 import { ClientSideSuspense } from "@liveblocks/react";
-import useLiveEditing from "@/app/lib/useLiveEditing";
+import useLiveEditing from "@/_lib/useLiveEditing";
 import { TGeolocation, TPlaceDetails, TViewport } from "@/projectTypes";
-import addDisabledMod from "@/app/lib/addDisabledMod";
+import addDisabledMod from "@/_lib/addDisabledMod";
 
 function AddToMapButton() {
   const {layerData,user} = useContext(DataContext)

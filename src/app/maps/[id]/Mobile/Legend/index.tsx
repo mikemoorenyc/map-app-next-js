@@ -1,16 +1,16 @@
 import  { useContext ,useRef,useState,Suspense,lazy} from "react"
 
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+import MobileActiveContext from "@/_contexts/MobileActiveContext"
 import LegendSection from "./LegendSection"
-import svgImgUrl from "@/app/lib/svgImgUrl"
-import Button from "@/app/components/Button"
-import DataContext from "@/app/contexts/DataContext"
+import svgImgUrl from "@/_lib/svgImgUrl"
+import Button from "@/_components/Button"
+import DataContext from "@/_contexts/DataContext"
 import styles from "./styles.module.css";
 import { RiArrowLeftFill,  RiSettingsLine,  } from "@remixicon/react"
 import AddLayerButton from "./AddLayerButton"
-import addDisabledMod from "@/app/lib/addDisabledMod"
+import addDisabledMod from "@/_lib/addDisabledMod"
 
-import useLayerData from "@/app/lib/useLayerData"
+import useLayerData from "@/_lib/useLayerData"
 
 const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 

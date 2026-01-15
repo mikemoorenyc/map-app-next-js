@@ -1,8 +1,8 @@
-import { getAllMaps } from "./actions/maps";
+import { getAllMaps } from "@/_actions/maps";
 
 
 
-import Button from "./components/Button";
+import Button from "@/_components/Button";
 import PageClient from "./PageClient";
 
 export const revalidate = 7200// invalidate every hour

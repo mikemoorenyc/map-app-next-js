@@ -1,6 +1,6 @@
-import FAButton from "@/app/components/FAButton/FAButton"
+import FAButton from "@/_components/FAButton/FAButton"
 import {RiMap2Line} from "@remixicon/react"
-import { addMap } from "@/app/actions/maps"
+import { addMap } from "@/_actions/maps"
 import { useRouter } from 'next/navigation'
 import { SyntheticEvent, useState } from "react"
 

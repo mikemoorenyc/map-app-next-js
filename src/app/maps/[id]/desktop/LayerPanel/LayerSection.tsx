@@ -1,19 +1,28 @@
-import DataContext from "@/app/contexts/DataContext";
-import ActiveContext from "@/app/contexts/ActiveContext";
+import DataContext from "@/_contexts/DataContext";
+
 import { CSSProperties, ReactNode, useContext} from "react";
-import svgImgUrl from "@/app/lib/svgImgUrl";
+import svgImgUrl from "@/_lib/svgImgUrl";
 import styles from "./LayerSection.module.css";  
 import { RiCheckLine, RiSettingsLine } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+
 import { TLayer } from "@/projectTypes";
+import useActiveStore from "@/_contexts/useActiveStore";
 
 const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer,activeId:number|null}) => {
   
 
  
   if(!layer) return ; 
-  const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {activeLayer, collapsedLayers} = activeData;
+
+
+  const activeLayer = useActiveStore(set=>set.activeLayer)
+  const collapsedLayers = useActiveStore(set => set.collapsedLayers)
+  const setActiveLayer = useActiveStore(set =>set.updateActiveLayer)
+  const updateCollapsedLayers = useActiveStore(set => set.updateCollapsedLayers);
+  const canEdit = useActiveStore(set=>set.canEdit);
+  const updateEditingLayer = useActiveStore(set=>set.updateEditingLayer)
+
+
   const isDragging = activeId == layer.id
   const isActive = activeLayer == layer.id
   const isCollapsed = collapsedLayers.includes(layer.id);
@@ -37,7 +46,7 @@ const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer
   }
   
   return <div onClick={()=>{
-        activeDispatch({type:"ACTIVE_LAYER",id:layer.id})
+        setActiveLayer(layer.id);
     
         
       }} >
@@ -53,28 +62,19 @@ const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer
         onClick={(e)=> {
           e.preventDefault();
           if(!isCollapsed) {
-            activeDispatch({
-              type: "ACTIVE_LAYER",
-              id: layer.id
-            })
+            setActiveLayer(layer.id);
           }
-          activeDispatch({
-            type: "UPDATE_COLLAPSED_LAYER",
-            collapsed: !isCollapsed,
-            id: layer.id
-          })
+          updateCollapsedLayers(layer.id, isCollapsed)
+         
         }}>
           {!isCollapsed && <RiCheckLine className={styles.svg}  />}
         </button>
         {layer.icon && <img style={{marginRight:4}}width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>}
         <div className={`flex-1 overflow-ellipsis cursor-default`}>{layer.title}</div>
-        {activeData.canEdit && <button className={styles.gear} onClick={(e) => {
+        {canEdit && <button className={styles.gear} onClick={(e) => {
                                 e.preventDefault();
                                 console.log(layer.id);
-                                activeDispatch({
-                                    type: "EDITING_LAYER",
-                                    id: layer.id
-                                });
+                                updateEditingLayer(layer.id)
                   }}>
           <RiSettingsLine />
         </button>}

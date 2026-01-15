@@ -1,5 +1,5 @@
 
-import Button from "@/app/components/Button"
+import Button from "@/_components/Button"
 import { SyntheticEvent } from "react"
 
 type TProps = {

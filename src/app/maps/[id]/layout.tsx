@@ -1,5 +1,5 @@
-import { getMap } from "@/app/actions/maps";
-import { auth } from "@/app/auth";
+import { getMap } from "@/_actions/maps";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ReactElement,ReactNode } from "react";
 

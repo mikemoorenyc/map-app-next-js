@@ -1,25 +1,31 @@
 'use client'
 import { APIProvider , Map, MapMouseEvent} from "@vis.gl/react-google-maps";
-import { memo, useEffect, useState ,useContext} from "react"
-import { InfoWindowContextProvider } from "@/app/contexts/InfoWindowContext";
+import { memo, useEffect, useState ,useContext, useMemo} from "react"
+import { InfoWindowContextProvider } from "@/_contexts/InfoWindowContext";
 import TopMenu from "../TopMenu";
 import PinEditWindow from "./PinEditWindow";
-import DesktopSearch from "@/app/components/ModernSearch/DesktopSearch";
+import DesktopSearch from "@/_components/ModernSearch/DesktopSearch";
 import PinContainer from "./PinContainer";
-import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
-import Prescence from "../../../../components/Prescence";
+import ModernTempMarker from "@/_components/ModernSearch/ModernTempMarker";
+import Prescence from "@/_components/Prescence";
 import { ClientSideSuspense } from "@liveblocks/react";
-import ActiveContext from "@/app/contexts/ActiveContext";
+import useActiveStore from "@/_contexts/useActiveStore";
+
+
 
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
 const TopMenuMemo = memo(TopMenu)
+const PinEditWindowMemo = memo(PinEditWindow)
+
 
 const MapPanel = () => {
+
   const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY;
   const mapId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID
+  const updateCanEdit = useActiveStore(s => s.updateCanEdit)
   if(!apiKey||!mapId) return false; 
-  const {activeDispatch} = useContext(ActiveContext)
+
   const [clickEvent,updateClickEvent] = useState<MapMouseEvent|null>(null);
   
   
@@ -30,6 +36,7 @@ const MapPanel = () => {
         updateClickEvent(e);
         console.log("base click");
   }
+
   return <div
   style={{
     position:"fixed",
@@ -50,12 +57,15 @@ const MapPanel = () => {
     colorScheme="FOLLOW_SYSTEM"
   >
   <PinContainer/>
+
 <DesktopSearchMemo clickEvent={clickEvent} />
-  <PinEditWindow clickEvent={clickEvent} />
+  <PinEditWindowMemo clickEvent={clickEvent} />
   <ModernTempMarker />
   <TopMenuMemo />
   </MapMemo>
-  <ClientSideSuspense fallback={<></>}><Prescence {...{activeDispatch}} openDirection="bottom" /></ClientSideSuspense>
+  <ClientSideSuspense fallback={<></>}><Prescence {...{
+   updateCanEdit
+  }} openDirection="bottom" /></ClientSideSuspense>
   </InfoWindowContextProvider>
   
   </APIProvider>
@@ -63,7 +73,7 @@ const MapPanel = () => {
   
   </div>
 }
-
-export default MapPanel
+const MapPanelMemo = memo(MapPanel);
+export default MapPanelMemo;
 
 //  <SearchBar clickEvent={clickEvent} />

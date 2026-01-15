@@ -1,10 +1,10 @@
 'use client'
 import { RiCarLine, RiRidingLine, RiTrainLine, RiWalkLine } from "@remixicon/react"
 import styles from "./styles.module.css"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 import { createElement, useContext ,useEffect,useState} from "react";
 import { TGeolocation } from "@/projectTypes";
-import { TRoute } from "@/app/contexts/MobileActiveContext";
+import { TRoute } from "@/_contexts/MobileActiveContext";
 
 type DirectionNeeds = {
   location:TGeolocation,

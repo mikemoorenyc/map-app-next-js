@@ -1,21 +1,21 @@
 import { useContext, useEffect, useRef, useState,useCallback, useMemo,ChangeEvent, SyntheticEvent } from "react";
 import { AdvancedMarker, useMap,Pin} from "@vis.gl/react-google-maps";
 import mapCenterer from "../lib/mapCenterer";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 
 import BackButton from "./BackButton";
-import Button from "@/app/components/Button";
+import Button from "@/_components/Button";
 import { createPortal } from "react-dom";
 import styles from "./MobileSearchStyles.module.css"
-import SearchLogic, { BasicResults } from "@/app/components/ModernSearch/SearchLogic";
-import resultFormatter, { TPredictionResult } from "@/app/components/ModernSearch/lib/resultFormatter";
-import DataContext from "@/app/contexts/DataContext";
+import SearchLogic, { BasicResults } from "@/_components/ModernSearch/SearchLogic";
+import resultFormatter, { TPredictionResult } from "@/_components/ModernSearch/lib/resultFormatter";
+import DataContext from "@/_contexts/DataContext";
 import SearchDropDown from "./SearchDropDown";
 import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
-import { TSearchPin } from "@/app/components/ModernSearch/lib/fieldMapping";
+import { TSearchPin } from "@/_components/ModernSearch/lib/fieldMapping";
 import { TGeolocation } from "@/projectTypes";
-import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
-import useLayerData from "@/app/lib/useLayerData";
+import PortalContainer from "@/_components/PortalContainer/PortalContainer";
+import useLayerData from "@/_lib/useLayerData";
 
 
 export default () => {

@@ -1,6 +1,6 @@
 import { useState,useContext,useEffect,useRef } from "react";
 import DataContext from "@/app/contexts/DataContext";
-import useMapMover from "@/app/lib/useMapMover"
+import useMapMover from "@/_lib/useMapMover"
 
 import { updateMap,getMap } from "@/app/actions/maps";
 

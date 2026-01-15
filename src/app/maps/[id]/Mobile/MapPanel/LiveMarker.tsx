@@ -1,7 +1,7 @@
 import { ClientSideSuspense,useMyPresence,useOthers} from "@liveblocks/react/suspense";
 import { AdvancedMarker,Pin } from "@vis.gl/react-google-maps";
-import lightOrDark from "@/app/lib/lightOrDark";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import lightOrDark from "@/_lib/lightOrDark";
+import MobileActiveContext from "@/_contexts/MobileActiveContext";
 import { useEffect,useContext ,useMemo} from "react";
 import { TGeolocation } from "@/projectTypes";
 

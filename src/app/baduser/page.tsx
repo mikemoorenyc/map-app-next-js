@@ -1,6 +1,6 @@
-import { signOut } from "../auth"
+import { signOut } from "../../auth"
 import styles from "../login/page.module.css"
-import Button from "../components/Button"
+import Button from "../../components/Button"
 
 export default () => {
   return <div  className={styles.formContainer}><div className={`${styles.formInner} border-1 big-drop-shadow round-border`}>

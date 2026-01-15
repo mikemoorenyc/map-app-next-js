@@ -2,8 +2,8 @@ import {  memo, useCallback, useContext, useEffect, useMemo, useState } from "re
 import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import LiveMarker from "./LiveMarker";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
-import DataContext from "@/app/contexts/DataContext"
+import MobileActiveContext from "@/_contexts/MobileActiveContext"
+import DataContext from "@/_contexts/DataContext"
 import { TGeolocation, TLayer } from "@/projectTypes";
 
 
