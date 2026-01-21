@@ -9,9 +9,9 @@ import resultFormatter, { TPredictionResult } from "./lib/resultFormatter";
 import { MapMouseEvent, useMap } from "@vis.gl/react-google-maps";
 import mapMover from "@/app/maps/[id]/desktop/MapPanel/lib/mapMover";
 import AddWindowScreen from "@/app/maps/[id]/desktop/MapPanel/PinEditWindow/AddWindowScreen";
-
+import { useLayers } from "@/app/lib/useLayerData";
 import { TSearchPin } from "./lib/fieldMapping";
-import useLayerData from "@/app/lib/useLayerData";
+
 
 
 export default function DesktopSearch({clickEvent}:{clickEvent:MapMouseEvent|null}) {
@@ -21,7 +21,7 @@ export default function DesktopSearch({clickEvent}:{clickEvent:MapMouseEvent|nul
   const [increment,updateIncrement] = useState(0)
   const [predictionResults,updatePredictionResults] = useState<BasicResults[]>([]);
   const [predictionChoice,updatePredictionChoice] = useState<string|number>("");
-  const layerData = useLayerData().layers
+  const layerData = useLayers();
   const map = useMap();
   const {activeData,activeDispatch} = useContext(ActiveContext)
   const {infoWindowDispatch} = useContext(InfoWindowContext);

@@ -6,7 +6,7 @@ import styles from "./Header.module.css";
 import TextInput from "@/app/components/TextInput";
 import { useMyPresence } from "@liveblocks/react/suspense";
 import useLiveEditing from "@/app/lib/useLiveEditing";
-import useLayerData from "@/app/lib/useLayerData";
+import { usePageTitle } from "@/app/lib/useLayerData";
 
 
 const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateEditing:Function}) => {
@@ -64,7 +64,10 @@ const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateE
 const MapTitle = ({canEdit}:{canEdit:boolean})=> {
   const [myPresence,updateMyPrescence] = useMyPresence(); 
   const [editing, updateEditing] = useState(false)
-  const {pageTitle,mapIcon} = useLayerData();
+  const pageTitle = usePageTitle(); 
+  if(!pageTitle) {
+    return ;
+  }
     
   return <>
   {!editing ? <div onClick={(e)=>{if(!canEdit) return false; e.preventDefault(); updateEditing(true); updateMyPrescence({isEditing:true})}} className={`${styles.title} ${styles.start} ${!canEdit?styles.disabled:""} overflow-ellipsis flex-1`}>

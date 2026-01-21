@@ -1,5 +1,4 @@
 import { useContext,useState} from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import Button from "@/app/components/Button";
 import LocationDetails from "@/app/components/LocationDetails";
 import Linkify from "linkify-react";
@@ -11,8 +10,11 @@ import {  RiListUnordered, RiPencilLine } from "@remixicon/react";
 import Directions from "./Directions";
 import Photos from "./Photos";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-import useLayerData from "@/app/lib/useLayerData";
+//import useLayerData from "@/app/lib/useLayerData";
 import addDisabledMod from "@/app/lib/addDisabledMod";
+import useActiveStore from "@/app/contexts/useActiveStore";
+import { useFindLayer, useFindPin } from "@/app/lib/useLayerData";
+import DataContext from "@/app/contexts/DataContext";
 
 
 type Props = {
@@ -22,16 +24,23 @@ type Props = {
 
 const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
 
-  const {activeDispatch, activeData} = useContext(MobileActiveContext)
-  const {routes,inBounds,geolocation} = activeData;
-  const {drawerState,canEdit} = activeData
-  const {findLayer,findPin} = useLayerData(); 
+  const {nonEditing} = useContext(DataContext);
+  const routes = useActiveStore(s=>s.routes);
+  const inBounds = useActiveStore(s=>s.inBounds);
+  const geolocation = useActiveStore(s=>s.geolocation);
+  const drawerState = useActiveStore(s=>s.drawerState);
+  const canEdit = useActiveStore(s=>s.canEdit);
+  const tempData = useActiveStore(s=>s.tempData);
 
-  const pin = pinId == "temp" ? activeData.tempData : findPin(pinId)
-  if(!pin) return;
-  const layer = (pinId == "temp" || !pin?.layerId) ? null : findLayer(pin.layerId);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState);
+  const updateLegendOpen = useActiveStore(s=>s.updateLegendOpen)
+  //const {findLayer,findPin} = useLayerData(); 
+  const pin = useFindPin(pinId) || tempData; 
   
-
+  if(!pin) return;
+  const layer = useFindLayer(pin.layerId||-1)||null;
+  
+  
 
   return <div className={styles.contentPanel} style={{height:`calc(100% - ${drawerTopSpace}px)`}}>
     <div className={`${styles.topSection}`}>
@@ -42,13 +51,21 @@ const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
         {layer && <div className={`${styles.layerTitle} flex-1  flex-center`}>
          {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>} <span className="flex-1 overflow-ellipsis">{layer.title}</span>
         </div>}
-        {pinId == "temp" && <AddToMapButton />}
-        {pinId != "temp" && <Button icon={<RiPencilLine />} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"editing"})}} modifiers={addDisabledMod(["icon","round","secondary","sm"],!canEdit)}/>}
-        <Button icon={<RiListUnordered />} modifiers={["icon","round","secondary","sm"]} style={{marginLeft:8}} onClick={(e)=>{(e).preventDefault(); activeDispatch({type:"LEGEND_OPEN",state:true})}} />
+        {(!nonEditing && pinId == "temp") && <AddToMapButton />}
+        {(pinId != "temp" && !nonEditing)&& <Button icon={<RiPencilLine />} onClick={(e)=>{
+          (e).preventDefault(); 
+          updateDrawerState('editing')
+          //activeDispatch({type:"DRAWER_STATE",state:"editing"})
+        }}
+        modifiers={addDisabledMod(["icon","round","secondary","sm"],!canEdit)}/>}
+        <Button icon={<RiListUnordered />} modifiers={["icon","round","secondary","sm"]} style={{marginLeft:8}} onClick={(e)=>{
+          (e).preventDefault(); 
+          updateLegendOpen(true);
+          }} />
         {pin?.url &&<Button style={{marginLeft:8}} modifiers={["bigger", "round","icon"]} target={"_blank"} href={makeNativeLink(pin.url)} icon={  <GMIcon />}/>}
       </div>
     </div>
-    <div className={styles.bottomSection} style={activeData.drawerState !== "maximized"?{overflow:"hidden"}:undefined}>
+    <div className={styles.bottomSection} style={drawerState !== "maximized"?{overflow:"hidden"}:undefined}>
       
       {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>

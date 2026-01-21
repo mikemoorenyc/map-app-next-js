@@ -7,8 +7,9 @@ import { ReactNode,useState,useEffect, useCallback } from "react";
 import { memo ,useMemo} from "react";
 import { RiMapPinLine } from "@remixicon/react";
 import { TLayer ,TPin} from "@/projectTypes";
-import useLayerData from "@/app/lib/useLayerData";
+import { useFindPin } from "@/app/lib/useLayerData";
 import { TPredictionResult } from "./lib/resultFormatter";
+import { useLayers } from "@/app/lib/useLayerData";
 
 
 type TProps = {
@@ -21,20 +22,20 @@ type TProps = {
 const PinMemo = memo(Pin)
 const DropDownWrapper = (props:TProps) => {
 
-  const getLayerData = useLayerData(); 
 
-  const layerData = getLayerData.layers
-  const {findPin} = getLayerData
+
+  
  
-  const newProps = {...props, ...{layerData,findPin}};
+  const newProps = {...props, ...{}};
   return <DropdDownMemo {...newProps} />
 
 
 }
 
 
-const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)=>TPin}) =>{
-  const {activePins=[],predictions=[],itemActivated,pinsFlat=[],layerData,findPin} = props;
+const DropDown = (props: TProps ) =>{
+  const {activePins=[],predictions=[],itemActivated,pinsFlat=[]} = props;
+  const layerData = useLayers(); 
 
 
   const [currentIndex,updateCurrentIndex] = useState(-1); 
@@ -106,7 +107,8 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
   return <div className={`${styles.DropDown} big-drop-shadow `}>
     {activePins.length? <div className={styles.OptionContainer}>
       {activePins.map(p=>{
-        const pin = findPin(p.id);
+        const pin = useFindPin(p.id);
+        if(!pin) return ; 
 
         return <SearchMemo key={p.id}
         {...{...itemActions,...{

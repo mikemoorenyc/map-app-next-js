@@ -15,7 +15,7 @@ import svgImgUrl from "@/app/lib/svgImgUrl"
 import { ClientSideSuspense } from "@liveblocks/react"
 import { useMyPresence } from "@liveblocks/react"
 import useLiveEditing from "@/app/lib/useLiveEditing"
-import useLayerData from "@/app/lib/useLayerData"
+import { useFindLayer, useLayers } from "@/app/lib/useLayerData"
 
 type TInputValues = {
   icon?:string, 
@@ -27,9 +27,9 @@ type TInputValues = {
 const LayerEdit = () => {
   const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext)
-  const layerData = useLayerData().layers;
+const layers=useLayers();
   const editingLayer = activeData.editingLayer
-  const layer = layerData.find(layer => layer.id == editingLayer);
+  const layer = useFindLayer(editingLayer||-1)
   if(!layer)return ; 
   const [tempLayerData, updateTempLayerData] = useState({icon:layer.icon, title: layer.title, color:layer.color,lightOrDark: layer?.lightOrDark});
   const [deleteConfirmation, updateDeleteConfirmation] = useState<false|"pending">(false)
@@ -195,7 +195,7 @@ const LayerEdit = () => {
       </div>
             <ActionBar 
             style={{marginTop: 16,borderTop:"1px solid var(--screen-text)"}}
-            primaryButtons={layerData.length > 1 && (
+            primaryButtons={layers.length > 1 && (
              <>
               <Button modifiers={["ghost","sm","caution"]} onClick={(e) => {e.preventDefault(); updateDeleteConfirmation("pending")}}>
                 Delete 

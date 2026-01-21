@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef,useLayoutEffect,Suspense,lazy} from "react"
 import svgImgUrl from "@/app/lib/svgImgUrl"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+//import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import { useMap } from "@vis.gl/react-google-maps"
 import Pin from "../../sharedComponents/Pin"
 import mapCenterer from "../lib/mapCenterer"
@@ -10,6 +10,8 @@ import { TLayer, TPin } from "@/projectTypes"
 import styles from "./styles.module.css";
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiPencilLine ,RiArrowDownSLine , RiArrowUpSLine} from "@remixicon/react"
 import ModalLoading from "../_components/ModalLoading"
+import DataContext from "@/app/contexts/DataContext"
+import useActiveStore from "@/app/contexts/useActiveStore"
 
 const LegendSectionEditingPanel = lazy(()=>import("./LegendSectionEditingPanel"))
 
@@ -52,31 +54,41 @@ const PinItem = ({activePin,pin,isActive,activatePin,layer}:PinItemProps) => {
 
 type PropsLegendSection = {
   layer:TLayer,
-  isActive:boolean,
-  activeDispatch: Function, 
-  expandedLayers : number[],
-  activePin: string|number|null, 
-  canEdit:boolean
+
 }
 
 const LegendSectionWrapper = ({layer}:{layer:TLayer}) => {
-    const {activeDispatch, activeData} = useContext(MobileActiveContext)
-    if(!activeData) return ;
-    const {disabledLayers, activePin,expandedLayers, canEdit} = activeData
-    const isActive = !disabledLayers.includes(layer.id);
+   // const {activeDispatch, activeData} = useContext(MobileActiveContext)
+  
+   // const {disabledLayers, activePin,expandedLayers, canEdit} = activeData
+//  const disabledLayers = useActiveStore(s=>s.disabledLayers);
+  //const expa 
+  //const isActive = !disabledLayers.includes(layer.id);
 
-    const props = {layer,isActive,activeDispatch,expandedLayers,activePin,canEdit}
+
+    const props = {layer}
     return <LegendSectionMemo {...props} />
 }
 
 
 
 const LegendSection = (props:PropsLegendSection) => {
-  const  {layer,isActive,activeDispatch,expandedLayers,activePin,canEdit} = props
+  const  {layer}= props
 
   const map = useMap(); 
-
+  const {nonEditing} = useContext(DataContext);
   const [isEditing,updateIsEditing] = useState(false)
+  const disabledLayers = useActiveStore(s=>s.disabledLayers);
+  const isActive = !disabledLayers.includes(layer.id);
+  const activePin = useActiveStore(s=>s.activePin);
+  const expandedLayers = useActiveStore(s=>s.expandedLayers);
+  const canEdit = useActiveStore(s=>s.canEdit);
+  const updateDisabledLayer = useActiveStore(s=>s.updateDisabledLayer)
+  const updateActivePin = useActiveStore(s=>s.updateActivePin);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState);
+  const updateLegendOpen = useActiveStore(s=>s.updateLegendOpen);
+  const updateBackState = useActiveStore(s=>s.updateBackState);
+  const updateExpandedLayer = useActiveStore(s=>s.updateExpandedLayer);
  
    
 
@@ -89,21 +101,29 @@ const LegendSection = (props:PropsLegendSection) => {
   const headerClick = useCallback(() => {
     console.log("clicked");
     if(isActive) {
-      activeDispatch({type: "ADD_DISABLED_LAYER",id: layer.id})
+      /*activeDispatch({type: "ADD_DISABLED_LAYER",id: layer.id})*/
+      /*activeDispatch({type:"UPDATE_DISABLED_LAYER",
+        id:layer.id,
+        disabled: true
+      })*/
+     updateDisabledLayer(true,layer.id);
     } else {
-      activeDispatch({type: "REMOVE_DISABLED_LAYER",id:layer.id})
+      /*activeDispatch({type: "REMOVE_DISABLED_LAYER",id:layer.id})*/
+      /*activeDispatch({type:"UPDATE_DISABLED_LAYER",
+        id:layer.id,
+        disabled: false
+      })*/
+     updateDisabledLayer(false,layer.id);
     }
   },[isActive])
 
   const activatePin = useCallback((pin:TPin) => {
     if(!isActive||!map) return ; 
-    
+    updateActivePin(pin.id);
+    updateDrawerState("open");
+    updateLegendOpen(false);
+    updateBackState("back_to_legend");
 
-    activeDispatch({type:"SET_ACTIVE_PIN",id:pin.id})
-    activeDispatch({type:"DRAWER_STATE",state:"open"})
-    activeDispatch({type: "LEGEND_OPEN", state: false})
-    activeDispatch({type:"BACK_STATE",state:"back_to_legend"})
-    mapCenterer(map,pin.location)
  
   },[mapCenterer,map]);
   const cutoff = 4
@@ -132,7 +152,7 @@ const LegendSection = (props:PropsLegendSection) => {
       <div className={`${styles.legendSectionheaderTitle} overflow-ellipsis flex-1 flex-center`}>
         {layer.icon && <img style={{marginRight:4}} width={size} height={size} src={svgImgUrl({icon:layer.icon,picker:true})}/>}
       <span className="flex-1 overflow-ellipsis">{layer.title}</span></div>
-      {canEdit && <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine {...{size}}/></button>}
+      {(!nonEditing && canEdit) && <button onClick={(e)=>{e.preventDefault(); updateIsEditing(true)}}><RiPencilLine {...{size}}/></button>}
     </div>
     <div className={`${styles.pins}`}>
         {pins.map(pin=> {
@@ -145,7 +165,8 @@ const LegendSection = (props:PropsLegendSection) => {
             modifiers={["secondary","sm"]}
             onClick={(e)=> {
               e.preventDefault(); 
-              activeDispatch({type: "UPDATE_EXPANDED_LAYERS", id:layer.id,state: openedManually?"collapsed":"expanded"})
+              updateExpandedLayer(openedManually?"collapsed":"expanded",layer.id)
+              //activeDispatch({type: "UPDATE_EXPANDED_LAYERS", id:layer.id,state: openedManually?"collapsed":"expanded"})
             }}
           >
             Show {!isExpanded?"all":"less"}

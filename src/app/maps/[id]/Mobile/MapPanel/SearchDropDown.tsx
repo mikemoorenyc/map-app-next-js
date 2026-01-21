@@ -4,11 +4,12 @@ import styles from "./MobileSearchStyles.module.css"
 import Pin from "../../sharedComponents/Pin";
 
 import { RiMapPinLine } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+
 
 
 import { TPredictionResult } from "@/app/components/ModernSearch/lib/resultFormatter";
 import { ReactNode } from "react";
+import { useFindLayer, useFindPin, useLayers } from "@/app/lib/useLayerData";
 type PredictionClick = (i:TPredictionResult) => void
 type ItemProps = {
   item:TPredictionResult,
@@ -31,7 +32,7 @@ export default function({results,itemClicked}:{
   };
   itemClicked :PredictionClick
 }) {
-  const layerData = useLayerData()
+  const layerData = useLayers();
   const { activePins=[],predictions=[]} = results; 
 
 
@@ -48,12 +49,7 @@ export default function({results,itemClicked}:{
         }}
       className="scroll-mover">
       {activePins.length ? (<div className={styles.pinContainer}>
-        {activePins.map((p:TPredictionResult)=> {
-          const pin = layerData.findPin(p.id);
-          const layer = layerData.findLayer(pin.layerId); 
-        const icon = <Pin onMap={true} layer={layer} interactable={false} size={14} className={`${styles.searchDropDownPin} ${pin.favorited? styles.favorited:""}`} pin={pin} />
-          return <SearchItem {...{itemClicked,icon}}  key={p.id} item={p} />
-        })}
+        {activePins.map((p:TPredictionResult)=><ActivePinResult {...{p,itemClicked}} key={p.id}/>)}
       
       </div>):""}
       {(activePins.length && predictions.length)? <hr className={styles.searchHR} /> :""}
@@ -68,5 +64,14 @@ export default function({results,itemClicked}:{
       </div>
     </div>
   )
+
+}
+
+const ActivePinResult = ({p,itemClicked}:{p:TPredictionResult,itemClicked:PredictionClick}) => {
+  const pin = useFindPin(p.id); 
+  const layer = useFindLayer(pin?.layerId||-1)
+  if(!pin || !layer) return ;
+   const icon = <Pin onMap={true} layer={layer} interactable={false} size={14} className={`${styles.searchDropDownPin} ${pin.favorited? styles.favorited:""}`} pin={pin} />
+          return <SearchItem {...{itemClicked,icon}}  key={pin.id} item={p} />
 
 }

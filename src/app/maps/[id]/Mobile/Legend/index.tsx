@@ -1,6 +1,6 @@
 import  { useContext ,useRef,useState,Suspense,lazy} from "react"
 
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+//import MobileActiveContext from "@/app/contexts/MobileActiveContext"
 import LegendSection from "./LegendSection"
 import svgImgUrl from "@/app/lib/svgImgUrl"
 import Button from "@/app/components/Button"
@@ -9,21 +9,31 @@ import styles from "./styles.module.css";
 import { RiArrowLeftFill,  RiSettingsLine,  } from "@remixicon/react"
 import AddLayerButton from "./AddLayerButton"
 import addDisabledMod from "@/app/lib/addDisabledMod"
+import { useLayers, useMapIcon, usePageTitle } from "@/app/lib/useLayerData"
+import useActiveStore from "@/app/contexts/useActiveStore"
 
-import useLayerData from "@/app/lib/useLayerData"
 
 const MapEditingPanel = lazy(()=>import("./MapEditingPanel"))
 
 const Legend = () => {
-  const {activeData, activeDispatch} = useContext(MobileActiveContext)
+  //const {activeData, activeDispatch} = useContext(MobileActiveContext)
+  const {nonEditing} = useContext(DataContext)
   
 
   //const mapData = layerData
-  const {canEdit} = activeData
-  const legendIsOpen = activeData?.legendOpen && activeData?.drawerState != "editing" 
+  //const {canEdit} = activeData
+  const canEdit = useActiveStore(s=>s.canEdit);
+  const legendOpen = useActiveStore(s=>s.legendOpen);
+  const drawerState = useActiveStore(s=>s.drawerState);
+  const legendIsOpen = legendOpen && drawerState != "editing" 
   const legendScroll = useRef(null);
   const [settingsOpen,updateSettingsOpen] = useState(false);
-  const {mapIcon,pageTitle,layers} = useLayerData();
+  //const {mapIcon,pageTitle,layers} = useLayerData();
+  const mapIcon = useMapIcon();
+  const pageTitle = usePageTitle();
+  const layers = useLayers(); 
+  const updateLegendOpen = useActiveStore(s=>s.updateLegendOpen);
+  const updateBackState = useActiveStore(s=>s.updateBackState)
   
   return <div className={`${styles.legend} ${legendIsOpen ? styles.open : ""}`}>
   {legendIsOpen && (<>
@@ -32,8 +42,10 @@ const Legend = () => {
       
       <Button className={styles.legendHeaderButton} modifiers={["ghost","secondary","icon","round"]} onClick={(e)=>{
         e.preventDefault(); 
-        activeDispatch({type:"LEGEND_OPEN",state:false})
-        activeDispatch({type:"BACK_STATE",state:"base"})
+        updateLegendOpen(false);
+        updateBackState("base");
+        //activeDispatch({type:"LEGEND_OPEN",state:false})
+        //activeDispatch({type:"BACK_STATE",state:"base"})
         }} icon={<RiArrowLeftFill />} />
       <div className={`${styles.legendTitle} overflow-ellipsis flex-1 flex-center`}>
         {mapIcon && <img src={svgImgUrl({icon:mapIcon,picker:true})} width={24} height={24} style={{marginRight:8}}/>}
@@ -45,14 +57,14 @@ const Legend = () => {
 
       return <LegendSection key={l.id} layer={l} />;
     })}
-    <div className={styles.addSection}>
+    {!nonEditing&& <div className={styles.addSection}>
     <Button icon={<RiSettingsLine />} onClick={()=>{updateSettingsOpen(true)}} className={styles.settingsIcon} modifiers={addDisabledMod(['sm','secondary','round',"icon"],!canEdit)}/>
     <AddLayerButton {...{legendScroll}}/>
-    </div>
+    </div>}
     </div>
     
  </>)}
-  {settingsOpen && <Suspense fallback={<div style={{background:"var(--screen-bg)",position:"fixed",inset:0, zIndex:9999}} />}><MapEditingPanel closeFunction={()=>{updateSettingsOpen(false)}}/></Suspense>}
+  {!nonEditing && settingsOpen && <Suspense fallback={<div style={{background:"var(--screen-bg)",position:"fixed",inset:0, zIndex:9999}} />}><MapEditingPanel closeFunction={()=>{updateSettingsOpen(false)}}/></Suspense>}
 
   </div>
 }

@@ -1,43 +1,75 @@
 import { useRef,useContext,memo,useCallback ,useMemo,useState, useEffect} from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
-import { useMap } from "@vis.gl/react-google-maps";
+//import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import Marker from "./Marker";
 import mapCenterer from "../lib/mapCenterer";
 
-import useLayerData from "@/app/lib/useLayerData";
+
 import { TLayer, TPin } from "@/projectTypes";
+import { usePinsFlat ,useFindLayer} from "@/app/lib/useLayerData";
+import useActiveStore from "@/app/contexts/useActiveStore";
     type Props ={
       pinsFlat:TPin[],
       disabledLayers: number[],
-      findLayer:(number:number)=>TLayer,
+
       markerClicked: (p:TPin,active:boolean)=>void,
       activePin: string|number|null, 
       map:google.maps.Map|null,
 
     }
   
+const Pins = () => {
+  const map = useMap(); 
+  const pinsFlat = usePinsFlat(); 
 
-const PinsWrapper = () => {
-    const map = useMap(); 
-    const {disabledLayers, activePin,backState} = useContext(MobileActiveContext).activeData 
-    const {activeDispatch} = useContext(MobileActiveContext)
-    let {pinsFlat,findLayer} = useLayerData(); 
-    const [mapBounds,updateMapBounds] = useState<google.maps.LatLngBounds|null>(null)
+  const disabledLayers = useActiveStore(s=>s.disabledLayers);
+  const backState = useActiveStore(s=>s.backState);
+  const activePin = useActiveStore(s=>s.activePin);
+  const updateActivePin=useActiveStore(s=>s.updateActivePin);
+  const updateDrawerState=useActiveStore(s=>s.updateDrawerState);
+  const updateBackState=useActiveStore(s=>s.updateBackState);
   
+  const [mapBounds,updateMapBounds] = useState<google.maps.LatLngBounds|null>(null);
 
-
-  const markerClicked = useCallback((pin:TPin,active:boolean) => {
-    if(active||!map) {
-      
-      return ; 
-    }
-    activeDispatch({type:"SET_ACTIVE_PIN",id:pin.id})
-    activeDispatch({type:"DRAWER_STATE",state:"open"})
-    activeDispatch({type:"BACK_STATE",state:backState == "back_to_legend"? "back_to_legend":"back_to_base"})
+  const markerClicked = useCallback((pin:TPin,active:boolean)=> {
+    if(active||!map) return ; 
+    updateActivePin(pin.id);
+    updateDrawerState("open")
+    updateBackState(backState == "back_to_legend"? "back_to_legend":"back_to_base");
     mapCenterer(map, pin.location);
-  },[mapCenterer,map,activeDispatch]);
+  },[map,backState])
 
+  const updater = useCallback(()=> {
+    if(!map) return false; 
+    const bounds = map.getBounds()
+    if(!bounds) return ;
+    updateMapBounds(bounds);
+  },[map]);
 
+  useEffect(()=> {
+    if(!map) return; 
+    const listener = google.maps.event.addListener(map, "idle", updater);
+    updater(); // initial run
+    return () => listener.remove();
+  },[map,updater]);
+
+  const pinsInView = useMemo(()=> {
+    if(pinsFlat.length < 75) return pinsFlat;
+    if(!mapBounds) return pinsFlat;
+    return pinsFlat.filter(p => mapBounds.contains(p.location));
+  },[pinsFlat,mapBounds])
+
+  console.log(pinsFlat);
+
+  return <>
+
+  {pinsInView.reverse().filter(p=>!disabledLayers.includes(p.layerId)).map(p=><Marker key={p.id} onClick={markerClicked} pin={p} />)}
+  
+  </>
+}
+
+export default Pins;
+    /*
 
 
 
@@ -74,23 +106,26 @@ useEffect(() => {
 
   
 
-  const p = {pinsFlat,findLayer,disabledLayers,markerClicked,activePin,map}
+  const p = {pinsFlat,disabledLayers,markerClicked,activePin,map}
  
   return <PinsMemo {...p}  />
 
 }
 
-const Pins = ({pinsFlat,disabledLayers,findLayer,markerClicked,activePin,map}:Props) => {
+const Pins = ({pinsFlat,disabledLayers,markerClicked,activePin,map}:Props) => {
   const layerMap= useMemo(()=> {
     const layerMap : {
       [key:string|number]:TLayer
     } = {}
     pinsFlat.forEach(p => {
-      layerMap[p.id] = findLayer(p.layerId);
+      console.log(p);
+      const layer = useFindLayer(p.layerId)
+      if(!layer) return ; 
+      layerMap[p.id] = layer;
     });
     return layerMap
 
-  },[pinsFlat,findLayer])
+  },[pinsFlat])
   
  
 
@@ -110,3 +145,4 @@ const TheMarker = memo(Marker)
 
 
 export default PinsWrapper
+*/

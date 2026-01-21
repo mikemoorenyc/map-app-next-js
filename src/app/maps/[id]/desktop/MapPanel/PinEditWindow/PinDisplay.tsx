@@ -1,4 +1,4 @@
-import { useContext, useState , useRef, useEffect, KeyboardEvent} from "react";
+import { useLayoutEffect,useContext, useState , useRef, useEffect, KeyboardEvent,memo, useCallback} from "react";
 import DataContext from "@/app/contexts/DataContext";
 import ToastContext from "@/app/contexts/ToastContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
@@ -12,7 +12,7 @@ import Linkify from 'linkify-react';
 import { useMyPresence } from "@liveblocks/react/suspense";
 import styles from "./styles.module.css";
 import useLiveEditing from "@/app/lib/useLiveEditing";
-import useLayerData from "@/app/lib/useLayerData";
+import  { useFindLayer, useFindPin } from "@/app/lib/useLayerData";
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiDeleteBinLine, RiEmojiStickerLine, RiPencilLine, RiStarFill, RiStarLine } from "@remixicon/react";
 
 
@@ -27,18 +27,48 @@ type PayloadEntry =
   | { key: "title"|"description"|"icon"; value: string }
   | { key: "favorited"|"visited"; value: boolean }
 
+const Header = memo(({editingPin,keyPressSave,updateTempValue,tempData,editingText}:{
+  tempData:TPayloadValues,
+  editingText:boolean,
+  updateTempValue:Function,
+  keyPressSave:Function
+  editingPin: string|number
+})=> {
+  console.log("heder render")
+  const p = useFindPin(editingPin);
+  const ref = useRef<HTMLInputElement | null>(null);
+  useEffect(()=> {
+    if(!editingText) return ;
+    if(!ref || !ref.current) return ; 
+    ref.current.focus(); 
+  },[editingText])
+  if(!p) return ; 
+  return <>
+  <InfoWindowHeader>
+  {!editingText && p.title}
+  {editingText && <input ref={ref}  tabIndex={1}className={styles.titleInput} type="text" value={tempData.title} onKeyDown={(e)=>{keyPressSave(e)}} onChange={(e)=>{e.preventDefault(); updateTempValue({title:e.target.value})}}/>}
 
+  </InfoWindowHeader>
+      {!editingText&&<div className={styles.displayDescription}>
+    {p.description&& <Linkify options={{target:"_blank"}}>{p?.description||""}</Linkify>}
+    </div>}
+  
+    {editingText &&<textarea tabIndex={2} className={styles.displayDescriptionInput}  onKeyDown={(e)=>{keyPressSave(e)}} value={tempData.description ||""} onChange={(e) => {e.preventDefault(); updateTempValue({description: e.target.value})}} />}
+  </>
+})
 
 
 export default () => {
-  const layerData = useLayerData().layers; 
+
   const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {findPin,findLayer} = useLayerData(); 
+  const p = useFindPin(activeData.editingPin||-1);
+  const currentLayer = useFindLayer(p?.layerId||-1)
   if(!activeData.editingPin) return ; 
-  const p = findPin(activeData.editingPin);
+  if(!p || !currentLayer) return ; 
+
   const {canEdit} = activeData;
 
-  if(!p) return ; 
+  
 
   const [iconSelectorOpen,updateIconSelectorOpen] = useState(false)
   const [tempData, updateTempData] = useState<TPayloadValues>(p);
@@ -52,29 +82,31 @@ export default () => {
 
 
   useEffect(()=> {
-    if(editingText||iconSelectorOpen) return ; 
+    
+    //if(editingText||iconSelectorOpen) return ; 
     updateTempData(p);
+    updateEditingText(false);
+    updateIconSelectorOpen(false)
   },[p])
 
-  const currentLayer = findLayer(p.layerId);
-  if(!currentLayer) return false; 
+  
 
   const pinIndex = currentLayer.pins.findIndex(pin => pin.id == p.id);
 
   
-  const updateTempValue = (newValues:TPayloadValues) => {
+  const updateTempValue = useCallback((newValues:TPayloadValues) => {
 
     updateTempData(prev => {
 
         return {...prev, ...newValues}
     })
-  }
+  },[updateTempData])
   const cancelEditing = () => {
     updateEditingText(false);
     updateTempData(p);
   }
 
-  const saveEditing = () => {
+  const saveEditing = useCallback(() => {
 
     dispatchEvent([{
       type: "UPDATED_PIN",
@@ -86,7 +118,7 @@ export default () => {
     }])
     updateEditingText(false)
 
-  }
+  },[updateEditingText,dispatchEvent])
 
 
 
@@ -134,7 +166,7 @@ export default () => {
     dispatchEvent([{
       type: "DELETED_PIN",
       id: p.id,
-      layerId: layerData.filter(layer => layer.id == p.layerId)[0].id
+      layerId: p.layerId
     }])
     
   }
@@ -144,12 +176,12 @@ export default () => {
   
 
 
-  const keyPressSave = (e:KeyboardEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+  const keyPressSave = useCallback((e:KeyboardEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     const metas = ["altKey","shiftKey","ctrlKey","metaKey"];
     if(e.key != "Enter") return; 
     if(metas.filter(k => e[k as keyof KeyboardEvent] == true).length > 0) return; 
     saveEditing(); 
-  }
+  },[saveEditing])
 
   useEffect(()=> {
    updateMyPrescence({isEditing: (editingText || iconSelectorOpen)});
@@ -164,19 +196,23 @@ export default () => {
   }
   return  <>
 
+ 
+  <Header 
+    editingPin={activeData.editingPin}
+    {...{
+      keyPressSave,
+      updateTempValue,
+      tempData,
+      editingText
+    }}
   
-  <InfoWindowHeader>
-  {!editingText && p.title}
-  {editingText && <input className={styles.titleInput} tabIndex={1} type="text" value={tempData.title} onKeyDown={keyPressSave} onChange={(e)=>{e.preventDefault(); updateTempValue({title:e.target.value})}}/>}
-
-  </InfoWindowHeader>
+  />
+  
+  
   
   <div className="PinDisplay-container">
-    {!editingText&&<div className={styles.displayDescription}>
-    {p.description&& <Linkify options={{target:"_blank"}}>{p?.description||""}</Linkify>}
-    </div>}
   
-    {editingText && <textarea className={styles.displayDescriptionInput} tabIndex={2} onKeyDown={keyPressSave} value={tempData.description ||""} onChange={(e) => {e.preventDefault(); updateTempValue({description: e.target.value})}} />}
+  
     <LocationDetails placeData={p} />
 
   </div>

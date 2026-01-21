@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, } from "react"
+import React, {useCallback,useContext, useEffect, memo,useLayoutEffect} from "react"
 import {  AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 
 import Pin from "../../sharedComponents/Pin";
@@ -8,17 +8,23 @@ import InfoWindowContext from "@/app/contexts/InfoWindowContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 
 
-import useLayerData from "@/app/lib/useLayerData";
+import  { useFindLayer, useFindPin,isHighlighted } from "@/app/lib/useLayerData";
+import { ClientSideSuspense } from "@liveblocks/react";
 
+
+
+const PinDisplayMemo = memo(PinDisplay);
 const PinMarker = ({pId, indexNum}:{pId:string|number,indexNum:number}) => {
-    const layerD = useLayerData();  
-    const {infoWindowDispatch} = useContext(InfoWindowContext);
-    const {activeDispatch, activeData} = useContext(ActiveContext)
 
-    const pin = layerD.findPin(pId);
-    if(!pin) return ; 
-    const layer = layerD.findLayer(pin.layerId);
-    if(!layer) return false; 
+    const {infoWindowDispatch} = useContext(InfoWindowContext)
+    const {activeDispatch, activeData} = useContext(ActiveContext)
+    const {collapsedLayers} = activeData
+    
+    const pin = useFindPin(pId)
+    const layer = useFindLayer(pin?.layerId||-1)
+
+   
+    if(!pin || !layer) return ; 
     const {location} = pin;
     const {editingPin} = activeData;
     
@@ -40,34 +46,40 @@ const PinMarker = ({pId, indexNum}:{pId:string|number,indexNum:number}) => {
         //DO NOTHING NOT THE RIGHT PIN
         if(editingPin !== pin.id) return ;
         //INFO WINDOW ALREADY OPEN
-        
-       // if(infoWindowState.infoWindowShown) return ;
-        
-        //IT IS OUR PIN AND IT"S NOT OPEN
         infoWindowDispatch({
             type: "OPEN_WINDOW",
-            position: location,
+            position: pin.location,
             content: {
                     header: "",
-                    body: <PinDisplay ></PinDisplay>
+                    body: <PinDisplayMemo></PinDisplayMemo>
                 }
             
             })
-            mapMover(map,location);
+  
+       
+         mapMover(map,location);
            
 
     },[activeData.editingPin])
     
     let zindex = pin?.favorited ? 999 : 1; 
-    const highlighted = layerD.isHighlighted(activeData,pin.id); 
+    const highlighted = isHighlighted(activeData,pin.id); 
     if(highlighted) {
         zindex=9999; 
     }
+    if(collapsedLayers.includes(layer.id)) return ; 
     
-    
-    return <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
+    return (
+        <ClientSideSuspense fallback={<></>}>
+
+
+     <AdvancedMarker onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:pin.id})}}
     onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}} zIndex={zindex} onClick={handleClick}  position={location}>
     <Pin onMap={true}   highlighted={highlighted}  interactable={true} layer={layer}   pin={pin}  size={16} />
     </AdvancedMarker>
+   
+    </ClientSideSuspense>
+    
+)
 }
 export default PinMarker

@@ -10,6 +10,8 @@ import Image from "next/image";
 import makeNativeLink from "../lib/makeNativeLink";
 import { TPin,TPhoto } from "@/projectTypes";
 import useLiveEditing from "@/app/lib/useLiveEditing";
+import useActiveStore from "@/app/contexts/useActiveStore";
+
 
 /*
 const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
@@ -60,34 +62,44 @@ const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
 }
 */
 
-export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|TempData}) {
-  const [photos,updatePhotos] = useState<TPhoto[]>([]);
- 
-  const {activeDispatch} = useContext(MobileActiveContext);
-
-  const [fetchStatus, updateFetchStatus] = useState("idle");
+const PhotoUploader = ({pinId}:{photos:TPhoto[],status:string,pinId:string|number})=> {
   const dispatchEvent = useLiveEditing(); 
  
+  
 
- // const savedPhotos = JSON.parse(sessionStorage.getItem("saved_photos") || "[]");
-
-/*
-
-  const findPhotos = useCallback(async (id)=> {
-    if(!places) return ;
-    const newPlace = new places.Place({id});
-    await newPlace.fetchFields({fields:["photos"]});
-    const photos = newPlace.photos; 
-    if(!photos || !photos.length) return ; 
-    const photoArray = newPlace.photos.map(p => {return {uri:p.getURI(),w:p.widthPx,h:p.heightPx}})
-    updatePhotos(photoArray);
-    if(!temp) {
-     // uploadPhotos(photoArray,id,layerDispatch);
+  useEffect(()=> {
+    const uploadPhotos = (event:CustomEvent) => {
+      dispatchEvent([{
+      type: "UPDATED_PIN",
+      id: pinId,
+      data : {
+        photos : event.detail.photos,
+        photos_uploaded: new Date().toLocaleString()
+      }
+    }])
     }
+    window.addEventListener("upload_photos",uploadPhotos as EventListener);
+
+    return () => {
+      window.removeEventListener("upload_photos",uploadPhotos as EventListener)
+    }
+  },[])
+
+  return <></>
 
 
-  },[places,updatePhotos])
-  */
+
+}
+
+export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|TempData}) {
+  const [photos,updatePhotos] = useState<TPhoto[]>([]);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState); 
+
+  const [fetchStatus, updateFetchStatus] = useState("idle");
+  
+  const {nonEditing,layerDispatch} = useContext(DataContext);
+ 
+
   const getPhotos = useCallback(async (pin:TPin|TempData) => {
     const search = await fetch(`/api/tripadvisor?title=${pin.title}&coords=${pin.location.lat},${pin.location.lng}&addr=${pin.formatted_address}`);
     updateFetchStatus("loaded")
@@ -100,6 +112,21 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
     if(temp) {
       return ; 
     }
+    layerDispatch({
+      type:"UPDATED_PIN",
+      id:id,
+      data: {
+        photos,
+        photos_uploaded: new Date().toLocaleString() 
+      }
+    })
+    const uploadPhotos = new CustomEvent("upload_photos",{
+      detail: {
+        photos
+      }
+    })
+    window.dispatchEvent(uploadPhotos);
+    /*
     dispatchEvent([{
       type: "UPDATED_PIN",
       id: pin.id,
@@ -108,6 +135,7 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
         photos_uploaded: new Date().toLocaleString()
       }
     }])
+    */
 
   },[updateFetchStatus,updatePhotos])
 
@@ -145,10 +173,8 @@ useEffect(()=> {
  // if(photos.length < 1) return ;
  const showPhotos = () => {
   updateFetchStatus("loading");
-  activeDispatch({
-      type:"DRAWER_STATE",
-      state:"maximized"
-  })
+  updateDrawerState("maximized")
+
   getPhotos(pin);
 
  }
@@ -170,12 +196,13 @@ const photoFallback = photos.map(p=>{
 })
 
 return <div className={styles.containerFlex}>
+  {(!nonEditing && !temp) && <PhotoUploader status={fetchStatus} photos={photos} pinId={id} />}
 <div className={`${styles.spacer} ${styles.front}`} />
    {photoFallback.map(p => 
     <img key={p.url} width={p.width||undefined} height={p.height||undefined}  src={`${p.url}`}  className={styles.imgFlex}/>
  )}
  <a target="_blank" href={pin.url?makeNativeLink(pin.url):""} className={`${styles.imgFlex} ${styles.imgPlaceHolder}`}>
-  <Image src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500"/>
+  <img src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500"/>
   <div className={`${styles.placeholderText } flex-center-center`}>
     <div className={styles.placeholderTextInner}>
       {fetchStatus == "loaded" && <span className={`${styles.phicon} flex-center-center`}>

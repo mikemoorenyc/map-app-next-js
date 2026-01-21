@@ -3,19 +3,21 @@ import { AdvancedMarker, MapMouseEvent } from "@vis.gl/react-google-maps";
 import Pin from "../../sharedComponents/Pin";
 import { memo,useCallback,useMemo ,useState,useEffect} from "react";
 import { TLayer, TPin } from "@/projectTypes";
+import useActiveStore from "@/app/contexts/useActiveStore";
+import { useFindLayer } from "@/app/lib/useLayerData";
 type Props ={
   pin:TPin,
-  activePin:string|number|null,
+
   onClick: (pin:TPin,active:boolean)=>void
-  layer:TLayer,
-  map:google.maps.Map|null
+
+
 }
 
 const AMMemo = memo(AdvancedMarker); 
 const PinMemo = memo(Pin); 
 
-export default  ({pin, activePin,onClick,layer,map}:Props) => {
-
+export default  ({pin, onClick}:Props) => {
+  const activePin = useActiveStore(s=>s.activePin);
   
   const active = activePin == pin.id; 
   const location = useMemo(()=>pin.location,[pin])
@@ -28,11 +30,15 @@ export default  ({pin, activePin,onClick,layer,map}:Props) => {
   if(active) {
     zindex = 9999;
   }
+  const layer = useFindLayer(pin.layerId);
+  if(!layer) {
+    throw new Error("no layer found");
+  }
 
 
 
   
-  
+  console.log("pin rendered");
 
  
 

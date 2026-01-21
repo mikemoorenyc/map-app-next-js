@@ -8,7 +8,7 @@ import Modal from "../../sharedComponents/Modal"
 import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal"
 import lightOrDark from "@/app/lib/lightOrDark"
 import ChangeIcon from "../DrawerPanel/EditPanel/ChangeIcon"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+
 import Mover from "../_components/Mover"
 import Button from "@/app/components/Button"
 import ColorPicker from "@/app/components/AddMapForm/ColorPicker"
@@ -20,6 +20,7 @@ import ModalLoading from "../_components/ModalLoading"
 import { TLayer } from "@/projectTypes"
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
 import { findLayer } from "@/app/lib/finders"
+import useActiveStore from "@/app/contexts/useActiveStore"
 
 type Props = {layerId:number,cancelFunction:()=>void}
 const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
@@ -28,7 +29,7 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
   const layerData = findLayer(storageData,layerId);
   const dispatchEvent = useLiveEditing(); 
   const [tempData,updateTempData] = useState(layerData);
-  const {activeDispatch} = useContext(MobileActiveContext);
+  const updateActivePin = useActiveStore(s=>s.updateActivePin)
   const [deletePending,updateDeletePending] = useState(false);
   const [colorPickerOpen,updateColorPickerOpen]= useState(false);
   const [deleteId,updateDeleteId] = useState<number|null>(null)
@@ -78,10 +79,11 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
       updateDeletePending(false);
       return false; 
     } 
-    activeDispatch({
+    updateActivePin(null);
+    /*activeDispatch({
       type: "SET_ACTIVE_PIN",
       id:null
-    })
+    })*/
     /*activeDispatch({
       type:"REMOVE_DISABLED_LAYER",
       id:layerData.id

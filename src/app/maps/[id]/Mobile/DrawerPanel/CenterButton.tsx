@@ -1,18 +1,26 @@
 import { RiFocus3Line } from "@remixicon/react";
 import styles from "./styles.module.css";
 import Button from "@/app/components/Button";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+
 import { SyntheticEvent, useCallback, useContext } from "react";
 import useMapMover from "@/app/lib/useMapMover";
-import useLayerData from "@/app/lib/useLayerData";
+
 import { useMap } from "@vis.gl/react-google-maps";
+import useActiveStore from "@/app/contexts/useActiveStore";
+import { useFindPin } from "@/app/lib/useLayerData";
 
 export default function ()  {
-  const {activeData,activeDispatch} = useContext(MobileActiveContext)
-  const {geolocation,inBounds,activePin,tempData} = activeData;
+
+  const geolocation = useActiveStore(s=>s.geolocation);
+  const activePin = useActiveStore(s=>s.activePin);
+  const tempData = useActiveStore(s=>s.tempData);
+  const inBounds = useActiveStore(s=>s.inBounds);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState)
+
+
   const mapMover = useMapMover(); 
   const map = useMap(); 
-  const {findPin} = useLayerData(); 
+  const pin = useFindPin(activePin||-1) || tempData;
   if(!geolocation) return ;
   
   const reCenter = useCallback((e:SyntheticEvent) => {
@@ -22,15 +30,12 @@ export default function ()  {
       mapMover("move",undefined,[geolocation.lat,geolocation.lng]);
       return ; 
     }
-    const pin = activePin == "temp" ? tempData : findPin(activePin);
+
     if(!pin) return ; 
     var bounds = new google.maps.LatLngBounds();
     bounds.extend(geolocation);
     bounds.extend(pin.location);
-    activeDispatch({
-      type:"DRAWER_STATE",
-      state: "minimized"
-    })
+    updateDrawerState("minimized");
     map.fitBounds(bounds,{
       top:60,
       right: 10,
@@ -38,7 +43,7 @@ export default function ()  {
       left:10
     });
 
-  },[map,geolocation,activePin,tempData]);
+  },[map,geolocation,pin,activePin]);
 
   if(!geolocation || !inBounds) return ; 
 

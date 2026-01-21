@@ -2,12 +2,12 @@ import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps"
 import MobileActiveContext, { TRoute } from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import { useContext,useEffect,useState,useCallback } from "react"
-import useLayerData from "@/app/lib/useLayerData";
+import{ useFindPin, useLayers } from "@/app/lib/useLayerData";
 
 export default function ()  {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {tempData,activePin,geolocation,inBounds} = activeData;
-  const layerData = useLayerData().layers
+  const layerData = useLayers(); 
   const map = useMap(); 
   const routesLibrary = useMapsLibrary('routes');
   const [dirService,updateDirService] = useState<google.maps.DirectionsService|null>(null); 
@@ -19,7 +19,7 @@ export default function ()  {
   
   const updateData = useCallback(async (mode:keyof typeof google.maps.TravelMode) => {
      if (!dirService || !geolocation || !inBounds) return;
-     const pin = activePin == "temp" ? tempData : layerData.map(l=>l.pins).flat().find(pin => pin.id == activePin);
+     const pin = activePin == "temp" ? tempData : useFindPin(activePin||-1);
 
      if(!pin) return; 
      dirService.route({

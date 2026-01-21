@@ -4,8 +4,9 @@ import styles from "../styles.module.css"
 import ItemRow from "../ItemRow";
 import { RiTimeLine } from "@remixicon/react";
 import { useContext, useEffect, useState } from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+
 import useLiveEditing from "@/app/lib/useLiveEditing";
+import useActiveStore from "@/app/contexts/useActiveStore";
 
   const tooOldCheck =(hours:THour[]) => {
     console.log(hours);
@@ -56,8 +57,9 @@ export default function OpenOrClosed({pin}:{pin:TPin|TempData}) {
   const [isOpen,updateIsOpen] = useState<null|boolean>(null);
   const [hoursToday,updateHoursToday] = useState("");
   const [holiday,updateHoliday] = useState("");
-  const {activePin,canEdit} = useContext(MobileActiveContext).activeData;
-  const updatePin = useLiveEditing(); 
+  const activePin = useActiveStore(s=>s.activePin);
+
+
  
 
   const getHolidays = async (code:string) => {

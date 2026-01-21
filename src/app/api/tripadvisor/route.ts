@@ -130,26 +130,34 @@ export  async function GET(req:NextRequest) {
   }
   let locationData = await locationQuery.json(); 
   locationData = locationData.data;
+
   if(locationData.length < 1) {
     return goodResponse([]);
   }
-  const photoList = locationData.map((p:{
-    images: {
-      large: {
+  type TripPhoto = {
+    images : {
+      large?: {
         width:number,
         height:number,
         url:string
       },
-      original:{
-        width: number, 
-        height: number, 
-        url: string
+      original?: {
+        width:number,
+        height:number,
+        url:string
       }
     }
-  })=> {
+  }
+  const photoList = locationData.filter((p:TripPhoto)=> {
+    const {images} = p ;
+    const {large,original} = images; 
+    if(!large && !original) return false;
+    return true; 
+  }).map((p:TripPhoto)=> {
     const {images} = p;
     const {large,original} = images;
-    if(original.width < 2000 && original.height < 2000) {
+    console.log(large,original);
+    if(original && original.width < 2000 && original.height < 2000) {
       return original
     } 
     return large; 

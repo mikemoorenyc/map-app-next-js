@@ -23,7 +23,8 @@ type TActiveData = {
     },
   colorMode:"light"|"dark",
   canEdit:boolean,
-  firstLoad:false|"local"|"server"
+  firstLoad:false|"local"|"server",
+  static:boolean
 }
 type MobileActiveUserActions = |
     {type:"CAN_EDIT";canEdit:boolean}|
@@ -38,7 +39,8 @@ type MobileActiveUserActions = |
     {type:"UPDATE_DISABLED_LAYER";id:number;disabled:boolean}|
     {type:"LEGEND_OPEN";state:boolean}|
     {type:"DRAWER_STATE";state:DrawerStates}|
-    {type:"BACK_STATE";state:"back"}
+    {type:"BACK_STATE";state:"back"}|
+    {type:"UPDATE_STATIC", state:boolean}
 
 
 const initActives :TActiveData = {
@@ -54,7 +56,8 @@ const initActives :TActiveData = {
     routes: null,
     firstLoad:false,
     colorMode: "light",
-    canEdit: true
+    canEdit: true,
+    static:true
   }
 
 const MobileActiveContext = createContext<{activeData:TActiveData,activeDispatch:Function}>({activeData:initActives,activeDispatch:()=>{}})
@@ -95,8 +98,10 @@ const MobileActiveContextProvider = ({children}:{children:ReactNode}) => {
       }
       case "UPDATE_DISABLED_LAYER": {
         const {disabledLayers} = actives;
-        const newDisabled = action.disabled? disabledLayers.filter(l=>l!=action.id):
+        console.log(action);
+        const newDisabled = !action.disabled? disabledLayers.filter(l=>l!=action.id):
             [...disabledLayers,...[action.id]];
+        console.log(newDisabled);
         return {...actives,...{disabledLayers:newDisabled}}
       }
       case "UPDATE_EXPANDED_LAYERS" : {
@@ -119,6 +124,9 @@ const MobileActiveContextProvider = ({children}:{children:ReactNode}) => {
       }
       case "BACK_STATE" : {
         return {...actives, ...{backState: action.state}}
+      }
+      case "UPDATE_STATIC": {
+        return {...actives, ...{state:action.state}}
       }
     }
  

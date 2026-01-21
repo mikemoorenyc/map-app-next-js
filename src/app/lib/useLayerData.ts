@@ -5,63 +5,115 @@ import DataContext from "../contexts/DataContext";
 import { TActiveData } from "../contexts/ActiveContext";
 import { TLayer,TPin } from "@/projectTypes";
 import { useStorage } from "@liveblocks/react";
+import { shallow } from "@liveblocks/react";
 
-export default function useLayerData() {
-  let {layerData,pageTitle,mapIcon} = useContext(DataContext);
-  const storageLayerData = useStorage(root => root.map.layerData);
-  const storagePageTitle = useStorage(root => root.map.pageTitle);
-  const storageMapIcon = useStorage(root=>root.map.mapIcon);
-  layerData = storageLayerData||layerData;
-  pageTitle = storagePageTitle||pageTitle;
-  mapIcon = storageMapIcon||mapIcon;
-  
+const jsonCompare = (prev:Object|null|undefined,next:Object|null|undefined) =>JSON.stringify(prev) == JSON.stringify(next);
 
+export const useStatic = () => {
+    const {nonEditing} = useContext(DataContext);
 
-
-
-
-
-const isHighlighted = (activeData:TActiveData, pinId:string|number) => {
+    return !nonEditing; 
+}
+export const isHighlighted = (activeData:TActiveData, pinId:string|number) => {
   return activeData.editingPin == pinId || activeData.hoveringPin == pinId
 }
-const pinIds = useMemo(()=> {
- return layerData.map(l => l.pins).flat().map(p=>p.id);
-},[layerData])
-const layerIds = useMemo(()=> layerData.map(l=>l.id),[layerData]);
-const pinsFlat = useStorage(root =>
-  root.map.layerData.flatMap(l => l.pins)
-)||[];
-const layers = useMemo(()=>layerData,[layerData]);
-
-const findLayer = useCallback((id:number):TLayer => {
-
-  const theLayer = layerData.find(l => l.id == id);
-  if(!theLayer) {
-    throw new Error("Can't find layer"+id);
-  }
-  return theLayer; 
-},[layerData])
-
-const findPin = (id:string|number):TPin => {
-  
-
-  const thePin = layerData.map(l=> {
-    if (l?.pins) {
-      return l.pins
-    } else {
-      return [];
+function useSafeLiveStorage<T>(
+  selector: (root: {
+    map: {
+        mapIcon?:string, 
+        pageTitle:string, 
+        layerData:TLayer[]
     }
-    }).flat().find(p => p.id == id)
-  if(!thePin) {
-    throw new Error("Can't find pin"+id);
+  }) => T,
+  compare?: (a: T|null, b: T|null) => boolean
+): T | null {
+  try {
+    return useStorage<T>(selector, compare);
+  } catch (e) {
+    return null;
   }
-  return thePin; 
+}
+export const useLayers = () => {
+  const editing = useStatic();
+  const live = useSafeLiveStorage(root => root.map.layerData,jsonCompare)||[];
+  const data  = useContext(DataContext).layerData
+ 
+  return editing ? live : data;
+
+}
+export const usePinIds = () => {
+  const editing = useStatic();
+  const live =  useSafeLiveStorage<(string|number)[]>(root=> root.map.layerData.flatMap((l:TLayer)=>l.pins).map((p:TPin)=>p.id),shallow)||[];
+  const data = useContext(DataContext).layerData.flatMap(l=>l.pins).map(p=>p.id);
+  return editing? live:data; 
+}
+export const usePinsFlat=() =>{
+  const editing = useStatic();
+
+  const live =useSafeLiveStorage<TPin[]>(root=>root.map.layerData.flatMap(l=>l.pins),jsonCompare)||[]
+  const data = useContext(DataContext).layerData.flatMap(l=>l.pins)
+  return editing ? live : data
+  
+}
+
+export const useFindPin = (id:string|number) => {
+  const editing = useStatic();
+  
+  const finder = (layers:TLayer[]) => layers.flatMap((l:TLayer)=> {
+    return l.pins || []
+  }).find(p => p.id == id);
+
+
+  const live = useSafeLiveStorage(root => {
+    return finder(root.map.layerData);
+  },jsonCompare)
+  const data = finder(useContext(DataContext).layerData);
+  return editing? live:data;
+}
+export const useFindLayer = (id:number) => {
+    const editing = useStatic(); 
+  const finder = (layers:TLayer[]) => layers.find(l => l.id == id);
+  const live = useSafeLiveStorage(root => finder(root.map.layerData),jsonCompare)
+  const data = finder(useContext(DataContext).layerData)
+  if(!live && !data) {
+    return undefined;
+  }
+ 
+  return editing?live:data
 }
 
 
 
-  return {
-    findPin,findLayer,isHighlighted,pinIds,layerIds,pinsFlat,layers,pageTitle,mapIcon
-  }
+
+
+export const usePageTitle = () => {
+    const editing = useStatic(); 
+    
+    let live = useSafeLiveStorage(root => root.map.pageTitle);
+    const data = useContext(DataContext).pageTitle
+
+    if(live === null) {
+      live = "";
+    }
+    if(!live && !data) {
+      return "";
+    }
+    return editing?live:data
+  
+}
+export const useMapIcon = () => {
+    const editing = useStatic(); 
+    let live = useSafeLiveStorage(root => root.map.mapIcon);
+    if(live === null) {
+      live = undefined;
+    }
+    const data = useContext(DataContext).mapIcon;
+    
+    if(!live&&!data) return undefined;
+    return editing?live:data;
 
 }
+/*
+export const useMapId=() => {
+  return useDataStore(s=>s.mapId);
+}*/

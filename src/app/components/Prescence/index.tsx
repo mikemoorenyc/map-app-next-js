@@ -8,15 +8,15 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import { User } from "@liveblocks/node";
 
 type TProps = {
-  activeDispatch:Function,
+  canEdit:(c:boolean)=>void,
   overrideStyles?: CSSProperties,
   hideOnEditing?:boolean,
   openDirection?:"top"|"bottom"
 }
 
 
-export default function Prescence({activeDispatch,overrideStyles={},hideOnEditing,openDirection="top"}:TProps) {
-  const {user} = useContext(DataContext);
+export default function Prescence({canEdit,overrideStyles={},hideOnEditing,openDirection="top"}:TProps) {
+
   const [peopleListOpen,updatePeopleListOpen] = useState(false); 
   
 
@@ -37,14 +37,13 @@ function getRandomColor() {
 const [myPresence,updateMyPrescence] = useMyPresence(); 
 
 useEffect(()=> {
-  if(!user ) return ; 
+ 
   updateMyPrescence({
-    name: user.name,
-    email:user.email,
+
     isEditing:false,
     color: getRandomColor()
   })
-},[user])
+},[])
 
 const editingUsers = useOthers(
   (others) => others.filter((other) => other.presence.isEditing),
@@ -53,10 +52,8 @@ const editingUsers = useOthers(
 const someoneEditing = editingUsers.length > 0;
 
 useEffect(()=> {
-  activeDispatch({
-    type: "CAN_EDIT",
-    canEdit: !someoneEditing
-  })
+  canEdit(!someoneEditing);
+  
 },[someoneEditing])
 useEffect(()=> {
   updatePeopleListOpen(false);

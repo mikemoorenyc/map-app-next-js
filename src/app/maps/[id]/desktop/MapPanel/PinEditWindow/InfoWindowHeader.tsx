@@ -5,14 +5,13 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 import styles from "./styles.module.css";
 import { RiCloseLine } from "@remixicon/react";
 
-const InfoWindowHeader = ({children}:{children:ReactNode}) => {
+const InfoWindowHeader = ({children,closeEvent}:{children:ReactNode,closeEvent?:()=>void}) => {
   const {infoWindowDispatch} = useContext(InfoWindowContext);
   const {activeDispatch} = useContext(ActiveContext);
-  const handleClose = () => {
+const handleClose = () => {
     infoWindowDispatch({type:"CLOSE_WINDOW"});
   activeDispatch({type:"EDITING_PIN",id:null})  
   }
-
   return <div className="header display-flex">
       <div className={styles.title}>
          {children}

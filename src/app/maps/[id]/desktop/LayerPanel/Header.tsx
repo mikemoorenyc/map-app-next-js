@@ -4,14 +4,15 @@ import styles from "./Header.module.css"
 import MapIcon from "./MapIcon"
 import Button, { TModOptions } from "@/app/components/Button"
 import MapTitle from "./MapTitle"
-import { ClientSideSuspense } from "@liveblocks/react"
+import { ClientSideSuspense, useMyPresence } from "@liveblocks/react"
 import { RiEmojiStickerLine } from "@remixicon/react"
 import DataContext from "@/app/contexts/DataContext"
 import ActiveContext from "@/app/contexts/ActiveContext"
 import { RiStackLine } from "@remixicon/react"
 import useLiveEditing from "@/app/lib/useLiveEditing"
 import addDisabledMod from "@/app/lib/addDisabledMod"
-import useLayerData from "@/app/lib/useLayerData"
+
+import { usePageTitle,useMapIcon,useLayers } from "@/app/lib/useLayerData"
 
 type TProps = {
   layerRef: RefObject<HTMLDivElement|null>
@@ -20,14 +21,38 @@ type TProps = {
 const MapIconMemo = memo(MapIcon);
 
 
+const AddLayerButton = ({updateNewId,mods}:{updateNewId:Function,mods:TModOptions[]})=> {
+  const dispatchEvent = useLiveEditing()
+  const [prescence] = useMyPresence(); 
+
+  if(!prescence.email||!prescence.name) return ; 
+
+  return <Button icon={<RiStackLine/>} onClick={(e)=>{
+                e.preventDefault();
+                const id = Date.now();
+                updateNewId(id)
+                dispatchEvent([{type:"ADDED_LAYER",user:{
+                  name: prescence.name,
+                  email:prescence.email
+                },id:id}])
+            
+                }}   modifiers={mods}>
+                      Add layer
+              </Button>
+
+
+}
+
 const Header = ({layerRef}:TProps) => {
   
-  const dispatchEvent = useLiveEditing()
+  
   const [newId,updateNewId] = useState<null|number>(null);
-  const {layerDispatch,user} = useContext(DataContext);
+
   const {activeDispatch,activeData} = useContext(ActiveContext);
   const {canEdit} = activeData
-  const {pageTitle,layers,mapIcon} = useLayerData()
+  const layers = useLayers();
+  const mapIcon = useMapIcon(); 
+
   const layerData = layers;
   useEffect(()=> {
     if(!layerRef||!layerRef?.current) return ;
@@ -54,15 +79,7 @@ const Header = ({layerRef}:TProps) => {
     <MapTitle {...{canEdit}} />
    
          
-          { <Button icon={<RiStackLine/>} onClick={(e)=>{
-              e.preventDefault();
-              const id = Date.now();
-              updateNewId(id)
-              dispatchEvent([{type:"ADDED_LAYER",user:user||null,id:id}])
-          
-              }}   modifiers={mods}>
-                    Add layer
-            </Button>}
+          { <AddLayerButton {...{updateNewId,mods}}/>}
    
   </div>
 }

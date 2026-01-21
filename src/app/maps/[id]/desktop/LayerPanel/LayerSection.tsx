@@ -4,7 +4,7 @@ import { CSSProperties, ReactNode, useContext} from "react";
 import svgImgUrl from "@/app/lib/svgImgUrl";
 import styles from "./LayerSection.module.css";  
 import { RiCheckLine, RiSettingsLine } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+
 import { TLayer } from "@/projectTypes";
 
 const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer,activeId:number|null}) => {

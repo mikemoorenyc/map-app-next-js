@@ -14,7 +14,7 @@ export type TButtonProps = {
   href?:string, 
   target?:string
 }
-export type TModOptions = ("bigger"|"disabled"|"secondary"|"sm"|"ghost"|"raised"|"round"|"pill"|"caution"|"big"|"FAB"|"md"|"icon")
+export type TModOptions = ("bigger"|"disabled"|"secondary"|"sm"|"ghost"|"raised"|"round"|"pill"|"caution"|"big"|"FAB"|"md"|"icon"|"xs")
 
 
 const Button = (props:TButtonProps) => {

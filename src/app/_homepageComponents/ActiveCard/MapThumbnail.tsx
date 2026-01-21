@@ -30,10 +30,7 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
   const mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
     
     
-  /*const markerString = pins.map(p => {
-    return `${p.location.lat},${p.location.lng}`
-  }).join("|")*/
-  if(darkMode === null) return ;
+  
 
 
   return <img className={className} 

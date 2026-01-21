@@ -253,12 +253,16 @@ flex-direction: column;
   margin-top: 8px;
   text-align:center;
 }
-.centerButton {
+.topButtonContainer {
   position:absolute;
   right: var(--gutter);
+  left:var(--gutter);
   top: -44px;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 
 .photoLoader {
     width: 36px;

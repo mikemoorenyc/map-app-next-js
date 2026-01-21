@@ -1,6 +1,6 @@
 'use client'
 import { useContext } from "react";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+//import MobileActiveContext from "@/app/contexts/MobileActiveContext";
 import DataContext from "@/app/contexts/DataContext";
 import Button from "@/app/components/Button";
 
@@ -11,14 +11,24 @@ import styles from "./styles.module.css";
 import EditPanel from "./EditPanel";
 import CenterButton from "./CenterButton";
 import { RiListUnordered } from "@remixicon/react";
-import useLayerData from "@/app/lib/useLayerData";
+import { useMapIcon, usePageTitle } from "@/app/lib/useLayerData";
+import useActiveStore from "@/app/contexts/useActiveStore";
+import EditButton from "./EditButton";
+
 
 const DrawerPanel = () => {
 
-   const {activeData,activeDispatch} = useContext(MobileActiveContext);
-  const {activePin,legendOpen,drawerState,geolocation, inBounds} = activeData; 
+  // const {activeData,activeDispatch} = useContext(MobileActiveContext);
+   const updateDrawerState = useActiveStore(s=>s.updateDrawerState);
+
+  //const {activePin,legendOpen,drawerState,geolocation, inBounds} = activeData; 
   let transform  = 100;
   const drawerTopSpace = 32
+  const drawerState = useActiveStore(s=>s.drawerState);
+  const legendOpen = useActiveStore(s=>s.legendOpen);
+  const geolocation = useActiveStore(s=>s.geolocation);
+  const activePin = useActiveStore(s=>s.activePin);
+  const inBounds = useActiveStore(s=>s.inBounds);
 
   
   if(drawerState == "open") {
@@ -42,11 +52,13 @@ const DrawerPanel = () => {
       if(drawerState == "minimized" ) return ; 
      
       if(drawerState == "maximized") {
-        activeDispatch({type: "DRAWER_STATE", state: "open"});
+       // activeDispatch({type: "DRAWER_STATE", state: "open"});
+       updateDrawerState("open");
         return
       }
       if(drawerState == "open") {
-        activeDispatch({type: "DRAWER_STATE", state: "minimized"})
+        //activeDispatch({type: "DRAWER_STATE", state: "minimized"})
+        updateDrawerState("minimized");
       }
       ;
 
@@ -56,8 +68,15 @@ const DrawerPanel = () => {
       if(!activePin || isEditing) return ; 
       if(drawerState == "maximized") return ;
     
-      if(drawerState == "open") activeDispatch({type: "DRAWER_STATE", state: "maximized"});
-      if(drawerState == "minimized") activeDispatch({type: "DRAWER_STATE", state: "open"});
+      if(drawerState == "open") {
+        //activeDispatch({type: "DRAWER_STATE", state: "maximized"});
+        updateDrawerState("maximized")
+
+      }
+      if(drawerState == "minimized") {
+        //activeDispatch({type: "DRAWER_STATE", state: "open"});
+        updateDrawerState("open");
+      }
   
     },
      preventScrollOnSwipe: false,
@@ -68,13 +87,25 @@ const DrawerPanel = () => {
   const transformPosition = {
     transform: `translateY(calc(100% - ${transform}px))`
   }
-  const {mapIcon,pageTitle} = useLayerData(); 
+  const mapIcon = useMapIcon();
+  const pageTitle = usePageTitle();  
+  const updateLegendOpen = useActiveStore(s=>s.updateLegendOpen);
 
-  const headerProps = {pageTitle,mapIcon,contentOpen:false,after:<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{e.preventDefault(); activeDispatch({type:"LEGEND_OPEN",state: true})}}></Button>}
+  const headerProps = {pageTitle,mapIcon,contentOpen:false,after:<Button icon={<RiListUnordered className="Button-icon"/>} modifiers={["secondary","round","icon"]} onClick={(e)=>{
+    e.preventDefault();
+    updateLegendOpen(true); 
+    /*activeDispatch({type:"LEGEND_OPEN",state: true})*/}}></Button>}
   return (
   <div {...handlers} id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`}   style={transformPosition}>
 
-    {(drawerState !== "maximized" && geolocation && inBounds) && <CenterButton />}
+    {drawerState !== "maximized"&&<div className={styles.topButtonContainer}>
+      <EditButton  />
+      {( geolocation && inBounds) && <CenterButton />}
+
+
+    </div>}
+
+    
     {isEditing && <EditPanel />} 
     {(!activePin && isEditing == false)&& <DrawerPanelHeader {...headerProps} />
      }

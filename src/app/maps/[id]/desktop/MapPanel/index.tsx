@@ -14,10 +14,12 @@ import ActiveContext from "@/app/contexts/ActiveContext";
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
 const TopMenuMemo = memo(TopMenu)
+const PinContainerMemo = memo(PinContainer);
 
 const MapPanel = () => {
   const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY;
   const mapId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID
+
   if(!apiKey||!mapId) return false; 
   const {activeDispatch} = useContext(ActiveContext)
   const [clickEvent,updateClickEvent] = useState<MapMouseEvent|null>(null);
@@ -49,13 +51,18 @@ const MapPanel = () => {
     disableDefaultUI={true}
     colorScheme="FOLLOW_SYSTEM"
   >
-  <PinContainer/>
+  <PinContainerMemo/>
 <DesktopSearchMemo clickEvent={clickEvent} />
   <PinEditWindow clickEvent={clickEvent} />
   <ModernTempMarker />
   <TopMenuMemo />
   </MapMemo>
-  <ClientSideSuspense fallback={<></>}><Prescence {...{activeDispatch}} openDirection="bottom" /></ClientSideSuspense>
+  <ClientSideSuspense fallback={<></>}><Prescence  openDirection="bottom" canEdit={(t:boolean)=> {
+    activeDispatch({
+    type: "CAN_EDIT",
+      canEdit: t
+    })
+  }} /></ClientSideSuspense>
   </InfoWindowContextProvider>
   
   </APIProvider>

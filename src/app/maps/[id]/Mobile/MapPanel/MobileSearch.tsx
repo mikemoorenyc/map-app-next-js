@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState,useCallback, useMemo,ChangeEvent, SyntheticEvent } from "react";
 import { AdvancedMarker, useMap,Pin} from "@vis.gl/react-google-maps";
 import mapCenterer from "../lib/mapCenterer";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+
 
 import BackButton from "./BackButton";
 import Button from "@/app/components/Button";
@@ -15,7 +15,9 @@ import { RiArrowLeftFill, RiCloseFill, RiSearchLine } from "@remixicon/react";
 import { TSearchPin } from "@/app/components/ModernSearch/lib/fieldMapping";
 import { TGeolocation } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
-import useLayerData from "@/app/lib/useLayerData";
+import { useLayers } from "@/app/lib/useLayerData";
+import useActiveStore from "@/app/contexts/useActiveStore";
+
 
 
 export default () => {
@@ -23,8 +25,18 @@ export default () => {
   //query,updatePredictionResults,predictionChoiceCallBack,predictionChoice
   const [queryVal,updateQueryVal] = useState("")
   const [predictionResults,updatePredictionResults] = useState<BasicResults[]>([]);
-  const {activeData,activeDispatch} = useContext(MobileActiveContext)
-  const {activePin,colorMode} = activeData;
+
+  const activePin = useActiveStore(s=>s.activePin);
+  const colorMode = useActiveStore(s=>s.colorMode);
+  const drawerState = useActiveStore(s=>s.drawerState);
+  const legendOpen = useActiveStore(s=>s.legendOpen);
+
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState);
+  const updateLegendOpen = useActiveStore(s=>s.updateLegendOpen)
+  const updateActivePin = useActiveStore(s=>s.updateActivePin)
+  const updateTempData = useActiveStore(s=>s.updateTempData)
+  const updateBackState = useActiveStore(s=>s.updateBackState)
+
   const map = useMap(); 
   const inputEl = useRef<HTMLInputElement>(null);
   const [markerPosition, updateMarkerPosition] = useState<TGeolocation>();
@@ -42,7 +54,7 @@ export default () => {
     updatePredictionResults([])
    
   }
-  const layerData = useLayerData().layers;
+  const layerData = useLayers(); 
 
 
 
@@ -70,13 +82,14 @@ export default () => {
     console.log("newchoice",p);
     console.log("current",predictionChoice);
   
-    activeDispatch({type:"SET_ACTIVE_PIN",id:null})
+   // activeDispatch({type:"SET_ACTIVE_PIN",id:null})
+   updateActivePin(null)
     if(!p.new) {
   
-    
-      activeDispatch({type:"SET_ACTIVE_PIN",id:p.id})
-      activeDispatch({type:"DRAWER_STATE",state:"open"})
-      activeDispatch({type:"BACK_STATE",state:"back_to_base"})
+      updateActivePin(p.id)
+      updateDrawerState("open")
+      updateBackState("back_to_base")
+
       if(map&&p.location) {
         mapCenterer(map, p.location);
       }
@@ -100,10 +113,11 @@ export default () => {
       mapCenterer(map, pos);
     }
     updateMarkerPosition(pos);
-    activeDispatch({type:"SET_ACTIVE_PIN",id:"temp"})
-    activeDispatch({type:"DRAWER_STATE",state:"open"})
-    activeDispatch({type: "SET_TEMP_DATA",data: place})
-    activeDispatch({type:"BACK_STATE",state:"back_to_base"})
+    updateActivePin("temp")
+    updateDrawerState('open')
+    updateTempData(place);
+    updateBackState("back_to_base")
+
     reset(); 
   }
 
@@ -161,11 +175,11 @@ export default () => {
     {true && <PortalContainer containerId="menu-container"><><div style={{
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
-      transform:  ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : undefined,
+      transform:  ["maximized","editing"].includes(drawerState) ? "translateY(-300%)" : undefined,
       position:"fixed", 
       left: 0, 
       top:focused?0:20,
-      visibility: activeData.legendOpen ? "hidden": undefined,
+      visibility: legendOpen ? "hidden": undefined,
       height: focused?viewPortHeight : "auto",
       paddingTop: focused?20:0,
       display:focused?"flex":"block",
@@ -210,7 +224,7 @@ export default () => {
          
          {<>
          
-          {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker zIndex={999} position={markerPosition} />}
+          {(activePin == "temp" && markerPosition) && <AdvancedMarker zIndex={999} position={markerPosition} />}
          </>}
       
     

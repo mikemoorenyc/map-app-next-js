@@ -11,24 +11,28 @@ import LiveBlocksContainer from "@/app/components/LiveBlocksContainer/LiveBlocks
 import MapPanel from "./MapPanel";
 import Toasts from "@/app/components/Toasts";
 import { memo } from "react";
-import { TUser } from "@/projectTypes";
+import { TMap, TUser } from "@/projectTypes";
+import { SessionProvider } from "next-auth/react";
 
 const MapMemo = memo(MapPanel);
 const LayerPanelMemo = memo(LayerPanel);
 const ToastsMemo = memo(Toasts);
 
-
-
-const Composer = function({user,serverId}:{user:TUser,serverId:string}) {
-  if(!user||!serverId) return false; 
+type TProps = {
+  serverId:string, 
+  map: TMap
+}
+const Composer = function({map,serverId}:TProps) {
+  if(!serverId) return false; 
 
 
   return(
-    <LiveBlocksContainer {...{user,serverId}}>
+    <SessionProvider>
+    <LiveBlocksContainer {...{map,serverId}}>
     
     <ModalProvider>
     <ToastContextProvider>
-    <DataContextProvider user={user} serverId={serverId}>
+
     <ActiveContextProvider>
 
         <LayerPanelMemo />
@@ -36,12 +40,12 @@ const Composer = function({user,serverId}:{user:TUser,serverId:string}) {
         <ToastsMemo />
  
     </ActiveContextProvider>
-    </DataContextProvider>
+
     </ToastContextProvider>
     </ModalProvider>
     
     </LiveBlocksContainer>
-
+    </SessionProvider>
   ) 
 }
 

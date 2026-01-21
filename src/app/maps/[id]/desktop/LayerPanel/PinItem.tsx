@@ -41,7 +41,7 @@ const PinItem = (props:TProps) => {
     
     className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
   >
-    <div style={{marginRight: p.favorited?1: 4}}>
+    <div style={{marginRight: p.favorited?2: 6}}>
       <Pin 
         pin={p}
         layer={layer}

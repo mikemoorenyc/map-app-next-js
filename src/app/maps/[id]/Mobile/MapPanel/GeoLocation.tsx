@@ -1,25 +1,29 @@
 import {  memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { AdvancedMarker,useMap } from "@vis.gl/react-google-maps";
+import { AdvancedMarker,useMap ,Pin} from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import LiveMarker from "./LiveMarker";
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+
 import DataContext from "@/app/contexts/DataContext"
 import { TGeolocation, TLayer } from "@/projectTypes";
+import { useLayers } from "@/app/lib/useLayerData";
+import useActiveStore from "@/app/contexts/useActiveStore";
 
 
 export default ({checkerData}:{checkerData:TLayer[]|null}) => {
 
-
   const map = useMap()
-
-  const {activeData, activeDispatch} = useContext(MobileActiveContext)
-  const {geolocation,firstLoad} = activeData;
-  const {layerData} = useContext(DataContext); 
+  const geolocation = useActiveStore(s=>s.geolocation);
+  const firstLoad = useActiveStore(s=>s.firstLoad);
+  const {nonEditing} = useContext(DataContext);
+  const layerData = useLayers(); 
+  const updateGeolocation = useActiveStore(s=>s.updateGeolocation);
+  const updateInBounds = useActiveStore(s=>s.updateInBounds)
   const [mapMoved,updateMapMoved] = useState(false);
 
   useEffect(()=> {
     boundChecker(checkerData);
   },[checkerData]);
+
   useEffect(()=> {
     if(firstLoad =="server")return; 
     boundChecker(checkerData);
@@ -50,7 +54,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
      map.setZoom(15);
     }
     
-  },[map,geolocation,activeDispatch,mapMoved]);
+  },[map,geolocation,mapMoved]);
 
 
 
@@ -63,14 +67,16 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
       lat:coords.latitude,
       lng:coords.longitude
     }
-    activeDispatch({type:"UPDATE_GEOLOCATION",geolocation: geolocation });
+    updateGeolocation(geolocation);
+
     const mb = new google.maps.LatLngBounds(); 
     layerData.map(l=>l.pins).flat().forEach(p=> {
       mb.extend(p.location);
     })
-    activeDispatch({type:"UPDATE_INBOUNDS",inBounds:mb.contains(geolocation)})
+    updateInBounds(mb.contains(geolocation))
+   
     
-  },[map,layerData,activeDispatch])
+  },[map,layerData])
 
 
 
@@ -78,13 +84,14 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
     //if(!remoteLoad) return ; 
    
     if(!navigator.geolocation) return ; 
+    
 
     const options = {
        enableHighAccuracy: true,
        timeout: 5000,
         maximumAge: 0,
       }
-      console.log(navigator.geolocation);
+      console.log(navigator);
     navigator.geolocation.getCurrentPosition((e)=>{
   
       updatePos(e.coords);
@@ -126,8 +133,10 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
 
 
   return <>
-
-  {geolocation && <LiveMarker geolocation={geolocation}/>}
+  {geolocation && nonEditing&& <AdvancedMarker position={geolocation}>
+    <Pin  borderColor={"#ffffff"} glyph={"😊"} scale={.7} background={"#000000"} glyphColor={"#ffffff"}/>
+    </AdvancedMarker>}
+  {(geolocation && !nonEditing)&& <LiveMarker geolocation={geolocation}/>}
   
   </>
 }

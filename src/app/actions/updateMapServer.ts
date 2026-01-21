@@ -5,6 +5,7 @@ import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 import { getMap } from "./maps";
 import { THomepageMap,TLayer,TMap,TMapUpdateValues } from "@/projectTypes";
+import { revalidatePath } from "next/cache";
 
 const table = process.env.TABLE_NAME
 
@@ -40,6 +41,7 @@ export const updateMapServer = async (mapId:number, payload:TMapUpdateValues={})
     }
     const updatedItem = await ddbDocClient.send(new UpdateCommand(command));
     if(!updatedItem) return false; 
+    revalidatePath("/")
     return await getMap(mapId);
   } catch(err) {
     console.log(Error,"error"); 

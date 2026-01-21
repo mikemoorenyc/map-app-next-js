@@ -1,10 +1,11 @@
 'use client'
 import { RiCarLine, RiRidingLine, RiTrainLine, RiWalkLine } from "@remixicon/react"
 import styles from "./styles.module.css"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext";
+
 import { createElement, useContext ,useEffect,useState} from "react";
 import { TGeolocation } from "@/projectTypes";
 import { TRoute } from "@/app/contexts/MobileActiveContext";
+import useActiveStore from "@/app/contexts/useActiveStore";
 
 type DirectionNeeds = {
   location:TGeolocation,
@@ -19,7 +20,7 @@ type DirectionOptions = {
 
 
 export default function ({pin,geolocation}:{pin:DirectionNeeds,geolocation:TGeolocation}) {
-  const {routes} = useContext(MobileActiveContext).activeData;
+  const routes = useActiveStore(s=>s.routes);
   const initState = {  walking:null,driving:null,cycling:null,TRANSIT:null}
   const [routeData,updateRouteData] = useState<DirectionOptions>(initState);
   

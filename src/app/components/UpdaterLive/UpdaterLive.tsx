@@ -10,6 +10,7 @@ import { ClientSideSuspense } from "@liveblocks/react/suspense";
 import { useMyPresence,useEventListener,useOthers,useSelf,shallow,useMutation,useStorage} from "@liveblocks/react/suspense";
 import { TLayer } from "@/projectTypes";
 import { useOthersMapped } from "@liveblocks/react";
+import { useSession } from "next-auth/react";
 
 
 type TProps = {
@@ -20,12 +21,28 @@ type TProps = {
 const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
 
   const {mapId} = useContext(DataContext);
+  const session = useSession();
+  
+  
   
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState("uninit");
   const updateLocal = useRef<number|null>(null);
   const [myPresence,updateMyPresence] = useMyPresence(); 
+
+
+  useEffect(()=> {
+    console.log(session,myPresence);
+    if(session.status!=="authenticated") return ;
+    const {user} = session.data;
+    if(!user?.name||!user.email) return ;
+    if(myPresence.email&&myPresence.name) return ;
+    console.log("needs to update");
+    updateMyPresence({
+      name:user.name,email:user.email
+    })
+  },[session,myPresence])
   
 const someoneHasSavingDuties = useOthers((others) =>
   others.some((other) => other.presence.savingDuties)

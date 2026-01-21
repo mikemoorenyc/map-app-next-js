@@ -1,4 +1,4 @@
-import   {  MouseEvent, SyntheticEvent, useContext,  } from "react";
+import   {  MouseEvent, SyntheticEvent, useContext,useEffect,useState  } from "react";
 import DataContext from "@/app/contexts/DataContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
@@ -11,14 +11,31 @@ import useLiveEditing from "@/app/lib/useLiveEditing";
 import {  TPinTemp, TPin } from "@/projectTypes";
 import addDisabledMod from "@/app/lib/addDisabledMod";
 import { TSearchPin } from "@/app/components/ModernSearch/lib/fieldMapping";
-import useLayerData from "@/app/lib/useLayerData";
+import { useLayers } from "@/app/lib/useLayerData";
+import type { TUser } from "@/projectTypes";
+import { useMyPresence } from "@liveblocks/react";
+
+const AddPinButton = () => {
+    
+}
 
 export default ({ placeData}:{placeData:TSearchPin}) => {
 
   const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {user} = useContext(DataContext);
-  const layerData = useLayerData().layers;
+
+  const layerData = useLayers();
   const dispatchEvent = useLiveEditing(); 
+  const [user,updateUser] = useState<null|TUser>(null)
+  const [prescence] = useMyPresence();
+
+  useEffect(()=> {
+    console.log(prescence);
+    if(!prescence.email||!prescence.name) return ;
+    updateUser({
+        email:prescence.email,
+        name:prescence.name
+    })
+  },[prescence])
 
     const {infoWindowDispatch } = useContext(InfoWindowContext);
     const {website,title,formatted_address,url,location,viewport} = placeData
@@ -26,6 +43,7 @@ export default ({ placeData}:{placeData:TSearchPin}) => {
     if(!activeData.activeLayer||!location||!viewport) {
             return false; 
         }
+    if(!user) return ;
     const formattedPinData:TPin = {
                 title: title,
                 website: website,
@@ -37,9 +55,9 @@ export default ({ placeData}:{placeData:TSearchPin}) => {
                 id: tempID,
                 location: location ,
                 viewport: viewport,
-
+                createdBy:user,
                 layerId : activeData.activeLayer|| layerData[0].id,
-                createdBy: user||null
+                
 
     }
 

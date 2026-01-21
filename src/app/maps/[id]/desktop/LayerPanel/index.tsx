@@ -9,7 +9,7 @@ import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from '@hell
 import LayerSection from "./LayerSection";
 import PinItem from "./PinItem";
 import LayerEdit from "./LayerEdit";
-import useLayerData from "@/app/lib/useLayerData";
+import { useLayers } from "@/app/lib/useLayerData";
 
 
 type TDraggableObject = {
@@ -23,7 +23,8 @@ const LayerPanel = ()=> {
   
   const dispatchEvent = useLiveEditing(); 
   const {activeData,activeDispatch} = useContext(ActiveContext);
-    const layerData = useLayerData().layers;
+
+    const layerData = useLayers();
    
     const [items,setItems] = useState([...layerData]);
     const [activeId, setActiveId] = useState<number|null>(null);
@@ -37,7 +38,7 @@ const LayerPanel = ()=> {
     },[layerPanelEl])
 
     useEffect(()=> {
-      console.log(layerData);
+   
       if(!layerData.length) return ;
     
        setItems(layerData)

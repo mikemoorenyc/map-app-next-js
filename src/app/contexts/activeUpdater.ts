@@ -26,6 +26,7 @@ type UserAction = |
 {type: UserActionType.UPDATE_HOVERING_PIN; id: string}
 
 export default (actives:TActiveData, action:UserAction) => {
+
     switch (action.type) {
         case UserActionType.CAN_EDIT: {
             return {...actives,...{canEdit:action.canEdit}}
@@ -51,7 +52,7 @@ export default (actives:TActiveData, action:UserAction) => {
         }
         case UserActionType.EDITING_PIN: {
             //SCROLL TO PIN
-        
+     
             (function () {
                 if(action.noViewScroll) return ;
                 if(!actives.layerPanelRef) return ; 

@@ -44,7 +44,7 @@ const ActiveContextProvider = ({children}:{children:ReactElement[]}) => {
  
   
   const [activeData, activeDispatch] = useReducer(activeUpdater, initActives);
- 
+
   return (
     <ActiveContext.Provider value={{ activeData,activeDispatch}}>
       {children}

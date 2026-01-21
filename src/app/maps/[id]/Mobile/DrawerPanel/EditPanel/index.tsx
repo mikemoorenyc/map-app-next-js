@@ -2,8 +2,7 @@
 import styles from "./EditPanel.module.css"
 
 import { useContext,useState, useEffect,SyntheticEvent} from "react"
-import DataContext from "@/app/contexts/DataContext"
-import MobileActiveContext from "@/app/contexts/MobileActiveContext"
+
 import TextField from "./TextField"
 import LayerSelector from "./LayerSelector"
 import ChangeIcon from "./ChangeIcon"
@@ -19,12 +18,15 @@ import ModalLoading from "../../_components/ModalLoading"
 import { findLayer,findPin } from "@/app/lib/finders"
 import { TPin } from "@/projectTypes"
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
+import { useLayers } from "@/app/lib/useLayerData"
+import useActiveStore from "@/app/contexts/useActiveStore"
 
  function EditPanel() {
   const dispatchEvent = useLiveEditing() ; 
-  const layerData =  useStorage(root=>root.map.layerData);
-  const {activeData,activeDispatch} = useContext(MobileActiveContext);
-  const {activePin} = activeData;
+  const layerData =  useLayers();
+  const activePin = useActiveStore(s=>s.activePin);
+  const updateActivePin = useActiveStore(s=>s.updateActivePin);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState); 
 
   if(!activePin) {
     throw new Error("NO ACTIVE PIN");
@@ -99,7 +101,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
     
  
     dispatchEvent([{type: "FULL_REFRESH",newData: newLayerData}])
-    activeDispatch({type:"DRAWER_STATE",state:"open"})
+    updateDrawerState("open");
   }
 
 
@@ -129,7 +131,7 @@ import PortalContainer from "@/app/components/PortalContainer/PortalContainer"
 <div className={styles.editPanelContainer}>
 <EditingModalHeader 
 saveFunction={saveData}
-cancelFunction={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",state:"open"})}}
+cancelFunction={(e)=>{e.preventDefault(); updateDrawerState("open")}}
 />
 
   <div className={styles.editPanelBody}>
@@ -172,8 +174,9 @@ cancelFunction={(e)=>{e.preventDefault(); activeDispatch({type:"DRAWER_STATE",st
         id: pinData.id,
         layerId: pinData.layerId
       }])
-      activeDispatch({type: "SET_ACTIVE_PIN",id:null})
-      activeDispatch({type: "DRAWER_STATE", state: "minimized"});
+      updateActivePin(null)
+      updateDrawerState("minimized")
+     
     }}
     cancelFunction={(e)=>{e.preventDefault(); updateDeletePending(false)}}/>
     

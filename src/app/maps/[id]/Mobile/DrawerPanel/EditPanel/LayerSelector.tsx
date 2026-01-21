@@ -1,15 +1,19 @@
 import styles from "./LayerSelector.module.css"
 
 import svgImgUrl from "@/app/lib/svgImgUrl"
-import useLayerData from "@/app/lib/useLayerData"
+
+import { useLayers,useFindLayer } from "@/app/lib/useLayerData";
 import { TPin } from "@/projectTypes";
 import { RiArrowDownSLine } from "@remixicon/react"
 
 
 
 export default function LayerSelector({updater,pinState}:{updater:(v:any,k:string)=>void,pinState:TPin}) {
-  const {findLayer,layers} = useLayerData();
-  const currentLayer = findLayer(pinState.layerId);
+  const layers = useLayers();
+  const currentLayer = useFindLayer(pinState.layerId);
+  if(!currentLayer) {
+    throw new Error("No current layer found");
+  }
   const ldColor = currentLayer.lightOrDark == "light" ? "black" : "white"
   const maskStyles = {
     backgroundColor: currentLayer.color,
