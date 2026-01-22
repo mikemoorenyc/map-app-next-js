@@ -187,7 +187,7 @@ const updateMap = async function(id:number,pageTitle:string,layerData:TLayer[]|n
     ReturnValues: "ALL_NEW" as ReturnValue
   }
   const update = await ddbDocClient.send(new UpdateCommand(command));
-  revalidatePath('/')
+  
   const mapData = await getMap(id)  
   return mapData; 
 

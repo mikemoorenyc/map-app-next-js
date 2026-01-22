@@ -95,7 +95,7 @@ const MobileActiveContextProvider = ({children}:{children:ReactNode}) => {
       }
       case "UPDATE_DISABLED_LAYER": {
         const {disabledLayers} = actives;
-        const newDisabled = action.disabled? disabledLayers.filter(l=>l!=action.id):
+        const newDisabled = !action.disabled? disabledLayers.filter(l=>l!=action.id):
             [...disabledLayers,...[action.id]];
         return {...actives,...{disabledLayers:newDisabled}}
       }

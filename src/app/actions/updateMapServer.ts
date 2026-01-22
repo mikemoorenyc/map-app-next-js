@@ -5,6 +5,7 @@ import { GetCommand,UpdateCommand,DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 import { getMap } from "./maps";
 import { THomepageMap,TLayer,TMap,TMapUpdateValues } from "@/projectTypes";
+import { revalidatePath } from "next/cache";
 
 const table = process.env.TABLE_NAME
 
@@ -39,6 +40,7 @@ export const updateMapServer = async (mapId:number, payload:TMapUpdateValues={})
       throw new Error("ddb not connected");
     }
     const updatedItem = await ddbDocClient.send(new UpdateCommand(command));
+    revalidatePath('/')
     if(!updatedItem) return false; 
     return await getMap(mapId);
   } catch(err) {

@@ -89,9 +89,10 @@ const LegendSection = (props:PropsLegendSection) => {
   const headerClick = useCallback(() => {
     console.log("clicked");
     if(isActive) {
-      activeDispatch({type: "ADD_DISABLED_LAYER",id: layer.id})
+      
+      activeDispatch({type: "UPDATE_DISABLED_LAYER",id: layer.id,disabled:true})
     } else {
-      activeDispatch({type: "REMOVE_DISABLED_LAYER",id:layer.id})
+      activeDispatch({type: "UPDATE_DISABLED_LAYER",id: layer.id,disabled:false})
     }
   },[isActive])
 

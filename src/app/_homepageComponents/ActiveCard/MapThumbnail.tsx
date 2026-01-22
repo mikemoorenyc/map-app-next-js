@@ -25,7 +25,11 @@ export default function ({appMap,width,height,className}:TMapThumbnailProps) {
   if(!darkModeKey) {
     darkModeKey = mapId;
   }
-  const darkMode = useDarkMode(); 
+  let darkMode = useDarkMode(); 
+
+  if(darkMode === null) {
+    darkMode = "dark";
+  }
 
   const mode = (darkMode=="dark"||!darkMode) ? darkModeKey : mapId; 
     
