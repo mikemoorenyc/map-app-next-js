@@ -1,4 +1,4 @@
-import {  memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {  memo, useCallback, useRef, useContext, useEffect, useMemo, useState } from "react";
 import { AdvancedMarker,useMap ,Pin} from "@vis.gl/react-google-maps";
 import throttle from "lodash/throttle"
 import LiveMarker from "./LiveMarker";
@@ -19,6 +19,21 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
   const updateGeolocation = useActiveStore(s=>s.updateGeolocation);
   const updateInBounds = useActiveStore(s=>s.updateInBounds)
   const [mapMoved,updateMapMoved] = useState(false);
+  const inBounds = useActiveStore(s=>s.inBounds);
+  const layerDataRef = useRef(layerData);
+  const mapRef = useRef(map);
+  useEffect(() => {
+    layerDataRef.current = layerData;
+    if(!navigator.geolocation) return ;
+    navigator.geolocation.getCurrentPosition((e)=> {
+      updatePos(e.coords);
+    })
+  }, [layerData]);
+
+  useEffect(() => {
+    mapRef.current = map;
+  }, [map]);
+
 
   useEffect(()=> {
     boundChecker(checkerData);
@@ -42,6 +57,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
     if(!layerData||!map) return null; 
 
     let g = geo || geolocation
+    
     const points = layerData.map(l => l.pins).flat().map(p=>p.location);
     if(!points||!points.length) return null; 
     const mb = new google.maps.LatLngBounds();
@@ -62,6 +78,8 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
 
 
   const updatePos = useCallback((coords:{latitude:number,longitude:number}) => {
+    const map = mapRef.current;
+    const layerData = layerDataRef.current;
    if(!map) return ; 
     const geolocation = {
       lat:coords.latitude,
@@ -73,10 +91,11 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
     layerData.map(l=>l.pins).flat().forEach(p=> {
       mb.extend(p.location);
     })
+ 
     updateInBounds(mb.contains(geolocation))
    
     
-  },[map,layerData])
+  },[])
 
 
 
@@ -91,7 +110,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
        timeout: 5000,
         maximumAge: 0,
       }
-      console.log(navigator);
+      
     navigator.geolocation.getCurrentPosition((e)=>{
   
       updatePos(e.coords);
@@ -100,21 +119,7 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
           lat:e.coords.latitude,
           lng:e.coords.longitude
         })
-      }
-      /*const latLng = {
-        lat:e.coords.latitude,
-        lng:e.coords.longitude
-      }
-      if(firstLoad !=="server") return ; 
-      if(!latBounds )return ; 
-      if(latBounds.contains(latLng)) {
-        activeDispatch({type:"UPDATE_INBOUNDS",inBounds:true});
-         centerMap(latLng);
-      } else {
-        fitter(latBounds)
-      }
-      */
-        
+      } 
       return 
       
     }, ()=>{}, options);
@@ -122,6 +127,11 @@ export default ({checkerData}:{checkerData:TLayer[]|null}) => {
       console.log("move");
       updatePos(e.coords)
     },5000),()=>{},options);
+
+    navigator.geolocation.getCurrentPosition((e)=> {
+      if(!e.coords) return ; 
+      updatePos(e.coords);
+    });
 
     return () => {
       navigator.geolocation.clearWatch(watcher);

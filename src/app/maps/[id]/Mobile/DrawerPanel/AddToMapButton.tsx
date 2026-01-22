@@ -9,12 +9,15 @@ import useLiveEditing from "@/app/lib/useLiveEditing";
 import { TGeolocation, TPlaceDetails, TViewport } from "@/projectTypes";
 import addDisabledMod from "@/app/lib/addDisabledMod";
 import { useLayers } from "@/app/lib/useLayerData";
+import useActiveStore from "@/app/contexts/useActiveStore";
 
 function AddToMapButton() {
+  const tempData = useActiveStore(s=>s.tempData)
+  const canEdit = useActiveStore(s=>s.canEdit);
+  const updateActivePin = useActiveStore(s=>s.updateActivePin);
+  const updateDrawerState = useActiveStore(s=>s.updateDrawerState);
   
-  const {activeData} = useContext(MobileActiveContext)
-  const {activeDispatch} = useContext(MobileActiveContext);
-  const tempData = activeData.tempData;
+
   if(!tempData) return ; 
   const {website,title,formatted_address,international_phone_number,url,location,viewport}  = tempData
   const tempID = tempData.id
@@ -45,12 +48,13 @@ function AddToMapButton() {
       layerToAdd: layerData[0].id,
       pinData : payload,
     }])
-    activeDispatch({type:"SET_ACTIVE_PIN",id:tempID})
-    activeDispatch({type:"DRAWER_STATE",state:"open"})
-  }
+    updateActivePin(tempID);
+    updateDrawerState("open")
   
+  }
 
-const btnMods = addDisabledMod(["secondary","bigger","pill"],!activeData.canEdit)
+
+const btnMods = addDisabledMod(["secondary","bigger","pill"],!canEdit)
 return <div className={`flex-1`}><Button onClick={addPin} icon={<RiMapPinAddLine/>} modifiers={btnMods}>
           Add to map
         </Button></div>

@@ -48,7 +48,7 @@ export default function ()  {
   if(!geolocation || !inBounds) return ; 
 
   return( 
-    <Button onClick={reCenter} className={styles.centerButton} modifiers={["sm","icon","secondary","round"]} style={{position:"absolute"}}>
+    <Button onClick={reCenter} className={styles.centerButton} modifiers={["sm","icon","secondary","round"]} >
     <RiFocus3Line size={16} />
     </Button>
   

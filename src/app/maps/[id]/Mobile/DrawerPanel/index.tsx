@@ -30,6 +30,7 @@ const DrawerPanel = () => {
   const activePin = useActiveStore(s=>s.activePin);
   const inBounds = useActiveStore(s=>s.inBounds);
 
+
   
   if(drawerState == "open") {
     transform = 340;
@@ -98,9 +99,10 @@ const DrawerPanel = () => {
   return (
   <div {...handlers} id="drawer-panel" className={`${styles.drawerPanel} ${activePin && isEditing == false ? styles.swipeable : ""}`}   style={transformPosition}>
 
-    {drawerState !== "maximized"&&<div className={styles.topButtonContainer}>
-      <EditButton  />
-      {( geolocation && inBounds) && <CenterButton />}
+    {drawerState!=="maximized"&&<div className={styles.topButtonContainer}>
+      <div><EditButton  /></div>
+      {( geolocation && inBounds) && <div><CenterButton /></div>}
+      
 
 
     </div>}
@@ -111,6 +113,7 @@ const DrawerPanel = () => {
      }
     {(activePin && isEditing == false )&& <ContentPanel {...{drawerTopSpace}}   pinId={activePin}/>}
   </div>
+  
   
   
   )

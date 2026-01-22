@@ -33,12 +33,12 @@ const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
 
 
   useEffect(()=> {
-    console.log(session,myPresence);
+   
     if(session.status!=="authenticated") return ;
     const {user} = session.data;
     if(!user?.name||!user.email) return ;
     if(myPresence.email&&myPresence.name) return ;
-    console.log("needs to update");
+   
     updateMyPresence({
       name:user.name,email:user.email
     })

@@ -14,5 +14,5 @@ export default () => {
     }
 
 
-    return <Button {...{onClick}} modifiers={["round","secondary","sm","icon"]} icon={nonEditing?<RiPencilFill/>:<RiCheckFill/>}></Button>
+    return <Button {...{onClick}} modifiers={["round","secondary","sm","icon"]} icon={nonEditing?<RiPencilFill/>:<RiCheckFill/>}/>
 }

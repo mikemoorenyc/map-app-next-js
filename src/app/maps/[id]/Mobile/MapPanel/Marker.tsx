@@ -36,10 +36,6 @@ export default  ({pin, onClick}:Props) => {
   }
 
 
-
-  
-  console.log("pin rendered");
-
  
 
   

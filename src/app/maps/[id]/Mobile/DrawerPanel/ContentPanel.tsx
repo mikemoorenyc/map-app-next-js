@@ -37,10 +37,12 @@ const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
   //const {findLayer,findPin} = useLayerData(); 
   const pin = useFindPin(pinId) || tempData; 
   
+  
+  const layer = useFindLayer(pin?.layerId||-1)||null;
+
+  console.log(!nonEditing && pinId == "temp");
+  
   if(!pin) return;
-  const layer = useFindLayer(pin.layerId||-1)||null;
-  
-  
 
   return <div className={styles.contentPanel} style={{height:`calc(100% - ${drawerTopSpace}px)`}}>
     <div className={`${styles.topSection}`}>

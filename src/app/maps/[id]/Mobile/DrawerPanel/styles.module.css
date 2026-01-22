@@ -259,6 +259,7 @@ flex-direction: column;
   left:var(--gutter);
   top: -44px;
   display: flex;
+  
   justify-content: space-between;
   align-items: center;
 }

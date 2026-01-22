@@ -59,7 +59,7 @@ const Pins = () => {
     return pinsFlat.filter(p => mapBounds.contains(p.location));
   },[pinsFlat,mapBounds])
 
-  console.log(pinsFlat);
+  
 
   return <>
 

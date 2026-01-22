@@ -35,7 +35,7 @@ export default function BackButton() {
         //activeDispatch({type:"LEGEND_OPEN",state: true})
       }
   }
-  console.log(backState);
+
 
   return <Button  onClick={backState=="base"?undefined: (e)=> {
     e.preventDefault(); 
