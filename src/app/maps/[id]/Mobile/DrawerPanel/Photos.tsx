@@ -158,7 +158,8 @@ useEffect(()=> {
     return <Button icon={<TAIcon />} onClick={showPhotos} >Find photos on Tripadvisor</Button>
   }
 
-const photoFallback = photos.map(p=>{
+const photoFallback = photos.filter(p=>p!==null).map(p=>{
+
   if(typeof p !== "string") {
     return p;
   }
