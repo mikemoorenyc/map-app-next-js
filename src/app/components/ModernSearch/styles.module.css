@@ -5,7 +5,7 @@
   border-bottom-right-radius: var(--border-radius);
   border: 1px solid;
   border-width: 0 1px 1px 1px; 
-  width: 450px;
+  width: 550px;
 }
 .OptionContainer {
   padding: calc(var(--gutter) - 2px) calc(var(--gutter) - 3px);

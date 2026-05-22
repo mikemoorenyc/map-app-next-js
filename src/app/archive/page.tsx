@@ -18,7 +18,7 @@ const Page = async function() {
   
 const maps = await getAllMaps(); 
     if(!maps) return ; 
-
+  
   return <>
   <PageClient startData={maps}  list="archived"  button={<Button modifiers={["secondary"]} href="/">Active maps</Button>}/>
 

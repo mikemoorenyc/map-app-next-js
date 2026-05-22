@@ -89,7 +89,12 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     firstMaps(); 
   },[])
 
-  const theList = mapList[list];
+  let theList = mapList[list];
+
+  if(list == "archived") {
+    theList = theList.sort((a,b)=>a.title.localeCompare(b.title))
+  }
+
 
   return<ModalProvider><div className={styles.container}>
 

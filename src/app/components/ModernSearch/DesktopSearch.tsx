@@ -127,7 +127,7 @@ export default function DesktopSearch({clickEvent}:{clickEvent:MapMouseEvent|nul
   const {pinsFlat, predictions, activePins} = resultsFormatted; 
   const inputStyles = useMemo(()=> {
     return {
-    width: 450,
+    width: 550,
     borderBottomLeftRadius: pinsFlat.length? 0:undefined,
     borderBottomRightRadius: pinsFlat.length ?0 : undefined
     }

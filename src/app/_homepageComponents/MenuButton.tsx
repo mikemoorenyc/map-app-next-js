@@ -56,13 +56,13 @@ export default function MenuButton ({mapData,modifiers=[],containerClasses,top,b
       }}
     
      state={"caution"} icon={<RiDeleteBinLine />} mobile={isMobile}><>Delete map</></DropDownItem>
-      {top !== undefined && <DropDownItem
+      {(top !== undefined && !archived) && <DropDownItem
       onClick={() => {
         closeCallback(); 
         actions.move(mapData.id, true)
       }}
      icon={<RiArrowUpCircleLine />} state={top ? "disabled":undefined} mobile={isMobile}>Move up</DropDownItem>}
-    {bottom !== undefined && <DropDownItem onClick={()=> {
+    {(bottom !== undefined && !archived) && <DropDownItem onClick={()=> {
       closeCallback(); 
       actions.move(mapData.id,false);
     }} icon={<RiArrowDownCircleLine />}mobile={isMobile} state={bottom ? "disabled":undefined}>Move down</DropDownItem>}
