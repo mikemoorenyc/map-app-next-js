@@ -109,7 +109,7 @@ const MapPanel = () => {
           bottom: "auto",
           transformOrigin: "top right",
           top: 82,
-          display:activeData?.legendOpen?"none":undefined
+          display:activeData?.legendOpen|| ["maximized","editing"].includes(activeData.drawerState)?"none":undefined
          }}/></ClientSideSuspense>
     </MapMemo>
     
