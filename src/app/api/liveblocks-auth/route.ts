@@ -34,7 +34,7 @@ export async function POST(request:NextRequest) {
 
   // Use a naming pattern to allow access to rooms with wildcards
   // Giving the user read access on their org, and write access on their group
-  liveblocksSession.allow(`maps:*`, liveblocksSession.READ_ACCESS);
+
   liveblocksSession.allow(`maps:*`, liveblocksSession.FULL_ACCESS);
 
   // Authorize the user and return the result

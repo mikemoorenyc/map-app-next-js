@@ -25,7 +25,7 @@ export default function LiveBlocksContainer({user,serverId,children}:{user:TUser
         })
       }
         
-      }  initialPresence={{isVisible:true, email:"",name:"",color:"",isEditing:false,savingDuties:false}} id={`maps:${serverId}`}>
+      }  initialPresence={{isVisible:true, email:"",name:"",color:"",isEditing:false,savingDuties:false}} id={`maps:${serverId}`} >
         {children}
       </RoomProvider>
     
