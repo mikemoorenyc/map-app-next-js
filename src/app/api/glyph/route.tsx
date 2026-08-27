@@ -155,7 +155,7 @@ export async function GET(request:NextRequest,) {
            }}
            >
              {(!isCustom && icon)? <span>{icon}</span> :
-            <img src={customUrl} width={fontSize * 2.25} height={fontSize * 2.25} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
+            <img src={customUrl} width={fontSize * 2.35} height={fontSize * 2.35} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
 
              }
           </div>
