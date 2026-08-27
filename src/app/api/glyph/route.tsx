@@ -133,7 +133,7 @@ export async function GET(request:NextRequest,) {
 
             justifyContent: 'center',
             border:"1px solid black",
-            fontSize:fontSize * 1.85,
+            fontSize:fontSize * 2.1,
             lineHeight:`${size}px` ,
             fontWeight:600,
             borderRadius:"50%",
@@ -164,6 +164,7 @@ export async function GET(request:NextRequest,) {
       {
         width: size + 2,
         height: size + 2,
+        emoji:"noto"
 
       }
     )

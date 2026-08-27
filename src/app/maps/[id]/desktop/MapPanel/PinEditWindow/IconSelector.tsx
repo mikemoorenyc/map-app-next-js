@@ -64,10 +64,10 @@ const {ref,isTop} = modalCloser
           onEmojiSelect={emojiClicked}
           autoFocus={true}
           maxFrequentRows={1}
-        set={"twitter"}
+        set={"google"}
         custom={customEmojis}
         categoryIcons={customCategoryIcons}
-        onAddCustomEmoji={emojiClicked}
+
           previewPosition={"none"} /></div>
 
        <style jsx global>{`

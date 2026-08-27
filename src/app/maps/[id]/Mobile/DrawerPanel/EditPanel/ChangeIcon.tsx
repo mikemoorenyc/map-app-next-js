@@ -77,12 +77,12 @@ return <div className={`${styles.iconModal} flex-center-center`} >
   }}
           onEmojiSelect={customReturn}
     autoFocus={true}
-    set={"twitter"}
+    set={"google"}
           maxFrequentRows={1}
     previewPosition={"none"}
     custom={customEmojis}
     categoryIcons={customCategoryIcons}
-    onAddCustomEmoji={customReturn}
+
           /></div>
     </div>
 }
