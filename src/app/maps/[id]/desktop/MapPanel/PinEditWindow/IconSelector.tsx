@@ -1,11 +1,11 @@
 'use client'
 import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
+import { customEmojis,customCategoryIcons } from "@/app/lib/emojiCustom";
 
 import useModalCloser from "@/app/lib/useModalCloser";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import { CSSProperties, RefObject } from "react";
-
 type TProps = {
   updateIconSelectorOpen: (s:boolean) =>void,
   updateValue: (a:string,b:"icon") => void
@@ -15,26 +15,28 @@ type TProps = {
 const emojiSprite:string|undefined =process.env.NEXT_PUBLIC_EMOJI_SPRITE
 
 
+
 export default ({updateIconSelectorOpen,updateValue,pickerAnchor,stickToTop}:TProps) => {
-  if(pickerAnchor===null||!pickerAnchor.current||emojiSprite === undefined)return false; 
-  
+  if(pickerAnchor===null||!pickerAnchor.current||emojiSprite === undefined)return false;
+
 console.log(pickerAnchor);
 const closer = () => {
     console.log("daf");
     updateIconSelectorOpen(false);
   }
   const modalCloser = useModalCloser(closer, "icon");
-  if(!modalCloser) return false; 
+  if(!modalCloser) return false;
 const {ref,isTop} = modalCloser
 
-  
-  const emojiClicked = (e:any) => {
+
+  const emojiClicked = (e: any) => {
+    console.log(e);
     updateIconSelectorOpen(false);
-    const icon = e.native; 
+    const icon = e.native||e.id;
     updateValue(icon,"icon")
   }
 
-  
+
   const pos :CSSProperties = {
     left: pickerAnchor.current.getBoundingClientRect().left,
     top: stickToTop ? pickerAnchor.current.getBoundingClientRect().top : "50%",
@@ -45,25 +47,45 @@ const {ref,isTop} = modalCloser
   }
 
 
-  
+
 
   return <PortalContainer>
 
        <div className={`z-modal big-drop-shadow ${isTop?"z-interactive-top":""}`} style={pos} ref={ref}>
 
-        <Picker 
+        <Picker
           data={async () => {
     const response = await fetch(
       emojiSprite,
     )
-    
+
     return response.json()
   }}
           onEmojiSelect={emojiClicked}
           autoFocus={true}
           maxFrequentRows={1}
-          set={"twitter"}
+        set={"twitter"}
+        custom={customEmojis}
+        categoryIcons={customCategoryIcons}
+        onAddCustomEmoji={emojiClicked}
           previewPosition={"none"} /></div>
+
+       <style jsx global>{`
+
+      em-emoji-picker {
+      --em-rgb-background: 85, 170, 255;
+      #nav {
+      background:blue;
+      }
+      }
+
+
+
+
+       `}
+
+       </style>
+
 
   </PortalContainer>
 }

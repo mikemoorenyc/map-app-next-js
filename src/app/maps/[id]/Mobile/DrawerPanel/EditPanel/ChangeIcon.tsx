@@ -11,7 +11,7 @@ import svgImgUrl from "@/app/lib/svgImgUrl";
 
 
 type TContainerProps = {
-  emojiClicked: (e:{native:string})=>void; 
+  emojiClicked: (e:{native:string})=>void;
   updateOpen: (e:boolean)=>void;
   isOpen:boolean
 }
@@ -19,10 +19,11 @@ type TContainerProps = {
 const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
   const container = useRef<HTMLDivElement>(null);
   const spriteSheet = process.env.NEXT_PUBLIC_EMOJI_SPRITE;
+
   if(!spriteSheet) {
     throw new Error("no sprite sheet")
   }
-  
+
 
   const escapePress = (e:KeyboardEvent) => {
       console.log(e);
@@ -35,7 +36,7 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
       }
   }
   useEffect(()=> {
-   
+
      document.body.addEventListener("keydown", escapePress);
      console.log("created");
       return () => {
@@ -44,7 +45,7 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
       }
   },[])
   useEffect(()=> {
-    if(!container||container.current===null) return ; 
+    if(!container||container.current===null) return ;
     const checker = (e:MouseEvent) => {
       if(!container||!container.current) return ;
       if(e.target instanceof Node && !container.current.contains(e.target)) {
@@ -64,7 +65,7 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
 
 
 return <div className={`${styles.iconModal} flex-center-center`} >
-      <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><Picker 
+      <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><Picker
           data={async () => {
     const response = await fetch(
       spriteSheet,
@@ -73,11 +74,11 @@ return <div className={`${styles.iconModal} flex-center-center`} >
     return response.json()
   }}
           onEmojiSelect={emojiClicked}
-          autoFocus={true}
+    autoFocus={true}
+    set={"twitter"}
           maxFrequentRows={1}
-          previewPosition={"none"} 
-  
-          set={"twitter"}
+    previewPosition={"none"}
+
           /></div>
     </div>
 }
@@ -88,15 +89,15 @@ type TProps = {
   type?:"pin"|"layer",
   valueChanger: (value:string,key:string)=>void,
   currentIcon: string|undefined
-} 
+}
 
 export default function ChangeIcon({pinState,layer,type="pin",valueChanger,currentIcon}:TProps) {
   const [iconSelectorOpen,updateIconSelectorOpen] = useState(false);
   if(type =="pin" && !pinState&&!layer) {
-    throw new Error("need pin"); 
+    throw new Error("need pin");
   }
 
-  
+
   useEffect(()=> {
     console.log(iconSelectorOpen)
   },[iconSelectorOpen]);
@@ -109,7 +110,7 @@ export default function ChangeIcon({pinState,layer,type="pin",valueChanger,curre
     <div className={`flex-center`}>
       <Button style={{marginRight:8}} onClick={buttonClick} modifiers={["secondary"]}>Change icon</Button>
       <button onClick={buttonClick} style={{width:48,height:48}} className="flex-center-center">
-        {type=="pin"&&pinState&&layer&&<Pin 
+        {type=="pin"&&pinState&&layer&&<Pin
         pin={pinState}
         layer={layer}
         interactable={false}
@@ -122,6 +123,6 @@ export default function ChangeIcon({pinState,layer,type="pin",valueChanger,curre
       {iconSelectorOpen &&<PortalContainer containerId="emoji-picker-container"><EmojiContainer isOpen={iconSelectorOpen} updateOpen={updateIconSelectorOpen} emojiClicked={emojiClicked}/></PortalContainer>}
     </div>
   )
-  
+
 
 }

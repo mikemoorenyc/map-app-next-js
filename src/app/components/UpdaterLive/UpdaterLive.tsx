@@ -20,13 +20,13 @@ type TProps = {
 const UpdaterLive = ({firstLoadFunction,checkDeleted}:TProps)=> {
 
   const {mapId} = useContext(DataContext);
-  
+
   const [lastSaved,updateLastSaved] = useState(new Date());
   const [isSaving,updateIsSaving] = useState(false)
   const [firstRun,updateFirstRun] = useState("uninit");
   const updateLocal = useRef<number|null>(null);
-  const [myPresence,updateMyPresence] = useMyPresence(); 
-  
+  const [myPresence,updateMyPresence] = useMyPresence();
+
 const someoneHasSavingDuties = useOthers((others) =>
   others.some((other) => other.presence.savingDuties)
 ) || myPresence.savingDuties;
@@ -42,12 +42,12 @@ const othersMapped = useOthersMapped(
 
  //if noone has saving duties, set yourself
  useEffect(()=> {
-  if(someoneHasSavingDuties) return ; 
+  if(someoneHasSavingDuties) return ;
   //NOONE ELSE HERE
   if(!someoneHasSavingDuties && othersMapped.length < 1) {
     console.log("you're saving");
     updateMyPresence({savingDuties:true})
-    return ; 
+    return ;
   }
   let highNumber = myPresence.isVisible?  myConnection:0;
   othersMapped.forEach(o => {
@@ -62,12 +62,12 @@ const othersMapped = useOthersMapped(
   }
 
  },[someoneHasSavingDuties])
- 
 
-  //Try to get local data first 
-  
+
+  //Try to get local data first
+
   const storage = useStorage((root)=>root.map);
-  const {pageTitle,layerData,mapIcon} = storage; 
+  const {pageTitle,layerData,mapIcon} = storage;
  const update =  useMutation(
   // Mutation context is passed as the first argument
   ({ storage },map:{layerData:TLayer[],pageTitle:string,mapIcon?:string}) => {
@@ -81,7 +81,7 @@ const othersMapped = useOthersMapped(
   []
 );
 
-  //FirstFetch 
+  //FirstFetch
   useEffect(()=> {
 
     if(pageTitle||layerData.length) {
@@ -92,14 +92,14 @@ const othersMapped = useOthersMapped(
         pageTitle:pageTitle,
         mapIcon,layerData
       }))
-      return ;     
+      return ;
     }
 
     const firstFetch = async() => {
-      
+
       const theMap = await getMap(mapId);
-      
-      if(!theMap)return ; 
+
+      if(!theMap)return ;
       const{title,layerData,mapIcon} = theMap;
       update({layerData,mapIcon,pageTitle:title})
       localStorage.setItem('map-'+mapId,JSON.stringify({
@@ -113,20 +113,20 @@ const othersMapped = useOthersMapped(
       if(firstLoadFunction){
         firstLoadFunction("server",layerData)
       }
-     
+
       setTimeout(()=> {
         console.log("update to server");
         updateFirstRun("server");
       },1000)
-      
+
     }
-    
-    
-    firstFetch(); 
-    
-    
+
+
+    firstFetch();
+
+
   },[])
-  
+
   const sendData = async () => {
     console.log('send to server');
     let updated = await updateMap(mapId,pageTitle,layerData,mapIcon);
@@ -138,34 +138,34 @@ const othersMapped = useOthersMapped(
     updateLastSaved(new Date())
   }
 
-  
+
 
 
   useEffect(()=> {
     console.log(firstRun,myPresence.savingDuties,layerData,pageTitle,mapIcon)
-    if(!mapId) return; 
-    if(firstRun !== "server") return ; 
-    
+    if(!mapId) return;
+    if(firstRun !== "server") return ;
+
     if(myPresence.savingDuties) {
       updateLocal.current = window.setTimeout(()=> {
         updateIsSaving(true);
         sendData();
        },3* 1000)
     }
- 
+
    return () => {
     if(updateLocal.current !== null) {
       clearTimeout(updateLocal.current);
     }
    }
-    
+
 
   },[layerData, pageTitle,mapIcon])
 
   //UPDATE DOCUMENT TITLE
   useEffect(()=> {
-    if(!document) return ; 
-    document.title = `${mapIcon}${pageTitle} - Map App`
+    if(!document) return ;
+    document.title = `${mapIcon?.startsWith("custom-")?"🗺️":mapIcon} ${pageTitle} - Map App`
   },[mapIcon,pageTitle])
 
   //VISIBILITY UPDATE
@@ -173,19 +173,19 @@ const othersMapped = useOthersMapped(
   const grabFreshContent = async () => {
     const state = document.visibilityState;
     console.log(document.visibilityState);
-    
+
     if(state !=="visible") {
       updateMyPresence({savingDuties:false,isVisible:false})
-      
-      return ; 
+
+      return ;
     }
     updateMyPresence({isVisible:true});
     console.log('fetch on visible');
     const theMap = await getMap(mapId);
-    if(!theMap) return ; 
+    if(!theMap) return ;
     layerDispatch({
       type:"REFRESH_LAYERS",
-      newLayers: theMap.layerData 
+      newLayers: theMap.layerData
     })
     updatePageTitle(theMap.title);
     if(theMap.mapIcon) {
@@ -202,7 +202,7 @@ const othersMapped = useOthersMapped(
 
   },[])
   */
-  
+
 
   return <div
   style={{

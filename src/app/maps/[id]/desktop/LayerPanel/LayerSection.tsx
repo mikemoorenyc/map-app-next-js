@@ -2,44 +2,44 @@ import DataContext from "@/app/contexts/DataContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import { CSSProperties, ReactNode, useContext} from "react";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-import styles from "./LayerSection.module.css";  
+import styles from "./LayerSection.module.css";
 import { RiCheckLine, RiSettingsLine } from "@remixicon/react";
 import useLayerData from "@/app/lib/useLayerData";
 import { TLayer } from "@/projectTypes";
 
 const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer,activeId:number|null}) => {
-  
 
- 
-  if(!layer) return ; 
+
+
+  if(!layer) return ;
   const {activeData,activeDispatch} = useContext(ActiveContext);
   const {activeLayer, collapsedLayers} = activeData;
   const isDragging = activeId == layer.id
   const isActive = activeLayer == layer.id
   const isCollapsed = collapsedLayers.includes(layer.id);
-  const hasPins = layer?.pins?.length > 0; 
+  const hasPins = layer?.pins?.length > 0;
   let textColor;
   switch(layer?.lightOrDark) {
     case "dark":
       textColor = "white"
       break;
-    case "light": 
+    case "light":
       textColor = "black"
       break;
     default:
       textColor = "var(--screen-text)"
   }
-   
+
 
   const activeStyles:CSSProperties = {
     background: isActive ? layer.color : undefined,
     color: (isActive) ? textColor : undefined
   }
-  
+
   return <div onClick={()=>{
         activeDispatch({type:"ACTIVE_LAYER",id:layer.id})
-    
-        
+
+
       }} >
     <div className={`
     ${styles.layerSection}
@@ -48,8 +48,8 @@ const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer
     `}
     >
       <div className={`${styles.header} ${isActive? styles.isActive:""}`} style={activeStyles}>
-        <button 
-         className={styles.collapseButton} 
+        <button
+         className={styles.collapseButton}
         onClick={(e)=> {
           e.preventDefault();
           if(!isCollapsed) {
@@ -66,7 +66,7 @@ const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer
         }}>
           {!isCollapsed && <RiCheckLine className={styles.svg}  />}
         </button>
-        {layer.icon && <img style={{marginRight:4}}width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>}
+        {layer.icon && <img className={`${layer.icon.startsWith("custom-")?styles.iconCustom:""} ${layer.lightOrDark == "light"?styles.light:styles.dark} ${isActive ? styles.isActive : ""}`} style={{marginRight:4}}width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>}
         <div className={`flex-1 overflow-ellipsis cursor-default`}>{layer.title}</div>
         {activeData.canEdit && <button className={styles.gear} onClick={(e) => {
                                 e.preventDefault();
@@ -80,15 +80,15 @@ const LayerSection = ({children,layer,activeId}:{children:ReactNode,layer:TLayer
         </button>}
       </div>
       {!isCollapsed && <div className={styles.pinContainer}style={{
-      height: !hasPins ? "3em":undefined,  
+      height: !hasPins ? "3em":undefined,
     }}>{children}</div>}
     </div>
-    
-                
-                
-                       
-              
-  
+
+
+
+
+
+
   </div>
 
 }

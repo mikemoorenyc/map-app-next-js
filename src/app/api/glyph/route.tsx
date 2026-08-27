@@ -1,15 +1,19 @@
 
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server';
+import fs from "node:fs/promises";
+import path from "node:path";
+
+export const runtime = "nodejs";
 export async function GET(request:NextRequest,) {
 
- 
+
   const {searchParams} = request.nextUrl
   const icon = searchParams.get("icon")
   const colorParam = searchParams.get("color")
   let color:string|null = colorParam  ?  colorParam.replace("#",""):null;
   if(color) {
-    color = "#"+color; 
+    color = "#"+color;
   }
   const ld = searchParams.get('ld');
   const visited = searchParams.get("visited") == "true";
@@ -25,9 +29,25 @@ export async function GET(request:NextRequest,) {
     return new Response("no fontsize param",{status:400})
   }
   const fontSize = parseInt(fontSizeParam);
-  
 
-  
+  //custom
+  const isCustom = icon?.startsWith("custom");
+  let customUrl = ""
+  if (isCustom && icon) {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "map-icons",
+      icon?.replace("custom-","")+".svg"
+    );
+    const buffer = await fs.readFile(filePath);
+    customUrl = `data:image/svg+xml;base64,${buffer.toString("base64")}`;
+
+  }
+
+
+
+
   const shadowColor = ld == "dark" ? "white" : "black";
   const favoritedSize = size * 1.3;
   const isLight = ld == "light";
@@ -43,7 +63,7 @@ export async function GET(request:NextRequest,) {
         filter: visited? "grayscale(1)" : "none",
       }}
     >
-  
+
      <svg style={{width:"100%",height:"100%",position:"absolute"}} viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M18 1L22.4498 5.30479L28.5801 4.43769L29.6498 10.5359L35.119 13.4377L32.4 19L35.119 24.5623L29.6498 27.4641L28.5801 33.5623L22.4498 32.6952L18 37L13.5502 32.6952L7.41987 33.5623L6.35015 27.4641L0.880983 24.5623L3.6 19L0.880983 13.4377L6.35015 10.5359L7.41987 4.43769L13.5502 5.30479L18 1Z"  strokeLinejoin="round" style={{
   stroke: isLight ?"black":"white",
@@ -63,13 +83,20 @@ export async function GET(request:NextRequest,) {
     justifyContent: "center",
     lineHeight:1,
     textShadow: textShadow
-   
+
   }}
-  
-  
-  ><span>{icon}</span></div>
-    
-    
+
+
+      >
+        {(!isCustom && icon)? <span>{icon}</span> :
+          <img src={customUrl} width={fontSize*2.5} height={fontSize*2.5} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
+
+        }
+
+
+      </div>
+
+
     </div>
   ),
   {width: favoritedSize,height:favoritedSize}
@@ -103,7 +130,7 @@ export async function GET(request:NextRequest,) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            
+
             justifyContent: 'center',
             border:"1px solid black",
             fontSize:fontSize * 1.85,
@@ -117,25 +144,26 @@ export async function GET(request:NextRequest,) {
             filter: visited? "grayscale(1)" : "none",
             color: ld == "dark"?"white":"black"
           }}
-        
         >
           <div
-            style={{
-            
+          style={{
              position:"relative",
-       
              textAlign: "center",
              lineHeight: 1,
-             textShadow: textShadow
+            textShadow: textShadow,
+             display:"flex"
            }}
            >
-            {icon}
+             {(!isCustom && icon)? <span>{icon}</span> :
+            <img src={customUrl} width={fontSize * 2.25} height={fontSize * 2.25} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
+
+             }
           </div>
         </div>
       ),
       {
         width: size + 2,
-        height:size + 2,
+        height: size + 2,
 
       }
     )

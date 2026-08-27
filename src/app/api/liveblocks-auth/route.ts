@@ -22,6 +22,7 @@ export async function POST(request:NextRequest) {
 
   const liveblocks = new Liveblocks({
   secret: secret,
+  
   });
   
   
