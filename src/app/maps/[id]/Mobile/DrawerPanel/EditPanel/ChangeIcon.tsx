@@ -8,7 +8,7 @@ import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-
+import { customEmojis,customCategoryIcons } from "@/app/lib/emojiCustom";
 
 type TContainerProps = {
   emojiClicked: (e:{native:string})=>void;
@@ -61,7 +61,9 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
 
 
 
-
+  const customReturn = (c: any) => {
+    emojiClicked({native:c.native||c.id})
+  }
 
 
 return <div className={`${styles.iconModal} flex-center-center`} >
@@ -73,12 +75,14 @@ return <div className={`${styles.iconModal} flex-center-center`} >
 
     return response.json()
   }}
-          onEmojiSelect={emojiClicked}
+          onEmojiSelect={customReturn}
     autoFocus={true}
     set={"twitter"}
           maxFrequentRows={1}
     previewPosition={"none"}
-
+    custom={customEmojis}
+    categoryIcons={customCategoryIcons}
+    onAddCustomEmoji={customReturn}
           /></div>
     </div>
 }
