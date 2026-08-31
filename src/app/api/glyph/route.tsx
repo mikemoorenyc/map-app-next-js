@@ -67,7 +67,7 @@ export async function GET(request:NextRequest,) {
     alignItems: "center",
     justifyContent: "center",
     lineHeight:1,
-    //textShadow: textShadow
+    textShadow:"-1px -1px 0 white, 1px 1px 0 black",
 
   }}
 
@@ -134,7 +134,7 @@ export async function GET(request:NextRequest,) {
              position:"relative",
              textAlign: "center",
              lineHeight: 1,
-            //textShadow: textShadow,
+             textShadow:"-1px -1px 0 white, 1px 1px 0 black",
              display:"flex"
            }}
            >

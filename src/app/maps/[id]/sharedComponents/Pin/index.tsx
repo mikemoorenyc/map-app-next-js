@@ -102,7 +102,7 @@ export default (props:TProps) => {
     pinId={pin.id}
     saveGlyph={saveGlyph}
     />*/
-    const parameters = `favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}&v=2`
+    const parameters = `favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}&v=3`
     return <img className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""} ${className||""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} src={`/api/glyph${icon.startsWith("custom-")?"/custom":""}?${parameters}`} />
   }
 
