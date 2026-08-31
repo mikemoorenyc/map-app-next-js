@@ -1,7 +1,8 @@
 import { TSvgImgUrl } from "@/projectTypes";
 
 
-export default function(data: TSvgImgUrl){
-  const {icon="x",picker=true,favorited=false,visited=false,ld="light",hasIcon=true,color="#fff"} = data;
-  return `/api/glyph/icon_${icon}__picker_${picker.toString()}__hasIcon_${hasIcon.toString()}__favorited_${favorited.toString()}__visited_${visited.toString()}__ld_${ld}__color_${color}`;
+export default function (data: TSvgImgUrl) {
+  const { icon = "x", picker = true, favorited = false, visited = false, ld = "light", hasIcon = true, color = "#fff" } = data;
+  const valueString = `icon_${icon}__picker_${picker.toString()}__hasIcon_${hasIcon.toString()}__favorited_${favorited.toString()}__visited_${visited.toString()}__ld_${ld}__color_${color}`
+  return `/api/glyph/${picker&&icon.startsWith("custom-")?"custom/base-icon":""}/${valueString}`;
 }

@@ -1,7 +1,8 @@
 
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server';
-
+import fs from "node:fs/promises";
+import path from "node:path";
 
 
 export async function GET(request:NextRequest,) {
@@ -29,6 +30,20 @@ export async function GET(request:NextRequest,) {
   }
   const fontSize = parseInt(fontSizeParam);
 
+  //custom
+  const isCustom = icon?.startsWith("custom");
+  let customUrl = ""
+  if (isCustom && icon) {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "map-icons",
+      icon?.replace("custom-","")+".svg"
+    );
+    const buffer = await fs.readFile(filePath);
+    customUrl = `data:image/svg+xml;base64,${buffer.toString("base64")}`;
+
+  }
 
 
 
@@ -73,9 +88,10 @@ export async function GET(request:NextRequest,) {
 
 
       >
-     <span>{icon}</span>
+        {(!isCustom && icon)? <span>{icon}</span> :
+          <img src={customUrl} width={fontSize*2.5} height={fontSize*2.5} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
 
-
+        }
 
 
       </div>
@@ -138,9 +154,10 @@ export async function GET(request:NextRequest,) {
              display:"flex"
            }}
            >
-        <span>{icon}</span>
+             {(!isCustom && icon)? <span>{icon}</span> :
+            <img src={customUrl} width={fontSize * 2.35} height={fontSize * 2.35} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
 
-
+             }
           </div>
         </div>
       ),
