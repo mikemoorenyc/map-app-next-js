@@ -4,7 +4,7 @@
   font-weight: 600;
   color: white;
   position: relative;
-  border: 1px solid white; 
+  border: 1px solid white;
   box-sizing: content-box;
   line-height: 1em;
   display: flex;
@@ -19,7 +19,7 @@
 }
 .highlighted {
   transform: scale(1.25);
-  
+
 }
 .visited {
   filter: grayscale(1);
@@ -39,16 +39,16 @@
  /* animation: starRotate 4s linear infinite;; */
 }
 .pin.favorited {
-  background: none !important; 
+  background: none !important;
   border-color:transparent;
-  box-shadow: none; 
+  box-shadow: none;
 }
 .starShape {
-  position:absolute; 
+  position:absolute;
   transform: translate(0px,-1px);
   width: calc(100% + 8px);
   height: calc(100% + 8px);
-  
+
  /* animation: starRotate 8s linear infinite; */
 }
 
@@ -57,7 +57,7 @@
   /*filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black) drop-shadow(-1px 1px 0 black) drop-shadow(1px -1px 0 black);*/
 }
 .starShape.light path {
-  stroke: black; 
+  stroke: black;
   /*filter: drop-shadow(1px 1px 0 white) drop-shadow(-1px -1px 0 white) drop-shadow(-1px 1px 0 white) drop-shadow(1px -1px 0 white);*/
 }
 

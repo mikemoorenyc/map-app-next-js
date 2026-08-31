@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import fs from "node:fs/promises";
 import path from "node:path";
 
-export const runtime = "nodejs";
+
 export async function GET(request:NextRequest,) {
 
 
@@ -82,7 +82,7 @@ export async function GET(request:NextRequest,) {
     alignItems: "center",
     justifyContent: "center",
     lineHeight:1,
-    textShadow: textShadow
+    //textShadow: textShadow
 
   }}
 
@@ -150,7 +150,7 @@ export async function GET(request:NextRequest,) {
              position:"relative",
              textAlign: "center",
              lineHeight: 1,
-            textShadow: textShadow,
+            //textShadow: textShadow,
              display:"flex"
            }}
            >

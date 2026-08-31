@@ -3,7 +3,7 @@ import { TLayer, TPin } from "@/projectTypes";
 import styles from "./styles.module.css"
 
 type TProps = {
-  size?:number, 
+  size?:number,
   interactable?:boolean,
   highlighted?:boolean,
   className?:string ,
@@ -14,19 +14,19 @@ type TProps = {
 
 
 export default (props:TProps) => {
-  
+
   const {size, interactable, highlighted,className,pin,layer,onMap=true} = props;
-  if(!pin) return ; 
-  
+  if(!pin) return ;
 
-    
-  
 
- 
+
+
+
+
   let dim = size || 10;
   dim = dim * (18/10);
   dim = 2 * Math.round(dim / 2);
-  const hasIcon = pin?.icon ? true : false 
+  const hasIcon = pin?.icon ? true : false
   const icon = pin?.icon || pin.title.charAt(0);
   const lightOrDark = layer?.lightOrDark;
   let textShadowStyles = null;
@@ -51,37 +51,37 @@ export default (props:TProps) => {
     if(saveGlyph && pin[`glyph_${saveGlyph}`]) {
       //Is a glyph
       const gcloudValue = glyphStringMaker({
-        w: dim, 
+        w: dim,
         favorited: pin.favorited,
         color:color,
         icon:icon,
         ld:lightOrDark,
         hasIcon:hasIcon,
         size: size||10
-      } 
+      }
         ,"_","__");
         console.log(gcloudValue);
         if(pin[`glyph_${saveGlyph}`] == gcloudValue) {
-          return <img 
+          return <img
             src={`https://storage.googleapis.com/${process.env.NEXT_PUBLIC_GCLOUD_BUCKET}/${gcloudValue}.png`}
             className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1}
-            alt="not glyph" 
-          
+            alt="not glyph"
+
           />
         }
 
-    
+
     }
-    /*return <Pin 
+    /*return <Pin
     glyph={icon}
     scale={.8}
     background={color}
     borderColor="b"
     />*/
-    
+
     //const imgURL = `/api/glyph?visited=${(pin.visited||false).toString()}&favorited=${(pin.favorited|| false).toString()}&icon=${icon}&size=${size||10}&w=${dim}&color=${encodeURIComponent(color)}&ld=${lightOrDark}&hasIcon=${(hasIcon||false).toString()}`
     //const sizing = pin.favorited ? dim * 1.3 : dim+1;
-    /*return <Pin 
+    /*return <Pin
       glyph={icon}
       background={color}
     />
@@ -91,7 +91,7 @@ export default (props:TProps) => {
 
     }}
     >{icon}</div>*/
-   /*return <Glyph className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1} 
+   /*return <Glyph className={`${highlighted?styles.highlighted:""} ${pin.favorited?styles.favorited:""} ${pin.visited?styles.visited:""}`} width={pin.favorited? dim * 1.3 : dim+1} height={pin.favorited?dim*1.3:dim+1}
     w={dim}
     favorited={pin.favorited}
     icon={icon}
@@ -106,8 +106,8 @@ export default (props:TProps) => {
   }
 
 /*
-  
-  return <div 
+
+  return <div
     className={`${styles.pin} ${styles[lightOrDark]} ${highlighted?styles.highlighted:""} ${className || ""} ${pin.favorited?styles.favorited:""}`}
     style={inlineStyles}
     data-id={pin.id}
@@ -116,7 +116,7 @@ export default (props:TProps) => {
 <path d="M18 1L22.4498 5.30479L28.5801 4.43769L29.6498 10.5359L35.119 13.4377L32.4 19L35.119 24.5623L29.6498 27.4641L28.5801 33.5623L22.4498 32.6952L18 37L13.5502 32.6952L7.41987 33.5623L6.35015 27.4641L0.880983 24.5623L3.6 19L0.880983 13.4377L6.35015 10.5359L7.41987 4.43769L13.5502 5.30479L18 1Z" fill={layer?.color || "#ffffff"} stroke="#FF1717" strokeLinejoin="round"/>
 </svg>}
       <span style={{position:"relative"}}>{icon}</span>
-      
+
 
 
   </div>

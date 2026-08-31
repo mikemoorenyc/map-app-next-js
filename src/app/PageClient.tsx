@@ -25,14 +25,14 @@ export type THomepageMapActions = {
 
 
 export default function PageClient({list,header,button,startData}:{list:"archived"|"active",header?:string,button?:ReactNode,startData:THomepageMap[]}){
-  const router = useRouter(); 
+  const router = useRouter();
 
 
- 
+
 
 
   const [mapList,updateMapList] = useState<TMapList>( mapSort(startData,"first maps"));
- 
+
 
   const updater = (map: THomepageMap[]) => {
 
@@ -48,17 +48,17 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     move: (mapId:number,direction:boolean) => {moveMap(mapList.all,mapId,updater,direction)}
   }
   const firstMaps = async () => {
-    
-    const maps = await getAllMaps(); 
-    if(!maps) return ; 
+
+    const maps = await getAllMaps();
+    if(!maps) return ;
 
     const theList = mapSort(maps,"first maps");
     updateMapList(theList);
     if(localStore) {
       localStorage.setItem(localStore,JSON.stringify(theList));
     }
-    
-    
+
+
   }
   useEffect(()=> {
     const current = window.location.href;
@@ -68,25 +68,25 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     if(!newSesh ) {
       sessionStorage.setItem("sessionStarted","yes");
       if(lastViewed && lastViewed != current) {
-        router.replace(lastViewed); 
+        router.replace(lastViewed);
       }
     }
     localStorage.setItem("last-viewed",current);
-    
+
     console.log(lastViewed);
 
-   
 
 
-    
+
+
   },[])
-  
 
-  
+
+
 
   useEffect(()=> {
 
-    firstMaps(); 
+    firstMaps();
   },[])
 
   let theList = mapList[list];
@@ -102,14 +102,14 @@ export default function PageClient({list,header,button,startData}:{list:"archive
     <span className={styles.headlineIcon}>💏</span>
     Mike & Danielle&rsquo;s <br/>
     Map App</a>
-  </h1>
+    </h1>
 
 
   <div className={styles.mapListsContainer}>
-    
+
     <div className={styles.activeMapContainer}>
 
-      
+
 
       <ul className={`${styles.activeMapList} list-style-none`}>
       {(!theList.length) && <li>No maps</li>}
@@ -121,13 +121,13 @@ export default function PageClient({list,header,button,startData}:{list:"archive
       {button && <div className={styles.buttonContainer}>
         {button}
       </div>}
-        
+
     </div>
-    
-  
+
+
   </div>
   <AddMapButton />
-  
+
 
   </div></ModalProvider>
 }
