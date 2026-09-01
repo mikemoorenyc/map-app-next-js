@@ -32,21 +32,49 @@ export async function GET(request:NextRequest,) {
 
   //custom
   const isCustom = icon?.startsWith("custom");
-  let customUrl = ""
-  if (isCustom && icon) {
-    const filePath = path.join(
+  if (!isCustom || !icon) {
+    return new Response("Icon not custom",{status:400});
+  }
+  const filename = icon.replace("custom-", "");
+  const basePath = path.join(
       process.cwd(),
       "public",
       "map-icons",
-      icon?.replace("custom-","")+".svg"
+      filename
     );
-    const buffer = await fs.readFile(filePath);
-    customUrl = `data:image/svg+xml;base64,${buffer.toString("base64")}`;
 
+  let filePath: string;
+  let contentType: string;
+  let customUrl: string
+  let isPng = false
+
+  try {
+    await fs.access(`${basePath}.svg`);
+    filePath = `${basePath}.svg`;
+    contentType = "image/svg+xml";
+  } catch {
+    try {
+      await fs.access(`${basePath}.png`);
+      filePath = `${basePath}.png`;
+      contentType = "image/png";
+      isPng = true
+    } catch {
+      return new Response("Icon not found", { status: 404 });
+    }
   }
 
+  const buffer = await fs.readFile(filePath);
+  customUrl = `data:${contentType};base64,${buffer.toString("base64")}`;
 
 
+  let customFilter = "none"
+  if (isPng) {
+    customFilter = `drop-shadow(-1px -1 0 white)
+        drop-shadow(1px 1px 0 black)`
+  }
+  if (!isPng && ld == "dark") {
+    customFilter = "invert(100%)"
+  }
 
   const shadowColor = ld == "dark" ? "white" : "black";
   const favoritedSize = size * 1.3;
@@ -89,7 +117,7 @@ export async function GET(request:NextRequest,) {
 
       >
         {(!isCustom && icon)? <span>{icon}</span> :
-          <img src={customUrl} width={fontSize*2.5} height={fontSize*2.5} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
+          <img src={customUrl} width={fontSize * 2.5} height={fontSize * 2.5} style={{ filter: customFilter }} />
 
         }
 
@@ -102,27 +130,6 @@ export async function GET(request:NextRequest,) {
   {width: favoritedSize,height:favoritedSize}
   )
 
-  const PickerGlyph = new ImageResponse(
-    (
-      <div
-        style={{
-          width: size||44,
-          height:size||40,
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center",
-          fontSize: `${size?size*.8:36}px`,
-          lineHeight: `${size?size*.8:36}px`
-        }}
-      >
-        <span>{icon}</span>
-      </div>
-    ),
-    {
-      width: size,
-      height: size
-    }
-  )
 
   const PlainIcon = new ImageResponse(
       (
@@ -155,7 +162,7 @@ export async function GET(request:NextRequest,) {
            }}
            >
              {(!isCustom && icon)? <span>{icon}</span> :
-            <img src={customUrl} width={fontSize * 2.35} height={fontSize * 2.35} style={{filter:ld=="dark"?"invert(100%)":"none"}} />
+            <img src={customUrl} width={fontSize * 2.35} height={fontSize * 2.35} style={{ filter: customFilter }} />
 
              }
           </div>
@@ -169,9 +176,7 @@ export async function GET(request:NextRequest,) {
       }
     )
   try {
-    if(searchParams.get("picker") == "true") {
-      return PickerGlyph;
-    }
+
     return favorited ? FavoritedIcon : PlainIcon
   } catch (e) {
     console.log(e)

@@ -52,7 +52,7 @@ export async function GET(
     {
       width: 64,
       height: 64,
-      emoji:"noto"
+      emoji:"twemoji"
 
     }
   )

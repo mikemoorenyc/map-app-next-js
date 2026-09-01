@@ -1,7 +1,7 @@
 'use client'
 import Picker from "@emoji-mart/react";
 import { createPortal } from 'react-dom';
-import { customEmojis,customCategoryIcons } from "@/app/lib/emojiCustom";
+import { customEmojis,customCategoryIcons ,pickerOptions,spriteSheet} from "@/app/lib/emojiCustom";
 
 import useModalCloser from "@/app/lib/useModalCloser";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
@@ -12,12 +12,12 @@ type TProps = {
   pickerAnchor: RefObject<HTMLDivElement|null>,
   stickToTop?: boolean
 }
-const emojiSprite:string|undefined =process.env.NEXT_PUBLIC_EMOJI_SPRITE
+
 
 
 
 export default ({updateIconSelectorOpen,updateValue,pickerAnchor,stickToTop}:TProps) => {
-  if(pickerAnchor===null||!pickerAnchor.current||emojiSprite === undefined)return false;
+  if(pickerAnchor===null||!pickerAnchor.current||spriteSheet === undefined)return false;
 
 console.log(pickerAnchor);
 const closer = () => {
@@ -56,17 +56,13 @@ const {ref,isTop} = modalCloser
         <Picker
           data={async () => {
     const response = await fetch(
-      emojiSprite,
+      spriteSheet,
     )
 
     return response.json()
   }}
           onEmojiSelect={emojiClicked}
-          autoFocus={true}
-          maxFrequentRows={1}
-        set={"google"}
-        custom={customEmojis}
-        categoryIcons={customCategoryIcons}
+        {...pickerOptions}
 
           previewPosition={"none"} /></div>
 

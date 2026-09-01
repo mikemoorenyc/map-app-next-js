@@ -8,7 +8,7 @@ import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-import { customEmojis,customCategoryIcons } from "@/app/lib/emojiCustom";
+import { customEmojis,customCategoryIcons ,spriteSheet} from "@/app/lib/emojiCustom";
 
 type TContainerProps = {
   emojiClicked: (e:{native:string})=>void;
@@ -18,7 +18,7 @@ type TContainerProps = {
 
 const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
   const container = useRef<HTMLDivElement>(null);
-  const spriteSheet = process.env.NEXT_PUBLIC_EMOJI_SPRITE;
+
 
   if(!spriteSheet) {
     throw new Error("no sprite sheet")

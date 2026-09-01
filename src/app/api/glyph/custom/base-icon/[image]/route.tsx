@@ -34,60 +34,41 @@ export async function GET(
   }
   //custom
   const isCustom = icon?.startsWith("custom");
-  let customUrl = ""
-  if (isCustom && icon) {
-    const filePath = path.join(
+  if (!isCustom) {
+    return new Response("Icon not custom",{status:400});
+  }
+  const filename = icon.replace("custom-", "");
+  const basePath = path.join(
       process.cwd(),
       "public",
       "map-icons",
-      icon?.replace("custom-","")+".svg"
+      filename
     );
-    const svg = await fs.readFile(filePath, "utf8");
 
-        return new Response(svg, {
-          headers: {
-            "Content-Type": "image/svg+xml",
-            "Cache-Control": "public, max-age=31536000, immutable",
-          },
-        });
-
-  }
-
-  const PickerGlyph = new ImageResponse(
-    (
-      <div
-        style={{
-          width: 64,
-          height:64,
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center",
-          fontSize: 62,
-          lineHeight: 56
-        }}
-      >
-        <span>{icon}</span>
-      </div>
-    ),
-    {
-      width: 64,
-      height: 64,
-      emoji:"noto"
-
-    }
-  )
-
+  let filePath: string;
+  let contentType: string;
 
   try {
-
-
-      return PickerGlyph;
-
-
-  } catch (e) {
-    console.log(e)
-    return new Response(`Failed to generate the image`, {
-      status: 500,
-    })
+    await fs.access(`${basePath}.svg`);
+    filePath = `${basePath}.svg`;
+    contentType = "image/svg+xml";
+  } catch {
+    try {
+      await fs.access(`${basePath}.png`);
+      filePath = `${basePath}.png`;
+      contentType = "image/png";
+    } catch {
+      return new Response("Icon not found", { status: 404 });
+    }
   }
+
+  const file = await fs.readFile(filePath);
+
+  return new Response(file, {
+    headers: {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
+  });
+
 }

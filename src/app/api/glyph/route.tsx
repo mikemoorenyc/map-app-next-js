@@ -4,7 +4,8 @@ import { NextRequest } from 'next/server';
 
 
 
-export async function GET(request:NextRequest,) {
+export async function GET(request: NextRequest,) {
+  const emojiVersion="twemoji"
 
 
   const {searchParams} = request.nextUrl
@@ -83,7 +84,7 @@ export async function GET(request:NextRequest,) {
 
     </div>
   ),
-  {width: favoritedSize,height:favoritedSize}
+  {width: favoritedSize,height:favoritedSize,emoji:emojiVersion}
   )
 
   const PickerGlyph = new ImageResponse(
@@ -147,7 +148,7 @@ export async function GET(request:NextRequest,) {
       {
         width: size + 2,
         height: size + 2,
-        emoji:"noto"
+        emoji:emojiVersion
 
       }
     )
