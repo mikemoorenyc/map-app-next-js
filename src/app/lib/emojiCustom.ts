@@ -41,5 +41,12 @@ export const pickerOptions = {
   set: "twitter",
   custom: customEmojis,
   categoryIcons: customCategoryIcons,
-  previewPosition:"none"
+  previewPosition: "none",
+  data: async () => {
+      const response = await fetch(
+    spriteSheet,
+  )
+
+  return response.json()
+}
 }

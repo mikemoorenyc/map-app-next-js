@@ -1,7 +1,7 @@
 'use client'
 import Picker from "@emoji-mart/react";
-import { createPortal } from 'react-dom';
-import { customEmojis,customCategoryIcons ,pickerOptions,spriteSheet} from "@/app/lib/emojiCustom";
+
+import { pickerOptions} from "@/app/lib/emojiCustom";
 
 import useModalCloser from "@/app/lib/useModalCloser";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
@@ -17,7 +17,7 @@ type TProps = {
 
 
 export default ({updateIconSelectorOpen,updateValue,pickerAnchor,stickToTop}:TProps) => {
-  if(pickerAnchor===null||!pickerAnchor.current||spriteSheet === undefined)return false;
+  if(pickerAnchor===null||!pickerAnchor.current)return false;
 
 console.log(pickerAnchor);
 const closer = () => {
@@ -54,17 +54,11 @@ const {ref,isTop} = modalCloser
        <div className={`z-modal big-drop-shadow ${isTop?"z-interactive-top":""}`} style={pos} ref={ref}>
 
         <Picker
-          data={async () => {
-    const response = await fetch(
-      spriteSheet,
-    )
 
-    return response.json()
-  }}
           onEmojiSelect={emojiClicked}
         {...pickerOptions}
 
-          previewPosition={"none"} /></div>
+           /></div>
 
        <style jsx global>{`
 

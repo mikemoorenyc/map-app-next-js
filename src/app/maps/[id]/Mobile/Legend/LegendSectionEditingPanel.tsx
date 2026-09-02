@@ -23,17 +23,17 @@ import { findLayer } from "@/app/lib/finders"
 
 type Props = {layerId:number,cancelFunction:()=>void}
 const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
-  
+
   const storageData =  useStorage(root=>root.map.layerData);
   const layerData = findLayer(storageData,layerId);
-  const dispatchEvent = useLiveEditing(); 
+  const dispatchEvent = useLiveEditing();
   const [tempData,updateTempData] = useState(layerData);
   const {activeDispatch} = useContext(MobileActiveContext);
   const [deletePending,updateDeletePending] = useState(false);
   const [colorPickerOpen,updateColorPickerOpen]= useState(false);
   const [deleteId,updateDeleteId] = useState<number|null>(null)
   const [saveDisabled,updateSavedDisabled] = useState(false)
-  const [myPresence, updateMyPresence] = useMyPresence(); 
+  const [myPresence, updateMyPresence] = useMyPresence();
   const [layerIndex,updateLayerIndex] = useState<number>(storageData.findIndex(l=>l.id == layerId));
 
   useEffect(()=> {
@@ -42,11 +42,11 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
       updateMyPresence({isEditing:false})
     }
   },[])
-  
+
 
   const valueChanger = (value:any,key:string) => {
     const updater: Partial<TLayer> = {};
-    updater[key as keyof TLayer] = value; 
+    updater[key as keyof TLayer] = value;
     updateTempData(s => {
      return {...s, ...updater}
     })
@@ -65,19 +65,19 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
     }
     ]
     dispatchEvent(dispatchers);
- 
-    cancelFunction(); 
+
+    cancelFunction();
   }
   const deleteLayer = useCallback(() => {
     console.log("called");
-    
+
 
 
     if(storageData.length < 2) {
       alert("Must have at least one layer");
       updateDeletePending(false);
-      return false; 
-    } 
+      return false;
+    }
     activeDispatch({
       type: "SET_ACTIVE_PIN",
       id:null
@@ -86,7 +86,7 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
       type:"REMOVE_DISABLED_LAYER",
       id:layerData.id
     })*/
-    cancelFunction(); 
+    cancelFunction();
     dispatchEvent([{
       type: "DELETED_LAYER",
       id: layerData.id
@@ -97,28 +97,28 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
   return <>
   <PortalContainer>
 <div className={styles.editingSection}>
-        <EditingModalHeader 
+        <EditingModalHeader
           cancelFunction={(e)=>{
-            e.preventDefault(); 
-            cancelFunction(); 
+            e.preventDefault();
+            cancelFunction();
           }}
           saveFunction={saveDisabled?undefined:(e)=> {
             e.preventDefault();
-            saveData(); 
+            saveData();
           }}
-      
+
         />
         <div className={styles.editingBody}>
           <TextField name="title" label="Layer name">
-            <input 
+            <input
             onFocus={(e)=> {
                   if(tempData.title == "Untitled Layer") {
-                    e.target.select(); 
+                    e.target.select();
                   }
                 }}
             className={editorStyles.textFieldInput}
               onChange={(e)=> {
-                e.preventDefault(); 
+                e.preventDefault();
                 valueChanger(e.target.value,"title");
                 if(!e.target.value.length) {
                   updateSavedDisabled(true)
@@ -135,14 +135,14 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
           </TextField>
           <TextField name="color">
             <div className={styles.layerColorContainer}>
-              <div className={styles.layerColorPickerIcon} style={{backgroundColor:tempData.color}}>
-               
-              </div>
+              <button onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}} className={styles.layerColorPickerIcon} style={{backgroundColor:tempData.color}}>
+
+              </button>
               <Button modifiers={['secondary']} icon={<RiPaintFill/>} onClick={(e)=>{e.preventDefault();updateColorPickerOpen(true)}}>Change Layer Color</Button>
               {colorPickerOpen && <BottomSheet closeCallback={()=> {
                 updateColorPickerOpen(false);
               }}>
-                <ColorPicker 
+                <ColorPicker
               currentColor={tempData.color}
             cancelCallback={()=>{updateColorPickerOpen(false);}}
               selectCallback={(color)=> {
@@ -151,8 +151,8 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
               }}
               />
               </BottomSheet>}
-              
-            
+
+
             </div>
           </TextField>
           <TextField name={"icon"}>
@@ -161,23 +161,23 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
           <TextField name={"position"}>
             <Mover itemIndex={layerIndex} itemArrayLength={storageData.length} updateIndex={(i:number)=> {
               updateLayerIndex(prev => {
-                return prev+i; 
+                return prev+i;
               })
             }} />
           </TextField>
-          
+
           {storageData.length > 1 && <div  className={`${styles.legendEditDelete} flex-center-center`}>
             <Button modifiers={["caution","secondary","sm"]} icon={<RiDeleteBinLine/>} onClick={(e) => {
-      
-              e.preventDefault(); 
+
+              e.preventDefault();
               updateDeletePending(true);
               updateDeleteId(layerData.id);
             }}>
-             Delete layer 
+             Delete layer
             </Button>
-          
+
           </div>}
-        </div> 
+        </div>
     </div>
 
 
@@ -185,16 +185,16 @@ const LegendSectionEditingPanel = ({layerId,cancelFunction}:Props) => {
 
 
   {deletePending && <Modal header={"Delete Map"} closeEvent={()=>{updateDeletePending(false); updateDeleteId(null)}}>
-    <DeleteConfirmationModal 
+    <DeleteConfirmationModal
       title={'Are you sure you want to delete this layer? All data will be lost'}
       cancelClick={(e)=>{updateDeletePending(false); updateDeleteId(null)}}
       deleteClick={(e)=>{
-          e.preventDefault(); 
+          e.preventDefault();
           updateDeleteId(null);
           updateDeletePending(false);
-          cancelFunction(); 
+          cancelFunction();
           deleteLayer();
-          
+
       }}
 
     />

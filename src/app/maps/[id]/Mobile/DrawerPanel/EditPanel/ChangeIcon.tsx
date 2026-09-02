@@ -8,7 +8,7 @@ import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-import { customEmojis,customCategoryIcons ,spriteSheet} from "@/app/lib/emojiCustom";
+import { pickerOptions} from "@/app/lib/emojiCustom";
 
 type TContainerProps = {
   emojiClicked: (e:{native:string})=>void;
@@ -20,9 +20,7 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
   const container = useRef<HTMLDivElement>(null);
 
 
-  if(!spriteSheet) {
-    throw new Error("no sprite sheet")
-  }
+
 
 
   const escapePress = (e:KeyboardEvent) => {
@@ -68,20 +66,9 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
 
 return <div className={`${styles.iconModal} flex-center-center`} >
       <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><Picker
-          data={async () => {
-    const response = await fetch(
-      spriteSheet,
-    )
-
-    return response.json()
-  }}
+         {...pickerOptions}
           onEmojiSelect={customReturn}
-    autoFocus={true}
-    set={"google"}
-          maxFrequentRows={1}
-    previewPosition={"none"}
-    custom={customEmojis}
-    categoryIcons={customCategoryIcons}
+
 
           /></div>
     </div>
