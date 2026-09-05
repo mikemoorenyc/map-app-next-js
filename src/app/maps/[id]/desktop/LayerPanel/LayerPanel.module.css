@@ -13,7 +13,12 @@
 .layerSectionContainer {
   flex: 1;
 overflow-y:hidden;
-overflow-x:visible; 
+overflow-x:visible;
 
 width: 100%;
+}
+@media(max-width:900px) {
+    .layerPanel {
+        width:300px;
+    }
 }

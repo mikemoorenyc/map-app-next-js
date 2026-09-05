@@ -21,24 +21,24 @@ const TopMenu = () => {
   const {editingLayer,activeLayer,editingPin,hoveringPin} = activeData;
   const [isMounted,updateIsMounted] = useState(false);
   const [serverLoaded,updateServerLoaded] = useState(false);
-  const map = useMap(); 
+  const map = useMap();
   useEffect(()=> {
     updateIsMounted(true);
 
   },[])
 
   useEffect(()=> {
-    if(serverLoaded) return ; 
+    if(serverLoaded) return ;
     containMap("",layerData);
   },[layerData])
 
-  
+
 
   const checkDeleted = (layerData:TLayer[]) => {
-    if(!editingLayer && !activeLayer && !editingPin && !hoveringPin) return; 
+    if(!editingLayer && !activeLayer && !editingPin && !hoveringPin) return;
     const pinIds = layerData.map(l => l.pins).flat().map(p=>p.id);
     const layerIds = layerData.map(l=>l.id)
-    
+
     //ACTIVE LAYER DELETED - Remove from active and shut off active pin
     if(activeLayer != null && !layerIds.includes(activeLayer) ) {
       activeDispatch({
@@ -54,7 +54,7 @@ const TopMenu = () => {
         id: layerData[0].id
       })
     }
-    //HOVERING PIN GOT DELETED 
+    //HOVERING PIN GOT DELETED
     if(hoveringPin!=null&&!pinIds.includes(hoveringPin) ){
       activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})
     }
@@ -70,7 +70,7 @@ const TopMenu = () => {
     if(type == "server") {
       updateServerLoaded(true);
     }
-    if(!map) return false; 
+    if(!map) return false;
 
     const pinsFlat = layerData.map(l=>l.pins).flat();
     var bounds = new google.maps.LatLngBounds();
@@ -85,24 +85,26 @@ const TopMenu = () => {
         lng: -73.9573446
       })
     }
-  
+
 
   },[map])
 
 
   return isMounted && <PortalContainer containerId="menu-container">
-  
+
   <div className={`${styles.topMenu} `}>
     <UpdaterLive checkDeleted={checkDeleted} firstLoadFunction={containMap}/>
     <Button
-    icon={<RiMap2Line />}
+        icon={<RiMap2Line />}
+        tooltip="All maps"
     href={"/"}
-    modifiers={["secondary","sm"]}
+        modifiers={["secondary", "sm"]}
+        className={styles.allMapsButton}
     >
-    All maps
+    <span className={styles.allMapsButtonText}>All maps</span>
     </Button>
 
-  </div>  
+  </div>
   </PortalContainer>
 }
 export default TopMenu

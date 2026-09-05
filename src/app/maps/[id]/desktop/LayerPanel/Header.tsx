@@ -21,7 +21,7 @@ const MapIconMemo = memo(MapIcon);
 
 
 const Header = ({layerRef}:TProps) => {
-  
+
   const dispatchEvent = useLiveEditing()
   const [newId,updateNewId] = useState<null|number>(null);
   const {layerDispatch,user} = useContext(DataContext);
@@ -31,7 +31,7 @@ const Header = ({layerRef}:TProps) => {
   const layerData = layers;
   useEffect(()=> {
     if(!layerRef||!layerRef?.current) return ;
-    if(!layerData.length) return ; 
+    if(!layerData.length) return ;
     if(layerData[layerData.length - 1].id == newId) {
       setTimeout(()=> {
         if(!layerRef||!layerRef?.current) return ;
@@ -45,25 +45,25 @@ const Header = ({layerRef}:TProps) => {
     }
   },[layerData,layerRef])
 
-  
+
   let mods :TModOptions[] = addDisabledMod(["sm","ghost"],!canEdit);
 
   return <div className={`${styles.header} flex-center`}>
-  
+
   <MapIconMemo {...{canEdit,mapIcon}} />
     <MapTitle {...{canEdit}} />
-   
-         
-          { <Button icon={<RiStackLine/>} onClick={(e)=>{
+
+
+    {<Button tooltip={"Add a new layer"}  className={ styles.addLayerButton} icon={<RiStackLine/>} onClick={(e)=>{
               e.preventDefault();
               const id = Date.now();
               updateNewId(id)
               dispatchEvent([{type:"ADDED_LAYER",user:user||null,id:id}])
-          
+
               }}   modifiers={mods}>
-                    Add layer
+                    <span className={styles.addLayerText}>Add layer</span>
             </Button>}
-   
+
   </div>
 }
 
@@ -81,6 +81,6 @@ const FallBack = () => {
   </div>
 }
 
-export default (props:TProps)=><ClientSideSuspense fallback={<FallBack/>}><Header {...props}/></ClientSideSuspense>; 
+export default (props:TProps)=><ClientSideSuspense fallback={<FallBack/>}><Header {...props}/></ClientSideSuspense>;
 
-//onClick={addLayer}  
+//onClick={addLayer}

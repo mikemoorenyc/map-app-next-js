@@ -1,0 +1,8 @@
+.mapContainer {
+    left:350px;
+}
+@media(max-width: 900px) {
+    .mapContainer {
+        left:300px
+    }
+}

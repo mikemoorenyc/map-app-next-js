@@ -1,17 +1,21 @@
+
+.searchInput {
+    width: var(--dtSearchbarWidth)
+}
 .DropDown {
   background: var(--screen-bg);
-  
+
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
   border: 1px solid;
-  border-width: 0 1px 1px 1px; 
-  width: 550px;
+  border-width: 0 1px 1px 1px;
+  width: var(--dtSearchbarWidth);
 }
 .OptionContainer {
   padding: calc(var(--gutter) - 2px) calc(var(--gutter) - 3px);
 }
 .SearchOption {
-  padding: 2px 3px; 
+  padding: 2px 3px;
   font-size: 14px;
   border: 1px solid transparent;
   cursor: pointer;
@@ -21,7 +25,7 @@
   border-color: var(--screen-text)
 }
 .SearchOption:not(:last-child) {
-  margin-bottom: calc(var(--gutter) / 3); 
+  margin-bottom: calc(var(--gutter) / 3);
 }
 .pinSmall {
   width: 19px;
@@ -29,5 +33,5 @@
 }
 .pinSmall.favorited {
   width:23px;
-  height: 23px; 
+  height: 23px;
 }

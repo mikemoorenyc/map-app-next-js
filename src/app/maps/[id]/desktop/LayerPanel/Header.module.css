@@ -1,7 +1,7 @@
 
 .header {
   padding: calc(var(--gutter)* 0.75) var(--gutter);
-  padding-bottom: 8px; 
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--screen-text);
 }
 .title {
@@ -11,7 +11,7 @@
   font-size: 1.25em;
   cursor: pointer;
   margin-right: 12px;
-  border-bottom: 1px solid transparent; 
+  border-bottom: 1px solid transparent;
 }
 .title.disabled {
   cursor:default;
@@ -28,11 +28,20 @@
 }
 
 .editMapIcon {
-  display:none; 
+  display:none;
 }
 .editMapIconButton:hover:not(:disabled) .editMapIcon {
   display:block;
 }
 .editMapIconButton:disabled {
   cursor:default;
+}
+@media(max-width:900px) {
+    .addLayerText {
+        display:none;
+    }
+    .addLayerButton {
+        border: 1px solid var(--screen-text) !important;
+        padding-left:4px !important;
+    }
 }

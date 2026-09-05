@@ -11,14 +11,15 @@ export type TButtonProps = {
   modifiers?: TModOptions[],
   className?:string,
   style?: CSSProperties,
-  href?:string, 
-  target?:string
+  href?:string,
+  target?: string,
+  tooltip?:string
 }
-export type TModOptions = ("bigger"|"disabled"|"secondary"|"sm"|"ghost"|"raised"|"round"|"pill"|"caution"|"big"|"FAB"|"md"|"icon")
+export type TModOptions = ("bigger"|"disabled"|"secondary"|"sm"|"ghost"|"raised"|"round"|"pill"|"caution"|"big"|"FAB"|"md"|"icon"|"hideTextonSm")
 
 
 const Button = (props:TButtonProps) => {
-  const {children,icon,type="button",onClick=undefined,modifiers=[],className="",style=undefined,href=undefined,target=undefined} = props
+  const {children,icon,type="button",onClick=undefined,modifiers=[],className="",style=undefined,href=undefined,target=undefined,tooltip=undefined} = props
   const isDisabled = modifiers.includes("disabled");
 
   let disabledClass = "";
@@ -28,7 +29,7 @@ const Button = (props:TButtonProps) => {
   if(isDisabled && modifiers.includes("secondary")) {
     disabledClass = "stripes-text-on-transparent"
   }
-  
+
   const classString = `${utilStyles["flex-center"]} ${styles.button} ${modifiers.map(m=>styles[m]).join(" ")} ${className} ${disabledClass}`
   const attributes = {
     href : href,
@@ -38,7 +39,7 @@ const Button = (props:TButtonProps) => {
     style : style ,
     type: type
   }
-  
+
 
 
   const inner = <>
@@ -48,14 +49,14 @@ const Button = (props:TButtonProps) => {
   </>
   let safeUrl ;
   if(href && typeof href =="string") {
-    safeUrl = href; 
+    safeUrl = href;
   }
 
   if(safeUrl) {
     return <Link {...{...attributes,...{href:safeUrl}}}>{inner}</Link>
   }
- 
-  return <button disabled={isDisabled} {...attributes}>{inner}</button>
+
+  return <button title={tooltip} disabled={isDisabled} {...attributes}>{inner}</button>
 }
 
-export default Button; 
+export default Button;

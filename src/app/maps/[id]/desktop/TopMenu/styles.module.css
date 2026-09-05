@@ -1,3 +1,5 @@
+
+
 .topMenu {
   position:fixed;
   right: 24px;
@@ -13,4 +15,22 @@
   justify-content: center;
   border-radius: 50%;
   background:var(--screen-bg);
+}
+@media(max-width:900px) {
+    .allMapsButtonText {
+        display: none;
+    }
+    .allMapsButton {
+        height:42px;
+        padding-left:8px;
+        padding-right:6px;
+    }
+    .topMenu {
+        right:auto;
+        top:auto;
+        left: 320px;
+        bottom:36px;
+        flex-direction:row-reverse;
+        display: flex;
+    }
 }

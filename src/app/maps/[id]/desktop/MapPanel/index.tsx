@@ -10,6 +10,7 @@ import ModernTempMarker from "@/app/components/ModernSearch/ModernTempMarker";
 import Prescence from "../../../../components/Prescence";
 import { ClientSideSuspense } from "@liveblocks/react";
 import ActiveContext from "@/app/contexts/ActiveContext";
+import styles from "./styles.module.css"
 
 const MapMemo = memo(Map)
 const DesktopSearchMemo = memo(DesktopSearch)
@@ -18,29 +19,30 @@ const TopMenuMemo = memo(TopMenu)
 const MapPanel = () => {
   const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY;
   const mapId = process.env.NEXT_PUBLIC_MAP_EDITOR_ID
-  if(!apiKey||!mapId) return false; 
+  if(!apiKey||!mapId) return false;
   const {activeDispatch} = useContext(ActiveContext)
   const [clickEvent,updateClickEvent] = useState<MapMouseEvent|null>(null);
-  
-  
+
+
   const mapClickHandler = (e:MapMouseEvent) => {
     if(e.detail.placeId) {
-            e.stop(); 
+            e.stop();
         }
         updateClickEvent(e);
         console.log("base click");
   }
   return <div
-  style={{
+    className={styles.mapContainer}
+    style={{
     position:"fixed",
-    left: 350,
+
     top: 0,
     right: 0,
     bottom: 0
   }}>
   <APIProvider {...{apiKey}}>
   <InfoWindowContextProvider>
-  <MapMemo 
+  <MapMemo
     mapId={mapId}
     onClick={mapClickHandler}
     style={{width: '100%', height: '100%',position:"absolute"}}
@@ -57,10 +59,10 @@ const MapPanel = () => {
   </MapMemo>
   <ClientSideSuspense fallback={<></>}><Prescence {...{activeDispatch}} openDirection="bottom" /></ClientSideSuspense>
   </InfoWindowContextProvider>
-  
+
   </APIProvider>
-  
-  
+
+
   </div>
 }
 

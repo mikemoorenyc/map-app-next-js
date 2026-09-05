@@ -16,28 +16,33 @@
     --bg-super-dark: rgba(0,0,0,.97);
     --border-radius: 8px;
     --border-radius-sm: 4px;
-    --border-radius-md : 12px; 
-    --border-radius-xl: 28px; 
+    --border-radius-md : 12px;
+    --border-radius-xl: 28px;
     --font-sans: var(--font-inter);
     --font-headline : var(--font-sofiaSans);
   --font-serif: serif;
     --font-base : 13px;
     --font-bigger : calc(var(--font-base) * 1.15);
-    --font-semibold: 600; 
-    
-  
-    --edit-description-height : 4em; 
+    --font-semibold: 600;
+
+  --dtSearchbarWidth:550px;
+    --edit-description-height : 4em;
 }
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --screen-bg:var(--screen-black);
-    --screen-text: #fff; 
+    --screen-text: #fff;
     --caution-color: #F2B8B5;
-    --blue-accent : #75b0e8; 
+    --blue-accent : #75b0e8;
   }
 }
 @media(max-width: 600px) {
   :root {
     --gutter: 16px;
   }
+}
+@media(max-width:900px) {
+    :root {
+        --dtSearchbarWidth: 474px;
+    }
 }
