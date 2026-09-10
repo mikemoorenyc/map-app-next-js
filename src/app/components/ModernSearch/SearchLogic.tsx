@@ -4,37 +4,38 @@ import {fieldMapping,formatter,FieldMap,TSearchPin} from "./lib/fieldMapping";
 import { TPin } from "@/projectTypes";
 
 type TProps = {
-  query?:string, 
+  query?:string,
   updatePredictionResults: (results:BasicResults[])=>void,
   predictionChoiceCallBack:Function,
   predictionChoice:string|number
 }
 export type BasicResults = {
-  place_id:string, 
-  description:string
+  place_id:string,
+  description: string,
+  name?:string
 }
 
 
 export default function SearchLogic(props:TProps) {
 
-  const {query,updatePredictionResults,predictionChoiceCallBack,predictionChoice} = props; 
-  
- 
+  const {query,updatePredictionResults,predictionChoiceCallBack,predictionChoice} = props;
+
+
   const [sessionToken,setSessionToken] = useState<google.maps.places.AutocompleteSessionToken>()
   /*const [autocompleteService,setAutocompleteService] = useState(null)
   const [placesService,setPlacesService] = useState(null); */
 
-  
-  const map = useMap(); 
+
+  const map = useMap();
   const places = useMapsLibrary('places');
-  
+
   //Set up session token
   useEffect(()=> {
     if (!places || !map) return;
 
    // setPlacesService(new places.PlacesService(map));
     setSessionToken(new places.AutocompleteSessionToken());
-  
+
 
   },[map,places])
 
@@ -44,7 +45,7 @@ export default function SearchLogic(props:TProps) {
   //1. Monitor query update
   useEffect(()=> {
     if(!query) return ;
-    
+
     fetchPredictions(query);
   },[query])
 
@@ -52,50 +53,57 @@ export default function SearchLogic(props:TProps) {
 
   const fetchPredictions = useCallback(
     async (inputValue?:string) => {
-      
+
       if (!places || !inputValue||!map) {
         return;
       }
 
       const request = {input: inputValue, sessionToken,locationBias:map.getBounds()};
-   
+
       const {suggestions} = await places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request)
 
       const formattedPredictions = suggestions.map((s): BasicResults|false =>  {
-        if(!s?.placePrediction) return false 
+        if (!s?.placePrediction) return false
+        const name = s.placePrediction.mainText?.text
+        let description = s.placePrediction.text.text;
+        if (name && description.includes(name)) {
+          let descSplit = description.split(", ").filter(n => n != name);
+          description = [...[name], ...descSplit].join(", ");
+        }
         return  {
           place_id: s.placePrediction.placeId,
-          description: s.placePrediction.text.text
+          description: description
         }
       }).filter(s => s !== false);
+
       //Send Raw results back to requestor
       updatePredictionResults(formattedPredictions);
-   
+
     },
     [places, sessionToken,map]
   );
 
-  
+
   /*SEND DATA BACK ABOUT CHOICE*/
 
   //Monitor choice
   useEffect(()=> {
 
-    if(!predictionChoice) return ; 
+    if(!predictionChoice) return ;
     console.log("newchoice",predictionChoice)
     fetchPredictionData(predictionChoice);
   },[predictionChoice])
 
   const fetchPredictionData = useCallback(async (placeId:string|number)=>{
-    if(!places) return false; 
+    if(!places) return false;
     const newPlace = new places.Place({id:placeId.toString()})
     await newPlace.fetchFields({fields:fieldMapping.map((f:FieldMap) => f.source)});
-    
+
     const formattedResult = formatter(newPlace);
     console.log(formattedResult);
-   
+
     predictionChoiceCallBack(formattedResult);
-    return ; 
+    return ;
     /*
     const dataCallback = (placeDetails) => {
       predictionChoiceCallBack(placeDetails)
