@@ -10,7 +10,7 @@ type TProps = {
   predictionChoice:string|number
 }
 export type BasicResults = {
-  place_id:string,
+  place_id:string|number,
   description: string,
   name?:string
 }

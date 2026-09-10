@@ -25,13 +25,13 @@ export default () => {
   const [predictionResults,updatePredictionResults] = useState<BasicResults[]>([]);
   const {activeData,activeDispatch} = useContext(MobileActiveContext)
   const {activePin,colorMode} = activeData;
-  const map = useMap(); 
+  const map = useMap();
   const inputEl = useRef<HTMLInputElement>(null);
   const [markerPosition, updateMarkerPosition] = useState<TGeolocation>();
   const [inputVal,updateInputVal] = useState("")
   const [increment,updateIncrement] = useState(0);
   const [focused,updateFocused] = useState(false);
-  const [predictionChoice,updatePredictionChoice] = useState("")
+  const [predictionChoice,updatePredictionChoice] = useState<string|number>("")
   const [viewPortHeight, updateViewPortHeight] = useState<string|number>("100%")
   //const {layerData} = useContext(DataContext)
   const reset = ()=> {
@@ -40,7 +40,7 @@ export default () => {
     updateFocused(false)
     updateQueryVal("")
     updatePredictionResults([])
-   
+
   }
   const layerData = useLayerData().layers;
 
@@ -48,10 +48,10 @@ export default () => {
 
   const inputChange = useCallback((e:ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
-      
-      const newValue = e.target.value; 
-     
-     
+
+      const newValue = e.target.value;
+
+
       updateIncrement(prev => prev+1);
       if(newValue.length === 0) {
         updatePredictionResults([]);
@@ -69,11 +69,11 @@ export default () => {
   const itemClicked= (p:TPredictionResult) => {
     console.log("newchoice",p);
     console.log("current",predictionChoice);
-  
+
     activeDispatch({type:"SET_ACTIVE_PIN",id:null})
     if(!p.new) {
-  
-    
+
+
       activeDispatch({type:"SET_ACTIVE_PIN",id:p.id})
       activeDispatch({type:"DRAWER_STATE",state:"open"})
       activeDispatch({type:"BACK_STATE",state:"back_to_base"})
@@ -81,21 +81,21 @@ export default () => {
         mapCenterer(map, p.location);
       }
       reset();
-      return ; 
+      return ;
     }
     updatePredictionChoice(p.id);
-    
 
-    reset(); 
-    return ; 
+
+    reset();
+    return ;
   }
   const addPredictionPin = (place:TSearchPin) => {
 
     place.title = place.title;
     const pos = place.location
-    place.location = place.location; 
+    place.location = place.location;
     place.viewport = place.viewport;
-    place.id=place.id; 
+    place.id=place.id;
     if(map) {
       mapCenterer(map, pos);
     }
@@ -104,20 +104,20 @@ export default () => {
     activeDispatch({type:"DRAWER_STATE",state:"open"})
     activeDispatch({type: "SET_TEMP_DATA",data: place})
     activeDispatch({type:"BACK_STATE",state:"back_to_base"})
-    reset(); 
+    reset();
   }
 
 
-    
+
   const resultsFormatted = useMemo(()=> {
       return resultFormatter(queryVal,layerData,predictionResults)
   },[layerData,queryVal,predictionResults])
- 
+
   useEffect(()=> {
-    if(!window.visualViewport) return ; 
+    if(!window.visualViewport) return ;
     const resizeHandler = (e:Event) => {
       const newH = window.visualViewport?.height
-     
+
       if(newH ) {
         updateViewPortHeight(newH);
       }
@@ -131,10 +131,10 @@ export default () => {
     }
 
   },[])
-    const currentEl = inputEl.current; 
+    const currentEl = inputEl.current;
 
     return <>
-    <style 
+    <style
     dangerouslySetInnerHTML={{__html:`
     :root {
     --view-port-size: ${viewPortHeight}px
@@ -151,41 +151,41 @@ export default () => {
     right: 0;
     bottom: 0;
     top: 0;
-    
+
     }
     `}}
-    
+
     />
-    
-     
+
+
     {true && <PortalContainer containerId="menu-container"><><div style={{
       background:focused?"var(--screen-bg)":"",
       transition: "transform .15s",
       transform:  ["maximized","editing"].includes(activeData.drawerState) ? "translateY(-300%)" : undefined,
-      position:"fixed", 
-      left: 0, 
+      position:"fixed",
+      left: 0,
       top:focused?0:20,
       visibility: activeData.legendOpen ? "hidden": undefined,
       height: focused?viewPortHeight : "auto",
       paddingTop: focused?20:0,
       display:focused?"flex":"block",
-      flexDirection: "column", 
+      flexDirection: "column",
 
       width: "100%"}}>
       <div className="flex-center" style={{borderBottom:focused?"1px solid var(--screen-text)":""}}>
-        {!focused ? <BackButton /> : <Button style={{marginLeft:"var(--gutter)"}} icon={<RiArrowLeftFill />} modifiers={['ghost','icon','round']}  onClick={(e)=>{e.preventDefault(); reset(); 
+        {!focused ? <BackButton /> : <Button style={{marginLeft:"var(--gutter)"}} icon={<RiArrowLeftFill />} modifiers={['ghost','icon','round']}  onClick={(e)=>{e.preventDefault(); reset();
             }}/>  }
 
         <div className={` ${focused?styles.inputContainerFocused:styles.inputContainer}`}>
-        
+
 
       <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
-              updateFocused(true); 
+              updateFocused(true);
               updatePredictionChoice("");
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               {(!focused && !inputVal) && <Button onClick={()=>{if(currentEl)currentEl.focus()}} className={styles.searchStarter} icon={<RiSearchLine />} modifiers={['icon','round','ghost']}/>}
               {(focused && inputVal) && <Button onClick={e => {
-                e.preventDefault(); 
+                e.preventDefault();
                 updateInputVal("");
                 updateQueryVal("")
                 updatePredictionResults([])
@@ -199,30 +199,30 @@ export default () => {
               modifiers={['ghost','icon']}
                className={`${styles.xButton} flex-center`}/>}
 
-             
+
             </div>
       </div>
      {focused && <SearchDropDown itemClicked={itemClicked} results={resultsFormatted} />}
-            
-            
-            
-            
-         
+
+
+
+
+
          {<>
-         
+
           {(activeData.activePin == "temp" && markerPosition) && <AdvancedMarker zIndex={999} position={markerPosition} />}
          </>}
-      
-    
-    
+
+
+
     </div>
-    <SearchLogic 
+    <SearchLogic
       query={queryVal}
       updatePredictionResults={(r)=>{updatePredictionResults(r)}}
       predictionChoice={predictionChoice}
       predictionChoiceCallBack={addPredictionPin}
     /></></PortalContainer>}
-    
+
     </>
 }
 //<TextInput placeholder={"Search for a location"} onFocus={(e)=>{console.log(e)}} type={"text"} ref={inputEl}  className={`flex-1`}/>
@@ -230,7 +230,7 @@ export default () => {
 
 /*
         <input ref={inputEl} className={`${styles.searchInput} flex-1 ${focused?styles.focused:""}`} onFocus={()=> {
-              updateFocused(true); inputEl.current.focus(); 
+              updateFocused(true); inputEl.current.focus();
               }} value={inputVal} onChange={inputChange} type="text" placeholder="Search for a location"/>
               */
 

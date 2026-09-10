@@ -21,11 +21,11 @@ type TProps = {
 const PinMemo = memo(Pin)
 const DropDownWrapper = (props:TProps) => {
 
-  const getLayerData = useLayerData(); 
+  const getLayerData = useLayerData();
 
   const layerData = getLayerData.layers
   const {findPin} = getLayerData
- 
+
   const newProps = {...props, ...{layerData,findPin}};
   return <DropdDownMemo {...newProps} />
 
@@ -37,17 +37,17 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
   const {activePins=[],predictions=[],itemActivated,pinsFlat=[],layerData,findPin} = props;
 
 
-  const [currentIndex,updateCurrentIndex] = useState(-1); 
- 
+  const [currentIndex,updateCurrentIndex] = useState(-1);
+
   const [currentHover, updateCurrentHover] = useState<number|null>(null);
   /*const predictionsFormatted = predictions.length? predictions.map(p=> {
     return {
-      title: p.description, 
+      title: p.description,
       id: p.place_id,
       new:true
     }
-  }) : []; */ 
-  /*const itemsFlat = [...activePins,...predictionsFormatted]; 
+  }) : []; */
+  /*const itemsFlat = [...activePins,...predictionsFormatted];
   useEffect(()=> {
     updateCurrentIndex(-1);
   },[predictions,activePins])*/
@@ -57,27 +57,27 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
 
       switch (e.code) {
         case "ArrowUp":
-   
+
           if(currentIndex === 0) {
             return ;
           }
           updateCurrentIndex(prev => {
-            return prev - 1; 
+            return prev - 1;
           })
           break;
         case "ArrowDown" :
-       
+
           if(currentIndex === pinsFlat.length - 1) {
-            return 
+            return
           }
           updateCurrentIndex(prev => {
-            return prev + 1; 
+            return prev + 1;
           })
-          break; 
-        case "Enter" : 
-          const item = pinsFlat[currentIndex]; 
+          break;
+        case "Enter" :
+          const item = pinsFlat[currentIndex];
           itemActivated(item)
-          break; 
+          break;
       }
     }
     document.addEventListener("keydown",checkKey)
@@ -85,21 +85,21 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
       document.removeEventListener("keydown",checkKey);
     }
   },[currentIndex])
-  
- 
-  
-  
+
+
+
+
 
 
   const itemActions = {updateCurrentHover,updateCurrentIndex,itemActivated};
-  
+
   const pinIds = useMemo(()=>activePins.map(p => p.id),[activePins]);
   const predictionsFiltered = predictions.filter(p => {
-    if(!activePins.length) return true; 
-     
-    return !pinIds.includes(p.id); 
+    if(!activePins.length) return true;
+
+    return !pinIds.includes(p.id);
   });
-  
+
 
 
 
@@ -114,18 +114,18 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
           icon: <PredictionPin {...{p:pin,layerData}}  />,
           cIndex: pinsFlat.findIndex(item => item.id === p.id),
           active: pinsFlat.findIndex(item => item.id === p.id) === currentIndex,
-          currentHover, p,title:p.title
+          currentHover, p,title:p.titleBolded
         }}}
-   
+
         />
       })}
-    
+
     </div>:""}
-    
+
     {(predictionsFiltered.length && activePins.length) ? <hr style={{margin:0}}/>:""}
     {predictionsFiltered.length ? <div className={styles.OptionContainer}>
       {predictionsFiltered.map(p => {
-      
+
         return <SearchMemo key={p.id} {...{...itemActions,...{
           icon: <RiMapPinLine size={18}/>,
           cIndex: pinsFlat.findIndex(item => item.id === p.id),
@@ -135,27 +135,27 @@ const DropDown = (props: TProps & {layerData:TLayer[],findPin:(id:number|string)
         }}}/>
       })}
     </div> : ""}
-  
+
   </div>
 }
 const PredictionPin = memo(({layerData,p}:{layerData:TLayer[],p:TPin})=> {
-  const layer = layerData.find(l => l.id == p.layerId); 
-  if(!layer) return false; 
+  const layer = layerData.find(l => l.id == p.layerId);
+  if(!layer) return false;
   return <PinMemo className={`${styles.pinSmall} ${p.favorited?styles.favorited:""}`} onMap={true} interactable={false} size={16} pin={p} layer={layer}/>
-}) 
+})
 
 const SearchMemo = memo(({icon,p,cIndex,active,itemActivated,updateCurrentHover,updateCurrentIndex,currentHover,title}:{
   icon:ReactNode,
   p:TPin|TPredictionResult,
   cIndex: number,
   active:boolean,
-  itemActivated:Function, 
-  updateCurrentHover: Function, 
-  updateCurrentIndex:Function, 
+  itemActivated:Function,
+  updateCurrentHover: Function,
+  updateCurrentIndex:Function,
   currentHover: number|null,
   title: string
 })=> {
- 
+
     return (
       <div className={`${styles.SearchOption} flex-center ${active?styles.active:""}`}
       onClick={()=> {
@@ -179,5 +179,4 @@ const SearchMemo = memo(({icon,p,cIndex,active,itemActivated,updateCurrentHover,
 
 const DropdDownMemo = memo(DropDown)
 
-export default DropDownWrapper; 
-
+export default DropDownWrapper;

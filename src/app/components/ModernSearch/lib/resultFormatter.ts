@@ -4,13 +4,21 @@ import { BasicResults } from "../SearchLogic";
 
 export type TPredictionResult = {
   title:string,
-  id:string,
+  id:string|number,
   new?:boolean,
   titleBolded:string,
   location?:TGeolocation
 }
 
-const stringHighlight = (string:string, query:string) => {
+const stringHighlight = (string: string, query: string) => {
+  const sl = string.toLocaleLowerCase()
+  const ql = query.toLocaleLowerCase()
+  const index = sl.indexOf(ql)
+  if (index < 0) {
+    return string
+  }
+  return string.substring(0, index) + "<strong>" + string.substring(index, index + ql.length) + "</strong>" + string.substring(index + ql.length);
+  /*
   const stringSplit = string.split(" ");
   let boldPos :number
   stringSplit.forEach((s,i) => {
@@ -27,13 +35,14 @@ const stringHighlight = (string:string, query:string) => {
     const nonBolded = s.substr(query.length);
     return `<strong>${bolded}</strong>${nonBolded}`
   }).join(" ")
+  */
 }
 
 export default function(query:string, layerData:TLayer[], predictionsRaw:BasicResults[]=[])  {
 
 
   const localPins = layerData.map(l=>l.pins).flat();
-  const activePins = getCurrentPins(localPins,query).map(p => {
+  const activePins = getCurrentPins(localPins,query,predictionsRaw).map(p => {
     return {...p, ...{titleBolded: stringHighlight(p.title,query)}} as TPredictionResult
   });
   const predictions :TPredictionResult[]=  predictionsRaw.map(p => {
