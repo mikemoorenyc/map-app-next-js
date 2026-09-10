@@ -9,16 +9,19 @@ export default function(pins:TPin[],query:string,predictionsRaw:BasicResults[]) 
     if (predictionsRaw.map(pr => pr.place_id).includes(p.id)) {
         return p
     }
+    const pl = p.title.toLocaleLowerCase()
+    const dl = p.description?.toLocaleLowerCase()||""
+    const ql = query.toLocaleLowerCase()
+    const titleMatch = ql.length < 4 ? pl.startsWith(ql) : pl.includes(ql)
+    const descriptionMatch = ql.length < 4 ?dl.startsWith(ql):pl.includes(ql)
       //const titleSplit = p.title.split(" ").filter(t => t.toLowerCase().startsWith(query.toLowerCase()))
      // const descSplit = p.description?p.description.split(" ").filter(t => t.toLowerCase().startsWith(query.toLowerCase())) : "";
       //if(descSplit.length || titleSplit.length) return p
-    if (p.title.toLowerCase().includes(query.toLowerCase())) {
+    if (titleMatch || descriptionMatch) {
         return p
     }
-    if (p.description && p.description.toLowerCase().includes(query.toLowerCase())) {
-      return p
-    }
-      return false;
 
-   })
+    return false;
+
+  })
 }
