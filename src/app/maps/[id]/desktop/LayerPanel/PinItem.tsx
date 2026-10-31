@@ -1,48 +1,65 @@
 import Pin from '../../sharedComponents/Pin';
 import { useEffect,useRef,useContext, SyntheticEvent } from 'react';
 import ActiveContext from '@/app/contexts/ActiveContext';
-
+import {useSortable} from '@dnd-kit/react/sortable';
 type TProps = {
   p:TPin,
   isDragging:boolean,
-  layer:TLayer
+  layer: TLayer,
+  index:number
 }
 
 import styles from "./PinItem.module.css"
 import { TLayer, TPin } from '@/projectTypes';
 const PinItem = (props:TProps) => {
-  const {p,isDragging,layer} = props;
+  const {p,layer,index} = props;
   const {activeData,activeDispatch} = useContext(ActiveContext)
 
   const isActive = p.id == activeData.editingPin;
-  const pinEl = useRef(null);
+  const pinEl = useRef<null|HTMLElement>(null);
   useEffect(()=> {
-        if(!pinEl) return ; 
+        if(!pinEl || !pinEl.current) return ;
         activeDispatch({type: "ADD_PIN_ITEM_REF", pinItemRef: {
-            ref: pinEl.current, 
+            ref: pinEl.current,
             id: p.id
         }})
   },[pinEl])
   const handleClick = (e:SyntheticEvent) => {
     e.preventDefault();
-    if(activeData.editingPin == p.id) return ; 
+    if(activeData.editingPin == p.id) return ;
       activeDispatch({
-        type: "EDITING_PIN", 
+        type: "EDITING_PIN",
         id: p.id,
         noViewScroll: true
     })
   }
+  const {ref:dragRef, isDragging} = useSortable({
+      id:p.id,
+      index,
+      type: 'pin',
+      accept: 'pin',
+      group: layer.id
+    });
+  useEffect(() => {
+    if (isDragging) {
+        activeDispatch({
+          type: "EDITING_PIN",
+          id: p.id,
+          noViewScroll: true
+        })
+    }
+  },[isDragging])
   return <div
     onMouseEnter={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:p.id})}}
     onMouseLeave={()=>{activeDispatch({type:"UPDATE_HOVERING_PIN",id:null})}}
-    ref={pinEl}
+    ref={(el)=> {dragRef(el); pinEl.current=el;}}
     onClick={handleClick}
     key={p.id}
-    
+
     className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
   >
     <div style={{marginRight: p.favorited?1: 4}}>
-      <Pin 
+      <Pin
         pin={p}
         layer={layer}
         interactable={false}
@@ -54,7 +71,7 @@ const PinItem = (props:TProps) => {
       <div className='overflow-ellipsis' style={{cursor:"pointer", flex:1, textDecoration: p?.visited ? "line-through":""}}>
         {p.title}
       </div>
-    
+
   </div>
 
 

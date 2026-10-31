@@ -13,10 +13,12 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.687.0",
     "@aws-sdk/lib-dynamodb": "^3.687.0",
+    "@dnd-kit/dom": "^0.5.3",
+    "@dnd-kit/helpers": "^0.5.1",
+    "@dnd-kit/react": "^0.5.1",
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@google-cloud/storage": "^7.16.0",
-    "@hello-pangea/dnd": "^17.0.0",
     "@liveblocks/client": "^3.5.1",
     "@liveblocks/node": "^3.7.1",
     "@liveblocks/react": "^3.5.1",

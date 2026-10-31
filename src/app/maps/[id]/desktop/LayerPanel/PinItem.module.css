@@ -6,19 +6,20 @@
   width: calc(100% + 4px);
   left: -2px;
   line-height: 1.4;
-  border-radius: 2px ; 
+  border-radius: 2px ;
   display: flex;
   align-items: center;
 }
-.pinItem.isActive {
+.pinItem.isActive,.pinItem.isDragging {
   font-weight: 600;
   background:var(--screen-text);
   color:var(--screen-bg)
 }
 .pinItem.isDragging {
-  border-color:currentColor; 
-  background: var(--screen-bg); 
-  box-shadow: 1px 1px 0 var(--screen-text)
+  /*border-color:currentColor;
+  background: var(--screen-bg);
+  border: 1px solid dotted;
+  box-shadow: 1px 1px 0 var(--screen-text)*/
 }
 .pinItem:hover, .pinItem.isHovering {
   border-color:var(--screen-text);
@@ -29,9 +30,9 @@
 }
 .layerPin {
   width: 19px;
-  height:19px; 
+  height:19px;
 }
 .layerPin.favorited {
   width: 23px;
-  height: 23px; 
+  height: 23px;
 }

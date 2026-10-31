@@ -5,50 +5,55 @@ import DataContext from "@/app/contexts/DataContext";
 import ActiveContext from "@/app/contexts/ActiveContext";
 import Header from "./Header";
 import styles from "./LayerPanel.module.css"
-import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from '@hello-pangea/dnd';
+import { DragDropProvider } from "@dnd-kit/react";
 import LayerSection from "./LayerSection";
 import PinItem from "./PinItem";
 import LayerEdit from "./LayerEdit";
 import useLayerData from "@/app/lib/useLayerData";
-
+import { TLayer, TPin } from "@/projectTypes";
+import { move } from "@dnd-kit/helpers";
+import { isSortable } from "@dnd-kit/react/sortable";
 
 type TDraggableObject = {
   index:number,
-  id:string, 
-  droppableId:string, 
+  id:string,
+  droppableId:string,
 
 }
-
+const formatTempPins = (layerData: TLayer[]) => {
+  return Object.fromEntries(layerData.map(section => [section.id, section.pins]))
+}
 const LayerPanel = ()=> {
-  
-  const dispatchEvent = useLiveEditing(); 
+
+  const dispatchEvent = useLiveEditing();
   const {activeData,activeDispatch} = useContext(ActiveContext);
     const layerData = useLayerData().layers;
-   
+  const { findLayer,findPin } = useLayerData();
+
     const [items,setItems] = useState([...layerData]);
     const [activeId, setActiveId] = useState<number|null>(null);
     const layerPanelEl = useRef<HTMLDivElement>(null);
-
+    const [tempPins, setTempPins] = useState<Record<number,TPin[]>>(formatTempPins(layerData))
     useEffect(()=> {
 
-      if(!layerPanelEl) return ; 
+      if(!layerPanelEl) return ;
       activeDispatch({type: "SET_LAYER_PANEL_REF", layerPanelRef:layerPanelEl.current})
 
     },[layerPanelEl])
 
     useEffect(()=> {
-      console.log(layerData);
+
       if(!layerData.length) return ;
-    
+        setTempPins(formatTempPins(layerData))
        setItems(layerData)
     },[layerData])
- 
-  
-    
+
+
+
 const handleDragEnd = (result:any) => {
     const { source, destination, draggableId, type } = result;
     console.log(result);
-    
+
 
     if (!destination) {
       return;
@@ -63,10 +68,10 @@ const handleDragEnd = (result:any) => {
       dispatchEvent([{type: "FULL_REFRESH",newData: newParentItems}])
     }
 
-    
-  
+
+
     if (type === 'child') {
-      
+
       const sourceParentIndex = items.findIndex((parent) => parent.id === parseInt(source.droppableId));
       const destinationParentIndex = items.findIndex((parent) => parent.id === parseInt(destination.droppableId));
 
@@ -97,72 +102,108 @@ const handleDragEnd = (result:any) => {
     }
   };
 
+  const snapshot = useRef(structuredClone({tempPins,items}))
 
 
-   
-return ( 
+return (
   <div className={styles.layerPanel}>
     <Header layerRef={layerPanelEl} />
     <div className={styles.layerSectionContainer}>
-      <DragDropContext onDragEnd={handleDragEnd}>
-      <div ref={layerPanelEl} className='outer-scrollable-container' style={{overflowY:"auto", height: "100%",paddingTop:10}}>
-      <Droppable droppableId="parent-list" type="parent" >
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {items.map((l, parentIndex) => (
-              <Draggable draggableId={l.id.toString()} index={parentIndex} key={l.id}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <LayerSection
-                    key={l.id}
-                    layer={l}
-                  
-                    activeId={activeId}
-                    >
-                    <Droppable droppableId={l.id.toString()} type="child">
-                      {(provided) => (
-                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {!l.pins.length && <div style={{height: 50}}/>}
-                          {l.pins.map((p, childIndex) => (
-                            <Draggable draggableId={p.id.toString()} index={childIndex} key={p.id}>
-                              {(provided, snapshot) => (
-                                <div
-                                  
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <PinItem isDragging={snapshot.isDragging} layer={l}  key={p.id} p={p}  />
-                                </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                        
-                      )}
-                      
-                    </Droppable>
-                    </LayerSection>
-                    
-                  </div>
-                )} 
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <DragDropProvider
+        onDragStart={() => {
+          snapshot.current = structuredClone({tempPins,items})
+        }}
+        onDragEnd={(event) => {
+          const { source, target } = event.operation;
+          if (event.canceled) {
+              setItems(snapshot.current.items);
+              setTempPins(snapshot.current.tempPins);
+              return;
+          }
+          if (!isSortable(source)) return;
+          if (source.type == "layer") {
+            const update = move(items, event);
+            setItems(update);
+            dispatchEvent([{ type: "FULL_REFRESH", newData: update }]);
+            return;
+          }
+          const { group, initialGroup, initialIndex, index } = source;
+
+          if (source.type == "pin") {
+            console.log(tempPins);
+            const newData = items.map(l => {
+              return {...l, pins:tempPins[l.id]}
+            })
+            setItems(newData);
+            dispatchEvent([{ type: "FULL_REFRESH", newData: newData }]);
+          }
+
+        }}
+        onDragOver={(event) => {
+          const { source,target } = event.operation;
+          if (!isSortable(source)) return;
+
+          if (target?.type == "empty-layer") {
+            const { initialGroup, group, index, initialIndex } = source;
+            const targetLayerId = Number(String(target.id).replace("empty-", ""));
+              const sourceLayer = items.find(l => l.id === Number(initialGroup));
+              const removed = findPin(String(source.id));
+
+              if (!sourceLayer || !removed) return;
+
+              const newData = items.map(l => {
+                if (l.id === targetLayerId) {
+                  return {
+                    ...l,
+                    pins: [removed]
+                  };
+                }
+
+                if (l.id === sourceLayer.id) {
+                  return {
+                    ...l,
+                    pins: l.pins.filter(p => String(p.id) !== String(source.id))
+                  };
+                }
+
+                return l;
+              });
+
+              const newTempPins = formatTempPins(newData);
+
+              setTempPins(newTempPins);
+              setItems(newData);
+
+
+
+              return;
+          }
+          if (target?.type == "pin") {
+            const newPins = move(tempPins, event);
+            setTempPins(current => move(current, event));
+            setItems(prev => {
+              return prev.map(l => {
+                return { ...l,pins:newPins[l.id] }
+              })
+            })
+          }
+        }}
+      >
+        <div ref={layerPanelEl} className='outer-scrollable-container' style={{ overflowY: "auto", height: "100%", paddingTop: 10 }}>
+          {items.map((layer,index) => {
+
+            return<LayerSection key={layer.id} {...{layer,activeId,index}}>
+              {(tempPins[layer.id] ?? []).map((p,index) => <PinItem key={p.id} {...{p,index:index,layer,isDragging:false}} />)}
+            </LayerSection>
+          })}
+
+
+
       </div>
-    </DragDropContext>  
-    </div>  
+    </DragDropProvider>
+    </div>
     {(activeData.editingLayer!==null ) &&<LayerEdit   /> }
   </div>)
-}    
+}
 
-export default LayerPanel 
+export default LayerPanel
