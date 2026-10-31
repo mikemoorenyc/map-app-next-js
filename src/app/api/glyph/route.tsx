@@ -35,7 +35,7 @@ export async function GET(request: NextRequest,) {
 
 
   const shadowColor = ld == "dark" ? "white" : "black";
-  const favoritedSize = size * 1.3;
+  const favoritedSize = Math.floor(size * 1.3);
   const isLight = ld == "light";
   const textShadow = hasIcon || (!hasIcon && ld=="dark") ? `1px 1px 0 ${shadowColor}, -1px 1px 0 ${shadowColor}, -1px -1px 0 ${shadowColor}, 1px -1px 0 ${shadowColor}` : "none"
   const FavoritedIcon = new ImageResponse((

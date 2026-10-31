@@ -1,9 +1,9 @@
 // middleware.ts
-import { auth } from "./app/auth";// <-- from your Auth.js setup
-import { NextAuthRequest } from "next-auth/lib";
+import { auth as proxy } from "./app/auth";// <-- from your Auth.js setup
+import { NextAuthRequest } from "next-auth";
 import { NextResponse } from "next/server";
 
-export default auth((req:NextAuthRequest) => {
+export default proxy((req:NextAuthRequest) => {
   const { pathname } = req.nextUrl;
 
   // Protect all routes under /dashboard and /api/protected

@@ -132,8 +132,12 @@ return (
           if (source.type == "pin") {
             console.log(tempPins);
             const newData = items.map(l => {
-              return {...l, pins:tempPins[l.id]}
+              const updatePins = tempPins[l.id].map(p => {
+                return {...p,layerId:l.id}
+              })
+              return {...l, pins:updatePins}
             })
+            console.log("test",newData);
             setItems(newData);
             dispatchEvent([{ type: "FULL_REFRESH", newData: newData }]);
           }
@@ -155,7 +159,7 @@ return (
                 if (l.id === targetLayerId) {
                   return {
                     ...l,
-                    pins: [removed]
+                    pins: [{...removed,layerId:targetLayerId}]
                   };
                 }
 
@@ -183,7 +187,10 @@ return (
             setTempPins(current => move(current, event));
             setItems(prev => {
               return prev.map(l => {
-                return { ...l,pins:newPins[l.id] }
+                const updatePins = newPins[l.id].map(p => {
+                  return {...p,layerId:l.id}
+                })
+                return { ...l,pins:updatePins }
               })
             })
           }
