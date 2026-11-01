@@ -103,7 +103,7 @@ const TopMenu = () => {
     >
     <span className={styles.allMapsButtonText}>All maps</span>
     </Button>
-
+      <div style={{ background: "white", color:"black",position: "fixed", right: 50, top: 50 }}>{activeData.editingPin}</div>
   </div>
   </PortalContainer>
 }

@@ -1,0 +1,7 @@
+.EmojiPickerReact {
+  --epr-emoji-size: 24px;
+  --epr-bg-color:var(--screen-bg);
+  --epr-text-color:var(--screen-text);
+  --epr-category-label-padding: 0 6px;
+  --epr-category-label-bg-color:var(--screen-bg);
+}

@@ -1,5 +1,5 @@
 import { useContext, useState,useRef ,useEffect, SyntheticEvent} from "react";
-import DataContext from "@/app/contexts/DataContext";
+
 
 import styles from "./Header.module.css";
 
@@ -11,14 +11,14 @@ import useLayerData from "@/app/lib/useLayerData";
 
 const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateEditing:Function}) => {
 
-  const dispatchEvent = useLiveEditing(); 
+  const dispatchEvent = useLiveEditing();
   const activeInput = useRef<HTMLInputElement>(null);
   const [tempData,updateTempData] = useState(currentTitle);
   const cancelEdit = () => {
     updateEditing(false);
   }
   const sendNewTitle = () => {
- 
+
     dispatchEvent([{
       type: "UPDATE_TITLE",
       data: tempData
@@ -28,17 +28,17 @@ const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateE
 
   useEffect(()=> {
     if(!activeInput?.current) return ;
-    activeInput.current.focus(); 
+    activeInput.current.focus();
   },[])
   return <form
   className={`${styles.title} flex-1`}
     onSubmit={(e)=> {
-      e.preventDefault(); 
-      sendNewTitle() ; 
+      e.preventDefault();
+      sendNewTitle() ;
     }}
-  
+
   >
-  
+
   <TextInput
   style={{width: "100%"}}
   type={"text"}
@@ -52,7 +52,7 @@ const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateE
   onBlur={cancelEdit}
   onKeyDown={(e)=> {
     if(e.key == "Escape") {
-      cancelEdit(); 
+      cancelEdit();
     }
   }}
 
@@ -62,10 +62,10 @@ const TitleEditForm = ({currentTitle,updateEditing}:{currentTitle:string,updateE
 }
 
 const MapTitle = ({canEdit}:{canEdit:boolean})=> {
-  const [myPresence,updateMyPrescence] = useMyPresence(); 
+  const [myPresence,updateMyPrescence] = useMyPresence();
   const [editing, updateEditing] = useState(false)
   const {pageTitle,mapIcon} = useLayerData();
-    
+
   return <>
   {!editing ? <div onClick={(e)=>{if(!canEdit) return false; e.preventDefault(); updateEditing(true); updateMyPrescence({isEditing:true})}} className={`${styles.title} ${styles.start} ${!canEdit?styles.disabled:""} overflow-ellipsis flex-1`}>
         {pageTitle}
@@ -73,4 +73,4 @@ const MapTitle = ({canEdit}:{canEdit:boolean})=> {
   </>
 }
 
-export default MapTitle; 
+export default MapTitle;

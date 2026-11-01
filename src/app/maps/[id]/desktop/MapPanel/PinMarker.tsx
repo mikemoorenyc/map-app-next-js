@@ -22,7 +22,8 @@ const PinMarker = ({pId, indexNum}:{pId:string|number,indexNum:number}) => {
     const {location} = pin;
     const {editingPin} = activeData;
 
-    const handleClick = (e:google.maps.MapMouseEvent) => {
+  const handleClick = (e: google.maps.marker.AdvancedMarkerClickEvent) => {
+
         if(editingPin === pin.id) return ;
         activeDispatch({
             type: "EDITING_PIN",

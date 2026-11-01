@@ -1,32 +1,28 @@
 export const spriteSheet = "https://cdn.jsdelivr.net/npm/@emoji-mart/data/sets/14/twitter.json"
 export const customEmojis = [
-  {
-    id: 'mapicons',
-    name: 'Map Icons',
-    emojis: [
+
       {
         id: 'custom-museum',
-        name: 'Museum',
-        keywords: ['museum','art','history'],
-        skins: [{ src: '/map-icons/museum.svg' }],
+        group:"custom-icons",
+        names: ['museum','art','history'],
+        imgUrl:  '/map-icons/museum.svg'
       },
       {
         id: 'custom-bbq',
-        name: 'Barbecue',
-        keywords: ['barbecue','barbeque','bbq','grill','wok','picnic'],
-        skins: [{ src: '/map-icons/bbq.png' }],
+        group:"custom-icons",
+        names: ['barbecue','barbeque','bbq','grill','wok','picnic'],
+        imgUrl:  '/map-icons/bbq.png',
       },
       {
         id: 'custom-goose',
-        name: 'Goose',
-        keywords: ["goose","geese","fowl","bird","duck"],
-        skins: [{ src: '/map-icons/goose.png' }],
+        group:"custom-icons",
+        names: ["goose","geese","fowl","bird","duck"],
+        imgUrl:'/map-icons/goose.png' ,
       },
 
-    ],
-  },
 
 ]
+
 export const customCategoryIcons = {
   categoryIcons: {
 

@@ -3,10 +3,12 @@ import "./globalCSS/reset.css";
 import "./globalCSS/rootVariables.css"
 import "./globalCSS/scaffold.css"
 import "./globalCSS/utilities.css"
+import "./globalCSS/emojiPicker.css"
 import { ReactElement, ReactNode } from "react";
 
 //import "./maps/[id]/Mobile/styles.css"
 import {Inter, Sofia_Sans} from "next/font/google"
+import { Metadata } from 'next';
 
 
 export const viewport = {
@@ -27,14 +29,14 @@ const sofiaSans = Sofia_Sans({
 })
 
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Map App",
   description: "Mike & Danielle's Map App",
   appleWebApp: {
     capable: true,
     title: "Map App",
     statusBarStyle: 'black-translucent'
-  }  
+  }
 
 };
 
@@ -45,15 +47,15 @@ type Props = {
 
 export default async function RootLayout({ children  }:Props) {
 
-  
-  
+
+
   return (
     <html lang="en" className={`${inter.variable} ${sofiaSans.variable}`}>
       <body >
-      
+
         {children}
         <div id="prescence-container">
-        
+
         </div>
         <div id="menu-container"></div>
         <div id="portal-container"></div>

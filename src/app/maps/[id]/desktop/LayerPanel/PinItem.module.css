@@ -15,12 +15,7 @@
   background:var(--screen-text);
   color:var(--screen-bg)
 }
-.pinItem.isDragging {
-  /*border-color:currentColor;
-  background: var(--screen-bg);
-  border: 1px solid dotted;
-  box-shadow: 1px 1px 0 var(--screen-text)*/
-}
+
 .pinItem:hover, .pinItem.isHovering {
   border-color:var(--screen-text);
 }

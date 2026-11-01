@@ -24,7 +24,8 @@ const MapPanel = () => {
   const [clickEvent,updateClickEvent] = useState<MapMouseEvent|null>(null);
 
 
-  const mapClickHandler = (e:MapMouseEvent) => {
+  const mapClickHandler = (e: MapMouseEvent) => {
+    console.log(e);
     if(e.detail.placeId) {
             e.stop();
         }

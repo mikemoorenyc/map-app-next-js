@@ -29,22 +29,23 @@ export default (infoState:TInfoWindowState, action:TInfoWindowActions) => {
         return {...infoState, ...{infoWindowContent: newContent}}
       }
       case "OPEN_WINDOW": {
-    
+
         if (action.callback) {
-          action.callback(); 
+          action.callback();
         }
         return {...infoState,...{infoWindowShown: true,
         infoWindowPosition: action.position || null ,
           infoWindowAnchor: action.anchor || infoState.tempRef,
           infoWindowContent : action.content}}
       }
-      
-      case "CLOSE_WINDOW" : {
+
+      case "CLOSE_WINDOW": {
+        console.log("CLOSE_WINDOW");
         if(action.callback) {
           action.callback()
         }
         return {...infoState,...{
-          infoWindowShown:false, 
+          infoWindowShown:false,
           infoWindowAnchor: null,
           tempMarkerPosition: null,
           infoWindowContent: {

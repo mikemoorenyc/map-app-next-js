@@ -1,4 +1,4 @@
-import { useContext, useState , useRef, useEffect, KeyboardEvent} from "react";
+import { useContext, useState , useRef, useEffect, KeyboardEvent,useMemo,memo} from "react";
 import DataContext from "@/app/contexts/DataContext";
 import ToastContext from "@/app/contexts/ToastContext";
 import InfoWindowContext from "@/app/contexts/InfoWindowContext";
@@ -14,12 +14,13 @@ import styles from "./styles.module.css";
 import useLiveEditing from "@/app/lib/useLiveEditing";
 import useLayerData from "@/app/lib/useLayerData";
 import { RiCheckboxCircleFill, RiCheckboxCircleLine, RiDeleteBinLine, RiEmojiStickerLine, RiPencilLine, RiStarFill, RiStarLine } from "@remixicon/react";
+import { TLayer, TPin } from "@/projectTypes";
 
 
 type TPayloadValues = {
-  title?:string, 
-  description?:string, 
-  icon?:string, 
+  title?:string,
+  description?:string,
+  icon?:string,
   favorited?:boolean,
   visited?:boolean
 }
@@ -30,43 +31,30 @@ type PayloadEntry =
 
 
 
-export default () => {
-  const layerData = useLayerData().layers; 
-  const {activeData,activeDispatch} = useContext(ActiveContext);
-  const {findPin,findLayer} = useLayerData(); 
-  if(!activeData.editingPin) return ; 
-  const p = findPin(activeData.editingPin);
-  const {canEdit} = activeData;
+const PinDisplay = ({p,editingPin,layerData,currentLayer}:{p:TPin,editingPin:number|string,layerData:TLayer[],currentLayer:TLayer}) => {
 
-  if(!p) return ; 
-
-  const [iconSelectorOpen,updateIconSelectorOpen] = useState(false)
-  const [tempData, updateTempData] = useState<TPayloadValues>(p);
+  const { activeData, activeDispatch } = useContext(ActiveContext);
+  const {canEdit} = activeData
+  const [iconSelectorOpen, updateIconSelectorOpen] = useState(false)
+  const [tempData, updateTempData] = useState<TPayloadValues | null>(null);
   const [editingText, updateEditingText] = useState(false);
-  
-  const dispatchEvent = useLiveEditing(); 
-  const {infoWindowDispatch} = useContext(InfoWindowContext)
-  const {toastDispatch} = useContext(ToastContext)
+  const [myPresence, updateMyPrescence] = useMyPresence();
+  const dispatchEvent = useLiveEditing();
+  const { infoWindowDispatch } = useContext(InfoWindowContext)
+  const { toastDispatch } = useContext(ToastContext)
 
-  const [myPresence,updateMyPrescence] = useMyPresence(); 
-
-
-  useEffect(()=> {
-    if(editingText||iconSelectorOpen) return ; 
+  useEffect(() => {
+    if (editingText || iconSelectorOpen) return;
     updateTempData(p);
-  },[p])
-
-  const currentLayer = findLayer(p.layerId);
-  if(!currentLayer) return false; 
+  }, [p])
 
   const pinIndex = currentLayer.pins.findIndex(pin => pin.id == p.id);
 
-  
-  const updateTempValue = (newValues:TPayloadValues) => {
+  const updateTempValue = (newValues: TPayloadValues) => {
 
     updateTempData(prev => {
 
-        return {...prev, ...newValues}
+      return { ...prev, ...newValues }
     })
   }
   const cancelEditing = () => {
@@ -75,12 +63,13 @@ export default () => {
   }
 
   const saveEditing = () => {
+    if (!tempData) return;
 
     dispatchEvent([{
       type: "UPDATED_PIN",
       id: p.id,
-      data : {
-        title : tempData.title,
+      data: {
+        title: tempData.title,
         description: tempData.description
       }
     }])
@@ -88,9 +77,7 @@ export default () => {
 
   }
 
-
-
-  const updateValue = (value:string|boolean,key:string) => {
+  const updateValue = (value: string | boolean, key: string) => {
 
     const payload: TPayloadValues = { [key]: value } as TPayloadValues;
 
@@ -116,17 +103,19 @@ export default () => {
       id: p.id
     })
   }
-  
-  const deletePin = () => {
-    toastDispatch({type: "ADD_TOAST", toast: {
-      id: p.id, 
-      content: <div className="flex-center">
-        <span style={{margin: "0 3px 4px"}} >Deleted {p.title} </span >
-        <button onClick={(e)=>{e.preventDefault(); undoPinDelete();}} style={{textDecoration: "underline"}}>Undo</button></div>,
-     
-    }})
 
-    infoWindowDispatch({type:"CLOSE_WINDOW"})
+  const deletePin = () => {
+    toastDispatch({
+      type: "ADD_TOAST", toast: {
+        id: p.id,
+        content: <div className="flex-center">
+          <span style={{ margin: "0 3px 4px" }} >Deleted {p.title} </span >
+          <button onClick={(e) => { e.preventDefault(); undoPinDelete(); }} style={{ textDecoration: "underline" }}>Undo</button></div>,
+
+      }
+    })
+
+    infoWindowDispatch({ type: "CLOSE_WINDOW" })
     activeDispatch({
       type: "EDITING_PIN",
       id: null
@@ -136,47 +125,44 @@ export default () => {
       id: p.id,
       layerId: layerData.filter(layer => layer.id == p.layerId)[0].id
     }])
-    
+
   }
-
-
   const pickerContainer = useRef(null);
-  
 
 
-  const keyPressSave = (e:KeyboardEvent<HTMLInputElement|HTMLTextAreaElement>) => {
-    const metas = ["altKey","shiftKey","ctrlKey","metaKey"];
-    if(e.key != "Enter") return; 
-    if(metas.filter(k => e[k as keyof KeyboardEvent] == true).length > 0) return; 
-    saveEditing(); 
+  const keyPressSave = (e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const metas = ["altKey", "shiftKey", "ctrlKey", "metaKey"];
+    if (e.key != "Enter") return;
+    if (metas.filter(k => e[k as keyof KeyboardEvent] == true).length > 0) return;
+    saveEditing();
   }
 
-  useEffect(()=> {
-   updateMyPrescence({isEditing: (editingText || iconSelectorOpen)});
+  useEffect(() => {
+    updateMyPrescence({ isEditing: (editingText || iconSelectorOpen) });
 
-   return () => {
-    updateMyPrescence({isEditing:false})
-   }
+    return () => {
+      updateMyPrescence({ isEditing: false })
+    }
 
-  },[editingText,iconSelectorOpen])
+  }, [editingText, iconSelectorOpen])
   const linkifyOptions = {
-    target:"_blank"
+    target: "_blank"
   }
-  return  <>
+  return <>
 
-  
-  <InfoWindowHeader>
+
+      <InfoWindowHeader>
   {!editingText && p.title}
-  {editingText && <input className={styles.titleInput} tabIndex={1} type="text" value={tempData.title} onKeyDown={keyPressSave} onChange={(e)=>{e.preventDefault(); updateTempValue({title:e.target.value})}}/>}
+    {editingText && <input className={styles.titleInput} tabIndex={1} type="text" value={tempData?.title || ""} onKeyDown={keyPressSave} onChange={(e) => { e.preventDefault(); updateTempValue({ title: e.target.value }) }} />}
 
-  </InfoWindowHeader>
-  
+  </InfoWindowHeader >
+
   <div className="PinDisplay-container">
     {!editingText&&<div className={styles.displayDescription}>
     {p.description&& <Linkify options={{target:"_blank"}}>{p?.description||""}</Linkify>}
     </div>}
-  
-    {editingText && <textarea className={styles.displayDescriptionInput} tabIndex={2} onKeyDown={keyPressSave} value={tempData.description ||""} onChange={(e) => {e.preventDefault(); updateTempValue({description: e.target.value})}} />}
+
+    {editingText && <textarea className={styles.displayDescriptionInput} tabIndex={2} onKeyDown={keyPressSave} value={tempData?.description ||""} onChange={(e) => {e.preventDefault(); updateTempValue({description: e.target.value})}} />}
     <LocationDetails placeData={p} />
 
   </div>
@@ -205,22 +191,31 @@ export default () => {
     {editingText && <div className={`${styles.controlsDefault} flex-center`} style={{justifyContent:"flex-start"}}>
     <Button modifiers={["sm"]} style={{marginRight:6, width:80}}  onClick={(e)=>{e.preventDefault(); saveEditing()}} >Save</Button>
       <Button style={{}} modifiers={["secondary","sm"]} onClick={cancelEditing} >Cancel</Button>
-      
-    
+
+
     </div>}
-  
-  </div>
 
-
-  
-  
-
-  
-
-  
-
-
-  </>
+  </div></>
 }
 
 
+
+
+
+
+
+
+
+
+
+export default () => {
+  const { editingPin } = useContext(ActiveContext).activeData;
+  const { findPin,layers,findLayer } = useLayerData();
+ const p = editingPin? findPin(editingPin) :null
+  const layerData = layers
+  const currentLayer = !p ? null : findLayer(p?.layerId);
+
+  return <>
+    {(!p || !editingPin || !layers||!currentLayer) ? <></> : <PinDisplay {...{p,currentLayer,layerData,editingPin}} />}
+  </>
+}

@@ -37,7 +37,7 @@ export default (actives:TActiveData, action:UserAction) => {
             return {...actives,...updated}
         }
         case UserActionType.ACTIVE_LAYER : {
- 
+
             return {...actives, ...{activeLayer:action.id}}
         }
         case UserActionType.UPDATE_ACTIVE_MODAL: {
@@ -51,12 +51,12 @@ export default (actives:TActiveData, action:UserAction) => {
         }
         case UserActionType.EDITING_PIN: {
             //SCROLL TO PIN
-        
+        console.log(action.id);
             (function () {
                 if(action.noViewScroll) return ;
-                if(!actives.layerPanelRef) return ; 
+                if(!actives.layerPanelRef) return ;
                 const pinRef = actives.pinItemsRef.find(p => p.id == action.id)?.ref;
-                if(!pinRef) return ; 
+                if(!pinRef) return ;
                 pinRef.scrollIntoView({block: "center"});
 
             })();
@@ -65,25 +65,25 @@ export default (actives:TActiveData, action:UserAction) => {
 
             return {...actives,...{editingPin: action.id}}
         }
-        
+
         case UserActionType.ADD_PIN_REF : {
         const newPinRefs = [...actives.pinRefs, ...[{id:action.id,ref:action.ref}]]
         return {...actives,...{pinRefs:newPinRefs}};
         }
         case UserActionType.UPDATE_COLLAPSED_LAYER : {
-            let newLayers ; 
-            
+            let newLayers ;
+
             if(action.collapsed) {
                 newLayers = [...actives.collapsedLayers, ...[action.id]]
-                
+
             } else {
                 newLayers = actives.collapsedLayers.filter(l => l != action.id);
             }
             return {...actives, ...{collapsedLayers: newLayers}}
-            
+
         }
         case UserActionType.SET_LAYER_PANEL_REF : {
-          
+
             return {...actives, ...{layerPanelRef: action.layerPanelRef }}
         }
         case UserActionType.ADD_PIN_ITEM_REF : {
@@ -93,8 +93,8 @@ export default (actives:TActiveData, action:UserAction) => {
         case UserActionType.UPDATE_HOVERING_PIN: {
             return {...actives, ...{hoveringPin: action.id}}
         }
-        
-      
+
+
     }
 
 }

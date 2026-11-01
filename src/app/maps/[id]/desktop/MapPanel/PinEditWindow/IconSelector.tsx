@@ -1,5 +1,5 @@
 'use client'
-import Picker from "@emoji-mart/react";
+import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
 
 import { pickerOptions} from "@/app/lib/emojiCustom";
 
@@ -29,11 +29,11 @@ const closer = () => {
 const {ref,isTop} = modalCloser
 
 
-  const emojiClicked = (e: any) => {
+  const emojiClicked = (e: string) => {
     console.log(e);
     updateIconSelectorOpen(false);
-    const icon = e.native||e.id;
-    updateValue(icon,"icon")
+    //const icon = e.native||e.id;
+    updateValue(e,"icon")
   }
 
 
@@ -53,12 +53,11 @@ const {ref,isTop} = modalCloser
 
        <div className={`z-modal big-drop-shadow ${isTop?"z-interactive-top":""}`} style={pos} ref={ref}>
 
-        <Picker
+      <EmojiPicker
 
-          onEmojiSelect={emojiClicked}
-        {...pickerOptions}
-
-           /></div>
+        selectAction={emojiClicked}
+      />
+    </div>
 
        <style jsx global>{`
 

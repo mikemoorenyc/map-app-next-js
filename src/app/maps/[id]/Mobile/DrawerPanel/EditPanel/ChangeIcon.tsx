@@ -2,13 +2,14 @@ import styles from "./ChangeIcon.module.css"
 import Button from "@/app/components/Button"
 import Pin from "../../../sharedComponents/Pin"
 import {useState,useEffect, useCallback, useRef, SyntheticEvent} from "react";
-import Picker from "@emoji-mart/react";
+
 import { createPortal } from "react-dom";
 import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import svgImgUrl from "@/app/lib/svgImgUrl";
-import { pickerOptions} from "@/app/lib/emojiCustom";
+import { pickerOptions } from "@/app/lib/emojiCustom";
+import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
 
 type TContainerProps = {
   emojiClicked: (e:{native:string})=>void;
@@ -59,18 +60,13 @@ const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
 
 
 
-  const customReturn = (c: any) => {
-    emojiClicked({native:c.native||c.id})
+  const customReturn = (c: string) => {
+    emojiClicked({native:c})
   }
 
 
 return <div className={`${styles.iconModal} flex-center-center`} >
-      <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><Picker
-         {...pickerOptions}
-          onEmojiSelect={customReturn}
-
-
-          /></div>
+  <div ref={container} className={`${styles.pickerContainer} big-drop-shadow`}><EmojiPicker selectAction={customReturn}/></div>
     </div>
 }
 
