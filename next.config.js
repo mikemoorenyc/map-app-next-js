@@ -5,5 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   reactStrictMode: false,
   devIndicators: false,
+  serverExternalPackages: ["@takumi-rs/core"],
 
 })

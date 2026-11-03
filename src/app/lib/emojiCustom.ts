@@ -13,12 +13,7 @@ export const customEmojis = [
         names: ['barbecue','barbeque','bbq','grill','wok','picnic'],
         imgUrl:  '/map-icons/bbq.png',
       },
-      {
-        id: 'custom-goose',
-        group:"custom-icons",
-        names: ["goose","geese","fowl","bird","duck"],
-        imgUrl:'/map-icons/goose.png' ,
-      },
+
 
 
 ]

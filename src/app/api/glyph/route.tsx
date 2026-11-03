@@ -1,5 +1,5 @@
 
-import { ImageResponse } from 'next/og'
+import { ImageResponse } from 'takumi-js/response'
 import { NextRequest } from 'next/server';
 
 
@@ -74,7 +74,8 @@ export async function GET(request: NextRequest,) {
 
 
       >
-     <span>{icon}</span>
+     <span style={{filter:hasIcon?`drop-shadow(-1px -1 0 white)
+         drop-shadow(1px 1px 0 black)`:undefined}}>{icon}</span>
 
 
 
@@ -139,7 +140,8 @@ export async function GET(request: NextRequest,) {
              display:"flex"
            }}
            >
-        <span>{icon}</span>
+        <span style={{filter:hasIcon?`drop-shadow(-1px -1 0 white)
+            drop-shadow(1px 1px 0 black)`:undefined}}>{icon}</span>
 
 
           </div>

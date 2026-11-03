@@ -7,7 +7,7 @@ type TProps = {
 }
 export default function ({selectAction}:TProps) {
   return <EmojiPicker
-    emojiVersion={"14.0"}
+
     customEmojis={customEmojis}
     colorScheme="auto"
     emojiStyle="twitter"

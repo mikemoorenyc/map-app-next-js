@@ -1,5 +1,5 @@
 
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from 'takumi-js/response';
 import { NextRequest } from 'next/server';
 
 type ImageAttributes = {
