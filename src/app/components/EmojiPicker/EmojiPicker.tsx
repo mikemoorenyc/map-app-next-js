@@ -5,12 +5,13 @@ type TProps = {
   selectAction: (icon: string) => void;
 
 }
-export default function ({selectAction}:TProps) {
+export default function ({ selectAction }: TProps) {
+
   return <EmojiPicker
 
     customEmojis={customEmojis}
     colorScheme="auto"
-    emojiStyle="twitter"
+    emojiStyle="google"
     previewConfig={{ showPreview: false }}
     skinTonesDisabled={true}
     columns={9}

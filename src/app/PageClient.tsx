@@ -31,6 +31,7 @@ export default function PageClient({list,header,button,startData}:{list:"archive
 
 
 
+
   const [mapList,updateMapList] = useState<TMapList>( mapSort(startData,"first maps"));
 
 

@@ -1,21 +1,19 @@
 import Pin from '../../sharedComponents/Pin';
-import { useEffect,useRef,useContext, SyntheticEvent } from 'react';
+import { useEffect,useRef,useContext, SyntheticEvent, memo } from 'react';
 import ActiveContext from '@/app/contexts/ActiveContext';
 import {useSortable} from '@dnd-kit/react/sortable';
 type TProps = {
   p:TPin,
   isDragging:boolean,
   layer: TLayer,
-  index:number
+  index: number,
 }
 
 import styles from "./PinItem.module.css"
 import { TLayer, TPin } from '@/projectTypes';
-const PinItem = (props:TProps) => {
-  const {p,layer,index} = props;
-  const {activeData,activeDispatch} = useContext(ActiveContext)
-
-  const isActive = p.id == activeData.editingPin;
+const PinItem = (props:TProps&{editingPin:number|string|null,isHovering:boolean,activeDispatch:Function}) => {
+  const {p,layer,index,activeDispatch,editingPin,isHovering} = props;
+  const isActive = p.id == editingPin;
   const pinEl = useRef<null|HTMLElement>(null);
   useEffect(()=> {
         if(!pinEl || !pinEl.current) return ;
@@ -26,7 +24,7 @@ const PinItem = (props:TProps) => {
   },[pinEl])
   const handleClick = (e:SyntheticEvent) => {
     e.preventDefault();
-    if(activeData.editingPin == p.id) return ;
+    if(editingPin == p.id) return ;
       activeDispatch({
         type: "EDITING_PIN",
         id: p.id,
@@ -56,7 +54,7 @@ const PinItem = (props:TProps) => {
     onClick={handleClick}
     key={p.id}
 
-    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${activeData.hoveringPin == p.id?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
+    className={`${styles.pinItem} ${isDragging ? styles.isDragging : ""} ${isActive?styles.isActive:""} ${isHovering?styles.isHovering:""} ${p.favorited?styles.pinFavorited:""}`}
   >
     <div style={{marginRight: p.favorited?1: 4}}>
       <Pin
@@ -76,5 +74,11 @@ const PinItem = (props:TProps) => {
 
 
 }
-
-export default PinItem
+const PinItemMemo = memo(PinItem)
+export default function (props: TProps) {
+  const { p } = props;
+  const { activeData, activeDispatch } = useContext(ActiveContext);
+  const { hoveringPin, editingPin } = activeData
+  const isHovering = p.id == hoveringPin;
+  return <PinItemMemo {...props} editingPin={editingPin} isHovering={isHovering} activeDispatch={activeDispatch} />
+}
