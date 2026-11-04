@@ -1,6 +1,7 @@
 
 import { ImageResponse } from 'takumi-js/response';
 import { NextRequest } from 'next/server';
+import { f } from 'node_modules/@liveblocks/react/dist/room-BZvk8RRP';
 
 type ImageAttributes = {
   icon:string,
@@ -43,10 +44,10 @@ export async function GET(
           alignItems:"center",
           justifyContent:"center",
           fontSize: 62,
-          lineHeight: 56
+          lineHeight: 1,
+          textAlign:"center"
         }}
-      >
-        <span>{icon}</span>
+      ><span style={{display:"flex",textAlign:"center",marginLeft:-3}}>{icon}</span>
       </div>
     ),
     {
