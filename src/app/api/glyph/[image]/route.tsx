@@ -1,7 +1,7 @@
 
 import { ImageResponse } from 'takumi-js/response';
 import { NextRequest } from 'next/server';
-import { f } from 'node_modules/@liveblocks/react/dist/room-BZvk8RRP';
+
 
 type ImageAttributes = {
   icon:string,

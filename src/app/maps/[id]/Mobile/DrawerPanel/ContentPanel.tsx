@@ -25,20 +25,20 @@ const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
   const {activeDispatch, activeData} = useContext(MobileActiveContext)
   const {routes,inBounds,geolocation} = activeData;
   const {drawerState,canEdit} = activeData
-  const {findLayer,findPin} = useLayerData(); 
+  const {findLayer,findPin} = useLayerData();
 
   const pin = pinId == "temp" ? activeData.tempData : findPin(pinId)
   if(!pin) return;
   const layer = (pinId == "temp" || !pin?.layerId) ? null : findLayer(pin.layerId);
-  
+
 
 
   return <div className={styles.contentPanel} style={{height:`calc(100% - ${drawerTopSpace}px)`}}>
     <div className={`${styles.topSection}`}>
-     
-        <div className={styles.pinTitle}>{pin.title}</div> 
+
+        <div className={styles.pinTitle}>{pin.title}</div>
       <div className={`${styles.metadata} display-flex align-items-center`} >
-        
+
         {layer && <div className={`${styles.layerTitle} flex-1  flex-center`}>
          {layer.icon && <img style={{marginRight:4}} width={16} height={16} src={svgImgUrl({icon:layer.icon})}/>} <span className="flex-1 overflow-ellipsis">{layer.title}</span>
         </div>}
@@ -49,7 +49,7 @@ const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
       </div>
     </div>
     <div className={styles.bottomSection} style={activeData.drawerState !== "maximized"?{overflow:"hidden"}:undefined}>
-      
+
       {pin.description && <div className={styles.description}>
         <Linkify options={{target: "_blank"}}>{pin.description}</Linkify>
       </div>}
@@ -57,14 +57,14 @@ const ContentPanel = ({pinId, drawerTopSpace}:Props)=> {
       <div style={{paddingBottom: 16}}>
         <LocationDetails placeData={pin} isMobile={true} inBounds={inBounds}/>
       </div>
-      {typeof (pin.id || pin.id) == "string"  && <Photos pin={pin} temp={pinId=="temp"} id={pin.id || pin.id} {...{drawerState}} />}
-        
-      
+
+
+
     </div>
   </div>
- 
+
 }
-export default ContentPanel; 
+export default ContentPanel;
 
 //{drawerState == "maximized" && <Photos id={pin.id || pin.place_id} {...{drawerState}} />}
 
@@ -72,8 +72,8 @@ export default ContentPanel;
 
 
 /*
-   <DrawerPanelHeader 
-        title={pin.title} 
-        before={pin?.icon && <div className="header-icon" style={{paddingRight: 4}}><Pin layerData={layerData} pId={pin.id} interactable={false}/></div>} 
+   <DrawerPanelHeader
+        title={pin.title}
+        before={pin?.icon && <div className="header-icon" style={{paddingRight: 4}}><Pin layerData={layerData} pId={pin.id} interactable={false}/></div>}
         contentOpen={true} />
         */

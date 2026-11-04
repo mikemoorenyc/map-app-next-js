@@ -1,4 +1,4 @@
-
+"use client"
 import { useCallback, useEffect,useState, useContext } from "react"
 import styles from "./styles.module.css";
 import Button from "@/app/components/Button";
@@ -10,10 +10,16 @@ import Image from "next/image";
 import makeNativeLink from "../lib/makeNativeLink";
 import { TPin,TPhoto } from "@/projectTypes";
 import useLiveEditing from "@/app/lib/useLiveEditing";
+import { RiCamera2Fill } from "@remixicon/react";
+import { useMapsLibrary } from "@vis.gl/react-google-maps";
+import { generateSignature,uploadRemote } from "@/app/actions/cloudinary";
+type PhotoWithName = google.maps.places.Photo & {
+  name: string;
+};
 
 /*
 const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
-  const photoUrls = []; 
+  const photoUrls = [];
   for(const photo of photoArray) {
     const photoFilename = `locationPhotos/${pinId}_${photoUrls.length}.jpg`
     const uploadURL  = await fetch("/api/gcUrl",{
@@ -26,10 +32,10 @@ const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
       console.log(`couldn't get upload url`);
       continue;
     }
-    const {url,fields} = await uploadURL.json(); 
+    const {url,fields} = await uploadURL.json();
     if(!url||!fields) {
       console.log("no url or field",await uploadURL.json());
-      continue; 
+      continue;
     }
     console.log(photo);
     const originalPhoto = await fetch(photo).then(r => r.blob());
@@ -62,12 +68,22 @@ const uploadPhotos = async (photoArray,pinId,layerDispatch) => {
 
 export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|TempData}) {
   const [photos,updatePhotos] = useState<TPhoto[]>([]);
- 
+const places = useMapsLibrary('places');
   const {activeDispatch} = useContext(MobileActiveContext);
 
   const [fetchStatus, updateFetchStatus] = useState("idle");
-  const dispatchEvent = useLiveEditing(); 
- 
+  const dispatchEvent = useLiveEditing();
+  const uploadPhotos = useCallback(async (photoUrl:string,i:number) => {
+    const public_id = `mapappphotos/${pin.id}_${i}`
+    try {
+
+      const result = await uploadRemote(photoUrl, public_id);
+      console.log(result);
+    } catch (error) {
+
+    }
+  },[pin])
+
 
  // const savedPhotos = JSON.parse(sessionStorage.getItem("saved_photos") || "[]");
 
@@ -77,8 +93,8 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
     if(!places) return ;
     const newPlace = new places.Place({id});
     await newPlace.fetchFields({fields:["photos"]});
-    const photos = newPlace.photos; 
-    if(!photos || !photos.length) return ; 
+    const photos = newPlace.photos;
+    if(!photos || !photos.length) return ;
     const photoArray = newPlace.photos.map(p => {return {uri:p.getURI(),w:p.widthPx,h:p.heightPx}})
     updatePhotos(photoArray);
     if(!temp) {
@@ -92,13 +108,13 @@ export default function({id,temp,pin}:{id:number|string,temp:boolean,pin:TPin|Te
     const search = await fetch(`/api/tripadvisor?title=${pin.title}&coords=${pin.location.lat},${pin.location.lng}&addr=${pin.formatted_address}`);
     updateFetchStatus("loaded")
     if(!search.ok) {
-      return ; 
+      return ;
     }
-    const {photos} = await search.json(); 
+    const {photos} = await search.json();
     console.log(photos[0]);
     updatePhotos(photos);
     if(temp) {
-      return ; 
+      return ;
     }
     dispatchEvent([{
       type: "UPDATED_PIN",
@@ -115,7 +131,7 @@ useEffect(()=> {
 
   updatePhotos([]);
    updateFetchStatus("idle");
-  if(!pin.id||typeof id !== "string") return ; 
+  if(!pin.id||typeof id !== "string") return ;
   if(pin.photos) {
     updateFetchStatus("loaded");
     updatePhotos(pin.photos);
@@ -125,11 +141,11 @@ useEffect(()=> {
 
 /*
   useEffect(()=> {
- 
+
     //CLEAR PHOTOS ON ID CHANGE
     updatePhotos([]);
     updatePhotosShown(false);
-   
+
 
   },[id])
 
@@ -141,21 +157,62 @@ useEffect(()=> {
     })
     findPhotos(id);
   }*/
- 
+
  // if(photos.length < 1) return ;
- const showPhotos = () => {
+
+  const getPhotosNew = async (pin: TPin|TempData) => {
+    updateFetchStatus("loading");
+    activeDispatch({
+        type:"DRAWER_STATE",
+        state:"maximized"
+    })
+  }
+  const showPhotos = async () => {
+    if (!places) {
+      console.log("places not loaded")
+      return
+   }
   updateFetchStatus("loading");
   activeDispatch({
       type:"DRAWER_STATE",
       state:"maximized"
   })
-  getPhotos(pin);
+    const newPlace = new places.Place({ id: String(pin.id) });
+    await newPlace.fetchFields({ fields: ["photos"] })
+    const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY;
+    if (!apiKey) {
+      console.log("no api key");
+      return;
+    }
+    if (!newPlace.photos || newPlace?.photos.length < 1) {
+      console.log("no photos");
+      updateFetchStatus("loaded");
+      return;
+    }
+    const ps = newPlace.photos as PhotoWithName[];
+    updatePhotos(ps?.map((p) => {
+      const photo = p as PhotoWithName
+      var photoUrl = `https://places.googleapis.com/v1/${photo.name}/media?&maxHeightPx=1000&key=`
+      return {
+        url: photoUrl+apiKey,
+        width: p.widthPx,
+        height:p.heightPx
+      }
+    }))
 
- }
- if(!id || typeof id !== "string" ) return ; 
+    ps.forEach((p, i) => {
+      uploadPhotos(`https://places.googleapis.com/v1/${p.name}/media?key=${apiKey}&maxHeightPx=1000` , i);
+       if (i > 5) return false;
+    })
+    updateFetchStatus("loaded");
+  //getPhotos(pin);
+
+  }
+
+ if(!id || typeof id !== "string" ) return ;
 
   if(fetchStatus == "idle" ) {
-    return <Button icon={<TAIcon />} onClick={showPhotos} >Find photos on Tripadvisor</Button>
+    return <Button icon={<RiCamera2Fill />} onClick={(e) => { e.preventDefault(); showPhotos(); }} >Find photos</Button>
   }
 
 const photoFallback = photos.filter(p=>p!==null).map(p=>{
@@ -172,16 +229,16 @@ const photoFallback = photos.filter(p=>p!==null).map(p=>{
 
 return <div className={styles.containerFlex}>
 <div className={`${styles.spacer} ${styles.front}`} />
-   {photoFallback.map(p => 
+   {photoFallback.map(p =>
     <img key={p.url} width={p.width||undefined} height={p.height||undefined}  src={`${p.url}`}  className={styles.imgFlex}/>
  )}
  <a target="_blank" href={pin.url?makeNativeLink(pin.url):""} className={`${styles.imgFlex} ${styles.imgPlaceHolder}`}>
-  <Image src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500"/>
+  <Image src={"/pho-spacer.png"} alt={"Loading Spacer"} width="200"height="500" style={{visibility:"hidden"}}/>
   <div className={`${styles.placeholderText } flex-center-center`}>
     <div className={styles.placeholderTextInner}>
       {fetchStatus == "loaded" && <span className={`${styles.phicon} flex-center-center`}>
         <GMIcon />
-      </span>} 
+      </span>}
       <span className={styles.phText}>
         {fetchStatus == "loading" && <>Finding photos</>}
         {fetchStatus=="loaded" && <>
@@ -192,7 +249,7 @@ return <div className={styles.containerFlex}>
       {fetchStatus == "loading" && <div className={styles.loaderHolder}>
         <span className={styles.photoLoader}></span>
       </div>}
-    
+
     </div>
   </div>
  </a>
@@ -209,13 +266,13 @@ return <div className={styles.containerFlex}>
   `}</style>
   <div className={styles.photoOuter} ref={containerRef}>{photos.length !== 0 && <Slider {...sliderSettings}>
 
-  {photos.map(p => 
+  {photos.map(p =>
     <div className={styles.photo}><img  key={p.uri}src={`${p.uri}&maxWidthPx=700`} width={p.w} height={p.h} className={styles.img}/></div>
  )}
   </Slider>}
   </div>
-  
-  
+
+
   </>
   */
 
