@@ -11,7 +11,7 @@ export default function ({ selectAction }: TProps) {
 
     customEmojis={customEmojis}
     colorScheme="auto"
-    emojiStyle="google"
+    emojiStyle="twitter"
     previewConfig={{ showPreview: false }}
     skinTonesDisabled={true}
     columns={9}
