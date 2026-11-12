@@ -2,20 +2,25 @@ import styles from "./ChangeIcon.module.css"
 import Button from "@/app/components/Button"
 import Pin from "../../../sharedComponents/Pin"
 import {useState,useEffect, useCallback, useRef, SyntheticEvent} from "react";
-
+import dynamic from 'next/dynamic';
 import { createPortal } from "react-dom";
 import { RiEmojiStickerLine } from "@remixicon/react";
 import { TLayer, TPin } from "@/projectTypes";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import svgImgUrl from "@/app/lib/svgImgUrl";
 import { pickerOptions } from "@/app/lib/emojiCustom";
-import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
+//import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
 
 type TContainerProps = {
   emojiClicked: (e:{native:string})=>void;
   updateOpen: (e:boolean)=>void;
   isOpen:boolean
 }
+
+const EmojiPicker = dynamic(() => import("@/app/components/EmojiPicker/EmojiPicker"), {
+  ssr: false,
+});
+
 
 const EmojiContainer = ({emojiClicked,updateOpen,isOpen}:TContainerProps) => {
   const container = useRef<HTMLDivElement>(null);

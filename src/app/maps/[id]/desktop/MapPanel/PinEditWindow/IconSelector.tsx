@@ -1,8 +1,8 @@
 'use client'
-import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
+//import EmojiPicker from "@/app/components/EmojiPicker/EmojiPicker";
 
 import { pickerOptions} from "@/app/lib/emojiCustom";
-
+import dynamic from 'next/dynamic';
 import useModalCloser from "@/app/lib/useModalCloser";
 import PortalContainer from "@/app/components/PortalContainer/PortalContainer";
 import { CSSProperties, RefObject } from "react";
@@ -12,6 +12,9 @@ type TProps = {
   pickerAnchor: RefObject<HTMLDivElement|null>,
   stickToTop?: boolean
 }
+const EmojiPicker = dynamic(() => import("@/app/components/EmojiPicker/EmojiPicker"), {
+  ssr: false,
+});
 
 
 
@@ -43,7 +46,8 @@ const {ref,isTop} = modalCloser
     transform:stickToTop ? "none":"translateY(-50%)",
     position:"fixed",
     border: "1px solid var(--screen-text)",
-    borderRadius: "var(--border-radius)"
+    borderRadius: "var(--border-radius)",
+    overflow:"hidden"
   }
 
 

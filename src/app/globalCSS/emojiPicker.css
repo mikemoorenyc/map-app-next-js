@@ -5,3 +5,8 @@
   --epr-category-label-padding: 0 6px;
   --epr-category-label-bg-color:var(--screen-bg);
 }
+emoji-picker {
+   --emoji-font-family: "Noto Color Emoji","Twemoji Mozilla","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","EmojiOne Color","Android Emoji",sans-serif;
+   --category-emoji-size:1.25em;
+   --emoji-padding:.35em;
+}

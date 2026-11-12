@@ -1,17 +1,18 @@
+import type { CustomEmoji } from "emoji-picker-element/shared"
 export const spriteSheet = "https://cdn.jsdelivr.net/npm/@emoji-mart/data/sets/14/twitter.json"
-export const customEmojis = [
+export const customEmojis: CustomEmoji[] = [
 
       {
-        id: 'custom-museum',
-        group:"custom-icons",
-        names: ['museum','art','history'],
-        imgUrl:  '/map-icons/museum.svg'
+        name: 'custom-museum',
+       //group:"custom-icons",
+        shortcodes: ['museum','art','history'],
+        url:  '/map-icons/museum.svg'
       },
       {
-        id: 'custom-bbq',
-        group:"custom-icons",
-        names: ['barbecue','barbeque','bbq','grill','wok','picnic'],
-        imgUrl:  '/map-icons/bbq.png',
+        name: 'custom-bbq',
+       // group:"custom-icons",
+        shortcodes: ['barbecue','barbeque','bbq','grill','wok','picnic'],
+        url:  '/map-icons/bbq.png',
       },
 
 
